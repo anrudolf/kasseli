@@ -1,6 +1,8 @@
 <template>
   <div class="flex justify-center items-center bg-white">
-    <button class="btn">
+    <app-button @click="alert('pay')">Bezahlen</app-button>
+
+    <button class="btn" v-if="false">
       Bezahlen
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -21,6 +23,20 @@
     </button>
   </div>
 </template>
+
+<script>
+import appButton from "../components/Button.vue";
+export default {
+  components: {
+    appButton,
+  },
+  methods: {
+    alert(v) {
+      window.alert(v);
+    },
+  },
+};
+</script>
 
 <style scoped>
 .btn {
