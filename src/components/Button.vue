@@ -24,4 +24,8 @@
 .btn {
   @apply py-2 px-4 rounded-md bg-gray-200 text-4xl border-solid border-8 border-gray-300;
 }
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
 </style>

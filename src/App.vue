@@ -1,18 +1,17 @@
 <template>
   <div class="wrapper">
-    <div class="p-4">
+    <div class="p-4 flex items-center">
       <router-link to="/">Home</router-link>
       <span class="mx-1">-</span>
       <router-link to="/about">About</router-link>
       <span class="mx-1">-</span>
       <router-link to="/products">Products</router-link>
-      <input type="text" class="border-solid border-4 border-light-blue-500" />
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
-        class="inline w-5 h-5"
+        class="ml-auto inline w-5 h-5"
       >
         <path
           stroke-linecap="round"
