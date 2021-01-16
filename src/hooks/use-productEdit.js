@@ -1,4 +1,4 @@
-import { reactive, computed, watch, toRef, toRefs } from "vue";
+import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
 import firebase from "../firebaseInit";
@@ -7,7 +7,7 @@ import utils from "../utils";
 
 const db = firebase.firestore();
 
-export default function() {
+export default function(initialId = null) {
   const router = useRouter();
 
   const product = reactive({
@@ -23,8 +23,20 @@ export default function() {
     },
   });
 
+  if (initialId) {
+    db.collection("products")
+      .doc(initialId)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          product.id = doc.id;
+          product.data = doc.data();
+        }
+      });
+  }
+
   const { id: rawProductId } = toRefs(product);
-  const productId = computed(() => {
+  const id = computed(() => {
     if (product.data.template) {
       return utils.createTemplate(rawProductId.value);
     }
@@ -34,7 +46,7 @@ export default function() {
 
   const save = () => {
     db.collection("products")
-      .doc(product.id)
+      .doc(id.value)
       .set(product.data)
       .then(() => {
         console.log("document set, pushing route /products");
@@ -60,25 +72,28 @@ export default function() {
     );
   });
 
+  const exists = ref(false);
+
   watch(product, (p) => {
     if (!p.id || p.id.length < 13 || p.data.noBarcode) {
       product.data.template = false;
     }
   });
 
-  watch(productId, (v, old) => {
+  watch(id, (v, old) => {
     if (v && v !== old) {
       db.collection("products")
         .doc(v)
         .get()
         .then((doc) => {
           if (doc.exists) {
-            product.id = doc.id;
-            product.data = doc.data();
+            exists.value = true;
+          } else {
+            exists.value = false;
           }
         });
     }
   });
 
-  return { productId, product, save, saveDisabled, templateEnabled };
+  return { id, product, exists, save, saveDisabled, templateEnabled };
 }

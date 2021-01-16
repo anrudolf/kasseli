@@ -11,6 +11,11 @@
       />
     </label>
 
+    <div v-if="exists">
+      Produkt existiert bereits,
+      <router-link :to="`/products/edit?id=${id}`">jetzt editieren</router-link>
+    </div>
+
     <label class="block">
       <div class="text-gray-700">Label</div>
       <input
@@ -58,21 +63,15 @@
 </template>
 
 <script>
-import { toRef } from "vue";
 import appButton from "../components/Button.vue";
 
 import useProductEdit from "../hooks/use-productEdit";
 
 export default {
-  props: ["editId"],
   components: {
     appButton,
   },
-  setup(props) {
-    const editId = toRef(props, "editId");
-
-    console.log(editId.value);
-
+  setup() {
     const {
       id,
       product,
@@ -80,7 +79,7 @@ export default {
       save,
       saveDisabled,
       templateEnabled,
-    } = useProductEdit(editId.value);
+    } = useProductEdit();
 
     return { id, product, exists, save, saveDisabled, templateEnabled };
   },

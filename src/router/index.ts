@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home.vue";
 import Kasse from "../views/Kasse.vue";
 import Products from "../views/Products.vue";
+import ProductNew from "../views/ProductNew.vue"
 import ProductEdit from "../views/ProductEdit.vue"
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,7 +19,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/products/new",
     name: "products-new",
+    component: ProductNew,
+  },
+  {
+    path: "/products/edit",
+    name: "products-edit",
     component: ProductEdit,
+    props: route => ({ editId: route.query.id })
   },
   {
     path: "/about",
