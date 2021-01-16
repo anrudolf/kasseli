@@ -51,15 +51,19 @@
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button
     >
+    <div>{{ productId }}</div>
+    <div>{{ product }}</div>
   </div>
 </template>
 
 <script>
-import { reactive, computed, watch } from "vue";
+import { reactive, computed, watch, toRef, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import appButton from "../components/Button.vue";
 
 import firebase from "../firebaseInit";
+
+import utils from "../utils";
 
 const db = firebase.firestore();
 
@@ -83,6 +87,15 @@ export default {
       },
     });
 
+    const { id: rawProductId } = toRefs(product);
+    const productId = computed(() => {
+      if (product.data.template) {
+        return utils.createTemplate(rawProductId.value);
+      }
+
+      return rawProductId.value;
+    });
+
     const save = () => {
       db.collection("products")
         .doc(product.id)
@@ -103,16 +116,35 @@ export default {
     });
 
     const templateEnabled = computed(() => {
-      return product.id && product.id.length >= 13;
+      return (
+        !product.data.noBarcode &&
+        product.id &&
+        utils.isNumeric(product.id) &&
+        product.id.length === 13
+      );
     });
 
     watch(product, (p) => {
-      if (!p.id || p.id.length < 13) {
+      if (!p.id || p.id.length < 13 || p.data.noBarcode) {
         product.data.template = false;
       }
     });
 
-    return { product, save, saveDisabled, templateEnabled };
+    watch(productId, (v, old) => {
+      if (v && v !== old) {
+        db.collection("products")
+          .doc(v)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              product.id = doc.id;
+              product.data = doc.data();
+            }
+          });
+      }
+    });
+
+    return { productId, product, save, saveDisabled, templateEnabled };
   },
 };
 </script>
