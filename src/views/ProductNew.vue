@@ -1,25 +1,39 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl">Neues Produkt</h1>
+  <div class="p-4 max-w-lg">
+    <h1 class="text-2xl">Neues Produkt erfassen</h1>
 
     <label class="block">
       <div class="text-gray-700">ID oder Strichcode</div>
-      <input
-        class="border rounded py-2 px-3 text-gray-700 focus:shadow-outline"
-        v-model="product.id"
-        placeholder="Produkt ID"
-      />
+      <input class="input" v-model="product.id" placeholder="Produkt ID" />
     </label>
 
-    <div v-if="exists">
-      Produkt existiert bereits,
-      <router-link :to="`/products/edit?id=${id}`">jetzt editieren</router-link>
+    <div v-if="exists" class="p-2 my-1 rounded bg-blue-100 flex items-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        class="w-6 h-6 inline"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span class="ml-2">Produkt existiert bereits</span>
+      <router-link
+        :to="`/products/edit?id=${id}`"
+        class="ml-auto underline text-blue-500"
+        >Editieren</router-link
+      >
     </div>
 
     <label class="block">
       <div class="text-gray-700">Label</div>
       <input
-        class="border rounded py-2 px-3 text-gray-700 focus:shadow-outline"
+        class="input"
         v-model="product.data.label.de"
         placeholder="Produkt Name"
       />
@@ -29,7 +43,7 @@
       <div class="text-gray-700">Preis</div>
       <input
         type="number"
-        class="border rounded py-2 px-3 text-gray-700 focus:shadow-outline"
+        class="input"
         v-model.number="product.data.price"
         placeholder="2.90"
       />
@@ -53,7 +67,7 @@
       <span class="ml-2 text-gray-700">Preis aus Strichcode berechnen</span>
     </label>
 
-    <app-button class="mt-4" @click="save" :disabled="saveDisabled"
+    <app-button class="mt-4" @click="save" :disabled="saveDisabled || exists"
       >Speichern</app-button
     >
     <div>{{ id }}</div>
@@ -91,5 +105,9 @@ label {
   display: block;
   margin-top: 12px;
   font-size: 1.125rem;
+}
+
+.input {
+  @apply border rounded py-2 px-3 text-gray-700 w-full;
 }
 </style>

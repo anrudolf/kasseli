@@ -33,6 +33,7 @@
           <th class="text-left">Label</th>
           <th class="text-right">id</th>
           <th class="text-right">Price</th>
+          <th class="text-right">Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -40,6 +41,27 @@
           <td class="text-left">{{ product.label.de }}</td>
           <td class="text-right">{{ product.id }}</td>
           <td class="text-right">{{ product.price.toFixed(2) }}</td>
+          <td class="flex justify-end">
+            <router-link
+              :to="`/products/edit?id=${product.id}`"
+              class="text-gray-500"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </router-link>
+          </td>
         </tr>
       </tbody>
     </table>

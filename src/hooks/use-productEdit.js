@@ -20,6 +20,7 @@ export default function(initialId = null) {
       price: null,
       noBarcode: false,
       template: false,
+      created: null,
     },
   });
 
@@ -45,6 +46,9 @@ export default function(initialId = null) {
   });
 
   const save = () => {
+    if (!initialId) {
+      product.data.created = Date.now();
+    }
     db.collection("products")
       .doc(id.value)
       .set(product.data)

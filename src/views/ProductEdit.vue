@@ -1,20 +1,66 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl">Neues Produkt</h1>
+  <div class="p-4 max-w-lg">
+    <app-modal :visible="deleteModal" @close="deleteModal = false">
+      <template v-slot:title>Wirklich löschen?</template>
+      <div>
+        <div>Zum Bestätigen bitte Produkt ID eintippen und löschen klicken</div>
+        <label class="block">
+          <div class="text-gray-700">{{ product.id }}</div>
+          <input
+            class="input"
+            placeholder="Produkt ID"
+            v-model="deleteModalConfirmation"
+          />
+        </label>
+        <div class="mt-3 flex justify-between">
+          <button
+            :disabled="product.id !== deleteModalConfirmation"
+            class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+          >
+            Löschen
+          </button>
+          <button
+            class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            @click="
+              deleteModalConfirmation = '';
+              deleteModal = false;
+            "
+          >
+            Abbrechen
+          </button>
+        </div>
+      </div>
+    </app-modal>
+
+    <div class="flex justify-between">
+      <h1 class="text-2xl">Produkt editieren</h1>
+      <button @click="deleteModal = true" class="text-red-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          class="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
+        </svg>
+      </button>
+    </div>
 
     <label class="block">
       <div class="text-gray-700">ID oder Strichcode</div>
-      <input
-        class="border rounded py-2 px-3 text-gray-700 focus:shadow-outline"
-        v-model="product.id"
-        placeholder="Produkt ID"
-      />
+      <input class="input" v-model="product.id" placeholder="Produkt ID" />
     </label>
 
     <label class="block">
       <div class="text-gray-700">Label</div>
       <input
-        class="border rounded py-2 px-3 text-gray-700 focus:shadow-outline"
+        class="input"
         v-model="product.data.label.de"
         placeholder="Produkt Name"
       />
@@ -24,7 +70,7 @@
       <div class="text-gray-700">Preis</div>
       <input
         type="number"
-        class="border rounded py-2 px-3 text-gray-700 focus:shadow-outline"
+        class="input"
         v-model.number="product.data.price"
         placeholder="2.90"
       />
@@ -58,8 +104,9 @@
 </template>
 
 <script>
-import { toRef } from "vue";
+import { ref, toRef } from "vue";
 import appButton from "../components/Button.vue";
+import appModal from "../components/Modal.vue";
 
 import useProductEdit from "../hooks/use-productEdit";
 
@@ -67,11 +114,12 @@ export default {
   props: ["editId"],
   components: {
     appButton,
+    appModal,
   },
   setup(props) {
     const editId = toRef(props, "editId");
-
-    console.log(editId.value);
+    const deleteModal = ref(false);
+    const deleteModalConfirmation = ref("");
 
     const {
       id,
@@ -82,7 +130,16 @@ export default {
       templateEnabled,
     } = useProductEdit(editId.value);
 
-    return { id, product, exists, save, saveDisabled, templateEnabled };
+    return {
+      deleteModal,
+      deleteModalConfirmation,
+      id,
+      product,
+      exists,
+      save,
+      saveDisabled,
+      templateEnabled,
+    };
   },
 };
 </script>
@@ -92,5 +149,9 @@ label {
   display: block;
   margin-top: 12px;
   font-size: 1.125rem;
+}
+
+.input {
+  @apply border rounded py-2 px-3 text-gray-700 w-full;
 }
 </style>
