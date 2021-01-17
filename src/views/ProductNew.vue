@@ -106,8 +106,4 @@ label {
   margin-top: 12px;
   font-size: 1.125rem;
 }
-
-.input {
-  @apply border rounded py-2 px-3 text-gray-700 w-full;
-}
 </style>

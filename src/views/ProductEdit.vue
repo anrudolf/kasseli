@@ -16,6 +16,7 @@
           <button
             :disabled="product.id !== deleteModalConfirmation"
             class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            @click="remove"
           >
             Löschen
           </button>
@@ -125,6 +126,7 @@ export default {
       id,
       product,
       exists,
+      remove,
       save,
       saveDisabled,
       templateEnabled,
@@ -136,6 +138,7 @@ export default {
       id,
       product,
       exists,
+      remove,
       save,
       saveDisabled,
       templateEnabled,
@@ -149,9 +152,5 @@ label {
   display: block;
   margin-top: 12px;
   font-size: 1.125rem;
-}
-
-.input {
-  @apply border rounded py-2 px-3 text-gray-700 w-full;
 }
 </style>

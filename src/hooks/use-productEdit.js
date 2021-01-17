@@ -59,6 +59,17 @@ export default function(initialId = null) {
       .catch((error) => console.log(error));
   };
 
+  const remove = () => {
+    db.collection("products")
+      .doc(id.value)
+      .delete()
+      .then(() => {
+        console.log("document set, pushing route /products");
+        router.push("/products");
+      })
+      .catch((error) => console.log(error));
+  };
+
   const saveDisabled = computed(() => {
     return (
       !product.id ||
@@ -99,5 +110,5 @@ export default function(initialId = null) {
     }
   });
 
-  return { id, product, exists, save, saveDisabled, templateEnabled };
+  return { id, product, exists, remove, save, saveDisabled, templateEnabled };
 }
