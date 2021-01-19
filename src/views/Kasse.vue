@@ -9,8 +9,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script>
+import { defineComponent, ref } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
 import appKasseOhneStrichcode from "@/components/KasseOhneStrichcode.vue";
 
@@ -18,6 +18,8 @@ import appKasseTotal from "@/components/KasseTotal.vue";
 import appKasseAnzahl from "@/components/KasseAnzahl.vue";
 import appKasseAktuell from "@/components/KasseAktuell.vue";
 import appKasseBezahlen from "@/components/KasseBezahlen.vue";
+
+import useScanner from "../hooks/use-scanner";
 
 export default defineComponent({
   name: "Home",
@@ -28,6 +30,11 @@ export default defineComponent({
     appKasseAnzahl,
     appKasseAktuell,
     appKasseBezahlen,
+  },
+  setup() {
+    const barcode = ref("");
+
+    useScanner();
   },
 });
 </script>

@@ -105,13 +105,14 @@
 </template>
 
 <script>
-import { ref, toRef } from "vue";
+import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
-import useProductEdit from "../hooks/use-productEdit";
+import useProductEdit from "../hooks/use-productEdit.js";
+import useScanner from "../hooks/use-scanner";
 
-export default {
+export default defineComponent({
   props: ["editId"],
   components: {
     appButton,
@@ -121,6 +122,8 @@ export default {
     const editId = toRef(props, "editId");
     const deleteModal = ref(false);
     const deleteModalConfirmation = ref("");
+
+    useScanner();
 
     const {
       id,
@@ -144,7 +147,7 @@ export default {
       templateEnabled,
     };
   },
-};
+});
 </script>
 
 <style scoped>

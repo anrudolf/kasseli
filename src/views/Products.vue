@@ -84,10 +84,12 @@
 </template>
 
 <script>
-import { reactive, ref, computed } from "vue";
+import { reactive, ref, computed, defineComponent } from "vue";
 import firebase from "../firebaseInit";
 import appSelect from "../components/Select.vue";
 import appIcon from "../components/Icon.vue";
+
+import useScanner from "../hooks/use-scanner";
 
 const db = firebase.firestore();
 
@@ -115,7 +117,7 @@ function dynamicSort(property, lang = "de") {
   };
 }
 
-export default {
+export default defineComponent({
   components: {
     appSelect,
     appIcon,
@@ -157,6 +159,10 @@ export default {
       );
     });
 
+    useScanner((v) => {
+      console.log("Products: ", v);
+    });
+
     return {
       filter,
       products,
@@ -168,7 +174,7 @@ export default {
       sortOptions,
     };
   },
-};
+});
 </script>
 
 <style scoped>
