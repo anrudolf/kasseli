@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import { toRef } from "vue";
 import appButton from "../components/Button.vue";
 
 import useProductEdit from "../hooks/use-productEdit";
@@ -85,7 +86,8 @@ export default {
   components: {
     appButton,
   },
-  setup() {
+  props: ["newId"],
+  setup(props) {
     const {
       id,
       product,
@@ -94,6 +96,10 @@ export default {
       saveDisabled,
       templateEnabled,
     } = useProductEdit();
+
+    if (props.newId) {
+      product.id = `${props.newId}`;
+    }
 
     return { id, product, exists, save, saveDisabled, templateEnabled };
   },

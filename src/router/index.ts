@@ -20,6 +20,8 @@ const routes: Array<RouteRecordRaw> = [
     path: "/products/new",
     name: "products-new",
     component: ProductNew,
+    props: route => ({ newId: route.query.id })
+
   },
   {
     path: "/products/edit",

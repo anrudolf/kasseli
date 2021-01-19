@@ -1,4 +1,6 @@
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { onMounted, onBeforeUnmount } from "vue";
+
+const TIMEOUT_MS = 15; // try values 10...20
 
 export default function(cb = null) {
   let timeoutHandler = 0;
@@ -15,11 +17,11 @@ export default function(cb = null) {
         inputString = "";
         return;
       }
-      console.log("onbarcodescanned", inputString);
-      cb && cb(inputString);
+      const filtered = inputString.replace(/(\r\n|\n|\r)/gm, "");
+      cb && cb(filtered);
 
       inputString = "";
-    }, 10);
+    }, TIMEOUT_MS);
   };
 
   const initialize = () => {
@@ -29,7 +31,7 @@ export default function(cb = null) {
     }
     timeoutHandler = setTimeout(() => {
       inputString = "";
-    }, 10);
+    }, TIMEOUT_MS);
   };
 
   const close = () => {

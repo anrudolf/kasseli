@@ -89,33 +89,11 @@ import firebase from "../firebaseInit";
 import appSelect from "../components/Select.vue";
 import appIcon from "../components/Icon.vue";
 
+import dynamicSort from "../utils/dynamicSort";
 import useScanner from "../hooks/use-scanner";
+import { useRouter } from "vue-router";
 
 const db = firebase.firestore();
-
-function dynamicSort(property, lang = "de") {
-  let sortOrder = 1;
-  if (property[0] === "-" || property[0] === "+") {
-    sortOrder = property[0] === "-" ? -1 : 1;
-    property = property.substr(1);
-  }
-
-  return function (a, b) {
-    if (property === "label") {
-      const result =
-        a["label"][lang] < b["label"][lang]
-          ? -1
-          : a["label"][lang] > b["label"][lang]
-          ? 1
-          : 0;
-      return result * sortOrder;
-    }
-
-    const result =
-      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
-  };
-}
 
 export default defineComponent({
   components: {
@@ -123,6 +101,8 @@ export default defineComponent({
     appIcon,
   },
   setup() {
+    const router = useRouter();
+
     const products = ref([]);
     const modal = reactive({ visible: false });
     const sortOrder = ref(1);
@@ -138,7 +118,7 @@ export default defineComponent({
     db.collection("products").onSnapshot(function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
+        // console.log(doc.id, " => ", doc.data());
         tmp.push({ id: doc.id, ...doc.data() });
       });
       products.value = [];
@@ -160,7 +140,13 @@ export default defineComponent({
     });
 
     useScanner((v) => {
-      console.log("Products: ", v);
+      const found = products.value.find((x) => x.id === v);
+      if (found) {
+        router.push(`/products/edit?id=${v}`);
+        return;
+      }
+      // TODO: sanity check v for length, characters, etc.
+      router.push(`/products/new?id=${v}`);
     });
 
     return {
