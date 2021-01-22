@@ -11,9 +11,12 @@
 export default {
   computed: {
     item() {
-      return this.$store.getters["kasse/item"];
+      return this.$store.getters["kasse/selected"];
     },
     label() {
+      if (!this.item) {
+        return "";
+      }
       const label = this.item?.product?.label?.de;
       return label || "???";
     },

@@ -1,7 +1,15 @@
 <template>
   <div>
     <ul class="wrapper">
-      <li v-for="item in items" :key="item.code">{{ item }}</li>
+      <li
+        v-for="(item, i) in items"
+        :key="item.code"
+        @click="select(i)"
+        class="cursor-pointer"
+      >
+        {{ item.product.label.de }} {{ item.quantity }}
+        {{ item.quantity * item.price }}
+      </li>
     </ul>
   </div>
 </template>
@@ -14,6 +22,11 @@ export default defineComponent({
   computed: {
     items() {
       return this.$store.getters["kasse/items"];
+    },
+  },
+  methods: {
+    select(index) {
+      this.$store.dispatch("kasse/select", index);
     },
   },
 });
