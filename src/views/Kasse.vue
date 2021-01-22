@@ -20,6 +20,7 @@ import appKasseAktuell from "@/components/KasseAktuell.vue";
 import appKasseBezahlen from "@/components/KasseBezahlen.vue";
 
 import useScanner from "../hooks/use-scanner";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Home",
@@ -34,7 +35,11 @@ export default defineComponent({
   setup() {
     const barcode = ref("");
 
-    useScanner();
+    const store = useStore();
+
+    useScanner((code) => {
+      store.dispatch("kasse/add", code);
+    });
   },
 });
 </script>

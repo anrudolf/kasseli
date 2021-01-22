@@ -48,6 +48,7 @@
 
 <script>
 import { reactive, ref, computed, defineComponent } from "vue";
+import { useRouter } from "vue-router";
 import firebase from "../firebaseInit";
 import appSelect from "../components/Select.vue";
 import appIcon from "../components/Icon.vue";
@@ -55,7 +56,7 @@ import appProductList from "../components/ProductList.vue";
 
 import dynamicSort from "../utils/dynamicSort";
 import useScanner from "../hooks/use-scanner";
-import { useRouter } from "vue-router";
+import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
 
 const db = firebase.firestore();
 
@@ -80,7 +81,7 @@ export default defineComponent({
       { text: "Datum", value: "created" },
     ];
 
-    db.collection("products").onSnapshot(function (snapshot) {
+    useFirestoreCollectionSnapshot("products", function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
         tmp.push({ id: doc.id, ...doc.data() });

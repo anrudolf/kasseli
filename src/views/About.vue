@@ -1,19 +1,31 @@
 <template>
   <div>
     <h1>This is an about page</h1>
-    <div class="wrapper" style="height: 1000px">
+    <div class="wrapper">
       <div>Hello</div>
-      <app-barcode-stream-reader @decode="onDecode" @loaded="onLoaded" />
+      <!-- <app-barcode-stream-reader @decode="onDecode" @loaded="onLoaded" /> //-->
     </div>
+    Kasse
+    <ul>
+      <li v-for="(item, i) in kasse" :key="i">
+        {{ item }}
+      </li>
+    </ul>
+    Products
+    <ul>
+      <li v-for="product in products" :key="product.id">
+        {{ product.id }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
+//import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
 
 export default {
   components: {
-    appBarcodeStreamReader,
+    //appBarcodeStreamReader,
   },
   methods: {
     onDecode(val) {
@@ -21,6 +33,14 @@ export default {
     },
     onLoaded() {
       console.log("loaded");
+    },
+  },
+  computed: {
+    products() {
+      return this.$store.getters["products/items"];
+    },
+    kasse() {
+      return this.$store.getters["kasse/items"];
     },
   },
 };

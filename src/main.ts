@@ -5,6 +5,8 @@ import router from "./router";
 import store from "./store";
 import "./index.css";
 
+store.dispatch("products/init");
+
 createApp(App)
   .use(store)
   .use(router)

@@ -1,19 +1,21 @@
 <template>
   <div>
     <ul class="wrapper">
-      <li>Banane</li>
-      <li>Tomate</li>
-      <li>Banane</li>
-      <li>Tomate</li>
+      <li v-for="item in items" :key="item.code">{{ item }}</li>
     </ul>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "KasseListe"
+  name: "KasseListe",
+  computed: {
+    items() {
+      return this.$store.getters["kasse/items"];
+    },
+  },
 });
 </script>
 
