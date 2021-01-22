@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import firebase from "../firebaseInit";
 
 import utils from "../utils";
+import { useDebounce } from "../hooks/use-debounce";
 
 const db = firebase.firestore();
 
@@ -95,19 +96,24 @@ export default function(initialId = null) {
     }
   });
 
-  watch(id, (v, old) => {
-    if (v && v !== old) {
-      db.collection("products")
-        .doc(v)
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            exists.value = true;
-          } else {
-            exists.value = false;
-          }
-        });
+  const onIdChangedHandler = useDebounce((v) => {
+    if (!v) {
+      return;
     }
+    db.collection("products")
+      .doc(v)
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          exists.value = true;
+        } else {
+          exists.value = false;
+        }
+      });
+  }, 700);
+
+  watch(id, (v, old) => {
+    onIdChangedHandler(v);
   });
 
   return { id, product, exists, remove, save, saveDisabled, templateEnabled };

@@ -77,7 +77,6 @@
 </template>
 
 <script>
-import { toRef } from "vue";
 import appButton from "../components/Button.vue";
 
 import useProductEdit from "../hooks/use-productEdit";

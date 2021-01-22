@@ -42,44 +42,7 @@
       </button>
     </div>
 
-    <table class="my-3 min-w-full table-auto shadow-lg bg-white">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="text-left">Label</th>
-          <th class="text-right">id</th>
-          <th class="text-right">Price</th>
-          <th class="text-right">Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="product in filtered" :key="product.id">
-          <td class="text-left">{{ product.label.de }}</td>
-          <td class="text-right">{{ product.id }}</td>
-          <td class="text-right">{{ product.price.toFixed(2) }}</td>
-          <td class="flex justify-end">
-            <router-link
-              :to="`/products/edit?id=${product.id}`"
-              class="text-blue-400"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                class="w-5 h-5"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                />
-              </svg>
-            </router-link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <app-product-list :products="filtered" />
   </div>
 </template>
 
@@ -88,6 +51,7 @@ import { reactive, ref, computed, defineComponent } from "vue";
 import firebase from "../firebaseInit";
 import appSelect from "../components/Select.vue";
 import appIcon from "../components/Icon.vue";
+import appProductList from "../components/ProductList.vue";
 
 import dynamicSort from "../utils/dynamicSort";
 import useScanner from "../hooks/use-scanner";
@@ -99,14 +63,15 @@ export default defineComponent({
   components: {
     appSelect,
     appIcon,
+    appProductList,
   },
   setup() {
     const router = useRouter();
 
     const products = ref([]);
     const modal = reactive({ visible: false });
-    const sortOrder = ref(1);
-    const sort = ref("id");
+    const sortOrder = ref(-1);
+    const sort = ref("created");
     const filter = ref("");
     const sortOptions = [
       { text: "ID", value: "id" },
@@ -118,7 +83,6 @@ export default defineComponent({
     db.collection("products").onSnapshot(function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
-        // console.log(doc.id, " => ", doc.data());
         tmp.push({ id: doc.id, ...doc.data() });
       });
       products.value = [];
@@ -158,14 +122,9 @@ export default defineComponent({
       sort,
       sortOrder,
       sortOptions,
+      router,
     };
   },
 });
 </script>
 
-<style scoped>
-td,
-th {
-  padding: 12px;
-}
-</style>
