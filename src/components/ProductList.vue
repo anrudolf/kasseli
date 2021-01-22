@@ -71,7 +71,7 @@ export default {
       currentPage: 1,
     });
 
-    watch(products, (val) => {
+    watch(products, () => {
       currentPage.value = 1;
     });
 

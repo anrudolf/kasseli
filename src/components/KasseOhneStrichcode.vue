@@ -17,7 +17,7 @@ export default defineComponent({
   components: {
     appProduktButton,
   },
-  setup(props, ctx) {
+  setup() {
     const products = ref([
       "Kleinbrote",
       "Früchte",

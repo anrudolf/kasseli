@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
 import appKasseOhneStrichcode from "@/components/KasseOhneStrichcode.vue";
 
@@ -33,8 +33,6 @@ export default defineComponent({
     appKasseBezahlen,
   },
   setup() {
-    const barcode = ref("");
-
     const store = useStore();
 
     useScanner((code) => {
