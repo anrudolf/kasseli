@@ -100,6 +100,15 @@
       <span class="ml-2 text-gray-700">Preis aus Strichcode berechnen</span>
     </label>
 
+    <label class="block">
+      <div class="text-gray-700">Bild</div>
+      <input
+        type="file"
+        class="input"
+        @input="(ev) => uploadImage(ev.target.files[0])"
+      />
+    </label>
+
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button
     >
@@ -135,6 +144,7 @@ export default defineComponent({
       save,
       saveDisabled,
       templateEnabled,
+      uploadImage,
     } = useProductEdit(editId.value);
 
     return {
@@ -147,6 +157,7 @@ export default defineComponent({
       save,
       saveDisabled,
       templateEnabled,
+      uploadImage,
     };
   },
 });

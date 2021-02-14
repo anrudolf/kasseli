@@ -112,9 +112,27 @@ export default function(initialId = null) {
       });
   }, 700);
 
+  const uploadImage = (file) => {
+    console.log(file);
+    const root = firebase.storage().ref();
+    const ref = root.child(`${id.value}.jpeg`);
+    ref.put(file).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+  };
+
   watch(id, (v, old) => {
     onIdChangedHandler(v);
   });
 
-  return { id, product, exists, remove, save, saveDisabled, templateEnabled };
+  return {
+    id,
+    product,
+    exists,
+    remove,
+    save,
+    saveDisabled,
+    templateEnabled,
+    uploadImage,
+  };
 }
