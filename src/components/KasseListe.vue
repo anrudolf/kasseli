@@ -7,8 +7,11 @@
         @click="select(i)"
         class="cursor-pointer"
       >
-        {{ item.product.label.de }} {{ item.quantity }}
-        {{ item.quantity * item.price }}
+        <app-kasse-liste-item
+          :quantity="item.quantity"
+          :label="item.product.label.de"
+          :price="item.price"
+        />
       </li>
     </ul>
   </div>
@@ -16,9 +19,13 @@
 
 <script>
 import { defineComponent } from "vue";
+import appKasseListeItem from "@/components/KasseListeItem.vue";
 
 export default defineComponent({
   name: "KasseListe",
+  components: {
+    appKasseListeItem,
+  },
   computed: {
     items() {
       return this.$store.getters["kasse/items"];
@@ -37,6 +44,7 @@ li {
   display: flex;
   align-items: center;
 }
+
 li:nth-child(odd) {
   color: #777;
   background: #eee;
