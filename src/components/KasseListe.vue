@@ -41,8 +41,10 @@ export default defineComponent({
 
 <style scoped>
 li {
+  /*
   display: flex;
   align-items: center;
+  */
 }
 
 li:nth-child(odd) {
