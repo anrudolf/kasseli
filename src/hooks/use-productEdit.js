@@ -1,4 +1,4 @@
-import { ref, reactive, computed, watch, toRefs } from "vue";
+import { ref, reactive, computed, watch, toRefs, toRef } from "vue";
 import { useRouter } from "vue-router";
 import blobToHash from "blob-to-hash";
 
@@ -23,6 +23,7 @@ export default function(initialId = null) {
       noBarcode: false,
       template: false,
       created: null,
+      image: null,
     },
   });
 
@@ -33,12 +34,30 @@ export default function(initialId = null) {
       .then((doc) => {
         if (doc.exists) {
           product.id = doc.id;
-          product.data = doc.data();
+          //product.data = doc.data(); // reactivity is lost this way
+
+          const {
+            label,
+            price,
+            noBarcode,
+            template,
+            created,
+            image,
+          } = doc.data();
+          product.data.label = label;
+          product.data.price = price;
+          product.data.noBarcode = noBarcode;
+          product.data.template = template;
+          product.data.created = created;
+          product.data.image = image;
         }
       });
   }
 
   const { id: rawProductId } = toRefs(product);
+  const image = toRef(product.data, "image");
+  const imageDownloadUrl = ref("");
+
   const id = computed(() => {
     if (product.data.template) {
       return utils.createTemplate(rawProductId.value);
@@ -114,15 +133,13 @@ export default function(initialId = null) {
   }, 700);
 
   const uploadImage = async (file) => {
-    console.log(file);
-
     const lastDot = file.name.lastIndexOf(".");
     const ext = file.name.substring(lastDot + 1);
 
     const hash = await blobToHash("sha256", file);
 
     const path = `images/${hash}.${ext}`;
-    console.log(path);
+    product.data.image = path;
 
     const root = firebase.storage().ref();
     const storageRef = root.child(path);
@@ -130,6 +147,21 @@ export default function(initialId = null) {
       console.log("Uploaded a blob or file!");
     });
   };
+
+  watch(image, (v, old) => {
+    console.log("image changed", v);
+
+    if (v) {
+      const root = firebase.storage().ref();
+      const storageRef = root.child(v);
+      storageRef.getDownloadURL().then((url) => {
+        console.log(url);
+        imageDownloadUrl.value = url;
+      });
+    } else {
+      imageDownloadUrl.value = "";
+    }
+  });
 
   watch(id, (v, old) => {
     onIdChangedHandler(v);
@@ -144,5 +176,6 @@ export default function(initialId = null) {
     saveDisabled,
     templateEnabled,
     uploadImage,
+    imageDownloadUrl,
   };
 }

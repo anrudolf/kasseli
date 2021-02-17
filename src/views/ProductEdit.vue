@@ -102,6 +102,13 @@
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
+      <a :href="imageDownloadUrl" v-if="imageDownloadUrl" target="_blank">
+        <img
+          class="object-contain h-32 w-full mb-1 border rounded"
+          :src="imageDownloadUrl"
+          crossorigin="anonymous"
+        />
+      </a>
       <input
         type="file"
         class="input"
@@ -124,6 +131,7 @@ import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
 import useProductEdit from "../hooks/use-productEdit.js";
+import firebase from "../firebaseInit";
 
 export default defineComponent({
   props: ["editId"],
@@ -145,11 +153,14 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
+      imageDownloadUrl,
     } = useProductEdit(editId.value);
 
     return {
+      // modal
       deleteModal,
       deleteModalConfirmation,
+      // product edit
       id,
       product,
       exists,
@@ -158,6 +169,7 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
+      imageDownloadUrl,
     };
   },
 });
