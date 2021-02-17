@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>This is an about page</h1>
+    <img :src="image" crossorigin="anonymous" />
     <div class="wrapper">
       <div>Hello</div>
       <!-- <app-barcode-stream-reader @decode="onDecode" @loaded="onLoaded" /> //-->
@@ -21,11 +22,26 @@
 </template>
 
 <script>
+import { ref } from "vue";
 //import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
+
+import firebase from "../firebaseInit";
 
 export default {
   components: {
     //appBarcodeStreamReader,
+  },
+  setup() {
+    const image = ref("");
+
+    const root = firebase.storage().ref();
+    const storageRef = root.child("9780066620732.jpeg");
+    storageRef.getDownloadURL().then((url) => {
+      console.log(url);
+      image.value = url;
+    });
+
+    return { image };
   },
   methods: {
     onDecode(val) {

@@ -11,8 +11,10 @@
   "dependencies": {
     "@zxing/browser": "^0.0.5",
     "@zxing/library": "^0.18.3",
+    "blob-to-hash": "^0.0.1",
     "firebase": "^8.2.2",
     "register-service-worker": "^1.7.1",
+    "uuid": "^8.3.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"

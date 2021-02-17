@@ -1,5 +1,6 @@
 import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import blobToHash from "blob-to-hash";
 
 import firebase from "../firebaseInit";
 
@@ -112,11 +113,20 @@ export default function(initialId = null) {
       });
   }, 700);
 
-  const uploadImage = (file) => {
+  const uploadImage = async (file) => {
     console.log(file);
+
+    const lastDot = file.name.lastIndexOf(".");
+    const ext = file.name.substring(lastDot + 1);
+
+    const hash = await blobToHash("sha256", file);
+
+    const path = `images/${hash}.${ext}`;
+    console.log(path);
+
     const root = firebase.storage().ref();
-    const ref = root.child(`${id.value}.jpeg`);
-    ref.put(file).then((snapshot) => {
+    const storageRef = root.child(path);
+    storageRef.put(file).then((snapshot) => {
       console.log("Uploaded a blob or file!");
     });
   };
