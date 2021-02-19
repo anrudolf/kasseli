@@ -23,7 +23,9 @@ const spawn = require("child-process-promise").spawn;
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const { v4: uuidv4 } = require("uuid");
+const { v5: uuidv5 } = require("uuid");
+
+const MY_NAMESPACE = "3387eb34-efd7-4f4b-99bb-7f393d790984";
 
 // Max height and width of the thumbnail in pixels.
 const THUMB_MAX_HEIGHT = 200;
@@ -69,7 +71,7 @@ exports.generateThumbnail = functions
     const thumbFile = bucket.file(thumbFilePath);
     const metadata = {
       contentType: contentType,
-      firebaseStorageDownloadTokens: uuidv4(),
+      firebaseStorageDownloadTokens: uuidv5(fileName, MY_NAMESPACE),
       // To enable Client-side caching you can set the Cache-Control headers here. Uncomment below.
       // 'Cache-Control': 'public,max-age=3600',
     };

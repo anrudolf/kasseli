@@ -1,6 +1,7 @@
 import { ref, reactive, computed, watch, toRefs, toRef } from "vue";
 import { useRouter } from "vue-router";
 import blobToHash from "blob-to-hash";
+import { v5 as uuidv5 } from "uuid";
 
 import firebase from "../firebaseInit";
 
@@ -138,8 +139,17 @@ export default function(initialId = null) {
 
     const hash = await blobToHash("sha256", file);
 
-    const path = `images/${hash}.${ext}`;
-    product.data.image = path;
+    const dir = "productimages";
+    const filename = `${hash}.${ext}`;
+
+    const MY_NAMESPACE = "3387eb34-efd7-4f4b-99bb-7f393d790984";
+
+    const token = uuidv5(filename, MY_NAMESPACE);
+    console.log("token", token); // this will be used for download url
+
+    const path = `${dir}/${filename}`;
+    const thumbPath = `${dir}/thumb_${filename}`;
+    product.data.image = thumbPath; // thumbnail will be created through cloud function
 
     const root = firebase.storage().ref();
     const storageRef = root.child(path);
