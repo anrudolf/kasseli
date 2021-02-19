@@ -86,6 +86,7 @@ exports.generateThumbnail = functions
         tempLocalFile,
         "-thumbnail",
         `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`,
+        "-auto-orient",
         tempLocalThumbFile,
       ],
       { capture: ["stdout", "stderr"] }

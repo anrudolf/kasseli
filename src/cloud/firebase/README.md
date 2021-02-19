@@ -1,5 +1,12 @@
 Copied and adapted from https://github.com/firebase/functions-samples
 
+TLDR:
+
+```
+$ firebase init
+$ firebase deploy
+```
+
 # Automatically Generate Thumbnails
 
 This sample demonstrates how to automatically generate thumbnails for each images that are uploaded to Firebase Storage.

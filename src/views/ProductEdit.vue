@@ -112,6 +112,8 @@
       <input
         type="file"
         class="input"
+        accept="image/*"
+        capture="environment"
         @input="(ev) => uploadImage(ev.target.files[0])"
       />
     </label>
@@ -131,7 +133,6 @@ import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
 import useProductEdit from "../hooks/use-productEdit.js";
-import firebase from "../firebaseInit";
 
 export default defineComponent({
   props: ["editId"],

@@ -26,3 +26,7 @@ body {
 .input {
   @apply border rounded py-2 px-3 text-gray-700 w-full;
 }
+
+.input:focus {
+  outline-color: #3b82f680;
+}
