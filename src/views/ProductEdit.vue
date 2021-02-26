@@ -114,7 +114,7 @@
         class="input"
         accept="image/*"
         capture="environment"
-        @input="(ev) => uploadImage(ev.target.files[0])"
+        @input="(ev) => uploadImage2(ev.target.files[0])"
       />
     </label>
 
@@ -154,6 +154,7 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
+      uploadImage2,
       imageDownloadUrl,
     } = useProductEdit(editId.value);
 
@@ -170,6 +171,7 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
+      uploadImage2,
       imageDownloadUrl,
     };
   },

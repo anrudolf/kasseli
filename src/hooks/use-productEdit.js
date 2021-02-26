@@ -158,6 +158,22 @@ export default function(initialId = null) {
     });
   };
 
+  const uploadImage2 = async (file) => {
+    const reader = new FileReader();
+    //reads the binary data and encodes it as base64 data url
+    reader.readAsDataURL(file);
+    //reads it finish with either success or failure
+    reader.onloadend = () => {
+      //reader.result is the result of the reading in base64 string
+
+      const createThumbnailFunction = firebase
+        .functions()
+        .httpsCallable("createThumbnail");
+
+      createThumbnailFunction({ name: file.name }).then((r) => console.log(r));
+    };
+  };
+
   watch(image, (v, old) => {
     console.log("image changed", v);
 
@@ -186,6 +202,7 @@ export default function(initialId = null) {
     saveDisabled,
     templateEnabled,
     uploadImage,
+    uploadImage2,
     imageDownloadUrl,
   };
 }

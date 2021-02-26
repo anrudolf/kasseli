@@ -109,8 +109,12 @@ exports.generateThumbnail = functions
     return console.log("Thumbnail URLs saved to database.");
   });
 
-exports.createThumbnail = functions.https.onCall((data, context) => {
-  return {
-    text: "You created a thumbnail!",
-  };
-});
+exports.createThumbnail = functions
+  .region("europe-west1")
+  .https.onCall((data, context) => {
+    const { name } = data;
+
+    return {
+      text: `You created a thumbnail for: ${name}`,
+    };
+  });
