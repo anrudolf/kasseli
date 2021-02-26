@@ -108,3 +108,9 @@ exports.generateThumbnail = functions
 
     return console.log("Thumbnail URLs saved to database.");
   });
+
+exports.createThumbnail = functions.https.onCall((data, context) => {
+  return {
+    text: "You created a thumbnail!",
+  };
+});
