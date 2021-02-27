@@ -171,8 +171,9 @@ export default function(initialId = null) {
         .httpsCallable("createThumbnail");
 
       createThumbnailFunction({
-        name: file.name,
-        image: reader.result,
+        filename: file.name,
+        base64image: reader.result,
+        directory: "thumbnails",
       }).then((r) => console.log(r));
     };
   };

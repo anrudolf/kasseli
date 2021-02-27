@@ -69,7 +69,6 @@ exports.generateThumbnail = functions
     // Cloud Storage files.
     const bucket = admin.storage().bucket(object.bucket);
     const file = bucket.file(filePath);
-    const thumbFile = bucket.file(thumbFilePath);
     const metadata = {
       contentType: contentType,
       firebaseStorageDownloadTokens: uuidv5(fileName, MY_NAMESPACE),
@@ -110,42 +109,36 @@ exports.generateThumbnail = functions
     return console.log("Thumbnail URLs saved to database.");
   });
 
+// called explicitly
 exports.createThumbnail = functions
   .region("europe-west1")
   .https.onCall(async (data, context) => {
-    const { name, image } = data;
+    const { filename: originalFilename, base64image, directory } = data;
 
-    const lastDot = name.lastIndexOf(".");
-    const ext = name.substring(lastDot + 1);
+    const lastDot = originalFilename.lastIndexOf(".");
+    const ext = originalFilename.substring(lastDot + 1);
 
-    const contentType = image.match(
+    const contentType = base64image.match(
       /data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/
     )[1]; // mime type
-    const base64EncodedImageString = image.replace(
-      /^data:image\/\w+;base64,/,
-      ""
-    );
+    const base64payload = base64image.replace(/^data:image\/\w+;base64,/, "");
 
     const hash = crypto
       .createHash("sha256")
-      .update(base64EncodedImageString)
+      .update(base64payload)
       .digest("hex");
 
-    const filePath = `${hash}.${ext}`;
-    const fileDir = path.dirname(filePath);
-    const fileName = path.basename(filePath);
-    const thumbFilePath = path.normalize(
-      path.join(fileDir, `${THUMB_PREFIX}${fileName}`)
-    );
-    const tempLocalFile = path.join(os.tmpdir(), filePath);
-    const tempLocalDir = path.dirname(tempLocalFile);
-    const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilePath);
+    const filename = `${hash}.${ext}`;
+    const thumbFilename = `${THUMB_PREFIX}${filename}`;
 
-    await fs.promises.writeFile(
-      tempLocalFile,
-      base64EncodedImageString,
-      "base64"
+    const thumbStoragePath = path.normalize(
+      path.join(directory || "", thumbFilename)
     );
+
+    const tempLocalFile = path.join(os.tmpdir(), filename);
+    const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilename);
+
+    await fs.promises.writeFile(tempLocalFile, base64payload, "base64");
 
     await spawn(
       "convert",
@@ -158,30 +151,32 @@ exports.createThumbnail = functions
       ],
       { capture: ["stdout", "stderr"] }
     );
-    console.log("Thumbnail created at", tempLocalThumbFile);
-    // Uploading the Thumbnail.
-    const bucket = admin.storage().bucket();
 
-    const uploaded = await bucket.upload(tempLocalThumbFile, {
-      destination: thumbFilePath,
+    const bucket = admin.storage().bucket();
+    const uid = uuidv4();
+
+    await bucket.upload(tempLocalThumbFile, {
+      destination: thumbStoragePath,
       metadata: {
         metadata: {
           contentType: contentType,
-          firebaseStorageDownloadTokens: uuidv4(),
+          firebaseStorageDownloadTokens: uid,
         },
       },
     });
 
-    const uploadedMeta = await uploaded[0].getMetadata();
-    const uploadedDownloadUrl = uploadedMeta[0].mediaLink;
+    const url = `https://firebasestorage.googleapis.com/v0/b/${
+      bucket.name
+    }/o/${encodeURIComponent(thumbStoragePath)}?alt=media&token=${uid}`;
 
-    console.log("Thumbnail uploaded to Storage at", thumbFilePath);
     // Once the image has been uploaded delete the local files to free up disk space.
     fs.unlinkSync(tempLocalFile);
     fs.unlinkSync(tempLocalThumbFile);
 
     return {
-      text: `You now created a thumbnail on default bucket for: ${name},${tempLocalThumbFile},${thumbFilePath}`,
-      downloadUrl: uploadedDownloadUrl,
+      bucket: bucket.name,
+      storagePath: thumbStoragePath,
+      filename: thumbFilename,
+      url: url,
     };
   });
