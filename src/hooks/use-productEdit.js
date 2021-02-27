@@ -170,7 +170,10 @@ export default function(initialId = null) {
         .functions("europe-west1")
         .httpsCallable("createThumbnail");
 
-      createThumbnailFunction({ name: file.name }).then((r) => console.log(r));
+      createThumbnailFunction({
+        name: file.name,
+        image: reader.result,
+      }).then((r) => console.log(r));
     };
   };
 

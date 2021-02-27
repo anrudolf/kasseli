@@ -1,19 +1,8 @@
 <template>
   <div>
     <h1>This is an about page</h1>
-    <button
-      class="border p-2 m-1"
-      @click="
-        createThumbnailStatus = '';
-        createThumbnail();
-      "
-    >
-      Create Thumbnail
-    </button>
-    <p class="border p-4 m-1">Status: {{ createThumbnailStatus }}</p>
-    <img :src="image" crossorigin="anonymous" />
     <div class="wrapper">
-      <div>Hello</div>
+      <div>Hello {{ bucket }}</div>
       <!-- <app-barcode-stream-reader @decode="onDecode" @loaded="onLoaded" /> //-->
     </div>
     Kasse
@@ -42,34 +31,9 @@ export default {
     //appBarcodeStreamReader,
   },
   setup() {
-    const image = ref("");
+    const bucket = firebase.options;
 
-    const root = firebase.storage().ref();
-    const storageRef = root.child("9780066620732.jpeg");
-    storageRef.getDownloadURL().then((url) => {
-      console.log(url);
-      image.value = url;
-    });
-
-    const createThumbnailStatus = ref("");
-
-    const createTumbnailFunction = firebase
-      .functions()
-      .httpsCallable("createThumbnail");
-
-    const createThumbnail = () => {
-      createTumbnailFunction({ text: "hello" })
-        .then((result) => {
-          const { text } = result.data;
-          createThumbnailStatus.value = text;
-        })
-        .catch((error) => {
-          const { code, message, details } = error;
-          createThumbnailStatus.value = `${code}: ${message}`;
-        });
-    };
-
-    return { image, createThumbnail, createThumbnailStatus };
+    return { bucket };
   },
   methods: {
     onDecode(val) {

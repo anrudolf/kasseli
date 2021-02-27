@@ -111,10 +111,62 @@ exports.generateThumbnail = functions
 
 exports.createThumbnail = functions
   .region("europe-west1")
-  .https.onCall((data, context) => {
-    const { name } = data;
+  .https.onCall(async (data, context) => {
+    const { name, image } = data;
+
+    const contentType = image.match(
+      /data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/
+    )[1]; // mime type
+    const base64EncodedImageString = image.replace(
+      /^data:image\/\w+;base64,/,
+      ""
+    );
+
+    const filePath = name;
+    const fileDir = path.dirname(filePath);
+    const fileName = path.basename(filePath);
+    const thumbFilePath = path.normalize(
+      path.join(fileDir, `${THUMB_PREFIX}${fileName}`)
+    );
+    const tempLocalFile = path.join(os.tmpdir(), filePath);
+    const tempLocalDir = path.dirname(tempLocalFile);
+    const tempLocalThumbFile = path.join(os.tmpdir(), thumbFilePath);
+
+    await fs.promises.writeFile(
+      tempLocalFile,
+      base64EncodedImageString,
+      "base64"
+    );
+
+    await spawn(
+      "convert",
+      [
+        tempLocalFile,
+        "-thumbnail",
+        `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`,
+        "-auto-orient",
+        tempLocalThumbFile,
+      ],
+      { capture: ["stdout", "stderr"] }
+    );
+    console.log("Thumbnail created at", tempLocalThumbFile);
+    // Uploading the Thumbnail.
+    const bucket = admin.storage().bucket();
+
+    await bucket.upload(tempLocalThumbFile, {
+      destination: thumbFilePath,
+      metadata: {
+        metadata: {
+          contentType: contentType,
+        },
+      },
+    });
+    console.log("Thumbnail uploaded to Storage at", thumbFilePath);
+    // Once the image has been uploaded delete the local files to free up disk space.
+    fs.unlinkSync(tempLocalFile);
+    fs.unlinkSync(tempLocalThumbFile);
 
     return {
-      text: `You now created a thumbnail for: ${name}`,
+      text: `You now created a thumbnail on default bucket for: ${name},${tempLocalThumbFile},${thumbFilePath}`,
     };
   });
