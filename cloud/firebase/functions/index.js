@@ -23,7 +23,8 @@ const spawn = require("child-process-promise").spawn;
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const { v5: uuidv5 } = require("uuid");
+const { v5: uuidv5, v4: uuidv4 } = require("uuid");
+const crypto = require("crypto");
 
 const MY_NAMESPACE = "3387eb34-efd7-4f4b-99bb-7f393d790984";
 
@@ -114,6 +115,9 @@ exports.createThumbnail = functions
   .https.onCall(async (data, context) => {
     const { name, image } = data;
 
+    const lastDot = name.lastIndexOf(".");
+    const ext = name.substring(lastDot + 1);
+
     const contentType = image.match(
       /data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/
     )[1]; // mime type
@@ -122,7 +126,12 @@ exports.createThumbnail = functions
       ""
     );
 
-    const filePath = name;
+    const hash = crypto
+      .createHash("sha256")
+      .update(base64EncodedImageString)
+      .digest("hex");
+
+    const filePath = `${hash}.${ext}`;
     const fileDir = path.dirname(filePath);
     const fileName = path.basename(filePath);
     const thumbFilePath = path.normalize(
@@ -153,14 +162,19 @@ exports.createThumbnail = functions
     // Uploading the Thumbnail.
     const bucket = admin.storage().bucket();
 
-    await bucket.upload(tempLocalThumbFile, {
+    const uploaded = await bucket.upload(tempLocalThumbFile, {
       destination: thumbFilePath,
       metadata: {
         metadata: {
           contentType: contentType,
+          firebaseStorageDownloadTokens: uuidv4(),
         },
       },
     });
+
+    const uploadedMeta = await uploaded[0].getMetadata();
+    const uploadedDownloadUrl = uploadedMeta[0].mediaLink;
+
     console.log("Thumbnail uploaded to Storage at", thumbFilePath);
     // Once the image has been uploaded delete the local files to free up disk space.
     fs.unlinkSync(tempLocalFile);
@@ -168,5 +182,6 @@ exports.createThumbnail = functions
 
     return {
       text: `You now created a thumbnail on default bucket for: ${name},${tempLocalThumbFile},${thumbFilePath}`,
+      downloadUrl: uploadedDownloadUrl,
     };
   });
