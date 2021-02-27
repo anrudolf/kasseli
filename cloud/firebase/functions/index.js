@@ -115,6 +115,6 @@ exports.createThumbnail = functions
     const { name } = data;
 
     return {
-      text: `You created a thumbnail for: ${name}`,
+      text: `You now created a thumbnail for: ${name}`,
     };
   });

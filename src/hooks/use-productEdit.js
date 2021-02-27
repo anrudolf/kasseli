@@ -167,7 +167,7 @@ export default function(initialId = null) {
       //reader.result is the result of the reading in base64 string
 
       const createThumbnailFunction = firebase
-        .functions()
+        .functions("europe-west1")
         .httpsCallable("createThumbnail");
 
       createThumbnailFunction({ name: file.name }).then((r) => console.log(r));
