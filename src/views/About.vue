@@ -2,8 +2,11 @@
   <div>
     <h1>This is an about page</h1>
     <div class="wrapper">
-      <div>Hello {{ bucket }}</div>
-      <!-- <app-barcode-stream-reader @decode="onDecode" @loaded="onLoaded" /> //-->
+      <select>
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three">Three</option>
+      </select>
     </div>
     Kasse
     <ul>

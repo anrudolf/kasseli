@@ -1,15 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Kasse from "../views/Kasse.vue";
 import Products from "../views/Products.vue";
-import ProductNew from "../views/ProductNew.vue"
-import ProductEdit from "../views/ProductEdit.vue"
+import ProductNew from "../views/ProductNew.vue";
+import ProductEdit from "../views/ProductEdit.vue";
 
+import Categories from "../views/Categories.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "kasse",
-    component: Kasse
+    component: Kasse,
   },
   {
     path: "/products",
@@ -20,14 +21,18 @@ const routes: Array<RouteRecordRaw> = [
     path: "/products/new",
     name: "products-new",
     component: ProductNew,
-    props: route => ({ newId: route.query.id })
-
+    props: (route) => ({ newId: route.query.id }),
   },
   {
     path: "/products/edit",
     name: "products-edit",
     component: ProductEdit,
-    props: route => ({ editId: route.query.id })
+    props: (route) => ({ editId: route.query.id }),
+  },
+  {
+    path: "/categories",
+    name: "categories",
+    component: Categories,
   },
   {
     path: "/about",
@@ -36,13 +41,13 @@ const routes: Array<RouteRecordRaw> = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;

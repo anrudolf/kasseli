@@ -49,4 +49,8 @@ select {
   background-size: 1.25rem;
   background-repeat: no-repeat;
 }
+
+select:focus {
+  outline-color: #3b82f680;
+}
 </style>

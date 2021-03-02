@@ -102,10 +102,10 @@
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="imageDownloadUrl" v-if="imageDownloadUrl" target="_blank">
+      <a :href="product.data.image" v-if="product.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="imageDownloadUrl"
+          :src="product.data.image"
           crossorigin="anonymous"
         />
       </a>
@@ -114,7 +114,7 @@
         class="input"
         accept="image/*"
         capture="environment"
-        @input="(ev) => uploadImage2(ev.target.files[0])"
+        @input="(ev) => uploadImage(ev.target.files[0])"
       />
     </label>
 
@@ -122,8 +122,9 @@
       >Speichern</app-button
     >
     <div>{{ id }}</div>
-    <div>{{ product }}</div>
-    <div>{{ exists }}</div>
+    <div class="text-xs">
+      <pre>{{ JSON.stringify(product, null, "  ") }}</pre>
+    </div>
   </div>
 </template>
 
@@ -154,7 +155,6 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
-      uploadImage2,
       imageDownloadUrl,
     } = useProductEdit(editId.value);
 
@@ -171,7 +171,6 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
-      uploadImage2,
       imageDownloadUrl,
     };
   },

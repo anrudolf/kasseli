@@ -57,7 +57,6 @@ export default function(initialId = null) {
 
   const { id: rawProductId } = toRefs(product);
   const image = toRef(product.data, "image");
-  const imageDownloadUrl = ref("");
 
   const id = computed(() => {
     if (product.data.template) {
@@ -133,7 +132,7 @@ export default function(initialId = null) {
       });
   }, 700);
 
-  const uploadImage = async (file) => {
+  const uploadImageLegacy = async (file) => {
     const lastDot = file.name.lastIndexOf(".");
     const ext = file.name.substring(lastDot + 1);
 
@@ -158,14 +157,10 @@ export default function(initialId = null) {
     });
   };
 
-  const uploadImage2 = async (file) => {
+  const uploadImage = async (file) => {
     const reader = new FileReader();
-    //reads the binary data and encodes it as base64 data url
     reader.readAsDataURL(file);
-    //reads it finish with either success or failure
     reader.onloadend = () => {
-      //reader.result is the result of the reading in base64 string
-
       const createThumbnailFunction = firebase
         .functions("europe-west1")
         .httpsCallable("createThumbnail");
@@ -174,23 +169,14 @@ export default function(initialId = null) {
         filename: file.name,
         base64image: reader.result,
         directory: "thumbnails",
-      }).then((r) => console.log(r));
+      }).then((r) => {
+        product.data.image = r.data.url;
+      });
     };
   };
 
   watch(image, (v, old) => {
     console.log("image changed", v);
-
-    if (v) {
-      const root = firebase.storage().ref();
-      const storageRef = root.child(v);
-      storageRef.getDownloadURL().then((url) => {
-        console.log(url);
-        imageDownloadUrl.value = url;
-      });
-    } else {
-      imageDownloadUrl.value = "";
-    }
   });
 
   watch(id, (v, old) => {
@@ -206,7 +192,5 @@ export default function(initialId = null) {
     saveDisabled,
     templateEnabled,
     uploadImage,
-    uploadImage2,
-    imageDownloadUrl,
   };
 }

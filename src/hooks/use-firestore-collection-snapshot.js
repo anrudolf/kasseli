@@ -12,5 +12,5 @@ export default function(
     return;
   }
 
-  db.collection("products").onSnapshot(callback);
+  db.collection(collection).onSnapshot(callback);
 }
