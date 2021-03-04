@@ -5,6 +5,7 @@
       <li v-for="bundle in bundles" :key="bundle.id" class="border my-2 p-2">
         <h3>{{ bundle.label.de }}</h3>
         <div>{{ bundle }}</div>
+        <img v-if="bundle.image" :src="bundle.image" />
         <router-link :to="`/bundles/edit?id=${bundle.id}`">Edit</router-link>
       </li>
       <router-link class="border rounded p-2" to="/bundles/new"
