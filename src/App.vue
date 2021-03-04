@@ -7,7 +7,7 @@
       <span class="mx-1">-</span>
       <router-link to="/products">Products</router-link>
       <span class="mx-1">-</span>
-      <router-link to="/categories">Categories</router-link>
+      <router-link to="/bundles">Bundles</router-link>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

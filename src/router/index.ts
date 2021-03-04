@@ -4,7 +4,9 @@ import Products from "../views/Products.vue";
 import ProductNew from "../views/ProductNew.vue";
 import ProductEdit from "../views/ProductEdit.vue";
 
-import Categories from "../views/Categories.vue";
+import Bundles from "../views/Bundles.vue";
+import BundleNew from "../views/BundleNew.vue";
+import BundleEdit from "../views/BundleEdit.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,9 +32,21 @@ const routes: Array<RouteRecordRaw> = [
     props: (route) => ({ editId: route.query.id }),
   },
   {
-    path: "/categories",
-    name: "categories",
-    component: Categories,
+    path: "/bundles",
+    name: "bundles",
+    component: Bundles,
+  },
+  {
+    path: "/bundles/new",
+    name: "bundles-new",
+    component: BundleNew,
+    props: (route) => ({ newId: route.query.id }),
+  },
+  {
+    path: "/bundles/edit",
+    name: "bundles-edit",
+    component: BundleEdit,
+    props: (route) => ({ editId: route.query.id }),
   },
   {
     path: "/about",

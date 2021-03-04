@@ -3,18 +3,18 @@
     <app-modal :visible="deleteModal" @close="deleteModal = false">
       <template v-slot:title>Wirklich löschen?</template>
       <div>
-        <div>Zum Bestätigen bitte Produkt ID eintippen und löschen klicken</div>
+        <div>Zum Bestätigen bitte Bundle ID eintippen und löschen klicken</div>
         <label class="block">
-          <div class="text-gray-700">{{ product.id }}</div>
+          <div class="text-gray-700">{{ bundle.id }}</div>
           <input
             class="input"
-            placeholder="Produkt ID"
+            placeholder="Bundle ID"
             v-model="deleteModalConfirmation"
           />
         </label>
         <div class="mt-3 flex justify-between">
           <button
-            :disabled="product.id !== deleteModalConfirmation"
+            :disabled="bundle.id !== deleteModalConfirmation"
             class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
             @click="remove"
           >
@@ -34,7 +34,7 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 class="text-2xl">Produkt editieren</h1>
+      <h1 class="text-2xl">Bundle editieren</h1>
       <button @click="deleteModal = true" class="text-red-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,11 +54,11 @@
     </div>
 
     <label class="block">
-      <div class="text-gray-700">ID oder Strichcode</div>
+      <div class="text-gray-700">ID</div>
       <input
         class="input disabled"
-        v-model="product.id"
-        placeholder="Produkt ID"
+        v-model="bundle.id"
+        placeholder="Bundle ID"
         disabled
       />
     </label>
@@ -67,18 +67,8 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="product.data.label.de"
-        placeholder="Produkt Name"
-      />
-    </label>
-
-    <label class="block">
-      <div class="text-gray-700">Preis</div>
-      <input
-        type="number"
-        class="input"
-        v-model.number="product.data.price"
-        placeholder="2.90"
+        v-model="bundle.data.label.de"
+        placeholder="Bundle Name"
       />
     </label>
 
@@ -86,26 +76,17 @@
       <input
         type="checkbox"
         class="form-checkbox"
-        v-model="product.data.noBarcode"
+        v-model="bundle.data.hidden"
       />
-      <span class="ml-2 text-gray-700">Produkt hat kein Strichcode</span>
-    </label>
-
-    <label class="flex items-center" v-if="templateEnabled">
-      <input
-        type="checkbox"
-        class="form-checkbox"
-        v-model="product.data.template"
-      />
-      <span class="ml-2 text-gray-700">Preis aus Strichcode berechnen</span>
+      <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="product.data.image" v-if="product.data.image" target="_blank">
+      <a :href="bundle.data.image" v-if="bundle.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="product.data.image"
+          :src="bundle.data.image"
           crossorigin="anonymous"
         />
       </a>
@@ -123,7 +104,7 @@
     >
     <div>{{ id }}</div>
     <div class="text-xs">
-      <pre>{{ JSON.stringify(product, null, "  ") }}</pre>
+      <pre>{{ JSON.stringify(bundle, null, "  ") }}</pre>
     </div>
   </div>
 </template>
@@ -133,7 +114,7 @@ import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
-import useProductEdit from "../hooks/use-productEdit.js";
+import useBundleEdit from "../hooks/use-bundleEdit.js";
 
 export default defineComponent({
   props: ["editId"],
@@ -148,27 +129,25 @@ export default defineComponent({
 
     const {
       id,
-      product,
+      bundle,
       exists,
       remove,
       save,
       saveDisabled,
-      templateEnabled,
       uploadImage,
-    } = useProductEdit(editId.value);
+    } = useBundleEdit(editId.value);
 
     return {
       // modal
       deleteModal,
       deleteModalConfirmation,
-      // product edit
+      // bundle edit
       id,
-      product,
+      bundle,
       exists,
       remove,
       save,
       saveDisabled,
-      templateEnabled,
       uploadImage,
     };
   },
