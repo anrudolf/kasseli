@@ -4,9 +4,10 @@ import Products from "../views/Products.vue";
 import ProductNew from "../views/ProductNew.vue";
 import ProductEdit from "../views/ProductEdit.vue";
 
-import Bundles from "../views/Bundles.vue";
-import BundleNew from "../views/BundleNew.vue";
-import BundleEdit from "../views/BundleEdit.vue";
+import Menucards from "../views/Menucards.vue";
+import Menucard from "../views/Menucard.vue";
+import MenucardNew from "../views/MenucardNew.vue";
+import MenucardEdit from "../views/MenucardEdit.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -32,20 +33,26 @@ const routes: Array<RouteRecordRaw> = [
     props: (route) => ({ editId: route.query.id }),
   },
   {
-    path: "/bundles",
-    name: "bundles",
-    component: Bundles,
+    path: "/menucards",
+    name: "menucards",
+    component: Menucards,
   },
   {
-    path: "/bundles/new",
-    name: "bundles-new",
-    component: BundleNew,
+    path: "/menucard",
+    name: "menucard",
+    component: Menucard,
+    props: (route) => ({ id: route.query.id }),
+  },
+  {
+    path: "/menucards/new",
+    name: "menucards-new",
+    component: MenucardNew,
     props: (route) => ({ newId: route.query.id }),
   },
   {
-    path: "/bundles/edit",
-    name: "bundles-edit",
-    component: BundleEdit,
+    path: "/menucards/edit",
+    name: "menucards-edit",
+    component: MenucardEdit,
     props: (route) => ({ editId: route.query.id }),
   },
   {

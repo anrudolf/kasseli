@@ -1,10 +1,10 @@
 <template>
   <div class="p-4 max-w-lg">
-    <h1 class="text-2xl">Neues Bundle erstellen</h1>
+    <h1 class="text-2xl">Neue Menukarte erstellen</h1>
 
     <label class="block">
       <div class="text-gray-700">ID</div>
-      <input class="input" v-model="bundle.id" placeholder="Bundle ID" />
+      <input class="input" v-model="menucard.id" placeholder="Menukarte ID" />
     </label>
 
     <div v-if="exists" class="p-2 my-1 rounded bg-blue-100 flex items-center">
@@ -22,9 +22,9 @@
           d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span class="ml-2">Bundle existiert bereits</span>
+      <span class="ml-2">Menukarte existiert bereits</span>
       <router-link
-        :to="`/bundle/edit?id=${id}`"
+        :to="`/menucards/edit?id=${id}`"
         class="ml-auto underline text-blue-500"
         >Editieren</router-link
       >
@@ -34,17 +34,17 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="bundle.data.label.de"
-        placeholder="Bundle Name"
+        v-model="menucard.data.label.de"
+        placeholder="Menukarte Name"
       />
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="bundle.data.image" v-if="bundle.data.image" target="_blank">
+      <a :href="menucard.data.image" v-if="menucard.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="bundle.data.image"
+          :src="menucard.data.image"
         />
       </a>
       <input
@@ -60,7 +60,7 @@
       <input
         type="checkbox"
         class="form-checkbox"
-        v-model="bundle.data.hidden"
+        v-model="menucard.data.hidden"
       />
       <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
@@ -69,7 +69,7 @@
       >Speichern</app-button
     >
     <div>{{ id }}</div>
-    <div>{{ bundle }}</div>
+    <div>{{ menucard }}</div>
     <div>{{ exists }}</div>
   </div>
 </template>
@@ -77,7 +77,7 @@
 <script>
 import appButton from "../components/Button.vue";
 
-import useBundleEdit from "../hooks/use-bundleEdit";
+import useMenucardEdit from "../hooks/use-menucardEdit";
 
 export default {
   components: {
@@ -87,18 +87,18 @@ export default {
   setup(props) {
     const {
       id,
-      bundle,
+      menucard,
       exists,
       save,
       saveDisabled,
       uploadImage,
-    } = useBundleEdit();
+    } = useMenucardEdit();
 
     if (props.newId) {
-      bundle.id = `${props.newId}`;
+      menucard.id = `${props.newId}`;
     }
 
-    return { id, bundle, exists, save, saveDisabled, uploadImage };
+    return { id, menucard, exists, save, saveDisabled, uploadImage };
   },
 };
 </script>

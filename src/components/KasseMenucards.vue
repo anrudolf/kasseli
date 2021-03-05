@@ -1,11 +1,11 @@
 <template>
   <div class="my-wrapper">
     <app-produkt-button
-      v-for="bundle in bundles"
-      :key="bundle.id"
-      :label="bundle.label.de"
-      :image="bundle.image"
-      :to="`/bundle?id=${bundle.id}`"
+      v-for="menucard in entities"
+      :key="menucard.id"
+      :label="menucard.label.de"
+      :image="menucard.image"
+      :to="`/menucard?id=${menucard.id}`"
     />
   </div>
 </template>
@@ -20,7 +20,7 @@ export default defineComponent({
     appProduktButton,
   },
   props: {
-    bundles: {
+    entities: {
       type: Array,
     },
   },

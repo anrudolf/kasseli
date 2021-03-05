@@ -3,18 +3,20 @@
     <app-modal :visible="deleteModal" @close="deleteModal = false">
       <template v-slot:title>Wirklich löschen?</template>
       <div>
-        <div>Zum Bestätigen bitte Bundle ID eintippen und löschen klicken</div>
+        <div>
+          Zum Bestätigen bitte Menukarte ID eintippen und löschen klicken
+        </div>
         <label class="block">
-          <div class="text-gray-700">{{ bundle.id }}</div>
+          <div class="text-gray-700">{{ menucard.id }}</div>
           <input
             class="input"
-            placeholder="Bundle ID"
+            placeholder="Menukarte ID"
             v-model="deleteModalConfirmation"
           />
         </label>
         <div class="mt-3 flex justify-between">
           <button
-            :disabled="bundle.id !== deleteModalConfirmation"
+            :disabled="menucard.id !== deleteModalConfirmation"
             class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
             @click="remove"
           >
@@ -34,7 +36,7 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 class="text-2xl">Bundle editieren</h1>
+      <h1 class="text-2xl">Menukarte editieren</h1>
       <button @click="deleteModal = true" class="text-red-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -57,8 +59,8 @@
       <div class="text-gray-700">ID</div>
       <input
         class="input disabled"
-        v-model="bundle.id"
-        placeholder="Bundle ID"
+        v-model="menucard.id"
+        placeholder="Menukarte ID"
         disabled
       />
     </label>
@@ -67,8 +69,8 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="bundle.data.label.de"
-        placeholder="Bundle Name"
+        v-model="menucard.data.label.de"
+        placeholder="Menukarte Name"
       />
     </label>
 
@@ -76,17 +78,17 @@
       <input
         type="checkbox"
         class="form-checkbox"
-        v-model="bundle.data.hidden"
+        v-model="menucard.data.hidden"
       />
       <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="bundle.data.image" v-if="bundle.data.image" target="_blank">
+      <a :href="menucard.data.image" v-if="menucard.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="bundle.data.image"
+          :src="menucard.data.image"
           crossorigin="anonymous"
         />
       </a>
@@ -104,7 +106,7 @@
     >
     <div>{{ id }}</div>
     <div class="text-xs">
-      <pre>{{ JSON.stringify(bundle, null, "  ") }}</pre>
+      <pre>{{ JSON.stringify(menucard, null, "  ") }}</pre>
     </div>
   </div>
 </template>
@@ -114,7 +116,7 @@ import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
-import useBundleEdit from "../hooks/use-bundleEdit.js";
+import useMenucardEdit from "../hooks/use-menucardEdit.js";
 
 export default defineComponent({
   props: ["editId"],
@@ -129,21 +131,21 @@ export default defineComponent({
 
     const {
       id,
-      bundle,
+      menucard,
       exists,
       remove,
       save,
       saveDisabled,
       uploadImage,
-    } = useBundleEdit(editId.value);
+    } = useMenucardEdit(editId.value);
 
     return {
       // modal
       deleteModal,
       deleteModalConfirmation,
-      // bundle edit
+      // menucard edit
       id,
-      bundle,
+      menucard,
       exists,
       remove,
       save,

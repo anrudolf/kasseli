@@ -10,7 +10,7 @@ const db = firebase.firestore();
 export default function(initialId = null) {
   const router = useRouter();
 
-  const bundle = reactive({
+  const menucard = reactive({
     id: null,
     data: {
       label: {
@@ -24,53 +24,53 @@ export default function(initialId = null) {
   });
 
   if (initialId) {
-    db.collection("bundles")
+    db.collection("menucards")
       .doc(initialId)
       .get()
       .then((doc) => {
         if (doc.exists) {
-          bundle.id = doc.id;
+          menucard.id = doc.id;
 
           const { label, image, content, hidden, created } = doc.data();
-          bundle.data.label = label;
-          bundle.data.image = image;
-          bundle.data.content = content;
-          bundle.data.hidden = hidden;
-          bundle.data.created = created;
+          menucard.data.label = label;
+          menucard.data.image = image;
+          menucard.data.content = content;
+          menucard.data.hidden = hidden;
+          menucard.data.created = created;
         }
       });
   }
 
-  const id = toRef(bundle, "id");
-  const image = toRef(bundle.data, "image");
+  const id = toRef(menucard, "id");
+  const image = toRef(menucard.data, "image");
 
   const save = () => {
     if (!initialId) {
-      bundle.data.created = Date.now();
+      menucard.data.created = Date.now();
     }
-    db.collection("bundles")
-      .doc(bundle.id)
-      .set(bundle.data)
+    db.collection("menucards")
+      .doc(menucard.id)
+      .set(menucard.data)
       .then(() => {
-        console.log("document set, pushing route /bundles");
-        router.push("/bundles");
+        console.log("document set, pushing route /menucards");
+        router.push("/menucards");
       })
       .catch((error) => console.log(error));
   };
 
   const remove = () => {
-    db.collection("bundles")
-      .doc(bundle.id)
+    db.collection("menucards")
+      .doc(menucard.id)
       .delete()
       .then(() => {
-        console.log("document set, pushing route /bundles");
-        router.push("/bundles");
+        console.log("document set, pushing route /menucards");
+        router.push("/menucards");
       })
       .catch((error) => console.log(error));
   };
 
   const saveDisabled = computed(() => {
-    return !bundle.id || !bundle.data.label.de;
+    return !menucard.id || !menucard.data.label.de;
   });
 
   const exists = ref(false);
@@ -79,7 +79,7 @@ export default function(initialId = null) {
     if (!v) {
       return;
     }
-    db.collection("bundles")
+    db.collection("menucards")
       .doc(v)
       .get()
       .then((doc) => {
@@ -104,7 +104,7 @@ export default function(initialId = null) {
         base64image: reader.result,
         directory: "thumbnails",
       }).then((r) => {
-        bundle.data.image = r.data.url;
+        menucard.data.image = r.data.url;
       });
     };
   };
@@ -115,7 +115,7 @@ export default function(initialId = null) {
 
   return {
     id,
-    bundle,
+    menucard,
     exists,
     remove,
     save,
