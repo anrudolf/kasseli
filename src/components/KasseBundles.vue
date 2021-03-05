@@ -1,15 +1,17 @@
 <template>
   <div class="my-wrapper">
     <app-produkt-button
-      v-for="product in products"
-      :key="product"
-      :name="product"
+      v-for="bundle in bundles"
+      :key="bundle.id"
+      :label="bundle.label.de"
+      :image="bundle.image"
+      :to="`/bundle?id=${bundle.id}`"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import appProduktButton from "@/components/ProduktButton.vue";
 
 export default defineComponent({
@@ -17,18 +19,10 @@ export default defineComponent({
   components: {
     appProduktButton,
   },
-  setup() {
-    const products = ref([
-      "Kleinbrote",
-      "Früchte",
-      /*"Grossbrote",
-      "Gemüse",
-      "Süssgebäck",
-      "Salzgebäck"
-      */
-    ]);
-
-    return { products };
+  props: {
+    bundles: {
+      type: Array,
+    },
   },
 });
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper h-full">
     <app-kasse-liste style="grid-area: liste" />
-    <app-kasse-ohne-strichcode style="grid-area: others" />
+    <app-kasse-bundles style="grid-area: others" :bundles="bundles" />
     <app-kasse-total style="grid-area: total" />
     <app-kasse-anzahl style="grid-area: anzahl" />
     <app-kasse-aktuell style="grid-area: aktuell" />
@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
-import appKasseOhneStrichcode from "@/components/KasseOhneStrichcode.vue";
+import appKasseBundles from "@/components/KasseBundles.vue";
 
 import appKasseTotal from "@/components/KasseTotal.vue";
 import appKasseAnzahl from "@/components/KasseAnzahl.vue";
@@ -22,11 +22,13 @@ import appKasseBezahlen from "@/components/KasseBezahlen.vue";
 import useScanner from "../hooks/use-scanner";
 import { useStore } from "vuex";
 
+import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
+
 export default defineComponent({
   name: "Home",
   components: {
     appKasseListe,
-    appKasseOhneStrichcode,
+    appKasseBundles,
     appKasseTotal,
     appKasseAnzahl,
     appKasseAktuell,
@@ -34,10 +36,22 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const bundles = ref([]);
 
     useScanner((code) => {
       store.dispatch("kasse/add", code);
     });
+
+    useFirestoreCollectionSnapshot("bundles", function (snapshot) {
+      const tmp = [];
+      snapshot.forEach(function (doc) {
+        tmp.push({ id: doc.id, ...doc.data() });
+      });
+      bundles.value = [];
+      bundles.value.push(...tmp);
+    });
+
+    return { bundles };
   },
 });
 </script>

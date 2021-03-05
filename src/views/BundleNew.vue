@@ -39,6 +39,23 @@
       />
     </label>
 
+    <label class="block">
+      <div class="text-gray-700">Bild</div>
+      <a :href="bundle.data.image" v-if="bundle.data.image" target="_blank">
+        <img
+          class="object-contain h-32 w-full mb-1 border rounded"
+          :src="bundle.data.image"
+        />
+      </a>
+      <input
+        type="file"
+        class="input"
+        accept="image/*"
+        capture="environment"
+        @input="(ev) => uploadImage(ev.target.files[0])"
+      />
+    </label>
+
     <label class="flex items-center">
       <input
         type="checkbox"
@@ -68,13 +85,20 @@ export default {
   },
   props: ["newId"],
   setup(props) {
-    const { id, bundle, exists, save, saveDisabled } = useBundleEdit();
+    const {
+      id,
+      bundle,
+      exists,
+      save,
+      saveDisabled,
+      uploadImage,
+    } = useBundleEdit();
 
     if (props.newId) {
       bundle.id = `${props.newId}`;
     }
 
-    return { id, bundle, exists, save, saveDisabled };
+    return { id, bundle, exists, save, saveDisabled, uploadImage };
   },
 };
 </script>
