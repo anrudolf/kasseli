@@ -1,10 +1,10 @@
 <template>
   <div class="p-4 max-w-lg">
-    <h1 class="text-2xl">Neue Menukarte erstellen</h1>
+    <h1 class="text-2xl">Neue Karte erstellen</h1>
 
     <label class="block">
       <div class="text-gray-700">ID</div>
-      <input class="input" v-model="menucard.id" placeholder="Menukarte ID" />
+      <input class="input" v-model="card.id" placeholder="Karte ID" />
     </label>
 
     <div v-if="exists" class="p-2 my-1 rounded bg-blue-100 flex items-center">
@@ -22,9 +22,9 @@
           d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span class="ml-2">Menukarte existiert bereits</span>
+      <span class="ml-2">Karte existiert bereits</span>
       <router-link
-        :to="`/menucards/edit?id=${id}`"
+        :to="`/cards/edit?id=${id}`"
         class="ml-auto underline text-blue-500"
         >Editieren</router-link
       >
@@ -34,17 +34,17 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="menucard.data.label.de"
-        placeholder="Menukarte Name"
+        v-model="card.data.label.de"
+        placeholder="Karte Name"
       />
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="menucard.data.image" v-if="menucard.data.image" target="_blank">
+      <a :href="card.data.image" v-if="card.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="menucard.data.image"
+          :src="card.data.image"
         />
       </a>
       <input
@@ -57,11 +57,7 @@
     </label>
 
     <label class="flex items-center">
-      <input
-        type="checkbox"
-        class="form-checkbox"
-        v-model="menucard.data.hidden"
-      />
+      <input type="checkbox" class="form-checkbox" v-model="card.data.hidden" />
       <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
 
@@ -69,7 +65,7 @@
       >Speichern</app-button
     >
     <div>{{ id }}</div>
-    <div>{{ menucard }}</div>
+    <div>{{ card }}</div>
     <div>{{ exists }}</div>
   </div>
 </template>
@@ -77,7 +73,7 @@
 <script>
 import appButton from "../components/Button.vue";
 
-import useMenucardEdit from "../hooks/use-menucardEdit";
+import useCardEdit from "../hooks/use-cardEdit";
 
 export default {
   components: {
@@ -85,20 +81,13 @@ export default {
   },
   props: ["newId"],
   setup(props) {
-    const {
-      id,
-      menucard,
-      exists,
-      save,
-      saveDisabled,
-      uploadImage,
-    } = useMenucardEdit();
+    const { id, card, exists, save, saveDisabled, uploadImage } = useCardEdit();
 
     if (props.newId) {
-      menucard.id = `${props.newId}`;
+      card.id = `${props.newId}`;
     }
 
-    return { id, menucard, exists, save, saveDisabled, uploadImage };
+    return { id, card, exists, save, saveDisabled, uploadImage };
   },
 };
 </script>

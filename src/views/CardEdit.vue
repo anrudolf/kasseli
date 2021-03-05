@@ -3,20 +3,18 @@
     <app-modal :visible="deleteModal" @close="deleteModal = false">
       <template v-slot:title>Wirklich löschen?</template>
       <div>
-        <div>
-          Zum Bestätigen bitte Menukarte ID eintippen und löschen klicken
-        </div>
+        <div>Zum Bestätigen bitte Karte ID eintippen und löschen klicken</div>
         <label class="block">
-          <div class="text-gray-700">{{ menucard.id }}</div>
+          <div class="text-gray-700">{{ card.id }}</div>
           <input
             class="input"
-            placeholder="Menukarte ID"
+            placeholder="Karte ID"
             v-model="deleteModalConfirmation"
           />
         </label>
         <div class="mt-3 flex justify-between">
           <button
-            :disabled="menucard.id !== deleteModalConfirmation"
+            :disabled="card.id !== deleteModalConfirmation"
             class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
             @click="remove"
           >
@@ -36,7 +34,7 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 class="text-2xl">Menukarte editieren</h1>
+      <h1 class="text-2xl">Karte editieren</h1>
       <button @click="deleteModal = true" class="text-red-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -59,8 +57,8 @@
       <div class="text-gray-700">ID</div>
       <input
         class="input disabled"
-        v-model="menucard.id"
-        placeholder="Menukarte ID"
+        v-model="card.id"
+        placeholder="Karte ID"
         disabled
       />
     </label>
@@ -69,26 +67,22 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="menucard.data.label.de"
-        placeholder="Menukarte Name"
+        v-model="card.data.label.de"
+        placeholder="Karte Name"
       />
     </label>
 
     <label class="flex items-center">
-      <input
-        type="checkbox"
-        class="form-checkbox"
-        v-model="menucard.data.hidden"
-      />
+      <input type="checkbox" class="form-checkbox" v-model="card.data.hidden" />
       <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="menucard.data.image" v-if="menucard.data.image" target="_blank">
+      <a :href="card.data.image" v-if="card.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="menucard.data.image"
+          :src="card.data.image"
           crossorigin="anonymous"
         />
       </a>
@@ -106,7 +100,7 @@
     >
     <div>{{ id }}</div>
     <div class="text-xs">
-      <pre>{{ JSON.stringify(menucard, null, "  ") }}</pre>
+      <pre>{{ JSON.stringify(card, null, "  ") }}</pre>
     </div>
   </div>
 </template>
@@ -116,7 +110,7 @@ import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
-import useMenucardEdit from "../hooks/use-menucardEdit.js";
+import useCardEdit from "../hooks/use-cardEdit.js";
 
 export default defineComponent({
   props: ["editId"],
@@ -131,21 +125,21 @@ export default defineComponent({
 
     const {
       id,
-      menucard,
+      card,
       exists,
       remove,
       save,
       saveDisabled,
       uploadImage,
-    } = useMenucardEdit(editId.value);
+    } = useCardEdit(editId.value);
 
     return {
       // modal
       deleteModal,
       deleteModalConfirmation,
-      // menucard edit
+      // card edit
       id,
-      menucard,
+      card,
       exists,
       remove,
       save,

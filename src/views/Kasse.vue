@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper h-full">
     <app-kasse-liste style="grid-area: liste" />
-    <app-kasse-menucards style="grid-area: others" :entities="menucards" />
+    <app-kasse-cards style="grid-area: others" :entities="cards" />
     <app-kasse-total style="grid-area: total" />
     <app-kasse-anzahl style="grid-area: anzahl" />
     <app-kasse-aktuell style="grid-area: aktuell" />
@@ -12,7 +12,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
-import appKasseMenucards from "@/components/KasseMenucards.vue";
+import appKasseCards from "@/components/KasseCards.vue";
 
 import appKasseTotal from "@/components/KasseTotal.vue";
 import appKasseAnzahl from "@/components/KasseAnzahl.vue";
@@ -28,7 +28,7 @@ export default defineComponent({
   name: "Home",
   components: {
     appKasseListe,
-    appKasseMenucards,
+    appKasseCards,
     appKasseTotal,
     appKasseAnzahl,
     appKasseAktuell,
@@ -36,22 +36,22 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
-    const menucards = ref([]);
+    const cards = ref([]);
 
     useScanner((code) => {
       store.dispatch("kasse/add", code);
     });
 
-    useFirestoreCollectionSnapshot("menucards", function (snapshot) {
+    useFirestoreCollectionSnapshot("cards", function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
         tmp.push({ id: doc.id, ...doc.data() });
       });
-      menucards.value = [];
-      menucards.value.push(...tmp);
+      cards.value = [];
+      cards.value.push(...tmp);
     });
 
-    return { menucards };
+    return { cards };
   },
 });
 </script>

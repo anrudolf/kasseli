@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <h1>Menukarte: {{ id }}</h1>
+    <h1>Karte: {{ id }}</h1>
   </div>
 </template>
 

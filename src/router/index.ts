@@ -4,10 +4,10 @@ import Products from "../views/Products.vue";
 import ProductNew from "../views/ProductNew.vue";
 import ProductEdit from "../views/ProductEdit.vue";
 
-import Menucards from "../views/Menucards.vue";
-import Menucard from "../views/Menucard.vue";
-import MenucardNew from "../views/MenucardNew.vue";
-import MenucardEdit from "../views/MenucardEdit.vue";
+import Cards from "../views/Cards.vue";
+import Card from "../views/Card.vue";
+import CardNew from "../views/CardNew.vue";
+import CardEdit from "../views/CardEdit.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -33,26 +33,26 @@ const routes: Array<RouteRecordRaw> = [
     props: (route) => ({ editId: route.query.id }),
   },
   {
-    path: "/menucards",
-    name: "menucards",
-    component: Menucards,
+    path: "/cards",
+    name: "cards",
+    component: Cards,
   },
   {
-    path: "/menucard",
-    name: "menucard",
-    component: Menucard,
+    path: "/card",
+    name: "card",
+    component: Card,
     props: (route) => ({ id: route.query.id }),
   },
   {
-    path: "/menucards/new",
-    name: "menucards-new",
-    component: MenucardNew,
+    path: "/cards/new",
+    name: "cards-new",
+    component: CardNew,
     props: (route) => ({ newId: route.query.id }),
   },
   {
-    path: "/menucards/edit",
-    name: "menucards-edit",
-    component: MenucardEdit,
+    path: "/cards/edit",
+    name: "cards-edit",
+    component: CardEdit,
     props: (route) => ({ editId: route.query.id }),
   },
   {

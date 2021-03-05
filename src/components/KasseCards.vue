@@ -1,11 +1,11 @@
 <template>
   <div class="my-wrapper">
     <app-produkt-button
-      v-for="menucard in entities"
-      :key="menucard.id"
-      :label="menucard.label.de"
-      :image="menucard.image"
-      :to="`/menucard?id=${menucard.id}`"
+      v-for="card in entities"
+      :key="card.id"
+      :label="card.label.de"
+      :image="card.image"
+      :to="`/card?id=${card.id}`"
     />
   </div>
 </template>
