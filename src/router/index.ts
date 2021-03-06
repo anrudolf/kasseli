@@ -5,7 +5,6 @@ import ProductEdit from "../views/ProductEdit.vue";
 
 import WidgetGroups from "../views/WidgetGroups.vue";
 import WidgetGroup from "../views/WidgetGroup.vue";
-import WidgetGroupNew from "../views/WidgetGroupNew.vue";
 import WidgetGroupEdit from "../views/WidgetGroupEdit.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -45,7 +44,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/widget-groups/new",
     name: "widget-groups-new",
-    component: WidgetGroupNew,
+    component: WidgetGroupEdit,
     props: (route) => ({ newId: route.query.id }),
   },
   {
