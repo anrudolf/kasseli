@@ -42,7 +42,10 @@
       </button>
     </div>
 
-    <app-product-list :products="filtered" />
+    <app-product-list
+      :products="filtered"
+      @selected="(id) => router.push(`/products/edit?id=${id}`)"
+    />
   </div>
 </template>
 

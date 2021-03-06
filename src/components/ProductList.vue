@@ -10,7 +10,7 @@
       <tr
         v-for="product in result"
         :key="product.id"
-        @click="router.push(`/products/edit?id=${product.id}`)"
+        @click="$emit('selected', product.id)"
         class="cursor-pointer hover:bg-blue-100 border-b"
       >
         <td class="text-left">{{ product.label.de || product.id }}</td>
@@ -40,6 +40,7 @@ import { useArrayPagination } from "../hooks/use-arraypagination";
 import appSelect from "../components/Select.vue";
 
 export default {
+  emits: ["selected"],
   components: {
     appSelect,
   },

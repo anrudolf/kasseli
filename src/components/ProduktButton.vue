@@ -1,12 +1,11 @@
 <template>
-  <router-link
-    :to="to"
-    tag="div"
+  <div
+    role="button"
     class="h-48 flex flex-col justify-end text-center border-solid border-2 border-light-blue-500 shadow-md"
   >
     <img :src="image" />
     {{ label }}
-  </router-link>
+  </div>
 </template>
 
 <script lang="ts">
@@ -17,7 +16,6 @@ export default defineComponent({
   props: {
     label: String,
     image: String,
-    to: [String, Object],
   },
 });
 </script>

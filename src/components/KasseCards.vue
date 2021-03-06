@@ -5,13 +5,15 @@
       :key="card.id"
       :label="card.label.de"
       :image="card.image"
-      :to="`/card?id=${card.id}`"
+      @click="(ev) => router.push(`/card?id=${card.id}`)"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+
 import appProduktButton from "@/components/ProduktButton.vue";
 
 export default defineComponent({
@@ -23,6 +25,10 @@ export default defineComponent({
     entities: {
       type: Array,
     },
+  },
+  setup() {
+    const router = useRouter();
+    return { router };
   },
 });
 </script>

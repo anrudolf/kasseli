@@ -33,6 +33,18 @@
       </div>
     </app-modal>
 
+    <app-modal :visible="addModal" @close="addModal = false">
+      <template v-slot:title>Produkt auswählen</template>
+      <app-product-selector
+        @selected="
+          (id) => {
+            card.data.content.push(id);
+            addModal = false;
+          }
+        "
+      />
+    </app-modal>
+
     <div class="flex justify-between">
       <h1 class="text-2xl">Karte editieren</h1>
       <button @click="deleteModal = true" class="text-red-400">
@@ -95,6 +107,16 @@
       />
     </label>
 
+    <label class="block">
+      <div class="text-gray-700">Produkte</div>
+      <ul>
+        <li v-for="(product, i) in card.data.content" :key="i">
+          {{ product }}
+        </li>
+        <li><button @click="addModal = true">ADD</button></li>
+      </ul>
+    </label>
+
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button
     >
@@ -109,6 +131,7 @@
 import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
+import appProductSelector from "../components/ProductSelector.vue";
 
 import useCardEdit from "../hooks/use-cardEdit.js";
 
@@ -117,9 +140,13 @@ export default defineComponent({
   components: {
     appButton,
     appModal,
+    appProductSelector,
   },
   setup(props) {
     const editId = toRef(props, "editId");
+
+    const addModal = ref(false);
+
     const deleteModal = ref(false);
     const deleteModalConfirmation = ref("");
 
@@ -135,6 +162,7 @@ export default defineComponent({
 
     return {
       // modal
+      addModal,
       deleteModal,
       deleteModalConfirmation,
       // card edit
