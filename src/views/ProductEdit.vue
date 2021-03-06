@@ -34,7 +34,9 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 class="text-2xl">Produkt editieren</h1>
+      <h1 v-if="editing" class="text-2xl">Produkt editieren</h1>
+      <h1 v-else class="text-2xl">Produkt erstellen</h1>
+
       <button @click="deleteModal = true" class="text-red-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -56,12 +58,39 @@
     <label class="block">
       <div class="text-gray-700">ID oder Strichcode</div>
       <input
-        class="input disabled"
+        class="input"
+        :class="{ disabled: editing }"
         v-model="product.id"
         placeholder="Produkt ID"
-        disabled
+        :disabled="editing"
       />
     </label>
+
+    <div
+      v-if="!editing && exists"
+      class="p-2 my-1 rounded bg-blue-100 flex items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        class="w-6 h-6 inline"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span class="ml-2">Produkt existiert bereits</span>
+      <router-link
+        :to="`/products/edit?id=${id}`"
+        class="ml-auto underline text-blue-500"
+        >Editieren</router-link
+      >
+    </div>
 
     <label class="block">
       <div class="text-gray-700">Label</div>
@@ -125,11 +154,13 @@
     <div class="text-xs">
       <pre>{{ JSON.stringify(product, null, "  ") }}</pre>
     </div>
+    <div>editing {{ editing }}</div>
   </div>
 </template>
 
 <script>
 import { ref, toRef, defineComponent } from "vue";
+import { useRoute } from "vue-router";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
@@ -146,6 +177,12 @@ export default defineComponent({
     const deleteModal = ref(false);
     const deleteModalConfirmation = ref("");
 
+    const route = useRoute();
+
+    const editing = !route.matched.some(({ name }) => name === "products-new");
+    const options = { initialId: editId.value, editing };
+    console.log("options", options);
+
     const {
       id,
       product,
@@ -155,9 +192,11 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
-    } = useProductEdit(editId.value);
+    } = useProductEdit(options);
 
     return {
+      //
+      editing,
       // modal
       deleteModal,
       deleteModalConfirmation,
