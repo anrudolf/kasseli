@@ -1,9 +1,9 @@
 <template>
-  <div class="p-4" v-if="card">
-    <h1>Karte: {{ card.label.de }}</h1>
+  <div class="p-4" v-if="entity">
+    <h1>Widget Group: {{ entity.label.de }}</h1>
     <ul>
-      <li v-for="(product, i) in card.content" :key="i">
-        <app-produkt-button :label="product" @click="(ev) => add(product)" />
+      <li v-for="(widget, i) in entity.content" :key="i">
+        <app-produkt-button :label="widget" @click="(ev) => add(widget)" />
       </li>
     </ul>
   </div>
@@ -31,14 +31,14 @@ export default {
     const router = useRouter();
 
     const { id } = toRefs(props);
-    const card = ref(null);
+    const entity = ref(null);
 
-    const documentPath = `/cards/${id.value}`;
+    const documentPath = `/widget-groups/${id.value}`;
 
     db.doc(documentPath)
       .get()
       .then((doc) => {
-        card.value = doc.data();
+        entity.value = doc.data();
       })
       .catch((e) => console.log(e));
 
@@ -47,7 +47,7 @@ export default {
       router.push("/");
     };
 
-    return { card, add };
+    return { entity, add };
   },
 };
 </script>

@@ -3,14 +3,17 @@ import { useRouter } from "vue-router";
 
 import firebase from "../firebaseInit";
 
-import { useDebounce } from "../hooks/use-debounce";
+import { useDebounce } from "./use-debounce";
 
 const db = firebase.firestore();
+
+const COLLECTION = "widget-groups";
+const DEFAULT_RETURN_ROUTE = "/widget-groups";
 
 export default function(initialId = null) {
   const router = useRouter();
 
-  const card = reactive({
+  const entity = reactive({
     id: null,
     data: {
       label: {
@@ -24,53 +27,51 @@ export default function(initialId = null) {
   });
 
   if (initialId) {
-    db.collection("cards")
+    db.collection(COLLECTION)
       .doc(initialId)
       .get()
       .then((doc) => {
         if (doc.exists) {
-          card.id = doc.id;
+          entity.id = doc.id;
 
           const { label, image, content, hidden, created } = doc.data();
-          card.data.label = label;
-          card.data.image = image;
-          card.data.content = content;
-          card.data.hidden = hidden;
-          card.data.created = created;
+          entity.data.label = label;
+          entity.data.image = image;
+          entity.data.content = content;
+          entity.data.hidden = hidden;
+          entity.data.created = created;
         }
       });
   }
 
-  const id = toRef(card, "id");
-  const image = toRef(card.data, "image");
+  const id = toRef(entity, "id");
+  const image = toRef(entity.data, "image");
 
   const save = () => {
     if (!initialId) {
-      card.data.created = Date.now();
+      entity.data.created = Date.now();
     }
-    db.collection("cards")
-      .doc(card.id)
-      .set(card.data)
+    db.collection(COLLECTION)
+      .doc(entity.id)
+      .set(entity.data)
       .then(() => {
-        console.log("document set, pushing route /cards");
-        router.push("/cards");
+        router.push(DEFAULT_RETURN_ROUTE);
       })
       .catch((error) => console.log(error));
   };
 
   const remove = () => {
-    db.collection("cards")
-      .doc(card.id)
+    db.collection(COLLECTION)
+      .doc(entity.id)
       .delete()
       .then(() => {
-        console.log("document set, pushing route /cards");
-        router.push("/cards");
+        router.push(DEFAULT_RETURN_ROUTE);
       })
       .catch((error) => console.log(error));
   };
 
   const saveDisabled = computed(() => {
-    return !card.id || !card.data.label.de;
+    return !entity.id || !entity.data.label.de;
   });
 
   const exists = ref(false);
@@ -79,7 +80,7 @@ export default function(initialId = null) {
     if (!v) {
       return;
     }
-    db.collection("cards")
+    db.collection(COLLECTION)
       .doc(v)
       .get()
       .then((doc) => {
@@ -104,7 +105,7 @@ export default function(initialId = null) {
         base64image: reader.result,
         directory: "thumbnails",
       }).then((r) => {
-        card.data.image = r.data.url;
+        entity.data.image = r.data.url;
       });
     };
   };
@@ -115,7 +116,7 @@ export default function(initialId = null) {
 
   return {
     id,
-    card,
+    entity,
     exists,
     remove,
     save,

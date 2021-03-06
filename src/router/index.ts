@@ -4,10 +4,10 @@ import Products from "../views/Products.vue";
 import ProductNew from "../views/ProductNew.vue";
 import ProductEdit from "../views/ProductEdit.vue";
 
-import Cards from "../views/Cards.vue";
-import Card from "../views/Card.vue";
-import CardNew from "../views/CardNew.vue";
-import CardEdit from "../views/CardEdit.vue";
+import WidgetGroups from "../views/WidgetGroups.vue";
+import WidgetGroup from "../views/WidgetGroup.vue";
+import WidgetGroupNew from "../views/WidgetGroupNew.vue";
+import WidgetGroupEdit from "../views/WidgetGroupEdit.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -33,26 +33,26 @@ const routes: Array<RouteRecordRaw> = [
     props: (route) => ({ editId: route.query.id }),
   },
   {
-    path: "/cards",
-    name: "cards",
-    component: Cards,
+    path: "/widget-groups",
+    name: "widget-groups",
+    component: WidgetGroups,
   },
   {
-    path: "/card",
-    name: "card",
-    component: Card,
+    path: "/widget-group",
+    name: "widget-group",
+    component: WidgetGroup,
     props: (route) => ({ id: route.query.id }),
   },
   {
-    path: "/cards/new",
-    name: "cards-new",
-    component: CardNew,
+    path: "/widget-groups/new",
+    name: "widget-groups-new",
+    component: WidgetGroupNew,
     props: (route) => ({ newId: route.query.id }),
   },
   {
-    path: "/cards/edit",
-    name: "cards-edit",
-    component: CardEdit,
+    path: "/widget-groups/edit",
+    name: "widget-groups-edit",
+    component: WidgetGroupEdit,
     props: (route) => ({ editId: route.query.id }),
   },
   {

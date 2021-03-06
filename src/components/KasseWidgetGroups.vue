@@ -1,11 +1,11 @@
 <template>
   <div class="my-wrapper">
     <app-produkt-button
-      v-for="card in entities"
-      :key="card.id"
-      :label="card.label.de"
-      :image="card.image"
-      @click="(ev) => router.push(`/card?id=${card.id}`)"
+      v-for="entity in entities"
+      :key="entity.id"
+      :label="entity.label.de"
+      :image="entity.image"
+      @click="(ev) => router.push(`/widget-group?id=${entity.id}`)"
     />
   </div>
 </template>
@@ -17,7 +17,7 @@ import { useRouter } from "vue-router";
 import appProduktButton from "@/components/ProduktButton.vue";
 
 export default defineComponent({
-  name: "KasseOhneStrichcode",
+  name: "KasseWidgetGroups",
   components: {
     appProduktButton,
   },

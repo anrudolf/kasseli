@@ -3,18 +3,20 @@
     <app-modal :visible="deleteModal" @close="deleteModal = false">
       <template v-slot:title>Wirklich löschen?</template>
       <div>
-        <div>Zum Bestätigen bitte Karte ID eintippen und löschen klicken</div>
+        <div>
+          Zum Bestätigen bitte Widget Group ID eintippen und löschen klicken
+        </div>
         <label class="block">
-          <div class="text-gray-700">{{ card.id }}</div>
+          <div class="text-gray-700">{{ entity.id }}</div>
           <input
             class="input"
-            placeholder="Karte ID"
+            placeholder="Widget Group ID"
             v-model="deleteModalConfirmation"
           />
         </label>
         <div class="mt-3 flex justify-between">
           <button
-            :disabled="card.id !== deleteModalConfirmation"
+            :disabled="entity.id !== deleteModalConfirmation"
             class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
             @click="remove"
           >
@@ -38,7 +40,7 @@
       <app-product-selector
         @selected="
           (id) => {
-            card.data.content.push(id);
+            entity.data.content.push(id);
             addModal = false;
           }
         "
@@ -69,7 +71,7 @@
       <div class="text-gray-700">ID</div>
       <input
         class="input disabled"
-        v-model="card.id"
+        v-model="entity.id"
         placeholder="Karte ID"
         disabled
       />
@@ -79,22 +81,26 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="card.data.label.de"
+        v-model="entity.data.label.de"
         placeholder="Karte Name"
       />
     </label>
 
     <label class="flex items-center">
-      <input type="checkbox" class="form-checkbox" v-model="card.data.hidden" />
+      <input
+        type="checkbox"
+        class="form-checkbox"
+        v-model="entity.data.hidden"
+      />
       <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="card.data.image" v-if="card.data.image" target="_blank">
+      <a :href="entity.data.image" v-if="entity.data.image" target="_blank">
         <img
           class="object-contain h-32 w-full mb-1 border rounded"
-          :src="card.data.image"
+          :src="entity.data.image"
           crossorigin="anonymous"
         />
       </a>
@@ -110,7 +116,7 @@
     <label class="block">
       <div class="text-gray-700">Produkte</div>
       <ul>
-        <li v-for="(product, i) in card.data.content" :key="i">
+        <li v-for="(product, i) in entity.data.content" :key="i">
           {{ product }}
         </li>
         <li><button @click="addModal = true">ADD</button></li>
@@ -122,7 +128,7 @@
     >
     <div>{{ id }}</div>
     <div class="text-xs">
-      <pre>{{ JSON.stringify(card, null, "  ") }}</pre>
+      <pre>{{ JSON.stringify(entity, null, "  ") }}</pre>
     </div>
   </div>
 </template>
@@ -133,7 +139,7 @@ import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 import appProductSelector from "../components/ProductSelector.vue";
 
-import useCardEdit from "../hooks/use-cardEdit.js";
+import useWidgetGroupEdit from "../hooks/use-widgetGroupEdit.js";
 
 export default defineComponent({
   props: ["editId"],
@@ -152,22 +158,22 @@ export default defineComponent({
 
     const {
       id,
-      card,
+      entity,
       exists,
       remove,
       save,
       saveDisabled,
       uploadImage,
-    } = useCardEdit(editId.value);
+    } = useWidgetGroupEdit(editId.value);
 
     return {
       // modal
       addModal,
       deleteModal,
       deleteModalConfirmation,
-      // card edit
+      // entity
       id,
-      card,
+      entity,
       exists,
       remove,
       save,
