@@ -20,6 +20,8 @@ firebase
       console.error("firestore: failed-precondition");
     } else if (err.code == "unimplemented") {
       console.error("firestore: unimplemented");
+    } else {
+      console.error("firestore: unknown", err);
     }
   });
 

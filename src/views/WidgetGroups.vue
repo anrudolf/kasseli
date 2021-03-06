@@ -4,7 +4,6 @@
     <ul>
       <li v-for="entity in entities" :key="entity.id" class="border my-2 p-2">
         <h3>{{ entity.data.label.de }}</h3>
-        <div>{{ entity }}</div>
         <img v-if="entity.data.image" :src="entity.data.image" />
         <router-link :to="`/widget-groups/edit?id=${entity.id}`"
           >Edit</router-link

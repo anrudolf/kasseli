@@ -143,7 +143,7 @@
     </label>
 
     <label class="block">
-      <div class="text-gray-700">Produkte</div>
+      <div class="text-gray-700">Widgets</div>
       <ul>
         <li v-for="(product, i) in entity.data.content" :key="i">
           {{ product }}

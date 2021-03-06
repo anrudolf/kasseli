@@ -1,11 +1,15 @@
 <template>
   <div class="p-4" v-if="entity">
     <h1>Widget Group: {{ entity.label.de }}</h1>
-    <ul>
-      <li v-for="(widget, i) in entity.content" :key="i">
-        <app-produkt-button :label="widget" @click="(ev) => add(widget)" />
-      </li>
-    </ul>
+    <div class="flex flex-wrap">
+      <app-widget
+        v-for="(widget, i) in entity.content"
+        :key="i"
+        type="product"
+        :widget="{ id: widget }"
+        @click="(ev) => add(widget)"
+      />
+    </div>
   </div>
 </template>
 
@@ -14,14 +18,14 @@ import { ref, toRefs } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
-import appProduktButton from "@/components/ProduktButton.vue";
+import appWidget from "@/components/Widget.vue";
 
 import firebase from "../firebaseInit";
 const db = firebase.firestore();
 
 export default {
   components: {
-    appProduktButton,
+    appWidget,
   },
   props: {
     id: String,

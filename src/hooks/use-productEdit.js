@@ -77,7 +77,10 @@ export default function({ editing = false, initialId = null }) {
         console.log("document set, pushing route /products");
         router.push("/products");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        router.push("/products");
+      });
   };
 
   const remove = () => {
