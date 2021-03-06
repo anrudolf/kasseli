@@ -72,26 +72,15 @@ export default function({ editing = false, initialId = null }) {
     }
     db.collection("products")
       .doc(id.value)
-      .set(product.data)
-      .then(() => {
-        console.log("document set, pushing route /products");
-        router.push("/products");
-      })
-      .catch((error) => {
-        console.log(error);
-        router.push("/products");
-      });
+      .set(product.data);
+    router.push("/products");
   };
 
   const remove = () => {
     db.collection("products")
       .doc(id.value)
-      .delete()
-      .then(() => {
-        console.log("document set, pushing route /products");
-        router.push("/products");
-      })
-      .catch((error) => console.log(error));
+      .delete();
+    router.push("/products");
   };
 
   const saveDisabled = computed(() => {
@@ -126,20 +115,26 @@ export default function({ editing = false, initialId = null }) {
   });
 
   const onIdChangedHandler = useDebounce((v) => {
+    exists.value = false;
     if (!v) {
       return;
     }
+
     db.collection("products")
       .doc(v)
       .get()
       .then((doc) => {
+        console.log(`v=${v}, doc.exists=${doc.exists}`);
         if (doc.exists) {
           exists.value = true;
         } else {
           exists.value = false;
         }
+      })
+      .catch((e) => {
+        exists.value = false;
       });
-  }, 700);
+  }, 300);
 
   const uploadImage = async (file) => {
     loading.value = true;
