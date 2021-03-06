@@ -1,7 +1,5 @@
 import { ref, reactive, computed, watch, toRefs, toRef } from "vue";
 import { useRouter } from "vue-router";
-import blobToHash from "blob-to-hash";
-import { v5 as uuidv5 } from "uuid";
 
 import firebase from "../firebaseInit";
 
@@ -58,6 +56,7 @@ export default function({ editing = false, initialId = null }) {
   const { id: rawProductId } = toRefs(product);
   const exists = ref(false);
   const image = toRef(product.data, "image");
+  const loading = ref(false);
 
   const id = computed(() => {
     if (product.data.template) {
@@ -93,6 +92,10 @@ export default function({ editing = false, initialId = null }) {
   };
 
   const saveDisabled = computed(() => {
+    if (loading.value) {
+      return true;
+    }
+
     if (!editing && exists.value) {
       return true;
     }
@@ -136,9 +139,10 @@ export default function({ editing = false, initialId = null }) {
   }, 700);
 
   const uploadImage = async (file) => {
+    loading.value = true;
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
+    reader.onload = () => {
       const createThumbnailFunction = firebase
         .functions("europe-west1")
         .httpsCallable("createThumbnail");
@@ -147,9 +151,20 @@ export default function({ editing = false, initialId = null }) {
         filename: file.name,
         base64image: reader.result,
         directory: "thumbnails",
-      }).then((r) => {
-        product.data.image = r.data.url;
-      });
+      })
+        .then((r) => {
+          product.data.image = r.data.url;
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    };
+
+    reader.onerror = () => {
+      loading.value = false;
     };
   };
 
