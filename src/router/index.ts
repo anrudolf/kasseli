@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Kasse from "../views/Kasse.vue";
 import Products from "../views/Products.vue";
-import ProductNew from "../views/ProductNew.vue";
 import ProductEdit from "../views/ProductEdit.vue";
 
 import WidgetGroups from "../views/WidgetGroups.vue";
