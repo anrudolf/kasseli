@@ -3,9 +3,9 @@
     <h1 class="text-2xl">Widget Groups</h1>
     <ul>
       <li v-for="entity in entities" :key="entity.id" class="border my-2 p-2">
-        <h3>{{ entity.label.de }}</h3>
+        <h3>{{ entity.data.label.de }}</h3>
         <div>{{ entity }}</div>
-        <img v-if="entity.image" :src="entity.image" />
+        <img v-if="entity.data.image" :src="entity.data.image" />
         <router-link :to="`/widget-groups/edit?id=${entity.id}`"
           >Edit</router-link
         >
@@ -28,7 +28,7 @@ export default {
     useFirestoreCollectionSnapshot("widget-groups", function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
-        tmp.push({ id: doc.id, ...doc.data() });
+        tmp.push({ id: doc.id, data: doc.data() });
       });
       entities.value = [];
       entities.value.push(...tmp);
