@@ -48,7 +48,7 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 class="text-2xl">Karte editieren</h1>
+      <h1 class="text-2xl">Widget Group editieren</h1>
       <button @click="deleteModal = true" class="text-red-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,7 @@
       <input
         class="input disabled"
         v-model="entity.id"
-        placeholder="Karte ID"
+        placeholder="Widget Group ID"
         disabled
       />
     </label>
@@ -82,7 +82,7 @@
       <input
         class="input"
         v-model="entity.data.label.de"
-        placeholder="Karte Name"
+        placeholder="Widget Group Name"
       />
     </label>
 
