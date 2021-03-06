@@ -35,7 +35,7 @@
       <input
         class="input"
         v-model="entity.data.label.de"
-        placeholder="Karte Name"
+        placeholder="Widget Group Name"
       />
     </label>
 
