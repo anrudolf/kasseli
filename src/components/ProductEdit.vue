@@ -158,11 +158,10 @@
       <file-pond
         name="test"
         ref="pond"
-        label-idle="Drop files here..."
+        label-idle="Drag & Drop oder <span class='filepond--label-action'>Datei wählen</span>"
         :allow-multiple="false"
         accepted-file-types="image/png, image/jpeg"
         :files="myFiles"
-        @init="handleFilePondInit"
         @preparefile="onpreparefile"
         @removefile="onremovefile"
         allowImageResize="true"
@@ -260,18 +259,7 @@ export default defineComponent({
 
     const onremovefile = (error, file) => {
       console.log("file has been removed");
-    };
-
-    onMounted(() => {
-      // the DOM element will be assigned to the ref after initial render
-      console.log(pond.value); // <div>This is a root element</div>
-    });
-
-    const handleFilePondInit = () => {
-      console.log("FilePond has initialized");
-
-      // example of instance method call on pond reference
-      // pond.value.getFiles();
+      pondImage.value = "";
     };
 
     return {
@@ -281,7 +269,6 @@ export default defineComponent({
       // file pond
       pond,
       pondImage,
-      handleFilePondInit,
       onpreparefile,
       onremovefile,
       myFiles,
