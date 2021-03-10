@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 
 import blobToHash from "blob-to-hash";
 import { v5 as uuidv5 } from "uuid";
+import md5 from "md5";
 
 import firebase from "../firebaseInit";
 
@@ -26,6 +27,7 @@ export default function({ editing = false, initialId = null }) {
       template: false,
       created: null,
       image: null,
+      imageRef: null,
     },
   });
 
@@ -45,6 +47,7 @@ export default function({ editing = false, initialId = null }) {
             template,
             created,
             image,
+            imageRef,
           } = doc.data();
           product.data.label = label;
           product.data.price = price;
@@ -52,6 +55,7 @@ export default function({ editing = false, initialId = null }) {
           product.data.template = template;
           product.data.created = created;
           product.data.image = image;
+          product.data.imageRef = imageRef;
         }
       });
   }
@@ -164,6 +168,15 @@ export default function({ editing = false, initialId = null }) {
     });
   };
 
+  const saveImageRef = async (payload) => {
+    console.log("saveImageRef... uploading image");
+    const hash = md5(payload);
+    db.collection("images")
+      .doc(hash)
+      .set({ id: hash, payload });
+    product.data.imageRef = hash;
+  };
+
   const saveImage = async (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -230,5 +243,6 @@ export default function({ editing = false, initialId = null }) {
     templateEnabled,
     uploadImage,
     saveImage,
+    saveImageRef,
   };
 }
