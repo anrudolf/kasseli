@@ -143,8 +143,37 @@
         class="input"
         accept="image/*"
         capture="environment"
-        @input="(ev) => uploadImage(ev.target.files[0])"
+        @input="(ev) => saveImage(ev.target.files[0])"
       />
+    </label>
+
+    <label class="block">
+      <div class="text-gray-700">Bild Filepond</div>
+      <a :href="product.data.image" v-if="product.data.image" target="_blank">
+        <img
+          class="object-contain h-32 w-full mb-1 border rounded"
+          :src="product.data.image"
+        />
+      </a>
+      <file-pond
+        name="test"
+        ref="pond"
+        label-idle="Drop files here..."
+        :allow-multiple="false"
+        accepted-file-types="image/png, image/jpeg"
+        :files="myFiles"
+        @init="handleFilePondInit"
+        @preparefile="onpreparefile"
+        @removefile="onremovefile"
+        allowImageResize="true"
+        imageResizeTargetWidth="200"
+        imageResizeTargetHeight="200"
+        imageResizeMode="contain"
+        imageResizeUpscale="false"
+        imageTransformOutputMimeType="image/jpeg"
+        imageTransformOutputQuality="90"
+      />
+      <img v-if="pondImage" :src="pondImage" />
     </label>
 
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
@@ -159,7 +188,24 @@
 </template>
 
 <script>
-import { ref, toRef, defineComponent } from "vue";
+import { ref, toRef, defineComponent, onMounted } from "vue";
+import vueFilePond from "vue-filepond";
+import md5 from "md5";
+
+import "filepond/dist/filepond.min.css";
+
+// Import image preview and file type validation plugins
+import FilePondPluginImageResize from "filepond-plugin-image-resize";
+import FilePondPluginImageTransform from "filepond-plugin-image-transform";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+
+// Create component
+const FilePond = vueFilePond(
+  FilePondPluginImageResize,
+  FilePondPluginImageTransform,
+  FilePondPluginFileValidateType
+);
+
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 
@@ -170,6 +216,7 @@ export default defineComponent({
   components: {
     appButton,
     appModal,
+    FilePond,
   },
   setup(props) {
     const editId = toRef(props, "editId");
@@ -187,16 +234,57 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
+      saveImage,
     } = useProductEdit(options);
 
     if (props.newId) {
       product.id = `${props.newId}`;
     }
 
+    const pond = ref(null);
+    const myFiles = ref([]);
+    const pondImage = ref("");
+
+    // add onaddfile callback
+    const onpreparefile = (fileItem, output) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(output);
+      reader.onloadend = function () {
+        console.log("reader.result", reader.result);
+        const hash = md5(reader.result);
+        console.log("hash", hash);
+        pondImage.value = reader.result;
+      };
+      console.log("output", output);
+    };
+
+    const onremovefile = (error, file) => {
+      console.log("file has been removed");
+    };
+
+    onMounted(() => {
+      // the DOM element will be assigned to the ref after initial render
+      console.log(pond.value); // <div>This is a root element</div>
+    });
+
+    const handleFilePondInit = () => {
+      console.log("FilePond has initialized");
+
+      // example of instance method call on pond reference
+      // pond.value.getFiles();
+    };
+
     return {
       // modal
       deleteModal,
       deleteModalConfirmation,
+      // file pond
+      pond,
+      pondImage,
+      handleFilePondInit,
+      onpreparefile,
+      onremovefile,
+      myFiles,
       // product edit
       id,
       product,
@@ -206,6 +294,7 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
+      saveImage,
     };
   },
 });
@@ -223,5 +312,9 @@ input.disabled {
   background-position: calc(100% - 0.4rem) calc(50%);
   background-size: 1.25rem;
   background-repeat: no-repeat;
+}
+
+>>> .filepond--credits {
+  display: none !important;
 }
 </style>

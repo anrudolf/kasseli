@@ -1,6 +1,9 @@
 import { ref, reactive, computed, watch, toRefs, toRef } from "vue";
 import { useRouter } from "vue-router";
 
+import blobToHash from "blob-to-hash";
+import { v5 as uuidv5 } from "uuid";
+
 import firebase from "../firebaseInit";
 
 import utils from "../utils";
@@ -136,6 +139,49 @@ export default function({ editing = false, initialId = null }) {
       });
   }, 300);
 
+  const uploadImageLegacy = async (file) => {
+    const lastDot = file.name.lastIndexOf(".");
+    const ext = file.name.substring(lastDot + 1);
+
+    const hash = await blobToHash("sha256", file);
+
+    const dir = "productimages";
+    const filename = `${hash}.${ext}`;
+
+    const MY_NAMESPACE = "3387eb34-efd7-4f4b-99bb-7f393d790984";
+
+    const token = uuidv5(filename, MY_NAMESPACE);
+    console.log("token", token); // this will be used for download url
+
+    const path = `${dir}/${filename}`;
+    const thumbPath = `${dir}/thumb_${filename}`;
+    product.data.image = thumbPath; // thumbnail will be created through cloud function
+
+    const root = firebase.storage().ref();
+    const storageRef = root.child(path);
+    storageRef.put(file).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
+  };
+
+  const saveImage = async (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      //reader.result;
+      const options = {
+        width: 100,
+        height: 100,
+        responseType: "base64",
+        jpegOptions: { force: true, quality: 90 },
+      };
+    };
+
+    reader.onerror = () => {
+      loading.value = false;
+    };
+  };
+
   const uploadImage = async (file) => {
     loading.value = true;
     const reader = new FileReader();
@@ -183,5 +229,6 @@ export default function({ editing = false, initialId = null }) {
     saveDisabled,
     templateEnabled,
     uploadImage,
+    saveImage,
   };
 }
