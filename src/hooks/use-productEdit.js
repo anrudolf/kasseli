@@ -55,7 +55,7 @@ export default function({ editing = false, initialId = null }) {
           product.data.template = template;
           product.data.created = created;
           product.data.image = image;
-          product.data.imageRef = imageRef;
+          product.data.imageRef = imageRef || null;
         }
       });
   }

@@ -131,10 +131,7 @@
 
     <label class="block">
       <div class="text-gray-700">Bild (image selector)</div>
-      <app-image-selector
-        @cleared="product.data.image = null"
-        @selected="saveImageRef"
-      />
+      <app-image-selector v-model="product.data.imageRef" />
     </label>
 
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
