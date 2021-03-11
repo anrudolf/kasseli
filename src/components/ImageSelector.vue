@@ -13,6 +13,7 @@
     imageTransformOutputMimeType="image/jpeg"
     imageTransformOutputQuality="90"
     :files="files"
+    credits="false"
   />
 </template>
 

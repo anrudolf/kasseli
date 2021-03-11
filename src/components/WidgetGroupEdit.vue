@@ -126,20 +126,7 @@
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <a :href="entity.data.image" v-if="entity.data.image" target="_blank">
-        <img
-          class="object-contain h-32 w-full mb-1 border rounded"
-          :src="entity.data.image"
-          crossorigin="anonymous"
-        />
-      </a>
-      <input
-        type="file"
-        class="input"
-        accept="image/*"
-        capture="environment"
-        @input="(ev) => uploadImage(ev.target.files[0])"
-      />
+      <app-image-selector v-model="product.data.imageRef" />
     </label>
 
     <label class="block">
@@ -167,6 +154,7 @@ import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 import appProductSelector from "../components/ProductSelector.vue";
+import appImageSelector from "../components/ImageSelector.vue";
 
 import useWidgetGroupEdit from "../hooks/use-widgetGroupEdit.js";
 
@@ -176,6 +164,7 @@ export default defineComponent({
     appButton,
     appModal,
     appProductSelector,
+    appImageSelector,
   },
   setup(props) {
     const editId = toRef(props, "editId");
@@ -191,7 +180,6 @@ export default defineComponent({
       remove,
       save,
       saveDisabled,
-      uploadImage,
     } = useWidgetGroupEdit(editId.value);
 
     return {
@@ -206,7 +194,6 @@ export default defineComponent({
       remove,
       save,
       saveDisabled,
-      uploadImage,
     };
   },
 });

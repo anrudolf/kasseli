@@ -21,8 +21,10 @@ export default function(initialId = null) {
         en: null,
       },
       image: null,
+      imageRef: null,
       content: [],
       hidden: false,
+      created: null,
     },
   });
 
@@ -34,9 +36,17 @@ export default function(initialId = null) {
         if (doc.exists) {
           entity.id = doc.id;
 
-          const { label, image, content, hidden, created } = doc.data();
+          const {
+            label,
+            image,
+            imageRef,
+            content,
+            hidden,
+            created,
+          } = doc.data();
           entity.data.label = label;
           entity.data.image = image;
+          entity.data.imageRef = imageRef;
           entity.data.content = content;
           entity.data.hidden = hidden;
           entity.data.created = created;
@@ -92,6 +102,7 @@ export default function(initialId = null) {
       });
   }, 700);
 
+  // deprecated
   const uploadImage = async (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);

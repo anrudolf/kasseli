@@ -218,8 +218,4 @@ input.disabled {
   background-size: 1.25rem;
   background-repeat: no-repeat;
 }
-
->>> .filepond--credits {
-  display: none !important;
-}
 </style>
