@@ -130,7 +130,7 @@
     </label>
 
     <label class="block">
-      <div class="text-gray-700">Bild (image selector)</div>
+      <div class="text-gray-700">Bild</div>
       <app-image-selector v-model="product.data.imageRef" />
     </label>
 

@@ -131,7 +131,6 @@ export default function({ editing = false, initialId = null }) {
       .doc(v)
       .get()
       .then((doc) => {
-        console.log(`v=${v}, doc.exists=${doc.exists}`);
         if (doc.exists) {
           exists.value = true;
         } else {
@@ -226,7 +225,7 @@ export default function({ editing = false, initialId = null }) {
   };
 
   watch(image, (v, old) => {
-    console.log("image changed", v);
+    // console.log("image changed", v);
   });
 
   watch(id, (v, old) => {
