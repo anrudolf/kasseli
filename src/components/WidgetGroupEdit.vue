@@ -126,7 +126,7 @@
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <app-image-selector v-model="product.data.imageRef" />
+      <app-image-selector v-model="entity.data.imageRef" />
     </label>
 
     <label class="block">

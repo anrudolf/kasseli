@@ -104,27 +104,21 @@
     <label class="block">
       <div class="text-gray-700">Preis</div>
       <input
-        type="number"
+        :type="product.data.template ? 'text' : 'number'"
         class="input"
+        :class="{ disabled: product.data.template }"
         v-model.number="product.data.price"
-        placeholder="2.90"
+        :placeholder="product.data.template ? '(von Strichcode)' : '2.90'"
+        :disabled="product.data.template"
       />
     </label>
 
-    <label class="flex items-center">
-      <input
-        type="checkbox"
-        class="form-checkbox"
-        v-model="product.data.noBarcode"
-      />
-      <span class="ml-2 text-gray-700">Produkt hat kein Strichcode</span>
-    </label>
-
-    <label class="flex items-center" v-if="templateEnabled">
+    <label class="flex items-center" v-if="templateEnabled && !editing">
       <input
         type="checkbox"
         class="form-checkbox"
         v-model="product.data.template"
+        :disabled="editing"
       />
       <span class="ml-2 text-gray-700">Preis aus Strichcode berechnen</span>
     </label>
@@ -177,8 +171,6 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
-      saveImage,
-      saveImageRef,
     } = useProductEdit(options);
 
     if (props.newId) {
@@ -198,8 +190,6 @@ export default defineComponent({
       saveDisabled,
       templateEnabled,
       uploadImage,
-      saveImage,
-      saveImageRef,
     };
   },
 });

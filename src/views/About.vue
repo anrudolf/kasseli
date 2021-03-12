@@ -28,6 +28,10 @@ import { ref } from "vue";
 //import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
 
 import firebase from "../firebaseInit";
+const db = firebase.firestore();
+
+import fbapp from "firebase/app";
+fbapp.firestore.FieldPath.documentId();
 
 export default {
   components: {
@@ -35,6 +39,17 @@ export default {
   },
   setup() {
     const bucket = firebase.options;
+
+    db.collection("products")
+      .where(fbapp.firestore.FieldPath.documentId(), "in", ["coolio"])
+      .get()
+      .then((querySnapshot) => {
+        console.log("QUERY SNAPSHOT");
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+      });
 
     return { bucket };
   },

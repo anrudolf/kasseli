@@ -14,7 +14,9 @@
         class="cursor-pointer hover:bg-blue-100 border-b"
       >
         <td class="text-left">{{ product.label.de || product.id }}</td>
-        <td class="text-right">{{ product.price.toFixed(2) }}</td>
+        <td class="text-right">
+          {{ product.price ? product.price.toFixed(2) : "---" }}
+        </td>
       </tr>
     </tbody>
   </table>

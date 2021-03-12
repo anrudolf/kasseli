@@ -23,7 +23,6 @@ export default function({ editing = false, initialId = null }) {
         en: null,
       },
       price: null,
-      noBarcode: false,
       template: false,
       created: null,
       image: null,
@@ -43,7 +42,6 @@ export default function({ editing = false, initialId = null }) {
           const {
             label,
             price,
-            noBarcode,
             template,
             created,
             image,
@@ -51,7 +49,6 @@ export default function({ editing = false, initialId = null }) {
           } = doc.data();
           product.data.label = label;
           product.data.price = price;
-          product.data.noBarcode = noBarcode;
           product.data.template = template;
           product.data.created = created;
           product.data.image = image;
@@ -63,6 +60,8 @@ export default function({ editing = false, initialId = null }) {
   const { id: rawProductId } = toRefs(product);
   const exists = ref(false);
   const image = toRef(product.data, "image");
+  const template = toRef(product.data, "template");
+
   const loading = ref(false);
 
   const id = computed(() => {
@@ -99,24 +98,29 @@ export default function({ editing = false, initialId = null }) {
       return true;
     }
 
-    return (
-      !product.id ||
-      !product.data.label.de ||
-      typeof product.data.price !== "number"
-    );
+    if (!product.id) {
+      return true;
+    }
+
+    if (!product.data.label.de) {
+      return true;
+    }
+
+    if (!product.data.template && typeof product.data.price !== "number") {
+      return true;
+    }
+
+    return false;
   });
 
   const templateEnabled = computed(() => {
     return (
-      !product.data.noBarcode &&
-      product.id &&
-      utils.isNumeric(product.id) &&
-      product.id.length === 13
+      product.id && utils.isNumeric(product.id) && product.id.length === 13
     );
   });
 
   watch(product, (p) => {
-    if (!p.id || p.id.length < 13 || p.data.noBarcode) {
+    if (!p.id || p.id.length !== 13) {
       product.data.template = false;
     }
   });
@@ -142,7 +146,7 @@ export default function({ editing = false, initialId = null }) {
       });
   }, 300);
 
-  const uploadImageLegacy = async (file) => {
+  const uploadImage = async (file) => {
     const lastDot = file.name.lastIndexOf(".");
     const ext = file.name.substring(lastDot + 1);
 
@@ -167,34 +171,7 @@ export default function({ editing = false, initialId = null }) {
     });
   };
 
-  const saveImageRef = async (payload) => {
-    console.log("saveImageRef... uploading image");
-    const hash = md5(payload);
-    db.collection("images")
-      .doc(hash)
-      .set({ id: hash, payload });
-    product.data.imageRef = hash;
-  };
-
-  const saveImage = async (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = async () => {
-      //reader.result;
-      const options = {
-        width: 100,
-        height: 100,
-        responseType: "base64",
-        jpegOptions: { force: true, quality: 90 },
-      };
-    };
-
-    reader.onerror = () => {
-      loading.value = false;
-    };
-  };
-
-  const uploadImage = async (file) => {
+  const uploadImageAsThumbnail = async (file) => {
     loading.value = true;
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -224,8 +201,27 @@ export default function({ editing = false, initialId = null }) {
     };
   };
 
+  const saveImageRef = async (payload) => {
+    const hash = md5(payload);
+    db.collection("images")
+      .doc(hash)
+      .set({
+        id: hash,
+        type: "DATA_URL",
+        mediaType: "image/jpeg",
+        payload: payload,
+      });
+    product.data.imageRef = hash;
+  };
+
   watch(image, (v, old) => {
     // console.log("image changed", v);
+  });
+
+  watch(template, (v) => {
+    if (v) {
+      product.data.price = null;
+    }
   });
 
   watch(id, (v, old) => {
@@ -241,7 +237,7 @@ export default function({ editing = false, initialId = null }) {
     saveDisabled,
     templateEnabled,
     uploadImage,
-    saveImage,
+    uploadImageAsThumbnail,
     saveImageRef,
   };
 }
