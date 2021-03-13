@@ -72,10 +72,10 @@ export default defineComponent({
     "anzahl anzahl bezahlen";
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr minmax(24rem, 1fr);
     grid-template-rows: 1fr 3rem 8rem;
     grid-gap: 0.5rem;
     grid-template-areas:

@@ -1,28 +1,21 @@
 <template>
-  <div
+  <app-card
     v-if="product"
-    role="button"
-    class="h-48 w-48 text-center border-solid border-2 border-light-blue-500 shadow-md"
-  >
-    <app-image-ref
-      v-if="product.data.imageRef"
-      :id="product.data.imageRef"
-      class="object-contain h-32 w-32"
-    />
-    {{ product.data.label.de }}
-  </div>
+    :label="product.data.label.de"
+    :imageRef="product.data.imageRef"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import appImageRef from "../components/ImageRef.vue";
+import appCard from "../components/Card.vue";
 
 import useFirestoreDocument from "../hooks/use-firestore-document";
 
 export default defineComponent({
   name: "Widget",
   components: {
-    appImageRef,
+    appCard,
   },
   props: {
     type: String,
