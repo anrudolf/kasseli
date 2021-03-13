@@ -35,7 +35,8 @@ export default {
     const filtered = computed(() => {
       return products.value.filter(
         (p) =>
-          (p && p.label.de.toLowerCase().includes(filter.value)) ||
+          (p &&
+            p.label.de.toLowerCase().includes(filter.value.toLowerCase())) ||
           p.id === filter.value
       );
     });
