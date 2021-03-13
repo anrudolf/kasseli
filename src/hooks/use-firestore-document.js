@@ -12,5 +12,5 @@ export default function(path) {
     })
     .catch((e) => console.log(e));
 
-  return { entity };
+  return entity;
 }

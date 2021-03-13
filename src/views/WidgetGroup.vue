@@ -5,9 +5,9 @@
       <app-widget
         v-for="(widget, i) in entity.content"
         :key="i"
-        type="product"
-        :widget="{ id: widget }"
-        @click="(ev) => add(widget)"
+        :type="widget.type"
+        :widget="widget"
+        @click="(ev) => add(widget.id)"
       />
     </div>
   </div>

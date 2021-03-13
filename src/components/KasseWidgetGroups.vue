@@ -1,10 +1,10 @@
 <template>
   <div class="my-wrapper">
-    <app-produkt-button
+    <app-widget-button
       v-for="entity in entities"
       :key="entity.id"
       :label="entity.label.de"
-      :image="entity.image"
+      :imageRef="entity.imageRef"
       @click="(ev) => router.push(`/widget-group?id=${entity.id}`)"
     />
   </div>
@@ -14,12 +14,12 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
-import appProduktButton from "@/components/ProduktButton.vue";
+import appWidgetButton from "@/components/WidgetButton.vue";
 
 export default defineComponent({
   name: "KasseWidgetGroups",
   components: {
-    appProduktButton,
+    appWidgetButton,
   },
   props: {
     entities: {

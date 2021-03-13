@@ -40,7 +40,7 @@
       <app-product-selector
         @selected="
           (id) => {
-            entity.data.content.push(id);
+            addProduct(id);
             addModal = false;
           }
         "
@@ -129,15 +129,30 @@
       <app-image-selector v-model="entity.data.imageRef" />
     </label>
 
-    <label class="block">
+    <div class="block">
       <div class="text-gray-700">Widgets</div>
       <ul>
-        <li v-for="(product, i) in entity.data.content" :key="i">
-          {{ product }}
+        <li v-for="(widget, i) in entity.data.content" :key="i" class="my-1">
+          {{ widget }}
+          <span
+            role="button"
+            @click="removeProduct(i)"
+            class="rounded border border-red-600 p-1"
+          >
+            DEL
+          </span>
         </li>
-        <li><button @click="addModal = true">ADD</button></li>
+        <li>
+          <button
+            @click="addModal = true"
+            class="rounded border border-blue-600 p-1"
+          >
+            ADD
+          </button>
+        </li>
       </ul>
-    </label>
+      <div></div>
+    </div>
 
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button
@@ -182,11 +197,21 @@ export default defineComponent({
       saveDisabled,
     } = useWidgetGroupEdit(editId.value);
 
+    const addProduct = (id) => {
+      entity.data.content.push({ id: id, type: "product" });
+    };
+
+    const removeProduct = (idx) => {
+      entity.data.content.splice(idx, 1);
+    };
+
     return {
       // modal
       addModal,
       deleteModal,
       deleteModalConfirmation,
+      addProduct,
+      removeProduct,
       // entity
       id,
       entity,
