@@ -1,9 +1,12 @@
 <template>
-  <img v-if="false" :src="entity.data.payload" />
-  {{ entity }}
+  <img
+    v-if="entity && entity.data && entity.data.payload"
+    :src="entity.data.payload"
+  />
 </template>
 
 <script>
+import { ref } from "vue";
 import useFirestoreDocument from "../hooks/use-firestore-document";
 
 export default {
@@ -11,7 +14,9 @@ export default {
     id: String,
   },
   setup(props) {
-    const entity = useFirestoreDocument(`images/${props.modelValue.value}`);
+    const entity = props.id
+      ? useFirestoreDocument(`images/${props.id}`)
+      : ref(null);
 
     return { entity };
   },

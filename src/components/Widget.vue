@@ -4,10 +4,9 @@
     role="button"
     class="h-48 w-48 text-center border-solid border-2 border-light-blue-500 shadow-md"
   >
-    {{ product }}
     <app-image-ref
       v-if="product.data.imageRef"
-      v-model="product.data.imageRef"
+      :id="product.data.imageRef"
       class="object-contain h-32 w-32"
     />
     {{ product.data.label.de }}
