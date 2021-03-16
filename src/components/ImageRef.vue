@@ -1,8 +1,10 @@
 <template>
-  <img
-    v-if="entity && entity.data && entity.data.payload"
-    :src="entity.data.payload"
-  />
+  <transition name="fade">
+    <img
+      v-if="entity && entity.data && entity.data.payload"
+      :src="entity.data.payload"
+    />
+  </transition>
 </template>
 
 <script>
@@ -14,11 +16,24 @@ export default {
     id: String,
   },
   setup(props) {
+    const show = ref(false);
     const entity = props.id
       ? useFirestoreDocument(`images/${props.id}`)
       : ref(null);
 
-    return { entity };
+    return { entity, show };
   },
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

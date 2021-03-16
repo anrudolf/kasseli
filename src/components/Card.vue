@@ -6,9 +6,11 @@
       <app-image-ref
         v-if="imageRef"
         :id="imageRef"
-        class="object-stretch h-32 w-48"
+        class="object-stretch h-40 w-48"
       />
-      {{ label }}
+      <div class="mt-auto mb-0.5">
+        {{ label }}
+      </div>
     </div>
   </router-link>
   <button class="inline-block" v-else>
@@ -18,9 +20,11 @@
       <app-image-ref
         v-if="imageRef"
         :id="imageRef"
-        class="object-stretch h-32 w-48"
+        class="object-stretch h-40 w-48"
       />
-      {{ label }}
+      <div class="mt-auto mb-0.5">
+        {{ label }}
+      </div>
     </div>
   </button>
 </template>
