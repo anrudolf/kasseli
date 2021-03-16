@@ -115,29 +115,37 @@
 
     <div class="block">
       <div class="text-gray-700">Widgets</div>
-      <ul>
-        <li
+      <draggable
+        v-model="entity.data.content"
+        group="widgets"
+        item-key="id"
+        handle=".handle"
+      >
+        <div
+          class="bg-gray-100 hover:bg-gray-200 m-1 p-3 rounded-md flex items-center"
           v-for="(widget, i) in entity.data.content"
-          :key="i"
-          class="p-2.5 flex items-center hover:bg-gray-100"
+          :key="`${widget.id}-${i}`"
         >
-          <app-widget-item :id="widget.id" :type="widget.type" class="inline" />
+          <app-hero-icon class="handle cursor-pointer" icon="menu" />
+          <app-widget-item class="ml-2" :id="widget.id" :type="widget.type" />
           <app-button-delete
-            class="ml-auto"
             color="gray"
+            class="ml-auto"
             @click="removeProduct(i)"
           />
-        </li>
-        <li>
-          <button
-            @click="addModal = true"
-            class="rounded border border-blue-600 p-1"
-          >
-            ADD
-          </button>
-        </li>
-      </ul>
-      <div></div>
+        </div>
+      </draggable>
+    </div>
+
+    <div></div>
+
+    <div>
+      <button
+        @click="addModal = true"
+        class="rounded border border-blue-600 p-1"
+      >
+        ADD
+      </button>
     </div>
 
     <app-button class="mt-4" @click="save" :disabled="saveDisabled"
@@ -152,6 +160,9 @@
 
 <script>
 import { ref, toRef, defineComponent } from "vue";
+import { VueDraggableNext } from "vue-draggable-next";
+
+import appHeroIcon from "@/components/HeroIcon.vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
 import appButtonDelete from "@/components/ButtonDelete.vue";
@@ -164,12 +175,14 @@ import useWidgetGroupEdit from "../hooks/use-widgetGroupEdit.js";
 export default defineComponent({
   props: ["editId", "newId", "editing"],
   components: {
+    appHeroIcon,
     appButton,
     appModal,
     appButtonDelete,
     appProductSelector,
     appImageSelector,
     appWidgetItem,
+    draggable: VueDraggableNext,
   },
   setup(props) {
     const editId = toRef(props, "editId");
