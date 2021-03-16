@@ -3,6 +3,7 @@
     <h1 class="text-2xl">Widget Groups</h1>
     <div v-for="entity in entities" :key="entity.id">
       <app-card
+        class="my-1"
         :label="entity.data.label.de"
         :imageRef="entity.data.imageRef"
         :to="`/widget-groups/edit?id=${entity.id}`"

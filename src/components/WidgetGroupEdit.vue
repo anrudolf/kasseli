@@ -50,23 +50,7 @@
     <div class="flex justify-between">
       <h1 v-if="editing" class="text-2xl">Widget Group editieren</h1>
       <h1 v-else class="text-2xl">Widget Group erstellen</h1>
-
-      <button v-if="editing" @click="deleteModal = true" class="text-red-400">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-          />
-        </svg>
-      </button>
+      <app-button-delete v-if="editing" @click="deleteModal = true" />
     </div>
 
     <label class="block">
@@ -132,15 +116,17 @@
     <div class="block">
       <div class="text-gray-700">Widgets</div>
       <ul>
-        <li v-for="(widget, i) in entity.data.content" :key="i" class="my-1">
-          {{ widget }}
-          <span
-            role="button"
+        <li
+          v-for="(widget, i) in entity.data.content"
+          :key="i"
+          class="p-2.5 flex items-center hover:bg-gray-100"
+        >
+          <app-widget-item :id="widget.id" :type="widget.type" class="inline" />
+          <app-button-delete
+            class="ml-auto"
+            color="gray"
             @click="removeProduct(i)"
-            class="rounded border border-red-600 p-1"
-          >
-            DEL
-          </span>
+          />
         </li>
         <li>
           <button
@@ -168,8 +154,10 @@
 import { ref, toRef, defineComponent } from "vue";
 import appButton from "../components/Button.vue";
 import appModal from "../components/Modal.vue";
+import appButtonDelete from "@/components/ButtonDelete.vue";
 import appProductSelector from "../components/ProductSelector.vue";
 import appImageSelector from "../components/ImageSelector.vue";
+import appWidgetItem from "@/components/WidgetItem.vue";
 
 import useWidgetGroupEdit from "../hooks/use-widgetGroupEdit.js";
 
@@ -178,8 +166,10 @@ export default defineComponent({
   components: {
     appButton,
     appModal,
+    appButtonDelete,
     appProductSelector,
     appImageSelector,
+    appWidgetItem,
   },
   setup(props) {
     const editId = toRef(props, "editId");
