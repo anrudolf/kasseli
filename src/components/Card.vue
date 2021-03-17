@@ -1,5 +1,5 @@
 <template>
-  <router-link class="inline-block" v-if="to" :to="to">
+  <router-link class="inline-block w-48" v-if="to" :to="to">
     <div
       class="h-48 w-48 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
     >
@@ -13,7 +13,7 @@
       </div>
     </div>
   </router-link>
-  <button class="inline-block" v-else>
+  <button class="inline-block w-48" v-else>
     <div
       class="h-48 w-48 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
     >
