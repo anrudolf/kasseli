@@ -58,7 +58,6 @@ const actions = {
     }
 
     items[state.selectedIndex].quantity = quantity;
-    commit("SET_SELECTED_INDEX", items.length - 1);
     commit("SET_ITEMS", items);
   },
   select({ commit }, index) {
