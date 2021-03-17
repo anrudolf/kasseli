@@ -6,7 +6,7 @@
       fill="none"
       viewBox="0 0 30 30"
       stroke="white"
-      class="inline-block w-10 h-10"
+      class="inline-block w-10 h-10 ml-1"
     >
       <circle r="15" cy="15" cx="15" style="fill: #446dbd; stroke: none" />
       <path

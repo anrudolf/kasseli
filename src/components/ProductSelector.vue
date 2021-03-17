@@ -36,6 +36,7 @@ export default {
       return products.value.filter(
         (p) =>
           (p &&
+            !p.template &&
             p.label.de.toLowerCase().includes(filter.value.toLowerCase())) ||
           p.id === filter.value
       );

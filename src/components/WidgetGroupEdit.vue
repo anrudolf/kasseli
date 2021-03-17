@@ -37,14 +37,7 @@
 
     <app-modal :visible="addModal" @close="addModal = false">
       <template v-slot:title>Produkt auswählen</template>
-      <app-product-selector
-        @selected="
-          (id) => {
-            addProduct(id);
-            addModal = false;
-          }
-        "
-      />
+      <app-product-selector @selected="addProduct" />
     </app-modal>
 
     <div class="flex justify-between">
@@ -126,7 +119,7 @@
           v-for="(widget, i) in entity.data.content"
           :key="`${widget.id}-${i}`"
         >
-          <app-hero-icon class="handle cursor-pointer" icon="menu" />
+          <app-icon class="handle cursor-pointer" icon="menu" />
           <app-widget-item class="ml-2" :id="widget.id" :type="widget.type" />
           <app-button-delete
             color="gray"
@@ -148,8 +141,8 @@
       </button>
     </div>
 
-    <app-button class="mt-4" @click="save" :disabled="saveDisabled"
-      >Speichern</app-button
+    <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
+      >Speichern</app-button-confirm
     >
     <div>{{ id }}</div>
     <div class="text-xs">
@@ -162,8 +155,8 @@
 import { ref, toRef, defineComponent } from "vue";
 import { VueDraggableNext } from "vue-draggable-next";
 
-import appHeroIcon from "@/components/HeroIcon.vue";
-import appButton from "../components/Button.vue";
+import appIcon from "@/components/Icon.vue";
+import appButtonConfirm from "../components/ButtonConfirm.vue";
 import appModal from "../components/Modal.vue";
 import appButtonDelete from "@/components/ButtonDelete.vue";
 import appProductSelector from "../components/ProductSelector.vue";
@@ -175,8 +168,8 @@ import useWidgetGroupEdit from "../hooks/use-widgetGroupEdit.js";
 export default defineComponent({
   props: ["editId", "newId", "editing"],
   components: {
-    appHeroIcon,
-    appButton,
+    appIcon,
+    appButtonConfirm,
     appModal,
     appButtonDelete,
     appProductSelector,
@@ -202,6 +195,7 @@ export default defineComponent({
 
     const addProduct = (id) => {
       entity.data.content.push({ id: id, type: "product" });
+      addModal.value = false;
     };
 
     const removeProduct = (idx) => {

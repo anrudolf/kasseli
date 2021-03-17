@@ -36,23 +36,7 @@
     <div class="flex justify-between">
       <h1 v-if="editing" class="text-2xl">Produkt editieren</h1>
       <h1 v-else class="text-2xl">Produkt erstellen</h1>
-
-      <button v-if="editing" @click="deleteModal = true" class="text-red-400">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          class="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-          />
-        </svg>
-      </button>
+      <app-button-delete v-if="editing" @click="deleteModal = true" />
     </div>
 
     <label class="block">
@@ -128,8 +112,8 @@
       <app-image-selector v-model="product.data.imageRef" />
     </label>
 
-    <app-button class="mt-4" @click="save" :disabled="saveDisabled"
-      >Speichern</app-button
+    <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
+      >Speichern</app-button-confirm
     >
     <div>{{ id }}</div>
     <div class="text-xs">
@@ -142,7 +126,8 @@
 <script>
 import { ref, toRef, defineComponent } from "vue";
 
-import appButton from "../components/Button.vue";
+import appButtonDelete from "@/components/ButtonDelete.vue";
+import appButtonConfirm from "../components/ButtonConfirm.vue";
 import appModal from "../components/Modal.vue";
 import appImageSelector from "../components/ImageSelector.vue";
 
@@ -151,7 +136,8 @@ import useProductEdit from "../hooks/use-productEdit.js";
 export default defineComponent({
   props: ["editId", "newId", "editing"],
   components: {
-    appButton,
+    appButtonDelete,
+    appButtonConfirm,
     appModal,
     appImageSelector,
   },

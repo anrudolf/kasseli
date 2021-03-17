@@ -1,12 +1,13 @@
 <template>
   <div class="my-wrapper">
-    <app-card
-      v-for="entity in entities"
-      :key="entity.id"
-      :label="entity.label.de"
-      :imageRef="entity.imageRef"
-      @click="(ev) => router.push(`/widget-group?id=${entity.id}`)"
-    />
+    <template v-for="entity in entities" :key="entity.id">
+      <app-card
+        v-if="!entity.hidden"
+        :label="entity.label.de"
+        :imageRef="entity.imageRef"
+        @click="(ev) => router.push(`/widget-group?id=${entity.id}`)"
+      />
+    </template>
   </div>
 </template>
 

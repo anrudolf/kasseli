@@ -4,6 +4,7 @@
     <div v-for="entity in entities" :key="entity.id">
       <app-card
         class="my-1"
+        :class="{ 'opacity-50': entity.data.hidden }"
         :label="entity.data.label.de"
         :imageRef="entity.data.imageRef"
         :to="`/widget-groups/edit?id=${entity.id}`"

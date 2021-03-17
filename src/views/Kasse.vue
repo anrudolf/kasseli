@@ -63,7 +63,7 @@ export default defineComponent({
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 3rem 4rem 8rem;
+  grid-template-rows: 1fr 3rem 6rem 8rem;
   grid-gap: 0.5rem;
   grid-template-areas:
     "liste liste others"
