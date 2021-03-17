@@ -1,7 +1,7 @@
 <template>
   <div class="p-4" v-if="entity">
     <h1>{{ entity.label.de }}</h1>
-    <div class="flex flex-wrap">
+    <div class="grid gap-y-4 grid-cols-2 md:grid-cols-4">
       <app-widget
         v-for="(widget, i) in entity.content"
         :key="i"
