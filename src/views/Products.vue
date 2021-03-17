@@ -1,7 +1,7 @@
 <template>
   <div class="p-4">
     <div class="flex justify-between items-center mb-2">
-      <h1 class="text-2xl">Products</h1>
+      <h1>Products</h1>
       <router-link
         class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded flex items-center"
         to="/products/new"

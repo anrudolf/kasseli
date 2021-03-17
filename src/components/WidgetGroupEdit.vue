@@ -41,8 +41,8 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 v-if="editing" class="text-2xl">Widget Group editieren</h1>
-      <h1 v-else class="text-2xl">Widget Group erstellen</h1>
+      <h1 v-if="editing">Widget Group editieren</h1>
+      <h1 v-else>Widget Group erstellen</h1>
       <app-button-delete v-if="editing" @click="deleteModal = true" />
     </div>
 

@@ -9,7 +9,7 @@
     <!-- Modal content -->
     <div class="modal-content">
       <div class="flex justify-between items-center">
-        <h1 class="text-2xl">
+        <h1>
           <slot name="title">{{ title }}</slot>
         </h1>
         <span class="close" @click="$emit('close')">&times;</span>

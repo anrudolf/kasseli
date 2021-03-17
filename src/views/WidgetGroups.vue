@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <h1 class="text-2xl">Widget Groups</h1>
+    <h1>Widget Groups</h1>
     <div v-for="entity in entities" :key="entity.id">
       <app-card
         class="my-1"

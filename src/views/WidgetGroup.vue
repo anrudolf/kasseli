@@ -1,6 +1,6 @@
 <template>
   <div class="p-4" v-if="entity">
-    <h1>Widget Group: {{ entity.label.de }}</h1>
+    <h1>{{ entity.label.de }}</h1>
     <div class="flex flex-wrap">
       <app-widget
         v-for="(widget, i) in entity.content"

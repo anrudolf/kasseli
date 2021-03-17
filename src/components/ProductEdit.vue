@@ -34,8 +34,8 @@
     </app-modal>
 
     <div class="flex justify-between">
-      <h1 v-if="editing" class="text-2xl">Produkt editieren</h1>
-      <h1 v-else class="text-2xl">Produkt erstellen</h1>
+      <h1 v-if="editing">Produkt editieren</h1>
+      <h1 v-else>Produkt erstellen</h1>
       <app-button-delete v-if="editing" @click="deleteModal = true" />
     </div>
 
