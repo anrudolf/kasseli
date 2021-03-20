@@ -99,7 +99,10 @@ const mutations = {
     state.selectedIndex = index;
   },
   OFFSET_INCREMENT(state) {
-    state.offset = state.offset + 1;
+    const maxOffset = Math.max(state.items.length - state.pageSize, 0);
+    if (state.offset < maxOffset) {
+      state.offset = state.offset + 1;
+    }
   },
   OFFSET_DECREMENT(state) {
     if (state.offset > 0) {

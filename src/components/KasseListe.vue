@@ -22,6 +22,7 @@
         <app-icon icon="arrow-narrow-down" />
       </button>
       <span>{{ offset }}</span>
+      <span>{{ items.length }}</span>
     </div>
   </div>
 </template>
