@@ -31,6 +31,7 @@ const getters = {
     return state.items.slice(begin, end);
   },
   offset: (state) => state.offset,
+  pageSize: (state) => state.pageSize,
 };
 
 const actions = {
@@ -49,12 +50,14 @@ const actions = {
       items.push({ ...item, quantity });
       commit("SET_ITEMS", items);
       commit("SET_SELECTED_INDEX", items.length - 1);
+      commit("OFFSET_RESET");
       return;
     }
 
     const items = [...state.items, item];
     commit("SET_ITEMS", items);
     commit("SET_SELECTED_INDEX", items.length - 1);
+    commit("OFFSET_RESET");
   },
   remove({ state, commit }) {
     const item = state.items[state.selectedIndex];
@@ -62,9 +65,10 @@ const actions = {
 
     const items = [...state.items];
     if (quantity <= 0) {
-      items.splice(this.selectedIndex, 1);
-      commit("SET_SELECTED_INDEX", items.length - 1);
+      items.splice(state.selectedIndex, 1);
       commit("SET_ITEMS", items);
+      commit("SET_SELECTED_INDEX", items.length - 1);
+      commit("OFFSET_RESET");
       return;
     }
 
@@ -108,6 +112,9 @@ const mutations = {
     if (state.offset > 0) {
       state.offset = state.offset - 1;
     }
+  },
+  OFFSET_RESET(state) {
+    state.offset = 0;
   },
 };
 

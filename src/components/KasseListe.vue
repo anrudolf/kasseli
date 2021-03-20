@@ -48,9 +48,19 @@ export default defineComponent({
     displayedItems() {
       return this.$store.getters["kasse/displayedItems"];
     },
+    pageSize() {
+      return this.$store.getters["kasse/pageSize"];
+    },
   },
   methods: {
-    select(index) {
+    select(i) {
+      let index;
+      if (this.items.length <= this.pageSize) {
+        index = i;
+      } else {
+        index = this.items.length - this.pageSize + i - this.offset;
+      }
+
       this.$store.dispatch("kasse/select", index);
     },
   },
