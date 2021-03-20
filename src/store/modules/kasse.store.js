@@ -1,9 +1,11 @@
 const createInitialState = () => ({
   items: [],
   selectedIndex: 0,
+  offset: 0,
+  pageSize: 3,
 });
 
-// item: {code, amount, product, price}
+// item: {code, quantity, product, price}
 // code: string which was used to determine product
 // quantity: number
 // product: product from database
@@ -20,6 +22,15 @@ const getters = {
       .reduce((sum, x) => sum + x, 0);
   },
   hasItems: (state) => state.items.length > 0,
+  displayedItems: (state) => {
+    const begin = Math.max(
+      state.items.length - state.pageSize - state.offset,
+      0
+    );
+    const end = begin + state.pageSize;
+    return state.items.slice(begin, end);
+  },
+  offset: (state) => state.offset,
 };
 
 const actions = {
@@ -63,6 +74,12 @@ const actions = {
   select({ commit }, index) {
     commit("SET_SELECTED_INDEX", index);
   },
+  moveUp({ commit }) {
+    commit("OFFSET_INCREMENT");
+  },
+  moveDown({ commit }) {
+    commit("OFFSET_DECREMENT");
+  },
 };
 
 const mutations = {
@@ -80,6 +97,14 @@ const mutations = {
   },
   SET_SELECTED_INDEX(state, index) {
     state.selectedIndex = index;
+  },
+  OFFSET_INCREMENT(state) {
+    state.offset = state.offset + 1;
+  },
+  OFFSET_DECREMENT(state) {
+    if (state.offset > 0) {
+      state.offset = state.offset - 1;
+    }
   },
 };
 

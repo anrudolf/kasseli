@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="flex">
     <ul class="wrapper">
       <li
-        v-for="(item, i) in items"
+        v-for="(item, i) in displayedItems"
         :key="item.code"
         @click="select(i)"
         class="cursor-pointer"
@@ -14,21 +14,38 @@
         />
       </li>
     </ul>
+    <div class="flex flex-col">
+      <button class="my-1" @click="$store.dispatch('kasse/moveUp')">
+        <app-icon icon="arrow-narrow-up" />
+      </button>
+      <button class="my-1" @click="$store.dispatch('kasse/moveDown')">
+        <app-icon icon="arrow-narrow-down" />
+      </button>
+      <span>{{ offset }}</span>
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import appKasseListeItem from "@/components/KasseListeItem.vue";
+import appIcon from "@/components/Icon.vue";
 
 export default defineComponent({
   name: "KasseListe",
   components: {
     appKasseListeItem,
+    appIcon,
   },
   computed: {
     items() {
       return this.$store.getters["kasse/items"];
+    },
+    offset() {
+      return this.$store.getters["kasse/offset"];
+    },
+    displayedItems() {
+      return this.$store.getters["kasse/displayedItems"];
     },
   },
   methods: {
