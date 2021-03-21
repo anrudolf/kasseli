@@ -109,8 +109,8 @@
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <app-image-selector v-model="product.data.imageRef" />
     </label>
+    <app-image-selector v-model="product.data.imageRef" />
 
     <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button-confirm

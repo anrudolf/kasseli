@@ -1,6 +1,5 @@
 <template>
   <file-pond
-    v-if="!modelValue"
     label-idle="Drag & Drop oder <span class='filepond--label-action'>Datei wählen</span>"
     :allow-multiple="false"
     accepted-file-types="image/png, image/jpeg"
@@ -16,26 +15,18 @@
     :files="files"
     credits="false"
   />
-  <div v-else class="flex justify-end border rounded bg-gray-100 h-24">
-    <app-image-ref :id="modelValue" class="w-24 h-24 object-contain mx-auto" />
-    <app-button-delete
-      class="mt-2 mr-2 self-start"
-      tabindex="-1"
-      @click="$emit('update:modelValue', null)"
-    />
-  </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch, toRef } from "vue";
 import vueFilePond from "vue-filepond";
 import md5 from "md5";
 
-import appImageRef from "@/components/ImageRef.vue";
-import appButtonDelete from "@/components/ButtonDelete.vue";
-
 import "filepond/dist/filepond.min.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
+// Import image preview and file type validation plugins
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
@@ -45,6 +36,7 @@ const db = firebase.firestore();
 
 // Create component
 const FilePond = vueFilePond(
+  FilePondPluginImagePreview,
   FilePondPluginImageResize,
   FilePondPluginImageTransform,
   FilePondPluginFileValidateType
@@ -53,8 +45,6 @@ export default {
   emits: ["update:modelValue"],
   components: {
     FilePond,
-    appImageRef,
-    appButtonDelete,
   },
   props: {
     modelValue: {
@@ -63,6 +53,8 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const modelValue = toRef(props, "modelValue");
+    const internalHash = ref(null);
     const files = ref([]);
 
     const onpreparefile = (fileItem, output) => {
@@ -80,6 +72,7 @@ export default {
           mediaType: "image/jpeg",
           payload: reader.result,
         });
+        internalHash.value = hash;
         emit("update:modelValue", hash);
       };
     };
@@ -87,6 +80,35 @@ export default {
     const onremovefile = (error, file) => {
       emit("update:modelValue", null);
     };
+
+    watch(modelValue, (newVal) => {
+      if (!newVal) {
+        return;
+      }
+
+      if (modelValue.value !== internalHash.value) {
+        db.collection("images")
+          .doc(props.modelValue)
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              fetch(doc.data().payload)
+                .then((res) => res.blob())
+                .then((b) => {
+                  b.name = `${doc.id}.jpeg`;
+                  files.value = [
+                    {
+                      source: b,
+                      options: {
+                        type: "local",
+                      },
+                    },
+                  ];
+                });
+            }
+          });
+      }
+    });
 
     return {
       onpreparefile,
@@ -96,9 +118,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.image-wrapper {
-  background: rgb(79, 79, 79);
-}
-</style>

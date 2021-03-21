@@ -103,8 +103,8 @@
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
-      <app-image-selector v-model="entity.data.imageRef" />
     </label>
+    <app-image-selector v-model="entity.data.imageRef" />
 
     <div class="block">
       <div class="text-gray-700">Widgets</div>
