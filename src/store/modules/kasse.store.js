@@ -32,6 +32,11 @@ const getters = {
   },
   offset: (state) => state.offset,
   pageSize: (state) => state.pageSize,
+  hasPrev: (state) => {
+    const maxOffset = Math.max(state.items.length - state.pageSize, 0);
+    return state.offset < maxOffset;
+  },
+  hasNext: (state) => state.offset > 0,
 };
 
 const actions = {
@@ -78,10 +83,10 @@ const actions = {
   select({ commit }, index) {
     commit("SET_SELECTED_INDEX", index);
   },
-  moveUp({ commit }) {
+  prev({ commit }) {
     commit("OFFSET_INCREMENT");
   },
-  moveDown({ commit }) {
+  next({ commit }) {
     commit("OFFSET_DECREMENT");
   },
 };

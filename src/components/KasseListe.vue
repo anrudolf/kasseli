@@ -15,10 +15,20 @@
       </li>
     </ul>
     <div class="flex flex-col">
-      <button class="my-1" @click="$store.dispatch('kasse/moveUp')">
+      <button
+        class="my-1"
+        @click="$store.dispatch('kasse/prev')"
+        :disabled="!hasPrev"
+        :class="{ disabled: !hasPrev }"
+      >
         <app-icon icon="arrow-narrow-up" />
       </button>
-      <button class="my-1" @click="$store.dispatch('kasse/moveDown')">
+      <button
+        class="my-1"
+        @click="$store.dispatch('kasse/next')"
+        :disabled="!hasNext"
+        :class="{ disabled: !hasNext }"
+      >
         <app-icon icon="arrow-narrow-down" />
       </button>
       <span>{{ offset }}</span>
@@ -50,6 +60,12 @@ export default defineComponent({
     },
     pageSize() {
       return this.$store.getters["kasse/pageSize"];
+    },
+    hasPrev() {
+      return this.$store.getters["kasse/hasPrev"];
+    },
+    hasNext() {
+      return this.$store.getters["kasse/hasNext"];
     },
   },
   methods: {
@@ -87,7 +103,11 @@ li:nth-child(even) {
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr); /* TODO: dynamic on pageSize */
+}
+
+.disabled {
+  opacity: 0.5;
 }
 </style>
 
