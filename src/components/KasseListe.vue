@@ -14,25 +14,23 @@
         />
       </li>
     </ul>
-    <div class="flex flex-col">
+    <div class="flex flex-col mx-3">
       <button
-        class="my-1"
+        class="my-1 rounded border-2 w-12 h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
         @click="$store.dispatch('kasse/prev')"
         :disabled="!hasPrev"
         :class="{ disabled: !hasPrev }"
       >
-        <app-icon icon="arrow-narrow-up" />
+        <app-icon icon="arrow-page-up" color="gray" />
       </button>
       <button
-        class="my-1"
+        class="mt-6 rounded border-2 w-12 h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
         @click="$store.dispatch('kasse/next')"
         :disabled="!hasNext"
         :class="{ disabled: !hasNext }"
       >
-        <app-icon icon="arrow-narrow-down" />
+        <app-icon icon="arrow-page-down" color="gray" />
       </button>
-      <span>{{ offset }}</span>
-      <span>{{ items.length }}</span>
     </div>
   </div>
 </template>
@@ -109,7 +107,7 @@ li:nth-child(even) {
 }
 
 .disabled {
-  opacity: 0.5;
+  opacity: 0.3;
 }
 </style>
 

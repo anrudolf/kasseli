@@ -67,6 +67,30 @@
     />
   </svg>
   <svg
+    v-else-if="icon === 'arrow-page-up'"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    :fill="color"
+    class="w-5 h-5"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M 12 0 L 3 8 L 3 12 L 10 5.7773438 L 10 24 L 14 24 L 14 5.7773438 L 21 12 L 21 8 L 12 0 z "
+    />
+  </svg>
+  <svg
+    v-else-if="icon === 'arrow-page-down'"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    :fill="color"
+    class="w-5 h-5"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M 12,24 3,16 v -4 l 7,6.22266 V 0 h 4 V 18.22266 L 21,12 v 4 z"
+    />
+  </svg>
+  <svg
     v-else
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
