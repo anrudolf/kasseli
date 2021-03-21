@@ -9,16 +9,19 @@
       :style="`grid-template-rows: repeat(${pageSize}, 1fr)`"
     >
       <li
-        v-for="(item, i) in displayedItems"
-        :key="item.code"
+        v-for="(n, i) in pageSize"
+        :key="i"
         @click="select(i)"
         class="cursor-pointer"
+        :class="{ odd: offset % 2 }"
       >
         <app-kasse-liste-item
-          :quantity="item.quantity"
-          :label="item.product.label.de"
-          :price="item.price"
+          v-if="getItem(i)"
+          :quantity="getItem(i).quantity"
+          :label="getItem(i).product.label.de"
+          :price="getItem(i).price"
         />
+        <span v-else></span>
       </li>
     </ul>
     <div
@@ -79,6 +82,10 @@ export default defineComponent({
   },
   methods: {
     select(i) {
+      if (!this.getItem(i)) {
+        return;
+      }
+
       let index;
       if (this.items.length <= this.pageSize) {
         index = i;
@@ -87,6 +94,9 @@ export default defineComponent({
       }
 
       this.$store.dispatch("kasse/select", index);
+    },
+    getItem(i) {
+      return this.displayedItems[i];
     },
   },
 });
@@ -107,6 +117,15 @@ li:nth-child(odd) {
 li:nth-child(even) {
   color: #777;
   background: #fff;
+}
+
+li.odd:nth-child(odd) {
+  color: #777;
+  background: #fff;
+}
+li.odd:nth-child(even) {
+  color: #777;
+  background: #eee;
 }
 
 .kasse-liste-wrapper {
