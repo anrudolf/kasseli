@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <ul class="wrapper" :class="{ [`grid-rows-${pageSize}`]: true }">
+    <ul class="wrapper" :style="`grid-template-rows: repeat(${pageSize}, 1fr)`">
       <li
         v-for="(item, i) in displayedItems"
         :key="item.code"
