@@ -2,7 +2,7 @@ const createInitialState = () => ({
   items: [],
   selectedIndex: 0,
   offset: 0,
-  pageSize: 3,
+  pageSize: 4,
 });
 
 // item: {code, quantity, product, price}

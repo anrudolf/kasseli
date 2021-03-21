@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <ul class="wrapper">
+    <ul class="wrapper" :class="{ [`grid-rows-${pageSize}`]: true }">
       <li
         v-for="(item, i) in displayedItems"
         :key="item.code"
@@ -100,10 +100,12 @@ li:nth-child(even) {
   background: #fff;
 }
 
+/* TODO: dynamic on pageSize */
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 1fr); /* TODO: dynamic on pageSize */
+
+  /*grid-template-rows: repeat(3, 1fr);*/
 }
 
 .disabled {
