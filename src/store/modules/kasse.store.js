@@ -32,7 +32,21 @@ const getters = {
     return state.items.slice(begin, end);
   },
   selectedIndexInPage: (state) => {
-    return state.selectedIndex;
+    const begin = Math.max(
+      state.items.length - state.pageSize - state.offset,
+      0
+    );
+    const end = begin + state.pageSize;
+
+    if (state.selectedIndex < begin) {
+      return -1;
+    }
+
+    if (state.selectedIndex > end) {
+      return -1;
+    }
+
+    return state.selectedIndex - begin;
   },
   offset: (state) => state.offset,
   pageSize: (state) => state.pageSize,

@@ -20,6 +20,7 @@
           :quantity="getItem(i).quantity"
           :label="getItem(i).product.label.de"
           :price="getItem(i).price"
+          :class="{ 'bg-gray-600': i === selectedIndexInPage }"
         />
         <span v-else></span>
       </li>
@@ -75,6 +76,9 @@ export default defineComponent({
     },
     hasNext() {
       return this.$store.getters["kasse/hasNext"];
+    },
+    selectedIndexInPage() {
+      return this.$store.getters["kasse/selectedIndexInPage"];
     },
   },
   methods: {
