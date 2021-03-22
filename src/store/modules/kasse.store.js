@@ -16,19 +16,23 @@ const initialState = createInitialState();
 const getters = {
   items: (state) => state.items,
   selected: (state) => state.items[state.selectedIndex],
+  selectedIndex: (state) => state.selectedIndex,
   price: (state) => {
     return state.items
       .map((i) => i.quantity * i.price)
       .reduce((sum, x) => sum + x, 0);
   },
   hasItems: (state) => state.items.length > 0,
-  displayedItems: (state) => {
+  page: (state) => {
     const begin = Math.max(
       state.items.length - state.pageSize - state.offset,
       0
     );
     const end = begin + state.pageSize;
     return state.items.slice(begin, end);
+  },
+  selectedIndexInPage: (state) => {
+    return state.selectedIndex;
   },
   offset: (state) => state.offset,
   pageSize: (state) => state.pageSize,
@@ -88,6 +92,20 @@ const actions = {
   },
   next({ commit }) {
     commit("OFFSET_DECREMENT");
+  },
+  selectFromPage({ commit, getters, state }, i) {
+    if (!getters.page[i]) {
+      return;
+    }
+
+    let index;
+    if (state.items.length <= state.pageSize) {
+      index = i;
+    } else {
+      index = state.items.length - state.pageSize + i - state.offset;
+    }
+
+    commit("SET_SELECTED_INDEX", index);
   },
 };
 

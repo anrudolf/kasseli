@@ -11,7 +11,7 @@
       <li
         v-for="(n, i) in pageSize"
         :key="i"
-        @click="select(i)"
+        @click="selectFromPage(i)"
         class="cursor-pointer"
         :class="{ odd: offset % 2 }"
       >
@@ -61,14 +61,11 @@ export default defineComponent({
     appIcon,
   },
   computed: {
-    items() {
-      return this.$store.getters["kasse/items"];
-    },
     offset() {
       return this.$store.getters["kasse/offset"];
     },
-    displayedItems() {
-      return this.$store.getters["kasse/displayedItems"];
+    page() {
+      return this.$store.getters["kasse/page"];
     },
     pageSize() {
       return this.$store.getters["kasse/pageSize"];
@@ -81,22 +78,11 @@ export default defineComponent({
     },
   },
   methods: {
-    select(i) {
-      if (!this.getItem(i)) {
-        return;
-      }
-
-      let index;
-      if (this.items.length <= this.pageSize) {
-        index = i;
-      } else {
-        index = this.items.length - this.pageSize + i - this.offset;
-      }
-
-      this.$store.dispatch("kasse/select", index);
+    selectFromPage(i) {
+      this.$store.dispatch("kasse/selectFromPage", i);
     },
     getItem(i) {
-      return this.displayedItems[i];
+      return this.page[i];
     },
   },
 });
