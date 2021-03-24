@@ -20,7 +20,7 @@
           :quantity="getItem(i).quantity"
           :label="getItem(i).product.label.de"
           :price="getItem(i).price"
-          :class="{ 'bg-gray-600': i === selectedIndexInPage }"
+          :selected="i === selectedIndexInPage"
         />
         <span v-else></span>
       </li>
