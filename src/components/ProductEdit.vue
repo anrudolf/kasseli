@@ -119,7 +119,7 @@
     <div class="text-xs">
       <pre>{{ JSON.stringify(product, null, "  ") }}</pre>
     </div>
-    <div>editing {{ editing }}</div>
+    <div v-if="false">editing {{ editing }}</div>
   </div>
 </template>
 
