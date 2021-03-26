@@ -1,5 +1,10 @@
 <template>
-  <button :class="`text-${color ? color : 'red'}-400`">
+  <button
+    :class="{
+      'text-red-400': color === 'red',
+      'text-gray-400': color === 'gray',
+    }"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -20,7 +25,10 @@
 <script>
 export default {
   props: {
-    color: String,
+    color: {
+      type: String,
+      default: "red",
+    },
   },
 };
 </script>

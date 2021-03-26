@@ -37,9 +37,23 @@ body {
 }
 
 .input {
-  @apply border rounded py-2 px-3 text-gray-700 w-full;
+  @apply border rounded py-2 px-3 text-gray-700 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400;
 }
 
+/*
 .input:focus {
   outline-color: #3b82f680;
 }
+
+.input:focus-visible {
+  outline-color: #3b82f680;
+}
+
+.input:-moz-focusring {
+  outline: 1px solid;
+  outline-color: #3b82f680;
+  outline-style: solid;
+  outline-width: 1px;
+  -moz-outline-radius: 4px;
+}
+*/

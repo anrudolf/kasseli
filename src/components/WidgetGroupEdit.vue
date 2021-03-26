@@ -122,8 +122,8 @@
           <app-icon class="handle cursor-pointer" icon="menu" />
           <app-widget-item class="ml-2" :id="widget.id" :type="widget.type" />
           <app-button-delete
-            color="gray"
             class="ml-auto"
+            color="gray"
             @click="removeProduct(i)"
           />
         </div>

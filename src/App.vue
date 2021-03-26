@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="p-4 flex items-center">
+    <div class="p-2 flex items-center">
       <router-link to="/">Home</router-link>
       <span class="mx-1">-</span>
       <router-link to="/about">About</router-link>
@@ -44,7 +44,7 @@
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 60px 1fr;
+  grid-template-rows: 50px 1fr;
   height: 100%;
   width: 100%;
 }

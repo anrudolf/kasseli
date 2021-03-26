@@ -194,4 +194,10 @@ input.disabled {
   background-size: 1.25rem;
   background-repeat: no-repeat;
 }
+
+/*
+input:-moz-focusring {
+  
+}
+*/
 </style>

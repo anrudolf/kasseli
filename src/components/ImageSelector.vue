@@ -21,6 +21,7 @@
     <app-button-delete
       class="mt-2 mr-2 self-start"
       tabindex="-1"
+      color="gray"
       @click="$emit('update:modelValue', null)"
     />
   </div>

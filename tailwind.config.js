@@ -7,6 +7,8 @@ module.exports = {
   variants: {
     extend: {
       opacity: ["disabled"],
+      ringColor: ["focus-visible"],
+      ringWidth: ["focus-visible"],
     },
   },
   plugins: [],
