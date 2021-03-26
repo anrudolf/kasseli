@@ -3,7 +3,8 @@
     <h1>About</h1>
     <p class="my-2">
       Kasseli is a play pretend super market self checkout register inspired by
-      Migros.
+      Migros. You can use a barcode reader to scan products to buy, as well as
+      register new products in inventory mode.
     </p>
     <h2 class="my-2">Code</h2>
     <p>
