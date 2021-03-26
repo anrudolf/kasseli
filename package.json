@@ -20,6 +20,7 @@
     "filepond-plugin-image-transform": "^3.7.5",
     "firebase": "^8.2.2",
     "focus-visible": "^5.2.0",
+    "git-revision-webpack-plugin": "^3.0.6",
     "md5": "^2.3.0",
     "postcss-focus-visible": "^5.0.0",
     "register-service-worker": "^1.7.1",

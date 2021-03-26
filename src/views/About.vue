@@ -1,25 +1,8 @@
 <template>
   <div>
-    <h1>This is an about page</h1>
-    <div class="wrapper">
-      <select>
-        <option value="one">One</option>
-        <option value="two">Two</option>
-        <option value="three">Three</option>
-      </select>
-    </div>
-    Kasse
-    <ul>
-      <li v-for="(item, i) in kasse" :key="i">
-        {{ item }}
-      </li>
-    </ul>
-    Products
-    <ul>
-      <li v-for="product in products" :key="product.id">
-        {{ product.id }}
-      </li>
-    </ul>
+    <h1>About</h1>
+    <h2>Version</h2>
+    <strong>{{ hash }}</strong>
   </div>
 </template>
 
@@ -67,6 +50,9 @@ export default {
     },
     kasse() {
       return this.$store.getters["kasse/items"];
+    },
+    hash() {
+      return process.env.VUE_APP_COMMIT_HASH;
     },
   },
 };
