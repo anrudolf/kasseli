@@ -1,8 +1,26 @@
 <template>
-  <div>
+  <div class="p-4">
     <h1>About</h1>
-    <h2>Version</h2>
-    <strong>{{ hash }}</strong>
+    <p class="my-2">
+      Kasseli is a play pretend super market self checkout register inspired by
+      Migros.
+    </p>
+    <h2 class="my-2">Code</h2>
+    <p>
+      This project is open source. It consists of a Vuejs front-end and a
+      firestore backend.
+    </p>
+    <p>
+      Source code available on
+      <a
+        class="underline text-indigo-600"
+        href="https://github.com/anrudolf/kasseli"
+        >Github.</a
+      >
+    </p>
+    <p>
+      Current commit <span class="font-bold">{{ hash.substring(0, 6) }}</span>
+    </p>
   </div>
 </template>
 
