@@ -40,6 +40,15 @@ body {
   @apply border rounded py-2 px-3 text-gray-700 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400;
 }
 
+html {
+  touch-action: none;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
 /*
 .input:focus {
   outline-color: #3b82f680;
