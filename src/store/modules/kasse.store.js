@@ -63,6 +63,10 @@ const actions = {
   },
   add({ state, commit, rootGetters }, code) {
     const product = rootGetters["products/item"](code);
+    if (!product) {
+      return;
+    }
+
     const item = { code, quantity: 1, product, price: product.price };
 
     const index = state.items.findIndex((item) => item.code === code);
