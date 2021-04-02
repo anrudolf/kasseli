@@ -114,9 +114,7 @@ export default function({ editing = false, initialId = null }) {
   });
 
   const templateEnabled = computed(() => {
-    return (
-      product.id && utils.isNumeric(product.id) && product.id.length === 13
-    );
+    return utils.isTemplateConform(product.id);
   });
 
   watch(product, (p) => {

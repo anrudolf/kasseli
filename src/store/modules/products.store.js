@@ -1,4 +1,5 @@
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
+import utils from "../../utils";
 
 const createInitialState = () => ({
   items: [],
@@ -10,11 +11,19 @@ const getters = {
   items: (state) => state.items,
   item: (state) => (code) => {
     const found = state.items.find((item) => item.id === code);
-    if (!found) {
-      return null;
+    if (found && !found.template) {
+      return found;
     }
 
-    return found;
+    if (utils.isTemplateConform(code)) {
+      const templateCode = utils.createTemplate(code);
+      const found = state.items.find((item) => item.id === templateCode);
+      if (found) {
+        return { ...found, price: utils.getPriceFromTemplate(code) };
+      }
+    }
+
+    return null;
   },
 };
 

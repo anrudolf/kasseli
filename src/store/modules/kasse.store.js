@@ -6,10 +6,11 @@ const createInitialState = () => ({
 });
 
 // item: {code, quantity, product, price}
+// where
 // code: string which was used to determine product
 // quantity: number
 // product: product from database
-// price: determined price from database (or code if template)
+// price: determined price from database
 
 const initialState = createInitialState();
 

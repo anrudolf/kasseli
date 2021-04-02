@@ -8,6 +8,10 @@ function isNumeric(value) {
   return /^\d+$/.test(value);
 }
 
+function isTemplateConform(code) {
+  return code && code.length === 13 && isNumeric(code);
+}
+
 function createTemplate(barcode) {
   if (!barcode || barcode.length !== TEMPLATE_TOTAL_LEN) {
     return barcode;
@@ -19,7 +23,22 @@ function createTemplate(barcode) {
   );
 }
 
+function getPriceFromTemplate(barcode) {
+  if (!isTemplateConform(barcode)) {
+    return 0;
+  }
+
+  const v = barcode.slice(
+    TEMPLATE_TOTAL_LEN - TEMPLATE_SUFFIX_LEN,
+    TEMPLATE_TOTAL_LEN - 1
+  );
+
+  return Number(v) / 100;
+}
+
 export default {
   isNumeric,
+  isTemplateConform,
+  getPriceFromTemplate,
   createTemplate,
 };
