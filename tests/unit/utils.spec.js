@@ -17,7 +17,7 @@ describe("utils", () => {
     // length 13 and all digits
     expect(utils.isTemplateConform("1111111222223")).toBe(true);
 
-    // already a template representation
+    // this is a template id, but not a template conform code (also not all digits)
     expect(utils.isTemplateConform("1111111XXXXXX")).toBe(false);
   });
 
@@ -29,7 +29,7 @@ describe("utils", () => {
     expect(utils.getPriceFromTemplate("0000000123456")).toBe(123.45);
     expect(utils.getPriceFromTemplate("0000000000456")).toBe(0.45);
 
-    // not a template conform code
+    // not a template code
     expect(utils.getPriceFromTemplate("123")).toBe(0);
   });
 });
