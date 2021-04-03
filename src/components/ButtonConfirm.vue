@@ -1,5 +1,5 @@
 <template>
-  <button class="button-confirm">
+  <button class="button-confirm inline-flex items-center">
     <slot></slot>
     <svg
       xmlns="http://www.w3.org/2000/svg"
