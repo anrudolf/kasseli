@@ -1,37 +1,44 @@
-import {
-  TEMPLATE_TOTAL_LEN,
-  TEMPLATE_SUFFIX_LEN,
-  TEMPLATE_CHAR,
-} from "./constants";
+import { TEMPLATES, TEMPLATE_MASK } from "./constants";
 
 function isNumeric(value) {
   return /^\d+$/.test(value);
 }
 
 function isTemplateConform(code) {
-  return code && code.length === 13 && isNumeric(code);
+  if (!code || !isNumeric(code)) {
+    return false;
+  }
+
+  return TEMPLATES.some((t) => t.length === code.length);
 }
 
-function createTemplate(barcode) {
-  if (!barcode || barcode.length !== TEMPLATE_TOTAL_LEN) {
-    return barcode;
+function createTemplate(code) {
+  if (!isTemplateConform(code)) {
+    return code;
+  }
+
+  const template = TEMPLATES.find((t) => t.length === code.length);
+  if (!template) {
+    return code;
   }
 
   return (
-    barcode.slice(0, TEMPLATE_TOTAL_LEN - TEMPLATE_SUFFIX_LEN) +
-    TEMPLATE_CHAR.repeat(TEMPLATE_SUFFIX_LEN)
+    code.slice(0, template.begin) +
+    TEMPLATE_MASK.repeat(template.length - template.begin)
   );
 }
 
-function getPriceFromTemplate(barcode) {
-  if (!isTemplateConform(barcode)) {
+function getPriceFromTemplate(code) {
+  if (!isTemplateConform(code)) {
     return 0;
   }
 
-  const v = barcode.slice(
-    TEMPLATE_TOTAL_LEN - TEMPLATE_SUFFIX_LEN,
-    TEMPLATE_TOTAL_LEN - 1
-  );
+  const template = TEMPLATES.find((t) => t.length === code.length);
+  if (!template) {
+    return 0;
+  }
+
+  const v = code.slice(template.begin, template.end);
 
   return Number(v) / 100;
 }

@@ -43,10 +43,10 @@
       <div class="text-gray-700">ID oder Strichcode</div>
       <input
         class="input"
-        :class="{ disabled: editing }"
+        :class="{ disabled: idDisabled }"
         v-model="product.id"
         placeholder="Produkt ID"
-        :disabled="editing"
+        :disabled="idDisabled"
       />
     </label>
 
@@ -155,6 +155,7 @@ export default defineComponent({
       remove,
       save,
       saveDisabled,
+      idDisabled,
       templateEnabled,
       uploadImage,
     } = useProductEdit(options);
@@ -174,6 +175,7 @@ export default defineComponent({
       remove,
       save,
       saveDisabled,
+      idDisabled,
       templateEnabled,
       uploadImage,
     };

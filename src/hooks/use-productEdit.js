@@ -117,11 +117,17 @@ export default function({ editing = false, initialId = null }) {
     return utils.isTemplateConform(product.id);
   });
 
+  /*
   watch(product, (p) => {
-    if (!p.id || p.id.length !== 13) {
+    if(editing) {
+      return;
+    }
+
+    if (!utils.isTemplateConform(p.id)) {
       product.data.template = false;
     }
   });
+  */
 
   const onIdChangedHandler = useDebounce((v) => {
     exists.value = false;
@@ -212,6 +218,8 @@ export default function({ editing = false, initialId = null }) {
     product.data.imageRef = hash;
   };
 
+  const idDisabled = computed(() => editing || product.data.template);
+
   watch(image, (v, old) => {
     // console.log("image changed", v);
   });
@@ -233,6 +241,7 @@ export default function({ editing = false, initialId = null }) {
     remove,
     save,
     saveDisabled,
+    idDisabled,
     templateEnabled,
     uploadImage,
     uploadImageAsThumbnail,
