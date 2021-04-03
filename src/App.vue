@@ -1,13 +1,9 @@
 <template>
   <div class="wrapper">
     <div class="p-2 flex items-center">
-      <router-link to="/">Home</router-link>
-      <span class="mx-1">-</span>
-      <router-link to="/about">About</router-link>
-      <span class="mx-1">-</span>
-      <router-link to="/products">Products</router-link>
-      <span class="mx-1">-</span>
-      <router-link to="/widget-groups">Widgets</router-link>
+      <button @click="openMenu()">Menu</button>
+      <app-menu />
+
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -28,6 +24,30 @@
     </div>
   </div>
 </template>
+
+<script>
+import appMenu from "@/components/Menu.vue";
+import { useStore } from "vuex";
+
+export default {
+  components: {
+    appMenu,
+  },
+  setup() {
+    const store = useStore();
+
+    const closeMenu = () => {
+      store.dispatch("ui/closeMenu");
+    };
+
+    const openMenu = () => {
+      store.dispatch("ui/openMenu");
+    };
+
+    return { closeMenu, openMenu };
+  },
+};
+</script>
 
 <style lang="scss">
 #nav {

@@ -53,12 +53,12 @@ body {
 }
 
 html {
-  touch-action: none;
+  /*touch-action: none;*/
 }
 
 html,
 body {
-  overscroll-behavior: none;
+  /*overscroll-behavior: none;*/
 }
 
 /*

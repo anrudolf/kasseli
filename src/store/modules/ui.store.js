@@ -1,22 +1,30 @@
-// not used for now...
-
 const createInitialState = () => ({
-  routerViewKey: 0,
+  menu: false,
 });
 
 const initialState = createInitialState();
 
 const getters = {
-  routerViewKey: (state) => state.routerViewKey,
+  menu: (state) => state.menu,
 };
 
 const actions = {
   reset({ commit }) {
     commit("RESET");
   },
-  forceRouterViewRedraw({ commit }) {
-    console.log("forceRouterViewRedraw");
-    commit("INCREMENT_ROUTER_VIEW_KEY");
+  openMenu({ commit }) {
+    const nav = document.getElementById("myNav");
+    if (nav) {
+      nav.style.width = "100%";
+    }
+    commit("SET_MENU", true);
+  },
+  closeMenu({ commit }) {
+    const nav = document.getElementById("myNav");
+    if (nav) {
+      nav.style.width = "0%";
+    }
+    commit("SET_MENU", false);
   },
 };
 
@@ -24,9 +32,8 @@ const mutations = {
   RESET(state) {
     Object.assign(state, createInitialState());
   },
-  INCREMENT_ROUTER_VIEW_KEY(state) {
-    state.routerViewKey = state.routerViewKey + 1;
-    console.log("state.routerViewKey:", state.routerViewKey);
+  SET_MENU(state, menu) {
+    state.menu = menu;
   },
 };
 
