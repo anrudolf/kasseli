@@ -54,20 +54,7 @@
       v-if="!editing && exists"
       class="p-2 my-1 rounded bg-blue-100 flex items-center"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        class="w-6 h-6 inline"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
+      <app-icon icon="info" color="gray" />
       <span class="ml-2">Produkt existiert bereits</span>
       <router-link
         :to="`/products/edit?id=${id}`"
@@ -130,6 +117,7 @@ import appButtonDelete from "@/components/ButtonDelete.vue";
 import appButtonConfirm from "../components/ButtonConfirm.vue";
 import appModal from "../components/Modal.vue";
 import appImageSelector from "../components/ImageSelector.vue";
+import appIcon from "@/components/Icon.vue";
 
 import useProductEdit from "../hooks/use-productEdit.js";
 
@@ -140,6 +128,7 @@ export default defineComponent({
     appButtonConfirm,
     appModal,
     appImageSelector,
+    appIcon,
   },
   setup(props) {
     const editId = toRef(props, "editId");

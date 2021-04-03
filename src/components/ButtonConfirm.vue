@@ -1,5 +1,5 @@
 <template>
-  <button class="btn">
+  <button class="button-confirm">
     <slot></slot>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,10 +21,10 @@
 </template>
 
 <style scoped>
-.btn {
+.button-confirm {
   @apply py-2 px-4 rounded-md bg-gray-200 text-4xl border-solid border-8 border-gray-300;
 }
-.btn:disabled {
+.button-confirm:disabled {
   opacity: 0.6;
   cursor: default;
 }

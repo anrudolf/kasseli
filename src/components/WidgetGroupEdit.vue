@@ -106,8 +106,18 @@
     </label>
     <app-image-selector v-model="entity.data.imageRef" />
 
-    <div class="block">
-      <div class="text-gray-700">Widgets</div>
+    <div class="block mt-4">
+      <div class="flex justify-between items-center">
+        <span class="text-gray-700 text-lg">Widgets</span>
+        <button
+          @click="addModal = true"
+          class="btn btn-blue inline-flex items-center mr-1"
+        >
+          <app-icon icon="plus" class="w-5 h-5 mr-1" />
+          ADD
+        </button>
+      </div>
+
       <draggable
         v-model="entity.data.content"
         group="widgets"
@@ -130,20 +140,11 @@
       </draggable>
     </div>
 
-    <div></div>
-
     <div>
-      <button
-        @click="addModal = true"
-        class="rounded border border-blue-600 p-1"
+      <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
+        >Speichern</app-button-confirm
       >
-        ADD
-      </button>
     </div>
-
-    <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
-      >Speichern</app-button-confirm
-    >
     <div>{{ id }}</div>
     <div class="text-xs">
       <pre>{{ JSON.stringify(entity, null, "  ") }}</pre>

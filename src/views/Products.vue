@@ -3,23 +3,10 @@
     <div class="flex justify-between items-center mb-2">
       <h1>Products</h1>
       <router-link
-        class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded flex items-center"
+        class="btn btn-blue inline-flex items-center"
         to="/products/new"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          class="w-6 h-6 inline"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+        <app-icon icon="plus-circle" class="h-6 w-6" />
         <span class="ml-1">ADD PRODUCT</span>
       </router-link>
     </div>

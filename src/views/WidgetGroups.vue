@@ -3,9 +3,9 @@
     <h1>Widget Groups</h1>
     <router-link
       to="/widget-groups/new"
-      class="my-2 focus:outline-none text-white text-sm inline-block py-2.5 px-4 rounded-md bg-blue-500 hover:bg-blue-600 hover:shadow-lg"
+      class="btn btn-blue inline-flex items-center"
     >
-      <app-icon icon="plus" />
+      <app-icon icon="plus" class="w-5 h-5 mr-1" />
       ADD
     </router-link>
     <div v-for="entity in entities" :key="entity.id">
