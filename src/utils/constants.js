@@ -1,3 +1,5 @@
+// 'templates' are barcodes with embedded prices, such as for
+// weighted products like tomatoes, onions, apples
 export const TEMPLATE_MASK = "X";
 
 export const TEMPLATES = [

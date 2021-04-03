@@ -37,22 +37,7 @@ export default function({ editing = false, initialId = null }) {
       .then((doc) => {
         if (doc.exists) {
           product.id = doc.id;
-          //product.data = doc.data(); // reactivity is lost this way
-
-          const {
-            label,
-            price,
-            template,
-            created,
-            image,
-            imageRef,
-          } = doc.data();
-          product.data.label = label;
-          product.data.price = price;
-          product.data.template = template;
-          product.data.created = created;
-          product.data.image = image;
-          product.data.imageRef = imageRef || null;
+          product.data = { ...product.data, ...doc.data() };
         }
       });
   }
@@ -117,18 +102,6 @@ export default function({ editing = false, initialId = null }) {
     return utils.isTemplateConform(product.id);
   });
 
-  /*
-  watch(product, (p) => {
-    if(editing) {
-      return;
-    }
-
-    if (!utils.isTemplateConform(p.id)) {
-      product.data.template = false;
-    }
-  });
-  */
-
   const onIdChangedHandler = useDebounce((v) => {
     exists.value = false;
     if (!v) {
@@ -150,6 +123,9 @@ export default function({ editing = false, initialId = null }) {
       });
   }, 300);
 
+  /*
+    Not used, but left for legacy
+  */
   const uploadImage = async (file) => {
     const lastDot = file.name.lastIndexOf(".");
     const ext = file.name.substring(lastDot + 1);
@@ -175,6 +151,9 @@ export default function({ editing = false, initialId = null }) {
     });
   };
 
+  /*
+    Not used, but left for legacy
+  */
   const uploadImageAsThumbnail = async (file) => {
     loading.value = true;
     const reader = new FileReader();
