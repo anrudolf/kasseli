@@ -11,7 +11,7 @@
     >
 
     <!-- Overlay content -->
-    <div class="overlay-content" @click="closeMenu">
+    <div class="overlay-content uppercase" @click="closeMenu">
       <router-link to="/" :tabindex="tabindex">Home</router-link>
       <router-link to="/products" :tabindex="tabindex">Products</router-link>
       <router-link to="/widget-groups" :tabindex="tabindex"
@@ -56,11 +56,13 @@ export default {
   height: 100%;
   width: 0;
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 1000; /* Sit on top */
   left: 0;
   top: 0;
-  background-color: rgb(0, 0, 0); /* Black fallback color */
-  background-color: rgba(0, 0, 0, 0.9); /* Black w/opacity */
+  /*background-color: rgb(255, 102, 0);*/ /* Black fallback color */
+  /*background-color: rgba(255, 102, 0, 0.9);*/ /* Black w/opacity */
+  background-color: rgb(255, 255, 255); /* White fallback color */
+  /*background-color: rgba(255, 255, 255, 0.9);*/ /* White w/opacity */
   overflow-x: hidden; /* Disable horizontal scroll */
   transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
 }
@@ -79,7 +81,11 @@ export default {
   padding: 8px;
   text-decoration: none;
   font-size: 36px;
-  color: #818181;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  /*color: #818181;*/
+  color: rgba(51, 51, 51);
   display: block; /* Display block instead of inline */
   transition: 0.3s; /* Transition effects on hover (color) */
 }
@@ -87,7 +93,8 @@ export default {
 /* When you mouse over the navigation links, change their color */
 .overlay a:hover,
 .overlay a:focus {
-  color: #f1f1f1;
+  /*color: #f1f1f1;*/
+  color: rgba(255, 102, 0);
 }
 
 /* Position the close button (top right corner) */
