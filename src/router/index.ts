@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import store from "@/store";
-
 import Kasse from "../views/Kasse.vue";
 import Products from "../views/Products.vue";
 import ProductEdit from "../views/ProductEdit.vue";
@@ -70,11 +68,6 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-});
-
-router.beforeEach((to, from, next) => {
-  store.dispatch("ui/closeMenu");
-  next();
 });
 
 export default router;
