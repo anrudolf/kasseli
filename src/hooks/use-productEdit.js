@@ -44,9 +44,6 @@ export default function({ editing = false, initialId = null }) {
 
   const { id: rawProductId } = toRefs(product);
   const exists = ref(false);
-  const image = toRef(product.data, "image");
-  const template = toRef(product.data, "template");
-
   const loading = ref(false);
 
   const id = computed(() => {
@@ -61,6 +58,11 @@ export default function({ editing = false, initialId = null }) {
     if (!initialId) {
       product.data.created = Date.now();
     }
+
+    if (product.data.template) {
+      product.data.price = null;
+    }
+
     db.collection("products")
       .doc(id.value)
       .set(product.data);
@@ -198,16 +200,6 @@ export default function({ editing = false, initialId = null }) {
   };
 
   const idDisabled = computed(() => editing || product.data.template);
-
-  watch(image, (v, old) => {
-    // console.log("image changed", v);
-  });
-
-  watch(template, (v) => {
-    if (v) {
-      product.data.price = null;
-    }
-  });
 
   watch(id, (v, old) => {
     onIdChangedHandler(v);

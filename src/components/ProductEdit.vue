@@ -44,7 +44,8 @@
       <input
         class="input"
         :class="{ disabled: idDisabled }"
-        v-model="product.id"
+        :value="product.data.template ? id : product.id"
+        @input="(ev) => (product.id = ev.target.value)"
         placeholder="Produkt ID"
         :disabled="idDisabled"
       />
@@ -78,7 +79,8 @@
         :type="product.data.template ? 'text' : 'number'"
         class="input"
         :class="{ disabled: product.data.template }"
-        v-model.number="product.data.price"
+        :value="product.data.template ? '' : product.data.price"
+        @input="(ev) => (product.data.price = toNumber(ev.target.value))"
         :placeholder="product.data.template ? '(von Strichcode)' : '2.90'"
         :disabled="product.data.template"
       />
@@ -120,6 +122,8 @@ import appImageSelector from "../components/ImageSelector.vue";
 import appIcon from "@/components/Icon.vue";
 
 import useProductEdit from "../hooks/use-productEdit.js";
+
+import utils from "@/utils";
 
 export default defineComponent({
   props: ["editId", "newId", "editing"],
@@ -167,6 +171,8 @@ export default defineComponent({
       idDisabled,
       templateEnabled,
       uploadImage,
+      // utils
+      toNumber: utils.toNumber,
     };
   },
 });

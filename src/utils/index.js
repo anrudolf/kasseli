@@ -43,9 +43,15 @@ function getPriceFromTemplate(code) {
   return Number(v) / 100;
 }
 
+export function toNumber(val) {
+  const n = parseFloat(val);
+  return isNaN(n) ? val : n;
+}
+
 export default {
   isNumeric,
   isTemplateConform,
   getPriceFromTemplate,
   createTemplate,
+  toNumber,
 };
