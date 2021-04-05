@@ -1,4 +1,5 @@
 <template>
+  <app-money-bill />
   <div class="relative h-32 p-8">
     <h3>Basket</h3>
     <draggable
@@ -42,12 +43,16 @@
 
 <script>
 import { VueDraggableNext } from "vue-draggable-next";
+
+import appMoneyBill from "@/components/MoneyBill.vue";
+
 export default {
   name: "clone",
   display: "Clone",
   order: 2,
   components: {
     draggable: VueDraggableNext,
+    appMoneyBill,
   },
   data() {
     return {
