@@ -1,5 +1,6 @@
 <template>
-  <app-money-bill />
+  <app-money-bill :amount="20" />
+
   <div class="relative h-32 p-8">
     <h3>Basket</h3>
     <draggable
