@@ -1,6 +1,6 @@
 <template>
   <draggable
-    class="dragArea flex justify-center items-center relative h-48 w-48 border"
+    class="dragArea flex justify-center items-center relative h-48 w-full border"
     :list="list2"
     group="people"
     @change="log"
@@ -16,7 +16,7 @@
   </draggable>
 
   <draggable
-    class="dragArea flex items-start"
+    class="dragArea flex items-start justify-center"
     :list="list1"
     :group="{ name: 'people', pull: 'clone', put: false }"
     @change="log"

@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center bg-white">
-    <app-button-confirm @click="alert('pay')">Bezahlen</app-button-confirm>
+    <app-button-confirm @click="pay()">Bezahlen</app-button-confirm>
   </div>
 </template>
 
@@ -11,8 +11,8 @@ export default {
     appButtonConfirm,
   },
   methods: {
-    alert(v) {
-      window.alert(v);
+    pay() {
+      this.$router.push("/pay");
     },
   },
 };
