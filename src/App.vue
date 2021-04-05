@@ -1,23 +1,20 @@
 <template>
   <div class="wrapper">
-    <div class="p-2 flex items-center">
-      <button @click="openMenu()">Menu</button>
-      <app-menu />
-
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        class="ml-auto inline w-5 h-5"
+    <div class="p-2 flex justify-end items-center">
+      <button
+        @click="openMenu()"
+        class="inline-flex items-center mr-4"
+        tabindex="-1"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-        />
-      </svg>
+        Fullscreen
+        <app-icon icon="solid:arrows-expand" class="ml-1" />
+      </button>
+
+      <button @click="openMenu()" class="inline-flex items-center">
+        Menu <app-icon icon="menu" class="ml-1" />
+      </button>
+
+      <app-menu />
     </div>
     <div class="h-full">
       <router-view />
@@ -27,11 +24,14 @@
 
 <script>
 import appMenu from "@/components/Menu.vue";
+import appIcon from "@/components/Icon.vue";
+
 import { useStore } from "vuex";
 
 export default {
   components: {
     appMenu,
+    appIcon,
   },
   setup() {
     const store = useStore();

@@ -27,7 +27,7 @@
     fill="none"
     viewBox="0 0 24 24"
     :stroke="color"
-    class="w-5 h-5"
+    class="w-6 h-6"
   >
     <path
       stroke-linecap="round"
@@ -36,6 +36,7 @@
       d="M4 6h16M4 12h16M4 18h16"
     />
   </svg>
+
   <svg
     v-else-if="icon === 'arrow-narrow-up'"
     xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +130,37 @@
       fill-rule="evenodd"
       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
       clip-rule="evenodd"
+    />
+  </svg>
+  <svg
+    v-else-if="icon === 'outline:arrows-expand'"
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-6 w-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    :stroke="color"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+    />
+  </svg>
+
+  <svg
+    v-else-if="icon === 'solid:arrows-expand'"
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-5 w-5"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path
+      stroke="#374151"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M3 8V4m0 0h4M3 4l4 4m8 0V4m0 0h-4m4 0l-4 4m-8 4v4m0 0h4m-4 0l4-4m8 4l-4-4m4 4v-4m0 4h-4"
     />
   </svg>
   <svg

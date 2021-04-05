@@ -57,7 +57,7 @@ export default {
   width: 0;
   position: fixed; /* Stay in place */
   z-index: 1000; /* Sit on top */
-  left: 0;
+  right: 0;
   top: 0;
   /*background-color: rgb(255, 102, 0);*/ /* Black fallback color */
   /*background-color: rgba(255, 102, 0, 0.9);*/ /* Black w/opacity */

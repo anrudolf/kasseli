@@ -1,7 +1,7 @@
 <template>
   <div class="p-4" v-if="entity">
-    <h1>{{ entity.label.de }}</h1>
-    <div class="grid gap-y-4 grid-cols-2 md:grid-cols-4">
+    <app-button-back @click="back">Zurück</app-button-back>
+    <div class="mt-6 grid gap-y-4 grid-cols-2 md:grid-cols-4">
       <app-widget
         v-for="(widget, i) in entity.content"
         :key="i"
@@ -19,6 +19,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 import appWidget from "@/components/Widget.vue";
+import appButtonBack from "@/components/ButtonBack.vue";
 
 import firebase from "../firebaseInit";
 const db = firebase.firestore();
@@ -26,6 +27,7 @@ const db = firebase.firestore();
 export default {
   components: {
     appWidget,
+    appButtonBack,
   },
   props: {
     id: String,
@@ -51,7 +53,7 @@ export default {
       router.push("/");
     };
 
-    return { entity, add };
+    return { entity, add, back: () => router.push("/") };
   },
 };
 </script>
