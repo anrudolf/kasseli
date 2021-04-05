@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import Kasse from "../views/Kasse.vue";
+import PayCash from "../views/PayCash.vue";
+
 import Products from "../views/Products.vue";
 import ProductEdit from "../views/ProductEdit.vue";
 
@@ -13,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "kasse",
     component: Kasse,
+  },
+  {
+    path: "/pay",
+    name: "pay",
+    component: PayCash,
   },
   {
     path: "/products",
