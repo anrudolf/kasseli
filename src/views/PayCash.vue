@@ -1,29 +1,31 @@
 <template>
   <draggable
     class="dragArea flex justify-center items-center relative h-48 w-full border"
-    :list="list2"
-    group="people"
+    :list="counter"
+    group="cash"
     @change="log"
     item-key="name"
   >
     <app-money-bill
-      v-for="(element, i) in list2"
+      v-for="(element, i) in counter"
       :key="`${element.id}-${i}`"
       class="absolute p-3 inline-block m-1 w-20"
-      :style="{ transform: `rotate(${3 * i}deg)` }"
+      :style="{
+        transform: `translate(${i * 5}px, 0px) rotate(${4 * (i - 4)}deg)`,
+      }"
       :amount="element.id"
     />
   </draggable>
 
   <draggable
     class="dragArea flex items-start justify-center"
-    :list="list1"
-    :group="{ name: 'people', pull: 'clone', put: false }"
+    :list="wallet"
+    :group="{ name: 'cash', pull: 'clone', put: false }"
     @change="log"
     item-key="name"
   >
     <app-money-bill
-      v-for="element in list1"
+      v-for="element in wallet"
       :key="element.id"
       class="cursor-pointer m-2 inline-block w-24"
       :amount="element.id"
@@ -38,23 +40,19 @@ import { VueDraggableNext } from "vue-draggable-next";
 import appMoneyBill from "@/components/MoneyBill.vue";
 
 export default {
-  name: "clone",
-  display: "Clone",
-  order: 2,
   components: {
     draggable: VueDraggableNext,
     appMoneyBill,
   },
   data() {
     return {
-      list1: [
+      wallet: [
         { name: "10 CHF", id: 10 },
         { name: "20 CHF", id: 20 },
         { name: "50 CHF", id: 50 },
         { name: "100 CHF", id: 100 },
-        { name: "200 CHF", id: 200 },
       ],
-      list2: [],
+      counter: [],
     };
   },
   methods: {
@@ -62,7 +60,7 @@ export default {
       window.console.log(evt);
     },
     add(item) {
-      this.list2.push({ ...item });
+      this.counter.push({ ...item });
     },
   },
 };
