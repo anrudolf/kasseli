@@ -1,6 +1,10 @@
 <template>
+  <app-button-back class="ml-2" @click="$router.push('/')"
+    >Zurück</app-button-back
+  >
+
   <draggable
-    class="dragArea flex justify-center items-center relative h-48 w-full border"
+    class="my-4 dragArea flex justify-center items-center relative h-48 w-full border"
     :list="counter"
     group="cash"
     @change="log"
@@ -38,11 +42,13 @@
 import { VueDraggableNext } from "vue-draggable-next";
 
 import appMoneyBill from "@/components/MoneyBill.vue";
+import appButtonBack from "@/components/ButtonBack.vue";
 
 export default {
   components: {
     draggable: VueDraggableNext,
     appMoneyBill,
+    appButtonBack,
   },
   data() {
     return {
