@@ -77,6 +77,7 @@
       <div class="text-gray-700">Preis</div>
       <input
         :type="product.data.template ? 'text' : 'number'"
+        step="any"
         class="input"
         :class="{ disabled: product.data.template }"
         :value="product.data.template ? '' : product.data.price"
