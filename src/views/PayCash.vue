@@ -10,7 +10,7 @@
     @change="log"
     item-key="name"
   >
-    <app-money-bill
+    <app-money-note
       v-for="(element, i) in counter"
       :key="`${element.id}-${i}`"
       class="absolute p-3 inline-block m-1 w-20"
@@ -28,7 +28,7 @@
     @change="log"
     item-key="name"
   >
-    <app-money-bill
+    <app-money-note
       v-for="element in wallet"
       :key="element.id"
       class="cursor-pointer m-2 inline-block w-24"
@@ -41,13 +41,13 @@
 <script>
 import { VueDraggableNext } from "vue-draggable-next";
 
-import appMoneyBill from "@/components/MoneyBill.vue";
+import appMoneyNote from "@/components/MoneyNote.vue";
 import appButtonBack from "@/components/ButtonBack.vue";
 
 export default {
   components: {
     draggable: VueDraggableNext,
-    appMoneyBill,
+    appMoneyNote,
     appButtonBack,
   },
   data() {

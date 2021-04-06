@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     getImagePath() {
-      return require(`../assets/money/${this.currency}/${this.currency}_${this.amount}_${this.side}.jpg`);
+      return require(`../assets/money/${this.currency}/${this.currency}_note_${this.amount}_${this.side}.jpg`);
     },
   },
 };
