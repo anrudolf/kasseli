@@ -3,6 +3,7 @@
     v-if="product"
     :label="product.data.label.de"
     :imageRef="product.data.imageRef"
+    :contain="contain"
   />
 </template>
 
@@ -20,6 +21,7 @@ export default defineComponent({
   props: {
     type: String,
     widget: Object,
+    contain: Boolean,
   },
   setup(props) {
     const product = useFirestoreDocument(`products/${props.widget?.id}`);

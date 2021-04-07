@@ -8,6 +8,7 @@
         :type="widget.type"
         :widget="widget"
         @click="(ev) => add(widget.id)"
+        contain
       />
     </div>
   </div>

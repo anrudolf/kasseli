@@ -1,26 +1,13 @@
 <template>
-  <router-link class="inline-block w-48" v-if="to" :to="to">
+  <button class="inline-block w-48" @click="() => to && router.push(to)">
     <div
       class="h-48 w-48 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
     >
       <app-image-ref
         v-if="imageRef"
         :id="imageRef"
-        class="object-stretch h-40 w-48"
-      />
-      <div class="mt-auto mb-0.5">
-        {{ label }}
-      </div>
-    </div>
-  </router-link>
-  <button class="inline-block w-48" v-else>
-    <div
-      class="h-48 w-48 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
-    >
-      <app-image-ref
-        v-if="imageRef"
-        :id="imageRef"
-        class="object-stretch h-40 w-48"
+        class="h-40 w-48"
+        :class="{ 'object-contain': contain }"
       />
       <div class="mt-auto mb-0.5">
         {{ label }}
@@ -43,6 +30,7 @@ export default defineComponent({
     imageRef: String,
     label: String,
     to: [String, Object],
+    contain: Boolean,
   },
   setup() {
     const router = useRouter();
@@ -50,6 +38,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-</style>>
