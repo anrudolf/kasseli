@@ -68,8 +68,21 @@ export default {
 };
 </script>
 
+<style>
+@keyframes dingdong {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+</style>
+
 <style scoped>
 .wallet {
-  @apply cursor-pointer;
+  cursor: pointer;
+  animation: dingdong 1s infinite linear;
 }
 </style>

@@ -5,7 +5,7 @@
 
   <div class="p-4">
     <draggable
-      class="my-4 dragArea flex justify-center items-center relative h-48 w-full border-4 border-dashed"
+      class="my-4 dragArea flex justify-center items-center relative h-36 w-full border-4 border-dashed"
       :list="counter"
       :group="{ name: 'cash' }"
       :sort="false"
@@ -59,14 +59,14 @@
       <app-money-note
         v-for="element in notes"
         :key="element.id"
-        class="cursor-pointer m-2 inline-block w-24"
+        class="cursor-pointer m-2 inline-block w-16"
         :amount="element.id"
         @click="add(element)"
       />
     </draggable>
 
     <draggable
-      class="dragArea flex items-start justify-center"
+      class="dragArea flex flex-wrap items-start justify-center"
       :list="coins"
       :group="{ name: 'cash', pull: 'clone', put: false }"
       @change="log"
@@ -75,7 +75,7 @@
       <app-money-coin
         v-for="element in coins"
         :key="element.id"
-        class="cursor-pointer m-2 inline-block w-24"
+        class="cursor-pointer m-2 inline-block w-16"
         :amount="element.id"
         @click="add(element)"
       />
