@@ -22,7 +22,7 @@
 
 <style scoped>
 .button-confirm {
-  @apply py-2 px-4 rounded-md bg-gray-200 text-4xl border-solid border-8 border-gray-300;
+  @apply py-2 px-4 rounded-md bg-gray-200 text-xl md:text-4xl border-solid border-8 border-gray-300;
 }
 .button-confirm:disabled {
   opacity: 0.6;

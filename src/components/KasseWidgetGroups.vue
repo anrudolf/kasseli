@@ -41,6 +41,12 @@ export default defineComponent({
   grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
   grid-auto-rows: min-content;
 }
+
+@media (min-width: 768px) {
+  .my-wrapper {
+    grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  }
+}
 </style>>
 
 

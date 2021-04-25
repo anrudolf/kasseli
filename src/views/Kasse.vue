@@ -62,7 +62,7 @@ export default defineComponent({
 <style scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 12rem;
   grid-template-rows: 1fr 3rem 6rem 8rem;
   grid-gap: 0.5rem;
   grid-template-areas:
@@ -72,7 +72,7 @@ export default defineComponent({
     "anzahl anzahl bezahlen";
 }
 
-@media (min-width: 800px) {
+@media (min-width: 768px) {
   .wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr minmax(25rem, 1fr);
