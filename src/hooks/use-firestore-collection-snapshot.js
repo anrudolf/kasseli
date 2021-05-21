@@ -1,3 +1,5 @@
+import { onUnmounted } from "vue";
+
 import firebase from "../firebaseInit";
 const db = firebase.firestore();
 
@@ -12,5 +14,9 @@ export default function(
     return;
   }
 
-  db.collection(collection).onSnapshot(callback);
+  const unsubscribe = db.collection(collection).onSnapshot(callback);
+
+  onUnmounted(() => {
+    unsubscribe();
+  });
 }

@@ -6,7 +6,19 @@
       ADD
     </router-link>
     <ul>
-      <li v-for="till in tills" :key="till.id">{{ till.label.de }}</li>
+      <li
+        v-for="till in tills"
+        :key="till.id"
+        class="border p-2 mt-2 flex flex-col"
+      >
+        <h3>{{ till.label.de }}</h3>
+        <app-image-ref :id="till.imageRef" class="self-center" />
+        <router-link
+          :to="`/tills/edit?id=${till.id}`"
+          class="uppercase text-blue-500 self-end mr-1 mt-2"
+          >Edit</router-link
+        >
+      </li>
     </ul>
   </div>
 </template>
@@ -17,9 +29,14 @@ import { reactive, ref, computed, defineComponent } from "vue";
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
 import appIcon from "@/components/Icon.vue";
 
+import appImageRef from "@/components/ImageRef.vue";
+
+import { db } from "../utils/db";
+
 export default {
   components: {
     appIcon,
+    appImageRef,
   },
   setup() {
     const tills = ref([]);
