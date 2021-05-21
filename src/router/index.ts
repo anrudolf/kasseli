@@ -10,6 +10,9 @@ import WidgetGroups from "../views/WidgetGroups.vue";
 import WidgetGroup from "../views/WidgetGroup.vue";
 import WidgetGroupEdit from "../views/WidgetGroupEdit.vue";
 
+import Tills from "../views/Tills.vue";
+import TillEdit from "../views/TillEdit.vue";
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -59,6 +62,22 @@ const routes: Array<RouteRecordRaw> = [
     path: "/widget-groups/edit",
     name: "widget-groups-edit",
     component: WidgetGroupEdit,
+    props: (route) => ({ editId: route.query.id }),
+  },
+  {
+    path: "/tills",
+    name: "tills",
+    component: Tills,
+  },
+  {
+    path: "/tills/new",
+    name: "tills-new",
+    component: TillEdit,
+  },
+  {
+    path: "/tills/edit",
+    name: "tills-edit",
+    component: TillEdit,
     props: (route) => ({ editId: route.query.id }),
   },
   {

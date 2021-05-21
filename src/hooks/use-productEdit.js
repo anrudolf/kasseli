@@ -35,6 +35,7 @@ export default function({ editing = false, initialId = null }) {
       .doc(initialId)
       .get()
       .then((doc) => {
+        // TODO: use document from Vuex store to make it faster in offline mode
         if (doc.exists) {
           product.id = doc.id;
           product.data = { ...product.data, ...doc.data() };
