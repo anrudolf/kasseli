@@ -18,7 +18,7 @@ export default {
   setup(props) {
     const show = ref(false);
     const entity = props.id
-      ? useFirestoreDocument(`images/${props.id}`)
+      ? useFirestoreDocument(`images/${props.id}`, { source: "cache" })
       : ref(null);
 
     return { entity, show };

@@ -24,7 +24,9 @@ export default defineComponent({
     contain: Boolean,
   },
   setup(props) {
-    const product = useFirestoreDocument(`products/${props.widget?.id}`);
+    const product = useFirestoreDocument(`products/${props.widget?.id}`, {
+      source: "cache",
+    });
 
     return { product };
   },

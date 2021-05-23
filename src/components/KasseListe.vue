@@ -51,9 +51,11 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import appKasseListeItem from "@/components/KasseListeItem.vue";
 import appIcon from "@/components/Icon.vue";
+
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "KasseListe",
@@ -61,33 +63,37 @@ export default defineComponent({
     appKasseListeItem,
     appIcon,
   },
-  computed: {
-    offset() {
-      return this.$store.getters["kasse/offset"];
-    },
-    page() {
-      return this.$store.getters["kasse/page"];
-    },
-    pageSize() {
-      return this.$store.getters["kasse/pageSize"];
-    },
-    hasPrev() {
-      return this.$store.getters["kasse/hasPrev"];
-    },
-    hasNext() {
-      return this.$store.getters["kasse/hasNext"];
-    },
-    selectedIndexInPage() {
-      return this.$store.getters["kasse/selectedIndexInPage"];
-    },
-  },
-  methods: {
-    selectFromPage(i) {
-      this.$store.dispatch("kasse/selectFromPage", i);
-    },
-    getItem(i) {
-      return this.page[i];
-    },
+  setup() {
+    const store = useStore();
+
+    const offset = computed(() => store.getters["kasse/offset"]);
+    const page = computed(() => store.getters["kasse/page"]);
+    const pageSize = computed(() => store.getters["kasse/pageSize"]);
+    const hasPrev = computed(() => store.getters["kasse/hasPrev"]);
+    const hasNext = computed(() => store.getters["kasse/hasNext"]);
+    const selectedIndexInPage = computed(
+      () => store.getters["kasse/selectedIndexInPage"]
+    );
+
+    const selectFromPage = (i) => {
+      store.dispatch("kasse/selectFromPage", i);
+    };
+
+    const getItem = (i) => {
+      return page.value[i];
+    };
+
+    return {
+      offset,
+      page,
+      pageSize,
+      hasPrev,
+      hasNext,
+      selectedIndexInPage,
+      // functions
+      selectFromPage,
+      getItem,
+    };
   },
 });
 </script>
