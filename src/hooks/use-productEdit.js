@@ -1,9 +1,8 @@
-import { ref, reactive, computed, watch, toRefs, toRef } from "vue";
+import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
 import blobToHash from "blob-to-hash";
 import { v5 as uuidv5 } from "uuid";
-import md5 from "md5";
 
 import firebase from "../firebaseInit";
 
@@ -15,20 +14,20 @@ const db = firebase.firestore();
 export default function({ editing = false, initialId = null }) {
   const router = useRouter();
 
-  const product = reactive({
+  const entity = reactive({
     id: null,
-    data: {
-      label: {
-        de: null,
-        en: null,
-      },
-      price: null,
-      template: false,
-      created: null,
-      image: null,
-      imageRef: null,
+    label: {
+      de: null,
+      en: null,
     },
+    price: null,
+    template: false,
+    created: null,
+    image: null,
+    imageRef: null,
   });
+
+  let unmaskedId = "";
 
   if (initialId) {
     db.collection("products")
@@ -37,42 +36,38 @@ export default function({ editing = false, initialId = null }) {
       .then((doc) => {
         // TODO: use document from Vuex store to make it faster in offline mode
         if (doc.exists) {
-          product.id = doc.id;
-          product.data = { ...product.data, ...doc.data() };
+          const data = doc.data();
+          if (!data) {
+            return;
+          }
+          Object.assign(entity, { ...entity, ...data, id: doc.id });
         }
       });
   }
 
-  const { id: rawProductId } = toRefs(product);
   const exists = ref(false);
   const loading = ref(false);
 
-  const id = computed(() => {
-    if (product.data.template) {
-      return utils.createTemplate(rawProductId.value);
-    }
-
-    return rawProductId.value;
-  });
+  const { id, template } = toRefs(entity);
 
   const save = () => {
     if (!initialId) {
-      product.data.created = Date.now();
+      entity.created = Date.now();
     }
 
-    if (product.data.template) {
-      product.data.price = null;
+    if (entity.template) {
+      entity.price = null;
     }
 
     db.collection("products")
-      .doc(id.value)
-      .set(product.data);
+      .doc(entity.id)
+      .set(entity);
     router.push("/products");
   };
 
   const remove = () => {
     db.collection("products")
-      .doc(id.value)
+      .doc(entity.id)
       .delete();
     router.push("/products");
   };
@@ -86,15 +81,15 @@ export default function({ editing = false, initialId = null }) {
       return true;
     }
 
-    if (!product.id) {
+    if (!entity.id) {
       return true;
     }
 
-    if (!product.data.label.de) {
+    if (!entity.label.de) {
       return true;
     }
 
-    if (!product.data.template && typeof product.data.price !== "number") {
+    if (!entity.template && typeof entity.price !== "number") {
       return true;
     }
 
@@ -102,7 +97,12 @@ export default function({ editing = false, initialId = null }) {
   });
 
   const templateEnabled = computed(() => {
-    return utils.isTemplateConform(product.id);
+    // allow switching templates on-off when creating a new product
+    if (!editing && utils.isTemplate(entity.id)) {
+      return true;
+    }
+
+    return utils.isTemplateConform(entity.id);
   });
 
   const onIdChangedHandler = useDebounce((v) => {
@@ -145,7 +145,7 @@ export default function({ editing = false, initialId = null }) {
 
     const path = `${dir}/${filename}`;
     const thumbPath = `${dir}/thumb_${filename}`;
-    product.data.image = thumbPath; // thumbnail will be created through cloud function
+    entity.image = thumbPath; // thumbnail will be created through cloud function
 
     const root = firebase.storage().ref();
     const storageRef = root.child(path);
@@ -172,7 +172,7 @@ export default function({ editing = false, initialId = null }) {
         directory: "thumbnails",
       })
         .then((r) => {
-          product.data.image = r.data.url;
+          entity.image = r.data.url;
         })
         .catch((e) => {
           console.log(e);
@@ -187,28 +187,23 @@ export default function({ editing = false, initialId = null }) {
     };
   };
 
-  const saveImageRef = async (payload) => {
-    const hash = md5(payload);
-    db.collection("images")
-      .doc(hash)
-      .set({
-        id: hash,
-        type: "DATA_URL",
-        mediaType: "image/jpeg",
-        payload: payload,
-      });
-    product.data.imageRef = hash;
-  };
-
-  const idDisabled = computed(() => editing || product.data.template);
+  const idDisabled = computed(() => editing || entity.template);
 
   watch(id, (v, old) => {
     onIdChangedHandler(v);
   });
 
+  watch(template, (v, old) => {
+    if (v && !old) {
+      unmaskedId = entity.id;
+      entity.id = utils.createTemplate(entity.id);
+    } else {
+      entity.id = unmaskedId;
+    }
+  });
+
   return {
-    id,
-    product,
+    entity,
     exists,
     remove,
     save,
@@ -217,6 +212,5 @@ export default function({ editing = false, initialId = null }) {
     templateEnabled,
     uploadImage,
     uploadImageAsThumbnail,
-    saveImageRef,
   };
 }

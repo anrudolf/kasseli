@@ -44,7 +44,7 @@
       <input
         class="input"
         :class="{ disabled: idDisabled }"
-        :value="product.data.template ? id : product.id"
+        :value="product.id"
         @input="(ev) => (product.id = ev.target.value)"
         placeholder="Produkt ID"
         :disabled="idDisabled"
@@ -58,7 +58,7 @@
       <app-icon icon="info" color="gray" />
       <span class="ml-2">Produkt existiert bereits</span>
       <router-link
-        :to="`/products/edit?id=${id}`"
+        :to="`/products/edit?id=${product.id}`"
         class="ml-auto underline text-blue-500"
         >Editieren</router-link
       >
@@ -68,7 +68,7 @@
       <div class="text-gray-700">Label</div>
       <input
         class="input"
-        v-model="product.data.label.de"
+        v-model="product.label.de"
         placeholder="Produkt Name"
       />
     </label>
@@ -76,14 +76,14 @@
     <label class="block">
       <div class="text-gray-700">Preis</div>
       <input
-        :type="product.data.template ? 'text' : 'number'"
+        :type="product.template ? 'text' : 'number'"
         step="any"
         class="input"
-        :class="{ disabled: product.data.template }"
-        :value="product.data.template ? '' : product.data.price"
-        @input="(ev) => (product.data.price = toNumber(ev.target.value))"
-        :placeholder="product.data.template ? '(von Strichcode)' : '2.90'"
-        :disabled="product.data.template"
+        :class="{ disabled: product.template }"
+        :value="product.template ? '' : product.price"
+        @input="(ev) => (product.price = toNumber(ev.target.value))"
+        :placeholder="product.template ? '(von Strichcode)' : '2.90'"
+        :disabled="product.template"
       />
     </label>
 
@@ -91,7 +91,7 @@
       <input
         type="checkbox"
         class="form-checkbox"
-        v-model="product.data.template"
+        v-model="product.template"
         :disabled="editing"
       />
       <span class="ml-2 text-gray-700">Preis aus Strichcode berechnen</span>
@@ -100,12 +100,11 @@
     <label class="block">
       <div class="text-gray-700">Bild</div>
     </label>
-    <app-image-selector v-model="product.data.imageRef" />
+    <app-image-selector v-model="product.imageRef" />
 
     <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button-confirm
     >
-    <div>{{ id }}</div>
     <div class="text-xs">
       <pre>{{ JSON.stringify(product, null, "  ") }}</pre>
     </div>
@@ -143,8 +142,7 @@ export default defineComponent({
     const options = { editing: props.editing, initialId: editId.value };
 
     const {
-      id,
-      product,
+      entity: product,
       exists,
       remove,
       save,
@@ -163,7 +161,6 @@ export default defineComponent({
       deleteModal,
       deleteModalConfirmation,
       // product edit
-      id,
       product,
       exists,
       remove,

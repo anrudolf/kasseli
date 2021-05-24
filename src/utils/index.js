@@ -12,6 +12,30 @@ function isTemplateConform(code) {
   return TEMPLATES.some((t) => t.length === code.length);
 }
 
+function isTemplate(code) {
+  if (!code) {
+    return false;
+  }
+
+  const template = TEMPLATES.find((t) => t.length === code.length);
+  if (!template) {
+    return false;
+  }
+
+  const prefix = code.slice(0, template.begin);
+  const mask = code.slice(template.begin);
+
+  if (!isNumeric(prefix)) {
+    return false;
+  }
+
+  if (mask !== TEMPLATE_MASK.repeat(template.length - template.begin)) {
+    return false;
+  }
+
+  return true;
+}
+
 function createTemplate(code) {
   if (!isTemplateConform(code)) {
     return code;
@@ -50,6 +74,7 @@ export function toNumber(val) {
 
 export default {
   isNumeric,
+  isTemplate,
   isTemplateConform,
   getPriceFromTemplate,
   createTemplate,
