@@ -1,9 +1,6 @@
 <template>
   <transition name="fade">
-    <img
-      v-if="entity && entity.data && entity.data.payload"
-      :src="entity.data.payload"
-    />
+    <img v-if="entity && entity.payload" :src="entity.payload" />
   </transition>
 </template>
 

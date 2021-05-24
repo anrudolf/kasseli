@@ -1,6 +1,6 @@
 <template>
   <div v-if="product">
-    {{ product.data.label.de }}
+    {{ product.label.de }}
   </div>
 </template>
 

@@ -55,7 +55,6 @@ export default function(initialId = null) {
   }
 
   const id = toRef(entity, "id");
-  const image = toRef(entity.data, "image");
 
   const save = () => {
     if (!initialId) {
@@ -102,26 +101,7 @@ export default function(initialId = null) {
       });
   }, 700);
 
-  // deprecated
-  const uploadImage = async (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const createThumbnailFunction = firebase
-        .functions("europe-west1")
-        .httpsCallable("createThumbnail");
-
-      createThumbnailFunction({
-        filename: file.name,
-        base64image: reader.result,
-        directory: "thumbnails",
-      }).then((r) => {
-        entity.data.image = r.data.url;
-      });
-    };
-  };
-
-  watch(id, (v, old) => {
+  watch(id, (v) => {
     onIdChangedHandler(v);
   });
 
@@ -132,6 +112,5 @@ export default function(initialId = null) {
     remove,
     save,
     saveDisabled,
-    uploadImage,
   };
 }

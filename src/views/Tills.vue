@@ -24,14 +24,12 @@
 </template>
 
 <script>
-import { reactive, ref, computed, defineComponent } from "vue";
+import { ref } from "vue";
 
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
 import appIcon from "@/components/Icon.vue";
 
 import appImageRef from "@/components/ImageRef.vue";
-
-import { db } from "../utils/db";
 
 export default {
   components: {
@@ -44,7 +42,7 @@ export default {
     useFirestoreCollectionSnapshot("tills", function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
-        tmp.push({ id: doc.id, ...doc.data() });
+        tmp.push({ ...doc.data(), id: doc.id });
       });
       tills.value = [];
       tills.value.push(...tmp);

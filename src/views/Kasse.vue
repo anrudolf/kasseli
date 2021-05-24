@@ -48,7 +48,7 @@ export default defineComponent({
     useFirestoreCollectionSnapshot("widget-groups", function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
-        tmp.push({ id: doc.id, ...doc.data() });
+        tmp.push({ ...doc.data(), id: doc.id });
       });
       widgetGroups.value = [];
       widgetGroups.value.push(...tmp);

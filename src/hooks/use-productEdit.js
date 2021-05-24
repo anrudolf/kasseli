@@ -123,6 +123,7 @@ export default function({ editing = false, initialId = null }) {
       })
       .catch((e) => {
         exists.value = false;
+        console.error(e);
       });
   }, 300);
 
@@ -150,7 +151,7 @@ export default function({ editing = false, initialId = null }) {
     const root = firebase.storage().ref();
     const storageRef = root.child(path);
     storageRef.put(file).then((snapshot) => {
-      console.log("Uploaded a blob or file!");
+      console.log(`Uploaded a blob or file: ${snapshot.totalBytes} bytes`);
     });
   };
 
@@ -189,7 +190,7 @@ export default function({ editing = false, initialId = null }) {
 
   const idDisabled = computed(() => editing || entity.template);
 
-  watch(id, (v, old) => {
+  watch(id, (v) => {
     onIdChangedHandler(v);
   });
 

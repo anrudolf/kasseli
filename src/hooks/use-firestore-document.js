@@ -11,7 +11,7 @@ const fetch = async (path, options, entity) => {
     snapshot = await db.doc(path).get();
   }
 
-  entity.value = { id: snapshot.id, data: snapshot.data() };
+  entity.value = { ...snapshot.data(), id: snapshot.id };
 };
 
 export default function(path, options = { source: "default" }) {

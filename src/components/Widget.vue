@@ -1,8 +1,8 @@
 <template>
   <app-card
     v-if="product"
-    :label="product.data.label.de"
-    :imageRef="product.data.imageRef"
+    :label="product.label.de"
+    :imageRef="product.imageRef"
     :contain="contain"
   />
 </template>
@@ -24,9 +24,7 @@ export default defineComponent({
     contain: Boolean,
   },
   setup(props) {
-    const product = useFirestoreDocument(`products/${props.widget?.id}`, {
-      source: "cache",
-    });
+    const product = useFirestoreDocument(`products/${props.widget?.id}`);
 
     return { product };
   },

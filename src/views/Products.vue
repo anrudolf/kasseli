@@ -72,7 +72,7 @@ export default defineComponent({
     useFirestoreCollectionSnapshot("products", function (snapshot) {
       const tmp = [];
       snapshot.forEach(function (doc) {
-        tmp.push({ id: doc.id, ...doc.data() });
+        tmp.push({ ...doc.data(), id: doc.id });
       });
       products.value = [];
       products.value.push(...tmp);
