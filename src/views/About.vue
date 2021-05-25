@@ -24,10 +24,14 @@
       Current commit <span class="font-bold">{{ hash.substring(0, 6) }}</span>
     </p>
   </div>
+  <div v-show="false">
+    <button @click="getProduct">LOG</button>
+    {{ products }}
+  </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 //import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
 
 import firebase from "../firebaseInit";
@@ -36,12 +40,16 @@ const db = firebase.firestore();
 import fbapp from "firebase/app";
 fbapp.firestore.FieldPath.documentId();
 
+import { useProducts } from "../pinia/products";
+
 export default {
   components: {
     //appBarcodeStreamReader,
   },
   setup() {
     const bucket = firebase.options;
+    const productStore = useProducts();
+    productStore.init();
 
     db.collection("products")
       .where(fbapp.firestore.FieldPath.documentId(), "in", ["coolio"])
@@ -54,7 +62,12 @@ export default {
         });
       });
 
-    return { bucket };
+    const getProduct = () => {
+      const p = productStore.item("644824914886");
+      console.log(p);
+    };
+
+    return { bucket, products: computed(() => productStore.items), getProduct };
   },
   methods: {
     onDecode(val) {
@@ -65,9 +78,6 @@ export default {
     },
   },
   computed: {
-    products() {
-      return this.$store.getters["products/items"];
-    },
     kasse() {
       return this.$store.getters["kasse/items"];
     },

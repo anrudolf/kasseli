@@ -24,3 +24,11 @@ interface ImageRef {
   mediaType: string;
   payload: string;
 }
+interface Product {
+  id: string;
+  label: Label;
+  price: number | null;
+  template: boolean;
+  created: number | null;
+  imageRef: string | null;
+}

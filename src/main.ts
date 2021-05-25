@@ -7,7 +7,12 @@ import "./index.css";
 
 store.dispatch("products/init");
 
+import { createPinia } from "pinia";
+
+const pinia = createPinia();
+
 createApp(App)
   .use(store)
+  .use(pinia)
   .use(router)
   .mount("#app");
