@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 
+import { Product } from "@/types";
+
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 import utils from "../utils";
 

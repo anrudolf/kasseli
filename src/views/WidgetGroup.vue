@@ -15,6 +15,8 @@
 </template>
 
 <script lang="ts">
+import firebase from "firebase/app";
+
 import { defineComponent, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
@@ -23,8 +25,8 @@ import appButtonBack from "@/components/ButtonBack.vue";
 
 import useKasseStore from "@/pinia/kasse";
 
-import firebase from "../firebaseInit";
-const db = firebase.firestore();
+import fb from "../firebaseInit";
+const db = fb.firestore();
 
 export default defineComponent({
   components: {
@@ -39,14 +41,14 @@ export default defineComponent({
     const router = useRouter();
 
     const { id } = toRefs(props);
-    const entity = ref(null);
+    const entity = ref<firebase.firestore.DocumentData | null>(null);
 
     const documentPath = `/widget-groups/${id?.value}`;
 
     db.doc(documentPath)
       .get()
       .then((doc) => {
-        entity.value = doc.data();
+        entity.value = doc.data() as firebase.firestore.DocumentData;
       })
       .catch((e) => console.log(e));
 

@@ -1,18 +1,18 @@
 import "pinia";
 
-interface Label {
+export interface Label {
   de: string | null;
   en?: string | null;
 }
 
-interface TillCard {
+export interface TillCard {
   label: Label;
   imageRef: string | null;
   hidden: boolean;
   content: Array<{ id: string; type: string }>;
 }
 
-interface Till {
+export interface Till {
   id: string;
   label: Label;
   imageRef: string | null;
@@ -20,13 +20,13 @@ interface Till {
   cards: Array<TillCard>;
 }
 
-interface ImageRef {
+export interface ImageRef {
   id: string;
   type: string;
   mediaType: string;
   payload: string;
 }
-interface Product {
+export interface Product {
   id: string;
   label: Label;
   price: number | null;

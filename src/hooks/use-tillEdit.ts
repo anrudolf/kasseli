@@ -3,6 +3,8 @@ import { useRouter } from "vue-router";
 
 import { useDebounce } from "../hooks/use-debounce";
 
+import { Till } from "@/types";
+
 import { db } from "../utils/db";
 
 const DEFAULT_RETURN_ROUTE = "/tills";

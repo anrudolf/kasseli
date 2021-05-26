@@ -2,6 +2,8 @@ import firebase from "firebase/app";
 
 import instance from "../firebaseInit";
 
+import { Till, ImageRef } from "@/types";
+
 const fs = instance.firestore();
 
 const converter = <T>() => ({
