@@ -9,7 +9,7 @@ interface Item {
   price: number;
 }
 
-export const useStore = defineStore({
+export const useKasse = defineStore({
   id: "kasse",
   state: () => ({
     items: [] as Item[],
@@ -19,7 +19,6 @@ export const useStore = defineStore({
   }),
   getters: {
     selected: (state) => state.items[state.selectedIndex],
-    selectedIndex: (state) => state.selectedIndex,
     price: (state) => {
       return state.items
         .map((i) => i.quantity * i.price)
@@ -51,8 +50,6 @@ export const useStore = defineStore({
 
       return state.selectedIndex - begin;
     },
-    offset: (state) => state.offset,
-    pageSize: (state) => state.pageSize,
     hasPrev: (state) => {
       const maxOffset = Math.max(state.items.length - state.pageSize, 0);
       return state.offset < maxOffset;
