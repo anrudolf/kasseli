@@ -1,3 +1,5 @@
+import "pinia";
+
 interface Label {
   de: string | null;
   en?: string | null;

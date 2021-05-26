@@ -11,7 +11,6 @@ const store = defineStore({
       if (nav) {
         nav.style.width = "100%";
       }
-      console.log("setting menu = true");
       this.menu = true;
     },
     closeMenu() {
@@ -19,7 +18,6 @@ const store = defineStore({
       if (nav) {
         nav.style.width = "0%";
       }
-      console.log("setting menu = false");
       this.menu = false;
     },
   },

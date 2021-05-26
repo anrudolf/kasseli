@@ -31,7 +31,7 @@
     >
       <button
         class="my-1 rounded border-2 w-12 h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
-        @click="$store.dispatch('kasse/prev')"
+        @click="prev"
         :disabled="!hasPrev"
         :class="{ disabled: !hasPrev }"
       >
@@ -39,7 +39,7 @@
       </button>
       <button
         class="mt-6 rounded border-2 w-12 h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
-        @click="$store.dispatch('kasse/next')"
+        @click="next"
         :disabled="!hasNext"
         :class="{ disabled: !hasNext }"
       >
@@ -55,7 +55,7 @@ import { defineComponent, computed } from "vue";
 import appKasseListeItem from "@/components/KasseListeItem.vue";
 import appIcon from "@/components/Icon.vue";
 
-import { useStore } from "vuex";
+import useKasseStore from "@/pinia/kasse";
 
 export default defineComponent({
   name: "KasseListe",
@@ -64,19 +64,17 @@ export default defineComponent({
     appIcon,
   },
   setup() {
-    const store = useStore();
+    const store = useKasseStore();
 
-    const offset = computed(() => store.getters["kasse/offset"]);
-    const page = computed(() => store.getters["kasse/page"]);
-    const pageSize = computed(() => store.getters["kasse/pageSize"]);
-    const hasPrev = computed(() => store.getters["kasse/hasPrev"]);
-    const hasNext = computed(() => store.getters["kasse/hasNext"]);
-    const selectedIndexInPage = computed(
-      () => store.getters["kasse/selectedIndexInPage"]
-    );
+    const offset = computed(() => store.offset);
+    const page = computed(() => store.page);
+    const pageSize = computed(() => store.pageSize);
+    const hasPrev = computed(() => store.hasPrev);
+    const hasNext = computed(() => store.hasNext);
+    const selectedIndexInPage = computed(() => store.selectedIndexInPage);
 
     const selectFromPage = (i) => {
-      store.dispatch("kasse/selectFromPage", i);
+      store.selectFromPage(i);
     };
 
     const getItem = (i) => {
@@ -93,6 +91,8 @@ export default defineComponent({
       // functions
       selectFromPage,
       getItem,
+      next: store.next,
+      prev: store.prev,
     };
   },
 });

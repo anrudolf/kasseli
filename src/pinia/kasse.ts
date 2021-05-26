@@ -120,7 +120,7 @@ const store = defineStore({
       }
     },
     selectFromPage(i: number) {
-      if (this.page[i]) {
+      if (!this.page[i]) {
         return;
       }
 

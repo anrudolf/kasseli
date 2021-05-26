@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 //import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
 
 import firebase from "../firebaseInit";

@@ -19,7 +19,6 @@
         >Widgets</router-link
       >
       <router-link to="/about" :tabindex="tabindex">About</router-link>
-      {{ tabindex }}
     </div>
   </div>
 </template>

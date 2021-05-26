@@ -7,21 +7,27 @@
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    item() {
-      return this.$store.getters["kasse/selected"];
-    },
-    label() {
-      if (!this.item) {
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+
+import useKasseStore from "@/pinia/kasse";
+
+export default defineComponent({
+  setup() {
+    const store = useKasseStore();
+
+    const item = computed(() => store.selected);
+    const label = computed(() => {
+      if (!item.value) {
         return "";
       }
-      const label = this.item?.product?.label?.de;
+      const label = item.value.product.label.de;
       return label || "???";
-    },
+    });
+
+    return { item, label };
   },
-};
+});
 </script>
 
 <style scoped>

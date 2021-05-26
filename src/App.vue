@@ -26,7 +26,8 @@
 import appMenu from "@/components/Menu.vue";
 import appIcon from "@/components/Icon.vue";
 
-import useStore from "@/pinia/ui";
+import useUiStore from "@/pinia/ui";
+import useProductStore from "@/pinia/products";
 
 export default {
   components: {
@@ -34,9 +35,11 @@ export default {
     appIcon,
   },
   setup() {
-    const ui = useStore();
+    const uiStore = useUiStore();
+    const productStore = useProductStore();
+    productStore.init();
 
-    return { closeMenu: ui.closeMenu, openMenu: ui.openMenu };
+    return { closeMenu: uiStore.closeMenu, openMenu: uiStore.openMenu };
   },
 };
 </script>

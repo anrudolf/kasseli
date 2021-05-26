@@ -5,12 +5,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    price() {
-      return this.$store.getters["kasse/price"].toFixed(2);
-    },
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+
+import useKasseStore from "@/pinia/kasse";
+
+export default defineComponent({
+  setup() {
+    const store = useKasseStore();
+    return {
+      price: computed(() => store.price.toFixed(2)),
+    };
   },
-};
+});
 </script>

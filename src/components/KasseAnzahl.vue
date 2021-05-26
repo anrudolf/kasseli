@@ -33,28 +33,34 @@
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    selected() {
-      return this.$store.getters["kasse/selected"];
-    },
-    quantity() {
-      if (!this.selected) {
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+
+import useKasseStore from "@/pinia/kasse";
+
+export default defineComponent({
+  setup() {
+    const store = useKasseStore();
+
+    const selected = computed(() => store.selected);
+    const quantity = computed(() => {
+      if (!selected.value) {
         return "";
       }
-      return this.$store.getters["kasse/selected"].quantity;
-    },
+      return store.selected.quantity;
+    });
+
+    const add = () => selected.value && store.add(selected.value.code);
+    const remove = () => selected.value && store.remove();
+
+    return {
+      selected,
+      quantity,
+      add,
+      remove,
+    };
   },
-  methods: {
-    add() {
-      this.selected && this.$store.dispatch("kasse/add", this.selected.code);
-    },
-    remove() {
-      this.selected && this.$store.dispatch("kasse/remove", this.selected.code);
-    },
-  },
-};
+});
 </script>
 
 <style scoped>

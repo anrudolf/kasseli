@@ -23,9 +23,10 @@ import appKasseAktuell from "@/components/KasseAktuell.vue";
 import appKasseBezahlen from "@/components/KasseBezahlen.vue";
 
 import useScanner from "../hooks/use-scanner";
-import { useStore } from "vuex";
 
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
+
+import useKasseStore from "@/pinia/kasse";
 
 export default defineComponent({
   name: "Home",
@@ -38,11 +39,11 @@ export default defineComponent({
     appKasseBezahlen,
   },
   setup() {
-    const store = useStore();
+    const store = useKasseStore();
     const widgetGroups = ref([]);
 
     useScanner((code) => {
-      store.dispatch("kasse/add", code);
+      store.add(code);
     });
 
     useFirestoreCollectionSnapshot("widget-groups", function (snapshot) {

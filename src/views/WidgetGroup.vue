@@ -14,18 +14,19 @@
   </div>
 </template>
 
-<script>
-import { ref, toRefs } from "vue";
-import { useStore } from "vuex";
+<script lang="ts">
+import { defineComponent, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
 import appWidget from "@/components/Widget.vue";
 import appButtonBack from "@/components/ButtonBack.vue";
 
+import useKasseStore from "@/pinia/kasse";
+
 import firebase from "../firebaseInit";
 const db = firebase.firestore();
 
-export default {
+export default defineComponent({
   components: {
     appWidget,
     appButtonBack,
@@ -34,13 +35,13 @@ export default {
     id: String,
   },
   setup(props) {
-    const store = useStore();
+    const store = useKasseStore();
     const router = useRouter();
 
     const { id } = toRefs(props);
     const entity = ref(null);
 
-    const documentPath = `/widget-groups/${id.value}`;
+    const documentPath = `/widget-groups/${id?.value}`;
 
     db.doc(documentPath)
       .get()
@@ -50,11 +51,11 @@ export default {
       .catch((e) => console.log(e));
 
     const add = (code) => {
-      store.dispatch("kasse/add", code);
+      store.add(code);
       router.push("/");
     };
 
     return { entity, add, back: () => router.push("/") };
   },
-};
+});
 </script>
