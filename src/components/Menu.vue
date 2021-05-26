@@ -19,21 +19,22 @@
         >Widgets</router-link
       >
       <router-link to="/about" :tabindex="tabindex">About</router-link>
+      {{ tabindex }}
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from "vue";
-import { useStore } from "vuex";
+
+import useStore from "@/pinia/ui";
 
 export default {
   setup() {
-    const store = useStore();
+    const ui = useStore();
 
-    const menu = computed(() => store.getters["ui/menu"]);
     const tabindex = computed(() => {
-      if (menu.value) {
+      if (ui.menu) {
         return 0;
       }
 
@@ -41,9 +42,8 @@ export default {
     });
 
     return {
-      closeMenu: () => store.dispatch("ui/closeMenu"),
-      openMenu: () => store.dispatch("ui/openMenu"),
-      log: (s) => console.log(s),
+      closeMenu: ui.closeMenu,
+      openMenu: ui.openMenu,
       tabindex,
     };
   },

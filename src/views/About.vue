@@ -40,7 +40,7 @@ const db = firebase.firestore();
 import fbapp from "firebase/app";
 fbapp.firestore.FieldPath.documentId();
 
-import { useProducts } from "../pinia/products";
+import useProductStore from "../pinia/products";
 
 export default {
   components: {
@@ -48,7 +48,7 @@ export default {
   },
   setup() {
     const bucket = firebase.options;
-    const productStore = useProducts();
+    const productStore = useProductStore();
     productStore.init();
 
     db.collection("products")

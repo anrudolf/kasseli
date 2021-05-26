@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { useProducts } from "./products";
+import useProductStore from "./products";
 
 interface Item {
   code: string;
@@ -9,7 +9,7 @@ interface Item {
   price: number;
 }
 
-export const useKasse = defineStore({
+const store = defineStore({
   id: "kasse",
   state: () => ({
     items: [] as Item[],
@@ -58,7 +58,7 @@ export const useKasse = defineStore({
   },
   actions: {
     add(code: string) {
-      const products = useProducts();
+      const products = useProductStore();
 
       const product = products.item(code);
 
@@ -135,3 +135,5 @@ export const useKasse = defineStore({
     },
   },
 });
+
+export default store;

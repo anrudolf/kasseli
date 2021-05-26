@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 import utils from "../utils";
 
-export const useProducts = defineStore({
+const store = defineStore({
   id: "products",
   state: () => ({
     items: [] as Product[],
@@ -40,3 +40,5 @@ export const useProducts = defineStore({
     },
   },
 });
+
+export default store;

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const uiStore = defineStore({
+const store = defineStore({
   id: "ui",
   state: () => ({
     menu: false,
@@ -11,6 +11,7 @@ export const uiStore = defineStore({
       if (nav) {
         nav.style.width = "100%";
       }
+      console.log("setting menu = true");
       this.menu = true;
     },
     closeMenu() {
@@ -18,7 +19,10 @@ export const uiStore = defineStore({
       if (nav) {
         nav.style.width = "0%";
       }
+      console.log("setting menu = false");
       this.menu = false;
     },
   },
 });
+
+export default store;
