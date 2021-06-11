@@ -10,7 +10,7 @@
       <tr
         v-for="product in result"
         :key="product.id"
-        @click="$emit('selected', product.id)"
+        @click="() => selected(product.id)"
         class="cursor-pointer hover:bg-blue-100 border-b"
       >
         <td class="text-left">{{ product.label.de || product.id }}</td>
@@ -34,22 +34,27 @@
   </div>
 </template>
 
-<script>
-import { toRef, watch } from "vue";
+<script lang="ts">
+import { toRef, watch, defineComponent, PropType } from "vue";
 import { useRouter } from "vue-router";
 import { useArrayPagination } from "../hooks/use-arraypagination";
 
 import appSelect from "../components/Select.vue";
 
-export default {
+import { Product } from "@/types";
+
+export default defineComponent({
   emits: ["selected"],
   components: {
     appSelect,
   },
   props: {
-    products: { type: Array },
+    products: {
+      type: Object as PropType<Array<Product>>,
+      required: true,
+    },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const router = useRouter();
     const products = toRef(props, "products");
 
@@ -78,7 +83,15 @@ export default {
       currentPage.value = 1;
     });
 
+    const selected = (id) => {
+      currentPage.value = 1;
+      pageSize.value = pageSizeOptions[0].value;
+      emit("selected", id);
+    };
+
     return {
+      // product selector
+      selected,
       // pagination
       next,
       prev,
@@ -93,7 +106,7 @@ export default {
       router,
     };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -2,47 +2,49 @@
   <div class="my-2">
     <input class="input" placeholder="Suche" v-model="filter" />
   </div>
-  <app-product-list
-    :products="filtered"
-    @selected="(id) => $emit('selected', id)"
-  />
+  <app-product-list :products="filtered" @selected="(id) => selected(id)" />
 </template>
 
-<script>
-import { ref, computed } from "vue";
+<script lang="ts">
+import { ref, computed, defineComponent } from "vue";
 import appProductList from "../components/ProductList.vue";
 
-import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
+import useProductStore from "@/pinia/products";
 
-export default {
+export default defineComponent({
   emits: ["selected"],
   components: {
     appProductList,
   },
-  setup() {
-    const products = ref([]);
+  setup(props, { emit }) {
+    const store = useProductStore();
+
     const filter = ref("");
 
-    useFirestoreCollectionSnapshot("products", function (snapshot) {
-      const tmp = [];
-      snapshot.forEach(function (doc) {
-        tmp.push({ ...doc.data(), id: doc.id });
-      });
-      products.value = [];
-      products.value.push(...tmp);
-    });
+    const selected = (id) => {
+      emit("selected", id);
+      filter.value = "";
+    };
 
     const filtered = computed(() => {
-      return products.value.filter(
-        (p) =>
-          (p &&
-            !p.template &&
-            p.label.de.toLowerCase().includes(filter.value.toLowerCase())) ||
-          p.id === filter.value
-      );
+      return store.items.filter((p) => {
+        if (p.template) {
+          return false;
+        }
+
+        if (p.id === filter.value) {
+          return true;
+        }
+
+        if (p.label.de.toLowerCase().includes(filter.value.toLowerCase())) {
+          return true;
+        }
+
+        return false;
+      });
     });
 
-    return { filter, filtered };
+    return { filter, filtered, selected };
   },
-};
+});
 </script>

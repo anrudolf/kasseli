@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 
 import { useDebounce } from "../hooks/use-debounce";
 
-import { Till } from "@/types";
+import { Till, TillCatalog } from "@/types";
 
 import { db } from "../utils/db";
 
@@ -15,12 +15,12 @@ export default function({ editing = false, initialId = undefined }) {
   const entity: Till = reactive({
     id: "",
     label: {
-      de: null,
+      de: "",
       en: null,
     },
     imageRef: null,
     created: Date.now(),
-    cards: [],
+    catalogs: [],
   });
 
   const { id } = toRefs(entity);
@@ -77,6 +77,19 @@ export default function({ editing = false, initialId = undefined }) {
     return false;
   });
 
+  const addCatalog = () => {
+    const c: TillCatalog = {
+      label: {
+        de: "Neu",
+        en: null,
+      },
+      hidden: false,
+      imageRef: null,
+      content: [],
+    };
+    entity.catalogs.push(c);
+  };
+
   const onIdChangedHandler = useDebounce((v) => {
     exists.value = false;
     if (!v) {
@@ -113,5 +126,7 @@ export default function({ editing = false, initialId = undefined }) {
     idDisabled,
     remove,
     save,
+    // special functions
+    addCatalog,
   };
 }

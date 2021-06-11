@@ -1,11 +1,11 @@
 import "pinia";
 
 export interface Label {
-  de: string | null;
+  de: string;
   en?: string | null;
 }
 
-export interface TillCard {
+export interface TillCatalog {
   label: Label;
   imageRef: string | null;
   hidden: boolean;
@@ -17,7 +17,7 @@ export interface Till {
   label: Label;
   imageRef: string | null;
   created: number;
-  cards: Array<TillCard>;
+  catalogs: Array<TillCatalog>;
 }
 
 export interface ImageRef {

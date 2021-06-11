@@ -40,7 +40,7 @@
     </div>
 
     <label class="block">
-      <div class="text-gray-700">ID oder Strichcode</div>
+      <div class="text-gray-700">ID</div>
       <input
         class="input"
         :class="{ disabled: idDisabled }"
@@ -73,6 +73,23 @@
     </label>
     <app-image-selector v-model="entity.imageRef" />
 
+    <div class="flex justify-between items-center">
+      <span class="text-gray-700 text-lg">Catalogs</span>
+      <button
+        @click="addCatalog"
+        class="btn btn-blue inline-flex items-center mr-1"
+      >
+        <app-icon icon="plus" class="w-5 h-5 mr-1" />
+        ADD
+      </button>
+    </div>
+
+    <app-till-catalog-edit
+      v-for="(catalog, idx) in entity.catalogs"
+      :key="idx"
+      :entity="catalog"
+    />
+
     <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button-confirm
     >
@@ -84,14 +101,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, toRef, defineComponent } from "vue";
 
 import appButtonDelete from "@/components/ButtonDelete.vue";
 import appButtonConfirm from "../components/ButtonConfirm.vue";
 import appModal from "../components/Modal.vue";
-import appImageSelector from "../components/ImageSelector.vue";
 import appIcon from "@/components/Icon.vue";
+import appTillCatalogEdit from "@/components/TillCatalogEdit.vue";
+import appImageSelector from "../components/ImageSelector.vue";
 
 import useTillEdit from "../hooks/use-tillEdit";
 
@@ -103,8 +121,9 @@ export default defineComponent({
     appButtonDelete,
     appButtonConfirm,
     appModal,
-    appImageSelector,
     appIcon,
+    appTillCatalogEdit,
+    appImageSelector,
   },
   setup(props) {
     const editId = toRef(props, "editId");
@@ -121,6 +140,7 @@ export default defineComponent({
       save,
       saveDisabled,
       idDisabled,
+      addCatalog,
     } = useTillEdit(options);
 
     if (props.newId) {
@@ -141,6 +161,8 @@ export default defineComponent({
       idDisabled,
       // utils
       toNumber: utils.toNumber,
+      // special functions
+      addCatalog,
     };
   },
 });

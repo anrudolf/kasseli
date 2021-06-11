@@ -27,8 +27,8 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script lang="ts">
+import { ref, defineComponent } from "vue";
 import vueFilePond from "vue-filepond";
 import md5 from "md5";
 
@@ -45,17 +45,17 @@ import firebase from "../firebaseInit";
 const db = firebase.firestore();
 
 // Create component
-const FilePond = vueFilePond(
+const FilePond: any = vueFilePond(
   FilePondPluginImageResize,
   FilePondPluginImageTransform,
   FilePondPluginFileValidateType
 );
-export default {
+export default defineComponent({
   emits: ["update:modelValue"],
   components: {
-    FilePond,
     appImageRef,
     appButtonDelete,
+    FilePond,
   },
   props: {
     modelValue: {
@@ -95,7 +95,7 @@ export default {
       files,
     };
   },
-};
+});
 </script>
 
 <style scoped>
