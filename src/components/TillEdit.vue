@@ -73,31 +73,29 @@
     </label>
     <app-image-selector v-model="entity.imageRef" />
 
-    <div class="flex justify-between items-center">
-      <span class="text-gray-700 text-lg">Catalogs</span>
-      <button
-        @click="addCatalog"
-        class="btn btn-blue inline-flex items-center mr-1"
-      >
-        <app-icon icon="plus" class="w-5 h-5 mr-1" />
-        ADD
-      </button>
-    </div>
+    <section class="mt-2">
+      <h2 class="flex justify-between items-center text-gray-700 text-lg">
+        Catalogs
+        <button
+          @click="addCatalog"
+          class="btn btn-blue inline-flex items-center mr-1 text-base"
+        >
+          <app-icon icon="plus" class="w-5 h-5 mr-1" />
+          Catalog
+        </button>
+      </h2>
 
-    <app-till-catalog-edit
-      v-for="(catalog, idx) in entity.catalogs"
-      :key="idx"
-      :entity="catalog"
-    />
+      <app-till-catalog-edit
+        v-for="(catalog, idx) in entity.catalogs"
+        :key="idx"
+        :entity="catalog"
+        @remove="entity.catalogs.splice(idx, 1)"
+      />
+    </section>
 
     <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
       >Speichern</app-button-confirm
     >
-    <div>{{ id }}</div>
-    <div class="text-xs">
-      <pre>{{ JSON.stringify(entity, null, "  ") }}</pre>
-    </div>
-    <div v-if="false">editing {{ editing }}</div>
   </div>
 </template>
 

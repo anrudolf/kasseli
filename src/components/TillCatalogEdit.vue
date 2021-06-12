@@ -1,11 +1,44 @@
 <template>
-  <div class="p-4 max-w-lg">
+  <div class="p-2 mt-1 max-w-lg border">
     <app-modal :visible="addModal" @close="addModal = false">
       <template v-slot:title>Produkt auswählen</template>
       <app-product-selector @selected="addProduct" />
     </app-modal>
 
-    <div class="flex justify-between">
+    <app-modal :visible="deleteModal" @close="deleteModal = false">
+      <template v-slot:title>Katalog wirklich löschen?</template>
+      <div>
+        <div>Zum Bestätigen bitte Label eintippen und löschen klicken</div>
+        <label class="block">
+          <div class="text-gray-700">{{ entity.label.de }}</div>
+          <input
+            class="input"
+            :placeholder="entity.label.de"
+            v-model="deleteModalConfirmation"
+          />
+        </label>
+        <div class="mt-3 flex justify-between">
+          <button
+            :disabled="entity.label.de !== deleteModalConfirmation"
+            class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            @click="remove"
+          >
+            Löschen
+          </button>
+          <button
+            class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            @click="
+              deleteModalConfirmation = '';
+              deleteModal = false;
+            "
+          >
+            Abbrechen
+          </button>
+        </div>
+      </div>
+    </app-modal>
+
+    <div class="flex justify-end">
       <app-button-delete @click="deleteModal = true" />
     </div>
 
@@ -29,14 +62,14 @@
     <app-image-selector v-model="entity.imageRef" />
 
     <div class="block mt-4">
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-3">
         <span class="text-gray-700 text-lg">Produkte</span>
         <button
           @click="addModal = true"
-          class="btn btn-blue inline-flex items-center mr-1"
+          class="btn btn-green inline-flex items-center mr-1"
         >
           <app-icon icon="plus" class="w-5 h-5 mr-1" />
-          ADD
+          Product
         </button>
       </div>
 
@@ -60,10 +93,6 @@
           />
         </div>
       </draggable>
-    </div>
-
-    <div class="text-xs">
-      <pre>{{ JSON.stringify(entity, null, "  ") }}</pre>
     </div>
   </div>
 </template>
@@ -97,7 +126,7 @@ export default defineComponent({
     appCatalogListItem,
     draggable: VueDraggableNext,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const addModal = ref(false);
     const deleteModal = ref(false);
     const deleteModalConfirmation = ref("");
@@ -111,13 +140,20 @@ export default defineComponent({
       props.entity.content.splice(idx, 1);
     };
 
+    const remove = () => {
+      emit("remove");
+    };
+
     return {
       // modal
       addModal,
       deleteModal,
       deleteModalConfirmation,
+      // product
       addProduct,
       removeProduct,
+      // remove this catalog
+      remove,
     };
   },
 });

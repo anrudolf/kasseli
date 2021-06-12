@@ -52,6 +52,14 @@ body {
   @apply bg-blue-700;
 }
 
+.btn-green {
+  @apply bg-green-500 text-white;
+}
+
+.btn-green:hover {
+  @apply bg-green-700;
+}
+
 html {
   /*touch-action: none;*/
 }

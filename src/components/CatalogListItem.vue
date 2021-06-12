@@ -4,17 +4,34 @@
   </div>
 </template>
 
-<script>
-import useFirestoreDocument from "@/hooks/use-firestore-document";
-export default {
+<script lang="ts">
+import { ref, defineComponent } from "vue";
+
+import useProductStore from "@/pinia/products";
+import { Product } from "@/types";
+
+export default defineComponent({
   props: {
-    id: String,
-    type: String,
+    id: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
   },
   setup(props) {
-    const product = useFirestoreDocument(`products/${props.id}`);
+    const store = useProductStore();
+
+    const product = ref<Product | null>(null);
+
+    const found = store.item(props.id);
+    if (found) {
+      product.value = found;
+    }
 
     return { product };
   },
-};
+});
 </script>
