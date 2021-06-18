@@ -79,15 +79,16 @@ export default function({ editing = false, initialId = undefined }) {
 
   const addCatalog = () => {
     const c: TillCatalog = {
+      id: "",
       label: {
-        de: "Neu",
+        de: "",
         en: null,
       },
       hidden: false,
       imageRef: null,
       content: [],
     };
-    entity.catalogs.push(c);
+    entity.catalogs.splice(0, 0, c);
   };
 
   const onIdChangedHandler = useDebounce((v) => {

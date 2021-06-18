@@ -60,6 +60,10 @@ body {
   @apply bg-green-700;
 }
 
+.text-secondary {
+  @apply text-gray-500;
+}
+
 html {
   /*touch-action: none;*/
 }

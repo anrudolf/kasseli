@@ -73,15 +73,15 @@
     </label>
     <app-image-selector v-model="entity.imageRef" />
 
-    <section class="mt-2">
+    <section class="mt-4">
       <h2 class="flex justify-between items-center text-gray-700 text-lg">
-        Catalogs
+        Kataloge
         <button
           @click="addCatalog"
           class="btn btn-blue inline-flex items-center mr-1 text-base"
         >
           <app-icon icon="plus" class="w-5 h-5 mr-1" />
-          Catalog
+          Katalog
         </button>
       </h2>
 
@@ -89,7 +89,11 @@
         v-for="(catalog, idx) in entity.catalogs"
         :key="idx"
         :entity="catalog"
+        :idx="idx"
+        :size="entity.catalogs.length"
         @remove="entity.catalogs.splice(idx, 1)"
+        @move="(pos) => moveCatalog(idx, pos)"
+        class="my-4 border-4"
       />
     </section>
 
@@ -112,6 +116,7 @@ import appImageSelector from "../components/ImageSelector.vue";
 import useTillEdit from "../hooks/use-tillEdit";
 
 import utils from "@/utils";
+import arrayUtil from "@/utils/array";
 
 export default defineComponent({
   props: ["editId", "newId", "editing"],
@@ -145,6 +150,26 @@ export default defineComponent({
       entity.id = `${props.newId}`;
     }
 
+    const moveCatalog = (idx, pos) => {
+      console.log(`moveCatalog: ${idx}, ${pos}`);
+      switch (pos) {
+        case "up":
+          arrayUtil.moveDown(entity.catalogs, idx);
+          break;
+        case "top":
+          arrayUtil.moveBottom(entity.catalogs, idx);
+          break;
+        case "down":
+          arrayUtil.moveUp(entity.catalogs, idx);
+          break;
+        case "bottom":
+          arrayUtil.moveTop(entity.catalogs, idx);
+          break;
+        default:
+          break;
+      }
+    };
+
     return {
       // modal
       deleteModal,
@@ -161,6 +186,7 @@ export default defineComponent({
       toNumber: utils.toNumber,
       // special functions
       addCatalog,
+      moveCatalog,
     };
   },
 });

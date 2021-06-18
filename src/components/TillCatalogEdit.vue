@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 mt-1 max-w-lg border">
+  <div class="p-3 max-w-lg">
     <app-modal :visible="addModal" @close="addModal = false">
       <template v-slot:title>Produkt auswählen</template>
       <app-product-selector @selected="addProduct" />
@@ -8,18 +8,21 @@
     <app-modal :visible="deleteModal" @close="deleteModal = false">
       <template v-slot:title>Katalog wirklich löschen?</template>
       <div>
-        <div>Zum Bestätigen bitte Label eintippen und löschen klicken</div>
-        <label class="block">
-          <div class="text-gray-700">{{ entity.label.de }}</div>
-          <input
-            class="input"
-            :placeholder="entity.label.de"
-            v-model="deleteModalConfirmation"
-          />
-        </label>
+        <div v-if="entity.id">
+          <div>Zum Bestätigen bitte ID eintippen und löschen klicken</div>
+          <label class="block">
+            <div class="text-gray-700">{{ entity.id }}</div>
+            <input
+              class="input"
+              :placeholder="entity.id"
+              v-model="deleteModalConfirmation"
+            />
+          </label>
+        </div>
+
         <div class="mt-3 flex justify-between">
           <button
-            :disabled="entity.label.de !== deleteModalConfirmation"
+            :disabled="entity.id !== deleteModalConfirmation"
             class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
             @click="remove"
           >
@@ -38,17 +41,46 @@
       </div>
     </app-modal>
 
-    <div class="flex justify-end">
+    <div class="flex p-2 justify-between items-center">
+      <button
+        @click="emit('move', 'up')"
+        :disabled="idx === 0"
+        class="disabled:opacity-50"
+      >
+        <app-icon icon="chevron-up" />
+      </button>
+      <button
+        @click="emit('move', 'top')"
+        :disabled="idx === 0"
+        class="disabled:opacity-50"
+      >
+        <app-icon icon="chevron-double-up" />
+      </button>
+      <button
+        @click="emit('move', 'bottom')"
+        :disabled="idx === size - 1"
+        class="disabled:opacity-50"
+      >
+        <app-icon icon="chevron-double-down" />
+      </button>
+      <button
+        @click="emit('move', 'down')"
+        :disabled="idx === size - 1"
+        class="disabled:opacity-50"
+      >
+        <app-icon icon="chevron-down" />
+      </button>
       <app-button-delete @click="deleteModal = true" />
     </div>
 
     <label class="block">
+      <div class="text-gray-700">ID</div>
+      <input class="input" v-model="entity.id" placeholder="ID" />
+    </label>
+
+    <label class="block">
       <div class="text-gray-700">Label</div>
-      <input
-        class="input"
-        v-model="entity.label.de"
-        placeholder="Widget Group Name"
-      />
+      <input class="input" v-model="entity.label.de" placeholder="Label" />
     </label>
 
     <label class="flex items-center">
@@ -69,7 +101,7 @@
           class="btn btn-green inline-flex items-center mr-1"
         >
           <app-icon icon="plus" class="w-5 h-5 mr-1" />
-          Product
+          Produkt
         </button>
       </div>
 
@@ -78,6 +110,7 @@
         group="items"
         item-key="id"
         handle=".handle"
+        v-if="entity.content.length > 0"
       >
         <div
           class="bg-gray-100 hover:bg-gray-200 m-1 p-3 rounded-md flex items-center"
@@ -93,6 +126,7 @@
           />
         </div>
       </draggable>
+      <div v-else class="text-secondary">Noch keine Produkte</div>
     </div>
   </div>
 </template>
@@ -114,6 +148,14 @@ export default defineComponent({
   props: {
     entity: {
       type: Object as PropType<TillCatalog>,
+      required: true,
+    },
+    idx: {
+      type: Number,
+      required: true,
+    },
+    size: {
+      type: Number,
       required: true,
     },
   },
@@ -154,6 +196,8 @@ export default defineComponent({
       removeProduct,
       // remove this catalog
       remove,
+      // emit
+      emit,
     };
   },
 });

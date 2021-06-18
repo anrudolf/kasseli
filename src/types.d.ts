@@ -6,6 +6,7 @@ export interface Label {
 }
 
 export interface TillCatalog {
+  id: string;
   label: Label;
   imageRef: string | null;
   hidden: boolean;
