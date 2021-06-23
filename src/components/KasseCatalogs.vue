@@ -18,7 +18,7 @@ import { useRouter } from "vue-router";
 import appCard from "@/components/Card.vue";
 
 export default defineComponent({
-  name: "KasseWidgetGroups",
+  name: "KasseCatalogs",
   components: {
     appCard,
   },

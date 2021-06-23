@@ -1,10 +1,7 @@
 <template>
   <div class="wrapper h-full">
     <app-kasse-liste style="grid-area: liste" />
-    <app-kasse-widget-groups
-      style="grid-area: others"
-      :entities="widgetGroups"
-    />
+    <app-kasse-catalogs style="grid-area: others" :entities="catalogs" />
     <app-kasse-total style="grid-area: total" />
     <app-kasse-anzahl style="grid-area: anzahl" />
     <app-kasse-aktuell style="grid-area: aktuell" />
@@ -13,9 +10,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, computed } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
-import appKasseWidgetGroups from "@/components/KasseWidgetGroups.vue";
+import appKasseCatalogs from "@/components/KasseCatalogs.vue";
 
 import appKasseTotal from "@/components/KasseTotal.vue";
 import appKasseAnzahl from "@/components/KasseAnzahl.vue";
@@ -27,13 +24,11 @@ import useScanner from "../hooks/use-scanner";
 import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
 
-import { Till } from "@/types";
-
 export default defineComponent({
   name: "Home",
   components: {
     appKasseListe,
-    appKasseWidgetGroups,
+    appKasseCatalogs,
     appKasseTotal,
     appKasseAnzahl,
     appKasseAktuell,
@@ -47,7 +42,7 @@ export default defineComponent({
       kasseStore.add(code);
     });
 
-    return { widgetGroups: computed(() => tillStore.getDefault?.catalogs) };
+    return { catalogs: computed(() => tillStore.getDefault?.catalogs) };
   },
 });
 </script>

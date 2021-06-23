@@ -15,9 +15,6 @@
       <router-link to="/" :tabindex="tabindex">Home</router-link>
       <router-link to="/products" :tabindex="tabindex">Products</router-link>
       <router-link to="/tills" :tabindex="tabindex">Tills</router-link>
-      <router-link to="/widget-groups" :tabindex="tabindex"
-        >Widgets</router-link
-      >
       <router-link to="/about" :tabindex="tabindex">About</router-link>
     </div>
   </div>
