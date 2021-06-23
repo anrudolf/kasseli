@@ -9,7 +9,7 @@
 import { ref, computed, defineComponent } from "vue";
 import appProductList from "../components/ProductList.vue";
 
-import useProductStore from "@/pinia/products";
+import useProductStore from "@/store/products";
 
 export default defineComponent({
   emits: ["selected"],

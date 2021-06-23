@@ -12,8 +12,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
+<script lang="ts">
+import { defineComponent, ref, computed } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
 import appKasseWidgetGroups from "@/components/KasseWidgetGroups.vue";
 
@@ -24,9 +24,10 @@ import appKasseBezahlen from "@/components/KasseBezahlen.vue";
 
 import useScanner from "../hooks/use-scanner";
 
-import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
+import useKasseStore from "@/store/kasse";
+import useTillStore from "@/store/till";
 
-import useKasseStore from "@/pinia/kasse";
+import { Till } from "@/types";
 
 export default defineComponent({
   name: "Home",
@@ -39,23 +40,14 @@ export default defineComponent({
     appKasseBezahlen,
   },
   setup() {
-    const store = useKasseStore();
-    const widgetGroups = ref([]);
+    const kasseStore = useKasseStore();
+    const tillStore = useTillStore();
 
     useScanner((code) => {
-      store.add(code);
+      kasseStore.add(code);
     });
 
-    useFirestoreCollectionSnapshot("widget-groups", function (snapshot) {
-      const tmp = [];
-      snapshot.forEach(function (doc) {
-        tmp.push({ ...doc.data(), id: doc.id });
-      });
-      widgetGroups.value = [];
-      widgetGroups.value.push(...tmp);
-    });
-
-    return { widgetGroups };
+    return { widgetGroups: computed(() => tillStore.getDefault?.catalogs) };
   },
 });
 </script>

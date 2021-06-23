@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 
-import useKasseStore from "@/pinia/kasse";
+import useKasseStore from "@/store/kasse";
 
 export default defineComponent({
   setup() {

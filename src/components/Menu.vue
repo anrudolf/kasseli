@@ -26,11 +26,11 @@
 <script>
 import { computed } from "vue";
 
-import useStore from "@/pinia/ui";
+import useUiStore from "@/store/ui";
 
 export default {
   setup() {
-    const ui = useStore();
+    const ui = useUiStore();
 
     const tabindex = computed(() => {
       if (ui.menu) {

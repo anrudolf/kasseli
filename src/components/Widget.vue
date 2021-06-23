@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 import appCard from "../components/Card.vue";
 
-import useFirestoreDocument from "../hooks/use-firestore-document";
+import useProductStore from "@/store/products";
 
 export default defineComponent({
   name: "Widget",
@@ -20,11 +20,16 @@ export default defineComponent({
   },
   props: {
     type: String,
-    widget: Object,
+    widget: {
+      type: Object,
+      required: true,
+    },
     contain: Boolean,
   },
   setup(props) {
-    const product = useFirestoreDocument(`products/${props.widget?.id}`);
+    const productStore = useProductStore();
+
+    const product = computed(() => productStore.item(props.widget.id));
 
     return { product };
   },

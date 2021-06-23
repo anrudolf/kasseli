@@ -12,6 +12,7 @@ import WidgetGroupEdit from "../views/WidgetGroupEdit.vue";
 
 import Tills from "../views/Tills.vue";
 import TillEdit from "../views/TillEdit.vue";
+import TillCatalog from "../views/TillCatalog.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -63,6 +64,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "widget-groups-edit",
     component: WidgetGroupEdit,
     props: (route) => ({ editId: route.query.id }),
+  },
+  {
+    path: "/till-catalog",
+    name: "till-catalog",
+    component: TillCatalog,
+    props: (route) => ({ id: route.query.id }),
   },
   {
     path: "/tills",

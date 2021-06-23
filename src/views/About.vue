@@ -40,7 +40,7 @@ const db = firebase.firestore();
 import fbapp from "firebase/app";
 fbapp.firestore.FieldPath.documentId();
 
-import useProductStore from "../pinia/products";
+import useProductStore from "@/store/products";
 
 export default {
   components: {

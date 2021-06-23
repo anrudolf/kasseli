@@ -7,7 +7,7 @@
 <script lang="ts">
 import { ref, defineComponent } from "vue";
 
-import useProductStore from "@/pinia/products";
+import useProductStore from "@/store/products";
 import { Product } from "@/types";
 
 export default defineComponent({
