@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-300 kasse-liste-wrapper">
-    <div class="p-2" style="grid-area: header">
-      <h1 class="text-4xl text-center">Ihr Einkauf</h1>
+    <div class="p-2 flex justify-center items-center" style="grid-area: header">
+      <h1 class="md:text-4xl">Ihr Einkauf</h1>
     </div>
     <ul
       style="grid-area: list"
@@ -126,8 +126,8 @@ li.odd:nth-child(even) {
 
 .kasse-liste-wrapper {
   display: grid;
-  grid-template-rows: 3.5rem 1fr 1rem;
-  grid-template-columns: 1fr 5rem;
+  grid-template-rows: 2.5rem 1fr 1rem;
+  grid-template-columns: 1fr 3rem;
   grid-gap: 0rem;
   grid-template-areas:
     "header header"
@@ -140,6 +140,19 @@ li.odd:nth-child(even) {
   display: grid;
   grid-template-columns: 1fr;
   /*grid-template-rows: repeat(3, 1fr);*/
+}
+
+@media (min-width: 640px) {
+  .kasse-liste-wrapper {
+    display: grid;
+    grid-template-rows: 3.5rem 1fr 1rem;
+    grid-template-columns: 1fr 5rem;
+    grid-gap: 0rem;
+    grid-template-areas:
+      "header header"
+      "list sidebar"
+      "footer footer";
+  }
 }
 
 .disabled {
