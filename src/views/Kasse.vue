@@ -50,9 +50,9 @@ export default defineComponent({
 <style scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr 64px;
+  grid-template-columns: 1fr 1fr 96px;
   grid-template-rows: 1fr 2rem 6rem 8rem;
-  grid-gap: 0.5rem;
+  grid-gap: 0.25rem;
   grid-template-areas:
     "liste liste others"
     "total total total"
@@ -63,7 +63,7 @@ export default defineComponent({
 @media (min-width: 640px) {
   .wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr minmax(25rem, 1fr);
+    grid-template-columns: 1fr 1fr minmax(16rem, 1fr);
     grid-template-rows: 1fr 3rem 8rem;
     grid-gap: 0.5rem;
     grid-template-areas:

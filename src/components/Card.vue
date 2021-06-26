@@ -1,18 +1,18 @@
 <template>
   <button
-    class="inline-block w-32 md:w-48"
+    class="inline-block w-20 sm:w-40"
     @click="() => to && router.push(to)"
   >
     <div
-      class="w-32 md:w-48 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
+      class="w-20 sm:w-40 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
     >
       <app-image-ref
         v-if="imageRef"
         :id="imageRef"
-        class="h-28 w-32 md:h-40 md:w-48 flex-shrink-0"
+        class="h-20 w-20 sm:h-40 sm:w-40 flex-shrink-0"
         :class="{ 'object-contain': contain }"
       />
-      <div class="h-6 flex flex-col justify-center">
+      <div class="h-6 flex flex-col justify-center text-xs sm:text-base">
         {{ label }}
       </div>
     </div>

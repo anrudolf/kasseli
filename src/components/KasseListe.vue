@@ -30,7 +30,7 @@
       class="flex flex-col items-center mr-2 bg-white"
     >
       <button
-        class="my-1 rounded border-2 w-12 h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
+        class="my-1 rounded border-2 w-8 h-8 sm:w-12 sm:h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
         @click="prev"
         :disabled="!hasPrev"
         :class="{ disabled: !hasPrev }"
@@ -38,7 +38,7 @@
         <app-icon icon="arrow-page-up" color="gray" />
       </button>
       <button
-        class="mt-6 rounded border-2 w-12 h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
+        class="mt-6 rounded border-2 w-8 h-8 sm:w-12 sm:h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
         @click="next"
         :disabled="!hasNext"
         :class="{ disabled: !hasNext }"

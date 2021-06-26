@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-300 p-2 flex flex-col text-center">
+  <div class="bg-gray-300 p-2 pt-0 sm:pt-2 flex flex-col text-center">
     <div class="label">Anzahl</div>
     <div class="flex-1 px-2 bg-white flex justify-between items-center">
       <button class="btn text-red-600" @click="remove">
@@ -69,7 +69,7 @@ export default defineComponent({
 }
 
 .label {
-  @apply h-8 text-xl font-medium;
+  @apply h-6 sm:h-8 text-lg sm:text-xl font-medium;
 }
 </style>
 
