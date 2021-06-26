@@ -1,18 +1,42 @@
 <template>
   <button
-    class="inline-block w-20 sm:w-40"
+    class="inline-block"
     @click="() => to && router.push(to)"
+    :class="{
+      'w-20': responsive,
+      'sm:w-40': responsive,
+      'w-40': !responsive,
+    }"
   >
     <div
-      class="w-20 sm:w-40 text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
+      class="text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
+      :class="{
+        'w-20': responsive,
+        'sm:w-40': responsive,
+        'w-40': !responsive,
+      }"
     >
       <app-image-ref
         v-if="imageRef"
         :id="imageRef"
-        class="h-20 w-20 sm:h-40 sm:w-40 flex-shrink-0"
-        :class="{ 'object-contain': contain }"
+        class="flex-shrink-0"
+        :class="{
+          'object-contain': contain,
+          'sm:h-40': responsive,
+          'sm:w-40': responsive,
+          'h-20': responsive,
+          'w-20': responsive,
+          'h-40': !responsive,
+          'w-40': !responsive,
+        }"
       />
-      <div class="h-6 flex flex-col justify-center text-xs sm:text-base">
+      <div
+        class="h-6 flex flex-col justify-center"
+        :class="{
+          'text-xs': responsive,
+          'sm:text-base': responsive,
+        }"
+      >
         {{ label }}
       </div>
     </div>
@@ -34,6 +58,7 @@ export default defineComponent({
     label: String,
     to: [String, Object],
     contain: Boolean,
+    responsive: Boolean,
   },
   setup() {
     const router = useRouter();

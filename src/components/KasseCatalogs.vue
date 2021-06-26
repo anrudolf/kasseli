@@ -6,6 +6,7 @@
         :label="entity.label.de"
         :imageRef="entity.imageRef"
         @click="(ev) => router.push(`/till-catalog?id=${entity.id}`)"
+        responsive
       />
     </template>
   </div>
