@@ -91,8 +91,8 @@ export default defineComponent({
       // functions
       selectFromPage,
       getItem,
-      next: store.next,
-      prev: store.prev,
+      next: () => store.next(),
+      prev: () => store.prev(),
     };
   },
 });
