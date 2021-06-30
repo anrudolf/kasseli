@@ -135,11 +135,9 @@ li.odd:nth-child(even) {
     "footer footer";
 }
 
-/* TODO: dynamic on pageSize */
 .kasse-liste-list-wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  /*grid-template-rows: repeat(3, 1fr);*/
 }
 
 @media (min-width: 640px) {

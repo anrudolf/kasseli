@@ -4,7 +4,9 @@
     :class="{ selected: selected, 'bg-gray-500': selected }"
   >
     <div class="w-12 mr-4 text-right">{{ quantity }}x</div>
-    <div class="flex-grow">{{ label }}</div>
+    <div class="w-0 flex-grow truncate">
+      {{ label }}
+    </div>
     <div class="mr-4">{{ `${(quantity * price).toFixed(2)}` }}</div>
   </div>
 </template>
