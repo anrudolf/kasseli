@@ -1,14 +1,16 @@
 <template>
-  <div class="my-wrapper">
-    <template v-for="entity in entities" :key="entity.id">
-      <app-card
-        v-if="!entity.hidden"
-        :label="entity.label.de"
-        :imageRef="entity.imageRef"
-        @click="(ev) => router.push(`/till-catalog?id=${entity.id}`)"
-        responsive
-      />
-    </template>
+  <div class="relative overflow-y-auto">
+    <div class="my-wrapper absolute w-full">
+      <template v-for="entity in entities" :key="entity.id">
+        <app-card
+          v-if="!entity.hidden"
+          :label="entity.label.de"
+          :imageRef="entity.imageRef"
+          @click="(ev) => router.push(`/till-catalog?id=${entity.id}`)"
+          responsive
+        />
+      </template>
+    </div>
   </div>
 </template>
 
