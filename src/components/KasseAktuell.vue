@@ -1,8 +1,10 @@
 <template>
   <div class="bg-gray-300 p-2 pt-0 sm:pt-2 flex flex-col text-center">
     <div class="label">Aktueller Artikel</div>
-    <div class="flex-1 px-2 bg-white flex justify-center items-center">
-      <span class="text-3xl">{{ label }}</span>
+    <div class="relative flex-1 bg-white flex justify-center items-center">
+      <div class="w-full absolute truncate text-3xl">
+        {{ label }}
+      </div>
     </div>
   </div>
 </template>
