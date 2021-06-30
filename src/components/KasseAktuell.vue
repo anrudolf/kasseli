@@ -2,7 +2,9 @@
   <div class="bg-gray-300 p-2 pt-0 sm:pt-2 flex flex-col text-center">
     <div class="label">Aktueller Artikel</div>
     <div class="relative flex-1 bg-white flex justify-center items-center">
-      <div class="w-full absolute truncate text-3xl">
+      <div
+        class="w-full px-2 absolute truncate text-xl sm:text-2xl md:text-3xl"
+      >
         {{ label }}
       </div>
     </div>
