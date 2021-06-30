@@ -51,13 +51,14 @@ export default defineComponent({
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr 96px;
-  grid-template-rows: 1fr 2rem 5rem 7rem;
+  grid-template-rows: 1fr 2rem 5rem 7rem 5rem;
   grid-gap: 0.25rem;
   grid-template-areas:
     "liste liste others"
     "total total total"
     "aktuell aktuell aktuell"
-    "anzahl anzahl bezahlen";
+    "anzahl anzahl anzahl"
+    "bezahlen bezahlen bezahlen";
 }
 
 @media (min-width: 640px) {

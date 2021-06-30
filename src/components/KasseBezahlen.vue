@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center bg-white">
-    <app-button-confirm @click="pay()"
-      ><span class="hidden sm:inline">Bezahlen</span></app-button-confirm
+    <app-button-confirm @click="pay()" class="w-full sm:w-auto"
+      >Bezahlen</app-button-confirm
     >
   </div>
 </template>

@@ -39,13 +39,13 @@ export default defineComponent({
 .my-wrapper {
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
   grid-auto-rows: min-content;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .my-wrapper {
-    grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   }
 }
 </style>>
