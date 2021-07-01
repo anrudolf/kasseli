@@ -65,7 +65,7 @@ export default defineComponent({
 
 <style scoped>
 .btn {
-  @apply w-16 p-2 rounded-md bg-gray-200 text-4xl;
+  @apply w-16 h-16 p-2 rounded-md bg-gray-200 text-4xl;
 }
 
 .label {
