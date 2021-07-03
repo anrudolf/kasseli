@@ -5,12 +5,19 @@ export interface Label {
   en?: string | null;
 }
 
+export interface TillProduct {
+  kind: "product";
+  id: string;
+  hidden: boolean;
+}
+
 export interface TillCatalog {
+  kind: "catalog";
   id: string;
   label: Label;
   imageRef: string | null;
   hidden: boolean;
-  content: Array<{ id: string; type: string }>;
+  content: Array<{ id: string; kind: string }>;
 }
 
 export interface Till {
@@ -18,7 +25,7 @@ export interface Till {
   label: Label;
   imageRef: string | null;
   created: number;
-  catalogs: Array<TillCatalog>;
+  favorites: Array<TillCatalog | TillProduct>;
 }
 
 export interface ImageRef {

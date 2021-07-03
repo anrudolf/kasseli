@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper h-full">
     <app-kasse-liste style="grid-area: liste" />
-    <app-kasse-catalogs style="grid-area: others" :entities="catalogs" />
+    <app-kasse-favorites style="grid-area: others" :entities="favorites" />
     <app-kasse-total style="grid-area: total" />
     <app-kasse-anzahl style="grid-area: anzahl" />
     <app-kasse-aktuell style="grid-area: aktuell" />
@@ -12,7 +12,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import appKasseListe from "@/components/KasseListe.vue";
-import appKasseCatalogs from "@/components/KasseCatalogs.vue";
+import appKasseFavorites from "@/components/KasseFavorites.vue";
 
 import appKasseTotal from "@/components/KasseTotal.vue";
 import appKasseAnzahl from "@/components/KasseAnzahl.vue";
@@ -28,7 +28,7 @@ export default defineComponent({
   name: "Home",
   components: {
     appKasseListe,
-    appKasseCatalogs,
+    appKasseFavorites,
     appKasseTotal,
     appKasseAnzahl,
     appKasseAktuell,
@@ -42,7 +42,7 @@ export default defineComponent({
       kasseStore.add(code);
     });
 
-    return { catalogs: computed(() => tillStore.getDefault?.catalogs) };
+    return { favorites: computed(() => tillStore.getDefault?.favorites) };
   },
 });
 </script>

@@ -75,26 +75,36 @@
 
     <section class="mt-4">
       <h2 class="flex justify-between items-center text-gray-700 text-lg">
-        Kataloge
-        <button
-          @click="addCatalog"
-          class="btn btn-blue inline-flex items-center mr-1 text-base"
-        >
-          <app-icon icon="plus" class="w-5 h-5 mr-1" />
-          Katalog
-        </button>
+        Favoriten
+        <div>
+          <button
+            @click="addCatalog"
+            class="btn btn-blue inline-flex items-center mr-1 text-base"
+          >
+            <app-icon icon="plus" class="w-5 h-5 mr-1" />
+            Katalog
+          </button>
+          <button
+            @click="addProduct"
+            class="btn btn-blue inline-flex items-center mr-1 text-base"
+          >
+            <app-icon icon="plus" class="w-5 h-5 mr-1" />
+            Produkt
+          </button>
+        </div>
       </h2>
 
-      <app-till-catalog-edit
-        v-for="(catalog, idx) in entity.catalogs"
-        :key="idx"
-        :entity="catalog"
-        :idx="idx"
-        :size="entity.catalogs.length"
-        @remove="entity.catalogs.splice(idx, 1)"
-        @move="(pos) => moveCatalog(idx, pos)"
-        class="my-4 border-4"
-      />
+      <div v-for="(favorite, idx) in entity.favorites" :key="idx">
+        <component
+          :is="`app-till-${favorite.kind}-edit`"
+          :entity="favorite"
+          :idx="idx"
+          :size="entity.favorites.length"
+          @remove="entity.favorites.splice(idx, 1)"
+          @move="(pos) => moveFavorite(idx, pos)"
+          class="my-4 border-4"
+        />
+      </div>
     </section>
 
     <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
@@ -111,6 +121,8 @@ import appButtonConfirm from "../components/ButtonConfirm.vue";
 import appModal from "../components/Modal.vue";
 import appIcon from "@/components/Icon.vue";
 import appTillCatalogEdit from "@/components/TillCatalogEdit.vue";
+import appTillProductEdit from "@/components/TillProductEdit.vue";
+
 import appImageSelector from "../components/ImageSelector.vue";
 
 import useTillEdit from "../hooks/use-tillEdit";
@@ -126,6 +138,7 @@ export default defineComponent({
     appModal,
     appIcon,
     appTillCatalogEdit,
+    appTillProductEdit,
     appImageSelector,
   },
   setup(props) {
@@ -144,26 +157,26 @@ export default defineComponent({
       saveDisabled,
       idDisabled,
       addCatalog,
+      addProduct,
     } = useTillEdit(options);
 
     if (props.newId) {
       entity.id = `${props.newId}`;
     }
 
-    const moveCatalog = (idx, pos) => {
-      console.log(`moveCatalog: ${idx}, ${pos}`);
+    const moveFavorite = (idx, pos) => {
       switch (pos) {
         case "up":
-          arrayUtil.moveDown(entity.catalogs, idx);
+          arrayUtil.moveDown(entity.favorites, idx);
           break;
         case "top":
-          arrayUtil.moveBottom(entity.catalogs, idx);
+          arrayUtil.moveBottom(entity.favorites, idx);
           break;
         case "down":
-          arrayUtil.moveUp(entity.catalogs, idx);
+          arrayUtil.moveUp(entity.favorites, idx);
           break;
         case "bottom":
-          arrayUtil.moveTop(entity.catalogs, idx);
+          arrayUtil.moveTop(entity.favorites, idx);
           break;
         default:
           break;
@@ -186,7 +199,8 @@ export default defineComponent({
       toNumber: utils.toNumber,
       // special functions
       addCatalog,
-      moveCatalog,
+      addProduct,
+      moveFavorite,
     };
   },
 });

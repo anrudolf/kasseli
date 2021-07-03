@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 
 import { useDebounce } from "../hooks/use-debounce";
 
-import { Till, TillCatalog } from "@/types";
+import { Till, TillCatalog, TillProduct } from "@/types";
 
 import { db } from "../utils/db";
 
@@ -20,7 +20,7 @@ export default function({ editing = false, initialId = undefined }) {
     },
     imageRef: null,
     created: Date.now(),
-    catalogs: [],
+    favorites: [],
   });
 
   const { id } = toRefs(entity);
@@ -78,7 +78,8 @@ export default function({ editing = false, initialId = undefined }) {
   });
 
   const addCatalog = () => {
-    const c: TillCatalog = {
+    const f: TillCatalog = {
+      kind: "catalog",
       id: "",
       label: {
         de: "",
@@ -88,7 +89,16 @@ export default function({ editing = false, initialId = undefined }) {
       imageRef: null,
       content: [],
     };
-    entity.catalogs.splice(0, 0, c);
+    entity.favorites.splice(0, 0, f);
+  };
+
+  const addProduct = () => {
+    const f: TillProduct = {
+      kind: "product",
+      id: "",
+      hidden: false,
+    };
+    entity.favorites.splice(0, 0, f);
   };
 
   const onIdChangedHandler = useDebounce((v) => {
@@ -129,5 +139,6 @@ export default function({ editing = false, initialId = undefined }) {
     save,
     // special functions
     addCatalog,
+    addProduct,
   };
 }

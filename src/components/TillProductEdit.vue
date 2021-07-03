@@ -2,11 +2,11 @@
   <div class="p-3 max-w-lg">
     <app-modal :visible="addModal" @close="addModal = false">
       <template v-slot:title>Produkt auswählen</template>
-      <app-product-selector @selected="addProduct" />
+      <app-product-selector @selected="setProduct" />
     </app-modal>
 
     <app-modal :visible="deleteModal" @close="deleteModal = false">
-      <template v-slot:title>Katalog wirklich löschen?</template>
+      <template v-slot:title>Produkt Favorit wirklich entfernen?</template>
       <div>
         <div v-if="entity.id">
           <div>Zum Bestätigen bitte ID eintippen und löschen klicken</div>
@@ -73,83 +73,36 @@
       <app-button-delete @click="deleteModal = true" />
     </div>
 
-    <h3 class="mt-1">Katalog</h3>
+    <h3 class="mt-1">Produkt</h3>
 
-    <label class="block">
-      <div class="text-gray-700">ID</div>
-      <input class="input" v-model="entity.id" placeholder="ID" />
-    </label>
-
-    <label class="block">
-      <div class="text-gray-700">Label</div>
-      <input class="input" v-model="entity.label.de" placeholder="Label" />
-    </label>
-
-    <label class="flex items-center">
-      <input type="checkbox" class="form-checkbox" v-model="entity.hidden" />
-      <span class="ml-2 text-gray-700">Verbergen</span>
-    </label>
-
-    <label class="block">
-      <div class="text-gray-700">Bild</div>
-    </label>
-    <app-image-selector v-model="entity.imageRef" />
-
-    <div class="block mt-4">
-      <div class="flex justify-between items-center mb-3">
-        <span class="text-gray-700 text-lg">Produkte</span>
-        <button
-          @click="addModal = true"
-          class="btn btn-green inline-flex items-center mr-1"
-        >
-          <app-icon icon="plus" class="w-5 h-5 mr-1" />
-          Produkt
-        </button>
-      </div>
-
-      <draggable
-        v-model="entity.content"
-        group="items"
-        item-key="id"
-        handle=".handle"
-        v-if="entity.content.length > 0"
-      >
-        <div
-          class="bg-gray-100 hover:bg-gray-200 m-1 p-3 rounded-md flex items-center"
-          v-for="(item, i) in entity.content"
-          :key="`${item.id}-${i}`"
-        >
-          <app-icon class="handle cursor-pointer" icon="menu" />
-          <app-catalog-list-item class="ml-2" :id="item.id" :kind="item.kind" />
-          <app-button-delete
-            class="ml-auto"
-            color="gray"
-            @click="removeProduct(i)"
-          />
-        </div>
-      </draggable>
-      <div v-else class="text-secondary">Noch keine Produkte</div>
+    <div v-if="product" class="py-2">{{ product.label.de }}</div>
+    <div v-else class="text-secondary py-2">Noch kein Produkt gewählt</div>
+    <div class="flex justify-end">
+      <button class="btn btn-green" @click="addModal = true">
+        <span v-if="product">Produkt ändern</span>
+        <span v-else>Produkt wählen</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, PropType } from "vue";
-import { VueDraggableNext } from "vue-draggable-next";
+import { ref, defineComponent, PropType, computed } from "vue";
 
-import { TillCatalog } from "@/types";
+import { TillProduct } from "@/types";
 
 import appIcon from "@/components/Icon.vue";
 import appModal from "../components/Modal.vue";
 import appButtonDelete from "@/components/ButtonDelete.vue";
 import appProductSelector from "../components/ProductSelector.vue";
-import appImageSelector from "../components/ImageSelector.vue";
-import appCatalogListItem from "@/components/CatalogListItem.vue";
+
+import useProductStore from "@/store/products";
+import { Product } from "@/types";
 
 export default defineComponent({
   props: {
     entity: {
-      type: Object as PropType<TillCatalog>,
+      type: Object as PropType<TillProduct>,
       required: true,
     },
     idx: {
@@ -166,22 +119,15 @@ export default defineComponent({
     appModal,
     appButtonDelete,
     appProductSelector,
-    appImageSelector,
-    appCatalogListItem,
-    draggable: VueDraggableNext,
   },
   setup(props, { emit }) {
     const addModal = ref(false);
     const deleteModal = ref(false);
     const deleteModalConfirmation = ref("");
 
-    const addProduct = (id) => {
-      props.entity.content.push({ id, kind: "product" });
+    const setProduct = (id) => {
+      props.entity.id = id;
       addModal.value = false;
-    };
-
-    const removeProduct = (idx) => {
-      props.entity.content.splice(idx, 1);
     };
 
     const remove = () => {
@@ -190,15 +136,24 @@ export default defineComponent({
       emit("remove");
     };
 
+    const store = useProductStore();
+
+    const product = computed(() => {
+      const found = store.item(props.entity.id);
+      if (found) {
+        return found as Product;
+      }
+      return null;
+    });
+
     return {
+      product,
+      setProduct,
       // modal
       addModal,
       deleteModal,
       deleteModalConfirmation,
-      // product
-      addProduct,
-      removeProduct,
-      // remove this catalog
+      // remove this favorite
       remove,
       // emit
       emit,

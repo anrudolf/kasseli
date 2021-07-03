@@ -39,7 +39,9 @@ export default defineComponent({
     const router = useRouter();
 
     const catalog = computed(() =>
-      tillStore.getDefault?.catalogs.find((c) => c.id === props.id)
+      tillStore.getDefault?.favorites
+        .filter((f) => f.kind === "catalog")
+        .find((f) => f.id === props.id)
     );
 
     const add = (code) => {
