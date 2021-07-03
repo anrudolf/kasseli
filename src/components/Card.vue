@@ -63,7 +63,7 @@ import { useRouter } from "vue-router";
 import appImageRef from "../components/ImageRef.vue";
 
 export default defineComponent({
-  name: "Widget",
+  name: "Card",
   components: {
     appImageRef,
   },
