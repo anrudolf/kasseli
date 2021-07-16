@@ -4,6 +4,8 @@ import { Till } from "@/types";
 
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 
+import db from "@/utils/db";
+
 const store = defineStore({
   id: "tills",
   state: () => ({
@@ -18,10 +20,10 @@ const store = defineStore({
     init() {
       // eslint-disable-next-line
       const tmp = this;
-      useFirestoreCollectionSnapshot("tills", function(snapshot) {
+      useFirestoreCollectionSnapshot(db.tills, function(snapshot) {
         const items = [] as Till[];
         snapshot.forEach(function(doc) {
-          items.push({ id: doc.id, ...doc.data() });
+          items.push({ ...doc.data(), id: doc.id });
         });
         tmp.items = items;
       });

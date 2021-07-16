@@ -36,7 +36,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { reactive, ref, computed, defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
@@ -48,6 +48,10 @@ import dynamicSort from "../utils/dynamicSort";
 import useScanner from "../hooks/use-scanner";
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
 
+import db from "@/utils/db";
+
+import { Product } from "@/types";
+
 export default defineComponent({
   components: {
     appSelect,
@@ -57,7 +61,7 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    const products = ref([]);
+    const products = ref<Product[]>([]);
     const modal = reactive({ visible: false });
     const sortOrder = ref(-1);
     const sort = ref("created");
@@ -69,8 +73,8 @@ export default defineComponent({
       { text: "Datum", value: "created" },
     ];
 
-    useFirestoreCollectionSnapshot("products", function (snapshot) {
-      const tmp = [];
+    useFirestoreCollectionSnapshot(db.products, function (snapshot) {
+      const tmp = [] as Product[];
       snapshot.forEach(function (doc) {
         tmp.push({ ...doc.data(), id: doc.id });
       });

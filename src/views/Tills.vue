@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
@@ -31,16 +31,20 @@ import appIcon from "@/components/Icon.vue";
 
 import appImageRef from "@/components/ImageRef.vue";
 
+import db from "@/utils/db";
+
+import { Till } from "@/types";
+
 export default {
   components: {
     appIcon,
     appImageRef,
   },
   setup() {
-    const tills = ref([]);
+    const tills = ref<Till[]>([]);
 
-    useFirestoreCollectionSnapshot("tills", function (snapshot) {
-      const tmp = [];
+    useFirestoreCollectionSnapshot(db.tills, function (snapshot) {
+      const tmp = [] as Till[];
       snapshot.forEach(function (doc) {
         tmp.push({ ...doc.data(), id: doc.id });
       });
