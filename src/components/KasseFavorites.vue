@@ -1,6 +1,6 @@
 <template>
   <div class="relative overflow-y-auto">
-    <div class="my-wrapper absolute w-full">
+    <div class="my-wrapper absolute w-full justify-items-center">
       <template
         v-for="(favorite, idx) in entities"
         :key="`${idx}-${favorite.id}`"
