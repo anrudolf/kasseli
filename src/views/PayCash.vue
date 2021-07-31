@@ -1,5 +1,5 @@
 <template>
-  <app-button-back class="ml-2" @click="$router.push('/')"
+  <app-button-back class="ml-2" @click="$router.push('/pay')"
     >Zurück</app-button-back
   >
 
