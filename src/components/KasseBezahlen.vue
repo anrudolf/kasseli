@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center bg-white">
-    <app-button-confirm @click="pay()" class="w-full sm:w-auto"
+    <app-button-confirm @click="checkout()" class="w-full sm:w-auto"
       >Bezahlen</app-button-confirm
     >
   </div>
@@ -13,8 +13,8 @@ export default {
     appButtonConfirm,
   },
   methods: {
-    pay() {
-      this.$router.push("/pay");
+    checkout() {
+      this.$router.push("/checkout");
     },
   },
 };

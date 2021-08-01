@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 
 import instance from "../firebaseInit";
 
-import { Till, ImageRef, Product } from "@/types";
+import { Till, ImageRef, Product, AppPayment } from "@/types";
 
 const fs = instance.firestore();
 
@@ -21,6 +21,7 @@ const db = {
   tills: dataPoint<Till>("tills"),
   images: dataPoint<ImageRef>("images"),
   products: dataPoint<Product>("products"),
+  appPayments: dataPoint<AppPayment>("appPayments"),
 };
 
 export { db };

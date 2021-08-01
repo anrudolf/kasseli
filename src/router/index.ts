@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import Kasse from "../views/Kasse.vue";
-import Pay from "../views/Pay.vue";
-import PayCash from "../views/PayCash.vue";
-import PayCard from "../views/PayCard.vue";
-import PayApp from "../views/PayApp.vue";
+import Checkout from "../views/Checkout.vue";
+import CheckoutCash from "../views/CheckoutCash.vue";
+import CheckoutCard from "../views/CheckoutCard.vue";
+import CheckoutApp from "../views/CheckoutApp.vue";
 
 import Products from "../views/Products.vue";
 import ProductEdit from "../views/ProductEdit.vue";
@@ -20,24 +20,24 @@ const routes: Array<RouteRecordRaw> = [
     component: Kasse,
   },
   {
-    path: "/pay",
-    name: "pay",
-    component: Pay,
+    path: "/checkout",
+    name: "checkout",
+    component: Checkout,
   },
   {
-    path: "/pay/cash",
-    name: "pay-cash",
-    component: PayCash,
+    path: "/checkout/cash",
+    name: "checkout-cash",
+    component: CheckoutCash,
   },
   {
-    path: "/pay/card",
-    name: "pay-card",
-    component: PayCard,
+    path: "/checkout/card",
+    name: "checkout-card",
+    component: CheckoutCard,
   },
   {
-    path: "/pay/app",
-    name: "pay-app",
-    component: PayApp,
+    path: "/checkout/app",
+    name: "checkout-app",
+    component: CheckoutApp,
   },
   {
     path: "/products",
