@@ -2,21 +2,39 @@ import { ref, onUnmounted } from "vue";
 
 import { useRouter } from "vue-router";
 
-import { v4 as uuidv4 } from "uuid";
-
 import { AppPayment, AppPaymentStatus } from "@/types";
 
 import { db } from "../utils/db";
 
-const DEFAULT_RETURN_ROUTE = "/tills";
-
-const STALE_DURATION = 1 * 60 * 1000;
 const CODE_RANGE = [1000, 9999];
 
-export default function() {
+export default function(id = "") {
   const router = useRouter();
 
   const entity = ref<AppPayment | null>(null);
+  const error = ref(0);
+
+  if (id) {
+    db.appPayments
+      .doc(id)
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          error.value = 404;
+          return;
+        }
+
+        const data = doc.data();
+        if (!data) {
+          error.value = 404;
+          return;
+        }
+        entity.value = { ...data, id: doc.id };
+      })
+      .catch(() => {
+        error.value = 500;
+      });
+  }
 
   function randomXToY(minVal, maxVal) {
     const randVal = minVal + Math.random() * (maxVal - minVal);
@@ -25,8 +43,6 @@ export default function() {
 
   const listenForChanges = (id) => {
     const unsubscribe = db.appPayments.doc(id).onSnapshot((doc) => {
-      console.log("updated!");
-      console.log(doc.data());
       if (doc.exists) {
         const data = doc.data();
         if (!data) {
@@ -41,14 +57,14 @@ export default function() {
     });
   };
 
-  const create = () => {
+  const create = (price: number) => {
     const id = `${randomXToY(CODE_RANGE[0], CODE_RANGE[1])}`;
 
     const appPayment: AppPayment = {
       id,
       created: Date.now(),
       kind: "KASSELI",
-      amount: 56.1,
+      amount: price,
       status: "open",
     };
 
@@ -66,5 +82,6 @@ export default function() {
     entity,
     create,
     setStatus,
+    error,
   };
 }

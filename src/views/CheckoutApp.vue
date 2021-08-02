@@ -1,61 +1,88 @@
 <template>
+  <app-modal :visible="rejectedModal" @close="rejectedModal = false">
+    <template v-slot:title>Zahlung abgelehnt</template>
+    <div>
+      <div class="mt-3 flex justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+          @click="rejectedModal = false"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </app-modal>
+
   <app-button-back class="ml-2" @click="goBack">Zurück</app-button-back>
 
   <div class="p-4">
     <h1>Bezahlen</h1>
     <h2>App</h2>
-    <qrcode-vue :value="code" :size="size" level="H" />
-    <div v-if="entity">
-      {{ entity }}
-      <button class="btn btn-blue" @click="() => setStatus(entity.id, 'paid')">
-        PAID
-      </button>
-      <button
-        class="btn btn-blue"
-        @click="() => setStatus(entity.id, 'rejected')"
-      >
-        REJECTED
-      </button>
+    <div v-if="link">
+      <qrcode-vue :value="link" :size="size" level="H" />
+      {{ link }}
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watch, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import qrcodeVue from "qrcode.vue";
 
 import appButtonBack from "@/components/ButtonBack.vue";
+import appModal from "@/components/Modal.vue";
 
-import db from "@/utils/db";
+import useAppPayment from "@/hooks/use-appPayment";
 
-import useAppPayments from "@/hooks/use-appPayments";
+import useKasse from "@/store/kasse";
 
 export default defineComponent({
   components: {
     appButtonBack,
+    appModal,
     qrcodeVue,
   },
   setup() {
     const router = useRouter();
+    const link = ref("");
+    const rejectedModal = ref(false);
+    const kasse = useKasse();
 
-    const createCode = () => {
-      // 1. clear all codes older than 5 minutes
-      // 2. create code
-      // 3. make sure code does exist yet (otherwise go back to step 2)
-    };
+    const { entity, create, setStatus } = useAppPayment();
 
-    const { entity, create, setStatus } = useAppPayments();
+    create(kasse.price);
 
-    create();
+    watch(entity, (vnew) => {
+      if (vnew) {
+        const { id, status } = vnew;
+
+        link.value = `${window.location.origin}/pay?id=${id}`;
+
+        switch (status) {
+          case "open":
+            break;
+          case "rejected":
+            rejectedModal.value = true;
+            break;
+          case "paid":
+            console.log("paid!");
+            router.push("/checkout/success");
+            break;
+          default:
+            console.error("unknown app payment status:", status);
+        }
+      }
+    });
 
     return {
       goBack: () => router.push("/checkout"),
       size: 300,
-      code: "https://example.com",
+      link,
       entity,
       setStatus,
+      rejectedModal,
     };
   },
 });
