@@ -1,19 +1,22 @@
 <template>
-  <app-button-back class="ml-2" @click="goBack">Zurück</app-button-back>
-  <div class="p-4 flex flex-wrap justify-between">
-    <app-card
-      label="Karte"
-      to="/checkout/card"
-      imageAsset="kreditkarten.jpg"
-      contain
-    />
-    <app-card
-      label="Bar"
-      to="/checkout/cash"
-      imageAsset="money/CHF/CHF_note_20_front.jpg"
-      contain
-    />
-    <app-card label="App" to="/checkout/app" />
+  <div class="p-4">
+    <app-button-back @click="goBack">Zurück</app-button-back>
+
+    <div class="mt-4 flex gap-4 flex-wrap">
+      <app-card
+        label="Karte"
+        to="/checkout/card"
+        imageAsset="kreditkarten.jpg"
+        contain
+      />
+      <app-card
+        label="Bar"
+        to="/checkout/cash"
+        imageAsset="money/CHF/CHF_note_20_front.jpg"
+        contain
+      />
+      <app-card label="App" to="/checkout/app" />
+    </div>
   </div>
 </template>
 
