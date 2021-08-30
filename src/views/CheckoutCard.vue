@@ -13,12 +13,21 @@ import { useRouter } from "vue-router";
 
 import appButtonBack from "@/components/ButtonBack.vue";
 
+import useScanner from "../hooks/use-scanner";
+
 export default defineComponent({
   components: {
     appButtonBack,
   },
   setup() {
     const router = useRouter();
+
+    useScanner(
+      (code) => {
+        console.log(`paid with card ${code}`);
+      },
+      [10]
+    );
 
     return {
       goBack: () => router.push("/checkout"),

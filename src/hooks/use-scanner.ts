@@ -2,7 +2,10 @@ import { onMounted, onBeforeUnmount } from "vue";
 
 const TIMEOUT_MS = 15; // try values 10...20
 
-export default function(cb = null) {
+export default function(
+  cb: (code: string) => any,
+  codeSizes: Array<number> = []
+) {
   let timeoutHandler = 0;
   let inputString = "";
 
@@ -18,7 +21,16 @@ export default function(cb = null) {
         return;
       }
       const filtered = inputString.replace(/(\r\n|\n|\r)/gm, "");
-      cb && cb(filtered);
+
+      if (cb != null) {
+        if (codeSizes.length == 0) {
+          cb(filtered);
+        } else {
+          if (codeSizes.includes(filtered.length)) {
+            cb(filtered);
+          }
+        }
+      }
 
       inputString = "";
     }, TIMEOUT_MS);
