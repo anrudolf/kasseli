@@ -4,24 +4,18 @@
   >
 
   <div class="p-2 max-w-md">
-    <h1>Bezahlen</h1>
-    <h2>Bar</h2>
+    <div class="row bg-gray-300 mt-4">
+      <span>Total</span>
+      <span>{{ total.toFixed(2) }} CHF</span>
+    </div>
 
-    <div
-      class="
-        h-20
-        border
-        p-2
-        mt-2
-        bg-blue-400
-        rounded
-        text-white text-2xl
-        flex
-        justify-between
-        items-center
-      "
-    >
-      <span>Betrag</span>
+    <div class="row bg-gray-100">
+      <span>Bereits bezahlt</span>
+      <span>{{ paid.toFixed(2) }} CHF</span>
+    </div>
+
+    <div class="row bg-gray-100">
+      <span>Restbetrag</span>
       <span>{{ remainder.toFixed(2) }} CHF</span>
     </div>
 
@@ -133,5 +127,9 @@ export default defineComponent({
   grid-template-columns: 1fr 1.2fr 1.5fr;
   align-items: center;
   gap: 20px;
+}
+
+.row {
+  @apply flex justify-between text-xl p-1 px-2;
 }
 </style>
