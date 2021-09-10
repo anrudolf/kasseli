@@ -119,14 +119,14 @@ export default defineComponent({
   display: grid;
   grid-template-columns: 0.5fr 0.7fr 0.8fr 0.6fr;
   align-items: center;
-  gap: 25px;
+  gap: 30px;
 }
 
 .big-coin-grid {
   display: grid;
   grid-template-columns: 1fr 1.2fr 1.5fr;
   align-items: center;
-  gap: 20px;
+  gap: 25px;
 }
 
 .row {
