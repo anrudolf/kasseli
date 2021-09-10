@@ -23,13 +23,30 @@
         <div class="mt-3 flex justify-between">
           <button
             :disabled="entity.id !== deleteModalConfirmation"
-            class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            class="
+              disabled:opacity-50
+              bg-red-500
+              hover:bg-red-700
+              text-white
+              font-bold
+              py-2
+              px-4
+              rounded
+            "
             @click="remove"
           >
             Löschen
           </button>
           <button
-            class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            class="
+              bg-blue-500
+              hover:bg-blue-700
+              text-white
+              font-bold
+              py-2
+              px-4
+              rounded
+            "
             @click="
               deleteModalConfirmation = '';
               deleteModal = false;

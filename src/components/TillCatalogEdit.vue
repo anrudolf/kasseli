@@ -23,13 +23,30 @@
         <div class="mt-3 flex justify-between">
           <button
             :disabled="entity.id !== deleteModalConfirmation"
-            class="disabled:opacity-50 bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            class="
+              disabled:opacity-50
+              bg-red-500
+              hover:bg-red-700
+              text-white
+              font-bold
+              py-2
+              px-4
+              rounded
+            "
             @click="remove"
           >
             Löschen
           </button>
           <button
-            class="bg-blue-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            class="
+              bg-blue-500
+              hover:bg-blue-700
+              text-white
+              font-bold
+              py-2
+              px-4
+              rounded
+            "
             @click="
               deleteModalConfirmation = '';
               deleteModal = false;
@@ -115,7 +132,15 @@
         v-if="entity.content.length > 0"
       >
         <div
-          class="bg-gray-100 hover:bg-gray-200 m-1 p-3 rounded-md flex items-center"
+          class="
+            bg-gray-100
+            hover:bg-gray-200
+            m-1
+            p-3
+            rounded-md
+            flex
+            items-center
+          "
           v-for="(item, i) in entity.content"
           :key="`${item.id}-${i}`"
         >

@@ -1,23 +1,39 @@
 <template>
   <div class="flex justify-center items-center bg-white">
-    <app-button-confirm @click="checkout()" class="w-full sm:w-auto"
+    <app-button-confirm
+      @click="checkout()"
+      class="w-full sm:w-auto"
+      :disabled="disabled"
       >Bezahlen</app-button-confirm
     >
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+import { useRouter } from "vue-router";
+
+import useKasseStore from "@/store/kasse";
+
 import appButtonConfirm from "@/components/ButtonConfirm.vue";
-export default {
+
+export default defineComponent({
   components: {
     appButtonConfirm,
   },
-  methods: {
-    checkout() {
-      this.$router.push("/checkout");
-    },
+  setup() {
+    const router = useRouter();
+    const kasse = useKasseStore();
+
+    const disabled = computed(() => kasse.price == 0);
+
+    const checkout = () => {
+      router.push("/checkout");
+    };
+
+    return { checkout, disabled };
   },
-};
+});
 </script>
 
 <style scoped>

@@ -1,4 +1,28 @@
 <template>
+  <app-modal :visible="showModal" @close="restart" title="Zahlung erfolgreich">
+    <div @click="restart">
+      <div class="flex justify-center">
+        <app-icon icon="check-circle" class="w-48 h-48 text-green-500" />
+      </div>
+      <div class="mt-3 flex justify-end">
+        <button
+          class="
+            bg-blue-500
+            hover:bg-blue-700
+            text-white
+            font-bold
+            py-2
+            px-4
+            rounded
+          "
+          @click="restart"
+        >
+          Beenden
+        </button>
+      </div>
+    </div>
+  </app-modal>
+
   <app-button-back class="ml-2" @click="$router.push('/checkout')"
     >Zurück</app-button-back
   >
@@ -52,12 +76,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watchEffect } from "vue";
+import { useRouter } from "vue-router";
 
 import appMoneyNote from "@/components/MoneyNote.vue";
 import appMoneyCoin from "@/components/MoneyCoin.vue";
 
 import appButtonBack from "@/components/ButtonBack.vue";
+
+import appModal from "@/components/Modal.vue";
+import appIcon from "@/components/Icon.vue";
 
 import useKasseStore from "@/store/kasse";
 
@@ -66,8 +94,11 @@ export default defineComponent({
     appMoneyNote,
     appMoneyCoin,
     appButtonBack,
+    appModal,
+    appIcon,
   },
   setup() {
+    const router = useRouter();
     const kasse = useKasseStore();
 
     const notes = [
@@ -103,14 +134,39 @@ export default defineComponent({
     const total = kasse.price;
     const paid = ref(0);
     const remainder = computed(() => {
-      return total - paid.value;
+      const ret = total - paid.value;
+      if (ret < 0.001) {
+        return 0;
+      }
+      return ret;
     });
+
+    const showModal = ref(false);
 
     const add = (i: number) => {
       paid.value += i;
+      if (remainder.value == 0) {
+        showModal.value = true;
+      }
     };
 
-    return { notes, coins, smallCoins, bigCoins, total, paid, add, remainder };
+    const restart = () => {
+      kasse.$reset();
+      router.push("/");
+    };
+
+    return {
+      notes,
+      coins,
+      smallCoins,
+      bigCoins,
+      total,
+      paid,
+      add,
+      remainder,
+      showModal,
+      restart,
+    };
   },
 });
 </script>
