@@ -12,7 +12,7 @@
       <app-card
         label="Bar"
         to="/checkout/cash"
-        imageAsset="money/CHF/CHF_note_20_front.jpg"
+        imageAsset="CHF_note_20_front.jpg"
         contain
       />
       <app-card label="App" to="/checkout/app" />

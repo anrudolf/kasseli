@@ -1,9 +1,6 @@
 import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
-import blobToHash from "blob-to-hash";
-import { v5 as uuidv5 } from "uuid";
-
 import firebase from "../firebaseInit";
 
 import utils from "../utils";
@@ -127,67 +124,6 @@ export default function({ editing = false, initialId = null }) {
       });
   }, 300);
 
-  /*
-    Not used, but left for legacy
-  */
-  const uploadImage = async (file) => {
-    const lastDot = file.name.lastIndexOf(".");
-    const ext = file.name.substring(lastDot + 1);
-
-    const hash = await blobToHash("sha256", file);
-
-    const dir = "productimages";
-    const filename = `${hash}.${ext}`;
-
-    const MY_NAMESPACE = "3387eb34-efd7-4f4b-99bb-7f393d790984";
-
-    const token = uuidv5(filename, MY_NAMESPACE);
-    console.log("token", token); // this will be used for download url
-
-    const path = `${dir}/${filename}`;
-    const thumbPath = `${dir}/thumb_${filename}`;
-    entity.image = thumbPath; // thumbnail will be created through cloud function
-
-    const root = firebase.storage().ref();
-    const storageRef = root.child(path);
-    storageRef.put(file).then((snapshot) => {
-      console.log(`Uploaded a blob or file: ${snapshot.totalBytes} bytes`);
-    });
-  };
-
-  /*
-    Not used, but left for legacy
-  */
-  const uploadImageAsThumbnail = async (file) => {
-    loading.value = true;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const createThumbnailFunction = firebase
-        .functions("europe-west1")
-        .httpsCallable("createThumbnail");
-
-      createThumbnailFunction({
-        filename: file.name,
-        base64image: reader.result,
-        directory: "thumbnails",
-      })
-        .then((r) => {
-          entity.image = r.data.url;
-        })
-        .catch((e) => {
-          console.log(e);
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-    };
-
-    reader.onerror = () => {
-      loading.value = false;
-    };
-  };
-
   const idDisabled = computed(() => editing || entity.template);
 
   watch(id, (v) => {
@@ -211,7 +147,5 @@ export default function({ editing = false, initialId = null }) {
     saveDisabled,
     idDisabled,
     templateEnabled,
-    uploadImage,
-    uploadImageAsThumbnail,
   };
 }

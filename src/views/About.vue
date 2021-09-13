@@ -82,7 +82,7 @@ export default {
       return this.$store.getters["kasse/items"];
     },
     hash() {
-      return process.env.VUE_APP_COMMIT_HASH;
+      return import.meta.env.VUE_APP_COMMIT_HASH;
     },
   },
 };

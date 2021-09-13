@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, defineComponent } from "vue";
 
 import useUiStore from "@/store/ui";
 
-export default {
+export default defineComponent({
   setup() {
     const ui = useUiStore();
 
@@ -43,7 +43,7 @@ export default {
       tabindex,
     };
   },
-};
+});
 </script>
 
 <style scoped>

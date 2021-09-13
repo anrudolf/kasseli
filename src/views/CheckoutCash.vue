@@ -76,11 +76,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import appMoneyNote from "@/components/MoneyNote.vue";
-import appMoneyCoin from "@/components/MoneyCoin.vue";
+import appMoneyCoin from "@/components/money/MoneyCoin.vue";
+import appMoneyNote from "@/components/money/MoneyNote.vue";
 
 import appButtonBack from "@/components/ButtonBack.vue";
 
@@ -91,11 +91,11 @@ import useKasseStore from "@/store/kasse";
 
 export default defineComponent({
   components: {
-    appMoneyNote,
-    appMoneyCoin,
     appButtonBack,
     appModal,
     appIcon,
+    appMoneyCoin,
+    appMoneyNote,
   },
   setup() {
     const router = useRouter();

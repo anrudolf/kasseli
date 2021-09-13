@@ -5,13 +5,19 @@
     :class="wrapperClasses"
   >
     <div
-      class="text-center border-solid border-2 border-light-blue-500 shadow-md flex flex-col items-center"
+      class="
+        text-center
+        border-solid border-2 border-light-blue-500
+        shadow-md
+        flex flex-col
+        items-center
+      "
       :class="wrapperClasses"
     >
       <img
         v-if="imageAsset"
         :class="imageClasses"
-        :src="require(`@/assets/${imageAsset}`)"
+        :src="getAssetSrc(imageAsset)"
       />
       <app-image-ref
         v-else-if="imageRef"
@@ -83,6 +89,13 @@ export default defineComponent({
       };
     });
 
+    // https://vitejs.dev/guide/features.html#glob-import
+    const getAssetSrc = (name) => {
+      const path = `/src/assets/${name}`;
+      const modules = import.meta.globEager("/src/assets/*");
+      return modules[path].default;
+    };
+
     // from https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
     const getColor = (str) => {
       let hash = 0;
@@ -99,7 +112,14 @@ export default defineComponent({
       return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
     };
 
-    return { router, getColor, wrapperClasses, imageClasses, labelClasses };
+    return {
+      router,
+      getColor,
+      getAssetSrc,
+      wrapperClasses,
+      imageClasses,
+      labelClasses,
+    };
   },
 });
 </script>

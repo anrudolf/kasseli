@@ -1,4 +1,6 @@
 @import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   h1 {
@@ -11,9 +13,6 @@
     @apply text-lg;
   }
 }
-
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
 
 html {
   height: 100%;
