@@ -10,12 +10,13 @@ const instance = firebase.initializeApp(firebaseConfig);
 
 firebase.firestore().settings({
   cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
+  merge: true,
 });
 
 firebase
   .firestore()
   .enablePersistence()
-  .catch(function(err) {
+  .catch(function (err) {
     if (err.code == "failed-precondition") {
       console.error("firestore: failed-precondition");
     } else if (err.code == "unimplemented") {
