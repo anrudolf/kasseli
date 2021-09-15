@@ -5,7 +5,7 @@
       <app-widget
         v-for="(widget, i) in catalog.content"
         :key="i"
-        :type="widget.type"
+        :kind="widget.kind"
         :widget="widget"
         @click="(ev) => add(widget.id)"
         contain
@@ -23,6 +23,7 @@ import appButtonBack from "@/components/ButtonBack.vue";
 
 import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
+import { TillCatalog } from "@/types";
 
 export default defineComponent({
   components: {
@@ -38,10 +39,11 @@ export default defineComponent({
 
     const router = useRouter();
 
-    const catalog = computed(() =>
-      tillStore.getDefault?.favorites
-        .filter((f) => f.kind === "catalog")
-        .find((f) => f.id === props.id)
+    const catalog = computed(
+      () =>
+        tillStore.getDefault?.favorites
+          .filter((f) => f.kind === "catalog")
+          .find((f) => f.id === props.id) as TillCatalog
     );
 
     const add = (code) => {

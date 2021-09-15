@@ -104,6 +104,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
+  // @ts-ignore: no time for this shit
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });

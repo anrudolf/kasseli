@@ -2,7 +2,7 @@
   <app-card
     v-if="product"
     :label="product.label.de"
-    :imageRef="product.imageRef"
+    :image-ref="product.imageRef"
     :contain="contain"
   />
 </template>
@@ -19,7 +19,7 @@ export default defineComponent({
     appCard,
   },
   props: {
-    type: String,
+    kind: String,
     widget: {
       type: Object,
       required: true,

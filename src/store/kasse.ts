@@ -66,7 +66,12 @@ const store = defineStore({
         return;
       }
 
-      const item = { code, quantity: 1, product, price: product.price };
+      const item = {
+        code,
+        quantity: 1,
+        product,
+        price: product.price as number,
+      };
 
       const index = this.items.findIndex((item) => item.code === code);
       if (index > -1) {

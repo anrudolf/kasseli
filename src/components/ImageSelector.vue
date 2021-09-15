@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue";
+import { ref, defineComponent, PropType } from "vue";
 import vueFilePond from "vue-filepond";
 import md5 from "md5";
 
@@ -51,18 +51,15 @@ const FilePond: any = vueFilePond(
   FilePondPluginFileValidateType
 );
 export default defineComponent({
-  emits: ["update:modelValue"],
   components: {
     appImageRef,
     appButtonDelete,
     FilePond,
   },
   props: {
-    modelValue: {
-      type: String,
-      default: null,
-    },
+    modelValue: { type: String as PropType<string | null>, default: "" },
   },
+  emits: ["update:modelValue"],
   setup(props, { emit }) {
     const files = ref([]);
 

@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, computed, PropType } from "vue";
 import { useRouter } from "vue-router";
 import appImageRef from "../components/ImageRef.vue";
 
@@ -52,7 +52,7 @@ export default defineComponent({
     appImageRef,
   },
   props: {
-    imageRef: String,
+    imageRef: { type: String as PropType<string | null>, default: "" },
     imageAsset: String,
     label: String,
     to: [String, Object],
@@ -92,6 +92,7 @@ export default defineComponent({
     // https://vitejs.dev/guide/features.html#glob-import
     const getAssetSrc = (name) => {
       const path = `/src/assets/${name}`;
+      // @ts-ignore: no time for this shit
       const modules = import.meta.globEager("/src/assets/*");
       return modules[path].default;
     };

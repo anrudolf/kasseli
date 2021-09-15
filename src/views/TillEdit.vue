@@ -1,6 +1,6 @@
 <template>
   <app-till-edit
-    :key="editing"
+    :key="`${editing}`"
     :editing="editing"
     :editId="editId"
     :newId="newId"
@@ -14,10 +14,10 @@ import { useRoute } from "vue-router";
 import appTillEdit from "../components/TillEdit.vue";
 
 export default {
-  props: ["editId", "newId"],
   components: {
     appTillEdit,
   },
+  props: ["editId", "newId"],
   setup() {
     const route = useRoute();
 

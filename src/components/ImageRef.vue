@@ -4,23 +4,25 @@
   </transition>
 </template>
 
-<script>
-import { ref } from "vue";
+<script lang="ts">
+import { defineComponent, ref, PropType, Ref } from "vue";
 import useFirestoreDocument from "../hooks/use-firestore-document";
 
-export default {
+import { ImageRef } from "@/types";
+
+export default defineComponent({
   props: {
-    id: String,
+    id: { type: String as PropType<string | null>, default: "" },
   },
   setup(props) {
     const show = ref(false);
-    const entity = props.id
+    const entity: Ref<ImageRef | null> = props.id
       ? useFirestoreDocument(`images/${props.id}`, { source: "cache" })
       : ref(null);
 
     return { entity, show };
   },
-};
+});
 </script>
 
 <style scoped>

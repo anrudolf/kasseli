@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { useRouter } from "vue-router";
 
 import appCard from "@/components/Card.vue";
@@ -36,7 +36,7 @@ export default defineComponent({
   },
   props: {
     entities: {
-      type: Array,
+      type: Array as PropType<Array<TillCatalog | TillProduct>>,
     },
   },
   setup() {
