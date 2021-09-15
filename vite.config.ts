@@ -11,6 +11,9 @@ export default defineConfig({
     Vue(),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png,jpg,svg}"],
+      },
       manifest: {
         name: "Kasseli",
         short_name: "Kasseli",
