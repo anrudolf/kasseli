@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
+    "https-preview": "serve dist",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
@@ -46,14 +47,16 @@
     "autoprefixer": "^10.3.4",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
+    "https-localhost": "^4.7.0",
     "node-sass": "^4.12.0",
     "postcss": "^8.3.6",
     "sass-loader": "^8.0.2",
     "tailwindcss": "^2.2.15",
     "typescript": "^4.3.2",
     "vite": "^2.5.4",
-    "vue-tsc": "^0.2.2",
     "vite-aliases": "^0.8.6",
-    "vue-jest": "^5.0.0-0"
+    "vite-plugin-pwa": "^0.11.2",
+    "vue-jest": "^5.0.0-0",
+    "vue-tsc": "^0.2.2"
   }
 }

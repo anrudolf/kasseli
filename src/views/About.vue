@@ -23,6 +23,7 @@
     <p>
       Current commit <span class="font-bold">{{ hash.substring(0, 6) }}</span>
     </p>
+    <p>Built {{ date }}</p>
   </div>
   <div v-show="false">
     <button @click="getProduct">LOG</button>
@@ -31,61 +32,16 @@
 </template>
 
 <script>
-import { computed } from "vue";
-//import appBarcodeStreamReader from "@/components/BarcodeStreamReader.vue";
+import { defineComponent } from "vue";
 
-import firebase from "../firebaseInit";
-const db = firebase.firestore();
-
-import fbapp from "firebase/app";
-fbapp.firestore.FieldPath.documentId();
-
-import useProductStore from "@/store/products";
-
-export default {
-  components: {
-    //appBarcodeStreamReader,
-  },
+export default defineComponent({
   setup() {
-    const bucket = firebase.options;
-    const productStore = useProductStore();
-    productStore.init();
-
-    db.collection("products")
-      .where(fbapp.firestore.FieldPath.documentId(), "in", ["coolio"])
-      .get()
-      .then((querySnapshot) => {
-        console.log("QUERY SNAPSHOT");
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-        });
-      });
-
-    const getProduct = () => {
-      const p = productStore.item("644824914886");
-      console.log(p);
-    };
-
-    return { bucket, products: computed(() => productStore.items), getProduct };
+    // replaced dyanmically
+    const date = "__DATE__";
+    const hash = "123456789";
+    return { date, hash };
   },
-  methods: {
-    onDecode(val) {
-      console.log(val);
-    },
-    onLoaded() {
-      console.log("loaded");
-    },
-  },
-  computed: {
-    kasse() {
-      return this.$store.getters["kasse/items"];
-    },
-    hash() {
-      return import.meta.env.VUE_APP_COMMIT_HASH;
-    },
-  },
-};
+});
 </script>
 
 <style scoped>
