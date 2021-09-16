@@ -16,7 +16,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "types": [
-      "jest"
+      "jest",
+      "vite/client",
+      "vite-plugin-pwa/client",
     ],
     "paths": {
       "@/*": [
@@ -39,6 +41,6 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "dist"
   ]
 }
