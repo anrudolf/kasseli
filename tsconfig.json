@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "types": [
       "jest",
+      "@types/jest",
       "vite/client",
       "vite-plugin-pwa/client",
     ],
