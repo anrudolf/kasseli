@@ -13,12 +13,6 @@ export default defineConfig({
       registerType: "autoUpdate",
       workbox: {
         globPatterns: ["**/*.{js,css,html,png,jpg,svg}"],
-        navigateFallback: "index.html",
-        cleanupOutdatedCaches: true,
-        offlineGoogleAnalytics: false,
-        mode: "development",
-        swDest: "/home/rudi/repos/kasseli/dist/sw.js",
-        globDirectory: "/home/rudi/repos/kasseli/dist",
       },
       manifest: {
         name: "Kasseli",
