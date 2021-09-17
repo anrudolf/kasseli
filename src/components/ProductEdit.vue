@@ -1,15 +1,15 @@
 <template>
   <div class="p-4 max-w-lg">
     <app-modal :visible="deleteModal" @close="deleteModal = false">
-      <template v-slot:title>Wirklich löschen?</template>
+      <template #title>Wirklich löschen?</template>
       <div>
         <div>Zum Bestätigen bitte Produkt ID eintippen und löschen klicken</div>
         <label class="block">
           <div class="text-gray-700">{{ product.id }}</div>
           <input
+            v-model="deleteModalConfirmation"
             class="input"
             placeholder="Produkt ID"
-            v-model="deleteModalConfirmation"
           />
         </label>
         <div class="mt-3 flex justify-between">
@@ -62,9 +62,9 @@
         class="input"
         :class="{ disabled: idDisabled }"
         :value="product.id"
-        @input="(ev) => (product.id = ev.target.value)"
         placeholder="Produkt ID"
         :disabled="idDisabled"
+        @input="(ev) => (product.id = ev.target.value)"
       />
     </label>
 
@@ -84,8 +84,8 @@
     <label class="block">
       <div class="text-gray-700">Label</div>
       <input
-        class="input"
         v-model="product.label.de"
+        class="input"
         placeholder="Produkt Name"
       />
     </label>
@@ -98,17 +98,17 @@
         class="input"
         :class="{ disabled: product.template }"
         :value="product.template ? '' : product.price"
-        @input="(ev) => (product.price = toNumber(ev.target.value))"
         :placeholder="product.template ? '(von Strichcode)' : '2.90'"
         :disabled="product.template"
+        @input="(ev) => (product.price = toNumber(ev.target.value))"
       />
     </label>
 
-    <label class="flex items-center" v-if="templateEnabled && !editing">
+    <label v-if="templateEnabled && !editing" class="flex items-center">
       <input
+        v-model="product.template"
         type="checkbox"
         class="form-checkbox"
-        v-model="product.template"
         :disabled="editing"
       />
       <span class="ml-2 text-gray-700">Preis aus Strichcode berechnen</span>
@@ -119,7 +119,7 @@
     </label>
     <app-image-selector v-model="product.imageRef" />
 
-    <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
+    <app-button-confirm class="mt-4" :disabled="saveDisabled" @click="save"
       >Speichern</app-button-confirm
     >
     <div class="text-xs">
@@ -143,7 +143,6 @@ import useProductEdit from "../hooks/use-productEdit.js";
 import utils from "@/utils";
 
 export default defineComponent({
-  props: ["editId", "newId", "editing"],
   components: {
     appButtonDelete,
     appButtonConfirm,
@@ -151,6 +150,7 @@ export default defineComponent({
     appImageSelector,
     appIcon,
   },
+  props: ["editId", "newId", "editing"],
   setup(props) {
     const editId = toRef(props, "editId");
     const deleteModal = ref(false);

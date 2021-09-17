@@ -10,8 +10,8 @@
       <tr
         v-for="product in result"
         :key="product.id"
-        @click="() => selected(product.id)"
         class="cursor-pointer hover:bg-blue-100 border-b"
+        @click="() => selected(product.id)"
       >
         <td class="text-left">{{ product.label.de || product.id }}</td>
         <td class="text-right">
@@ -22,7 +22,7 @@
   </table>
   <div class="flex justify-between items-center">
     <div>
-      <app-select :items="pageSizeOptions" v-model.number="pageSize" />
+      <app-select v-model.number="pageSize" :items="pageSizeOptions" />
     </div>
 
     <div>
@@ -44,10 +44,10 @@ import appSelect from "../components/Select.vue";
 import { Product } from "@/types";
 
 export default defineComponent({
-  emits: ["selected"],
   components: {
     appSelect,
   },
+  emits: ["selected"],
   props: {
     products: {
       type: Object as PropType<Array<Product>>,
@@ -66,18 +66,11 @@ export default defineComponent({
       { text: "100", value: 100 },
     ];
 
-    const {
-      next,
-      prev,
-      currentPage,
-      lastPage,
-      result,
-      pageSize,
-      offset,
-    } = useArrayPagination(products, {
-      pageSize: pageSizeOptions[0].value,
-      currentPage: 1,
-    });
+    const { next, prev, currentPage, lastPage, result, pageSize, offset } =
+      useArrayPagination(products, {
+        pageSize: pageSizeOptions[0].value,
+        currentPage: 1,
+      });
 
     watch(products, () => {
       currentPage.value = 1;

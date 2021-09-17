@@ -8,10 +8,10 @@
         <app-card
           v-if="!favorite.hidden"
           :label="getLabel(favorite)"
-          :imageRef="getImageRef(favorite)"
-          @click="(ev) => clicked(favorite)"
+          :image-ref="getImageRef(favorite)"
           responsive
           :contain="favorite.kind === 'product'"
+          @click="(ev) => clicked(favorite)"
         />
       </template>
     </div>
@@ -108,6 +108,5 @@ export default defineComponent({
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   }
 }
-</style>>
-
-
+</style>
+>

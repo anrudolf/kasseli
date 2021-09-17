@@ -6,13 +6,13 @@
       <app-card
         label="Karte"
         to="/checkout/card"
-        imageAsset="kreditkarten.jpg"
+        image-asset="kreditkarten.jpg"
         contain
       />
       <app-card
         label="Bar"
         to="/checkout/cash"
-        imageAsset="CHF_note_20_front.jpg"
+        image-asset="CHF_note_20_front.jpg"
         contain
       />
       <app-card label="App" to="/checkout/app" />
@@ -41,5 +41,4 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-</style>
+<style scoped></style>

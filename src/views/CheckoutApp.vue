@@ -1,6 +1,6 @@
 <template>
   <app-modal :visible="rejectedModal" @close="rejectedModal = false">
-    <template v-slot:title>Zahlung abgelehnt</template>
+    <template #title>Zahlung abgelehnt</template>
     <div>
       <div class="mt-3 flex justify-between">
         <button
@@ -95,5 +95,4 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-</style>
+<style scoped></style>

@@ -2,8 +2,8 @@
   <app-till-edit
     :key="`${editing}`"
     :editing="editing"
-    :editId="editId"
-    :newId="newId"
+    :edit-id="editId"
+    :new-id="newId"
   />
 </template>
 

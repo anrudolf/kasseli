@@ -11,9 +11,9 @@
       <li
         v-for="(n, i) in pageSize"
         :key="i"
-        @click="selectFromPage(i)"
         class="cursor-pointer"
         :class="{ odd: offset % 2 }"
+        @click="selectFromPage(i)"
       >
         <app-kasse-liste-item
           v-if="getItem(i)"
@@ -30,18 +30,44 @@
       class="flex flex-col items-center mr-2 bg-white"
     >
       <button
-        class="my-1 rounded border-2 w-8 h-8 sm:w-12 sm:h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
-        @click="prev"
+        class="
+          my-1
+          rounded
+          border-2
+          w-8
+          h-8
+          sm:w-12 sm:h-12
+          flex
+          justify-center
+          items-center
+          bg-gradient-to-br
+          from-gray-100
+          to-gray-200
+        "
         :disabled="!hasPrev"
         :class="{ disabled: !hasPrev }"
+        @click="prev"
       >
         <app-icon icon="arrow-page-up" color="gray" />
       </button>
       <button
-        class="mt-6 rounded border-2 w-8 h-8 sm:w-12 sm:h-12 flex justify-center items-center bg-gradient-to-br from-gray-100 to-gray-200"
-        @click="next"
+        class="
+          mt-6
+          rounded
+          border-2
+          w-8
+          h-8
+          sm:w-12 sm:h-12
+          flex
+          justify-center
+          items-center
+          bg-gradient-to-br
+          from-gray-100
+          to-gray-200
+        "
         :disabled="!hasNext"
         :class="{ disabled: !hasNext }"
+        @click="next"
       >
         <app-icon icon="arrow-page-down" color="gray" />
       </button>
@@ -157,5 +183,3 @@ li.odd:nth-child(even) {
   opacity: 0.3;
 }
 </style>
-
-

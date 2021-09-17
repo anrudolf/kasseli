@@ -1,5 +1,5 @@
 <template>
-  <app-modal :visible="showModal" @close="restart" title="Zahlung erfolgreich">
+  <app-modal :visible="showModal" title="Zahlung erfolgreich" @close="restart">
     <div @click="restart">
       <div class="flex justify-center">
         <app-icon icon="check-circle" class="w-48 h-48 text-green-500" />
