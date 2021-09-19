@@ -43,20 +43,17 @@
                 transform
                 bg-white
                 shadow-xl
-                rounded-2xl
+                rounded-lg
               "
             >
               <DialogTitle
                 as="h3"
-                class="text-lg font-medium leading-6 text-gray-900"
+                class="text-lg font-medium leading-6 text-gray-900 mb-2"
               >
-                Payment successful
+                <slot name="title">{{ title }}</slot>
               </DialogTitle>
-              <div class="mt-2">
-                <p class="text-sm text-gray-500">
-                  Your payment has been successfully submitted. We’ve sent your
-                  an email with all of the details of your order.
-                </p>
+              <div :class="defaultSlotClasses">
+                <slot></slot>
               </div>
 
               <div class="mt-4">
@@ -93,13 +90,12 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "vue";
+import { defineComponent, computed } from "vue";
 
 import {
   Dialog,
   DialogOverlay,
   DialogTitle,
-  DialogDescription,
   TransitionRoot,
   TransitionChild,
 } from "@headlessui/vue";
@@ -109,7 +105,6 @@ export default defineComponent({
     Dialog,
     DialogOverlay,
     DialogTitle,
-    DialogDescription,
     TransitionRoot,
     TransitionChild,
   },
@@ -119,14 +114,27 @@ export default defineComponent({
       type: String,
       default: "",
     },
+    unstyled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     const closeModal = () => {
       emit("update:modelValue", false);
     };
 
+    const defaultSlotClasses = computed(() => {
+      if (props.unstyled) {
+        return "";
+      }
+
+      return "text-sm text-gray-500";
+    });
+
     return {
       closeModal,
+      defaultSlotClasses,
     };
   },
 });

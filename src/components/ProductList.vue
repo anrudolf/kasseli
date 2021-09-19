@@ -1,5 +1,9 @@
 <template>
-  <table class="my-3 min-w-full table-auto shadow-lg bg-white">
+  <table
+    class="my-3 min-w-full table-auto shadow-lg bg-white"
+    @keyup.page-up="prev"
+    @keyup.page-down="next"
+  >
     <thead class="bg-gray-100">
       <tr>
         <th class="text-left">Product</th>
@@ -11,7 +15,9 @@
         v-for="product in result"
         :key="product.id"
         class="cursor-pointer hover:bg-blue-100 border-b"
+        tabindex="0"
         @click="() => selected(product.id)"
+        @keyup.enter="() => selected(product.id)"
       >
         <td class="text-left">{{ product.label.de || product.id }}</td>
         <td class="text-right">
@@ -35,7 +41,14 @@
 </template>
 
 <script lang="ts">
-import { toRef, watch, defineComponent, PropType } from "vue";
+import {
+  toRef,
+  watch,
+  defineComponent,
+  PropType,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
 import { useRouter } from "vue-router";
 import { useArrayPagination } from "../hooks/use-arraypagination";
 
@@ -81,6 +94,27 @@ export default defineComponent({
       pageSize.value = pageSizeOptions[0].value;
       emit("selected", id);
     };
+
+    const arrowLeftRightListener = (e) => {
+      switch (e.code) {
+        case "PageUp":
+          prev();
+          break;
+        case "PageDown":
+          next();
+          break;
+        default:
+          break;
+      }
+    };
+
+    onMounted(() => {
+      document.addEventListener("keyup", arrowLeftRightListener);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener("keyup", arrowLeftRightListener);
+    });
 
     return {
       // product selector
