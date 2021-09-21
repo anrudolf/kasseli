@@ -1,24 +1,13 @@
 <template>
-  <app-modal :visible="showModal" title="Zahlung erfolgreich" @close="restart">
+  <app-modal
+    v-model="showModal"
+    title="Zahlung erfolgreich"
+    show-confirm
+    label-confirm="Beenden"
+  >
     <div @click="restart">
       <div class="flex justify-center">
         <app-icon icon="check-circle" class="w-48 h-48 text-green-500" />
-      </div>
-      <div class="mt-3 flex justify-end">
-        <button
-          class="
-            bg-blue-500
-            hover:bg-blue-700
-            text-white
-            font-bold
-            py-2
-            px-4
-            rounded
-          "
-          @click="restart"
-        >
-          Beenden
-        </button>
       </div>
     </div>
   </app-modal>
@@ -76,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import appMoneyCoin from "@/components/money/MoneyCoin.vue";
@@ -154,6 +143,12 @@ export default defineComponent({
       kasse.$reset();
       router.push("/");
     };
+
+    watch(showModal, (newVal, oldVal) => {
+      if (!newVal) {
+        restart();
+      }
+    });
 
     return {
       notes,

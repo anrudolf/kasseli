@@ -1,21 +1,21 @@
 <template>
   <div class="p-3 max-w-lg">
-    <app-modal :visible="addModal" @close="addModal = false">
-      <template v-slot:title>Produkt auswählen</template>
+    <app-modal v-model="addModal">
+      <template #title>Produkt auswählen</template>
       <app-product-selector @selected="setProduct" />
     </app-modal>
 
-    <app-modal :visible="deleteModal" @close="deleteModal = false">
-      <template v-slot:title>Produkt Favorit wirklich entfernen?</template>
+    <app-modal v-model="deleteModal">
+      <template #title>Produkt Favorit wirklich entfernen?</template>
       <div>
         <div v-if="entity.id">
           <div>Zum Bestätigen bitte ID eintippen und löschen klicken</div>
           <label class="block">
             <div class="text-gray-700">{{ entity.id }}</div>
             <input
+              v-model="deleteModalConfirmation"
               class="input"
               :placeholder="entity.id"
-              v-model="deleteModalConfirmation"
             />
           </label>
         </div>
@@ -60,30 +60,30 @@
 
     <div class="flex p-2 justify-between items-center">
       <button
-        @click="emit('move', 'up')"
         :disabled="idx === 0"
         class="disabled:opacity-50"
+        @click="emit('move', 'up')"
       >
         <app-icon icon="chevron-up" />
       </button>
       <button
-        @click="emit('move', 'top')"
         :disabled="idx === 0"
         class="disabled:opacity-50"
+        @click="emit('move', 'top')"
       >
         <app-icon icon="chevron-double-up" />
       </button>
       <button
-        @click="emit('move', 'bottom')"
         :disabled="idx === size - 1"
         class="disabled:opacity-50"
+        @click="emit('move', 'bottom')"
       >
         <app-icon icon="chevron-double-down" />
       </button>
       <button
-        @click="emit('move', 'down')"
         :disabled="idx === size - 1"
         class="disabled:opacity-50"
+        @click="emit('move', 'down')"
       >
         <app-icon icon="chevron-down" />
       </button>

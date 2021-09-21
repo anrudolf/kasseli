@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 max-w-lg">
-    <app-modal :visible="deleteModal" @close="deleteModal = false">
+    <app-modal v-model="deleteModal">
       <template #title>Wirklich löschen?</template>
       <div>
         <div>Zum Bestätigen bitte Produkt ID eintippen und löschen klicken</div>

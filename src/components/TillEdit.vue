@@ -1,15 +1,15 @@
 <template>
   <div class="p-4 max-w-lg">
-    <app-modal :visible="deleteModal" @close="deleteModal = false">
-      <template v-slot:title>Wirklich löschen?</template>
+    <app-modal v-model="deleteModal">
+      <template #title>Wirklich löschen?</template>
       <div>
         <div>Zum Bestätigen bitte Kasse ID eintippen und löschen klicken</div>
         <label class="block">
           <div class="text-gray-700">{{ entity.id }}</div>
           <input
+            v-model="deleteModalConfirmation"
             class="input"
             placeholder="Kasse ID"
-            v-model="deleteModalConfirmation"
           />
         </label>
         <div class="mt-3 flex justify-between">
@@ -59,9 +59,9 @@
     <label class="block">
       <div class="text-gray-700">ID</div>
       <input
+        v-model="entity.id"
         class="input"
         :class="{ disabled: idDisabled }"
-        v-model="entity.id"
         placeholder="Kasse ID"
         :disabled="idDisabled"
       />
@@ -82,7 +82,7 @@
 
     <label class="block">
       <div class="text-gray-700">Label</div>
-      <input class="input" v-model="entity.label.de" placeholder="Kasse Name" />
+      <input v-model="entity.label.de" class="input" placeholder="Kasse Name" />
     </label>
 
     <label class="block">
@@ -95,15 +95,15 @@
         Favoriten
         <div>
           <button
-            @click="addCatalog"
             class="btn btn-blue inline-flex items-center mr-1 text-base"
+            @click="addCatalog"
           >
             <app-icon icon="plus" class="w-5 h-5 mr-1" />
             Katalog
           </button>
           <button
-            @click="addProduct"
             class="btn btn-blue inline-flex items-center mr-1 text-base"
+            @click="addProduct"
           >
             <app-icon icon="plus" class="w-5 h-5 mr-1" />
             Produkt
@@ -117,14 +117,14 @@
           :entity="favorite"
           :idx="idx"
           :size="entity.favorites.length"
+          class="my-4 border-4"
           @remove="entity.favorites.splice(idx, 1)"
           @move="(pos) => moveFavorite(idx, pos)"
-          class="my-4 border-4"
         />
       </div>
     </section>
 
-    <app-button-confirm class="mt-4" @click="save" :disabled="saveDisabled"
+    <app-button-confirm class="mt-4" :disabled="saveDisabled" @click="save"
       >Speichern</app-button-confirm
     >
   </div>
@@ -148,7 +148,6 @@ import utils from "@/utils";
 import arrayUtil from "@/utils/array";
 
 export default defineComponent({
-  props: ["editId", "newId", "editing"],
   components: {
     appButtonDelete,
     appButtonConfirm,
@@ -158,6 +157,7 @@ export default defineComponent({
     appTillProductEdit,
     appImageSelector,
   },
+  props: ["editId", "newId", "editing"],
   setup(props) {
     const editId = toRef(props, "editId");
     const deleteModal = ref(false);

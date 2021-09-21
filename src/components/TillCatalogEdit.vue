@@ -1,21 +1,21 @@
 <template>
   <div class="p-3 max-w-lg">
-    <app-modal :visible="addModal" @close="addModal = false">
-      <template v-slot:title>Produkt auswählen</template>
+    <app-modal v-model="addModal">
+      <template #title>Produkt auswählen</template>
       <app-product-selector @selected="addProduct" />
     </app-modal>
 
-    <app-modal :visible="deleteModal" @close="deleteModal = false">
-      <template v-slot:title>Katalog wirklich löschen?</template>
+    <app-modal v-model="deleteModal">
+      <template #title>Katalog wirklich löschen?</template>
       <div>
         <div v-if="entity.id">
           <div>Zum Bestätigen bitte ID eintippen und löschen klicken</div>
           <label class="block">
             <div class="text-gray-700">{{ entity.id }}</div>
             <input
+              v-model="deleteModalConfirmation"
               class="input"
               :placeholder="entity.id"
-              v-model="deleteModalConfirmation"
             />
           </label>
         </div>
@@ -60,30 +60,30 @@
 
     <div class="flex p-2 justify-between items-center">
       <button
-        @click="emit('move', 'up')"
         :disabled="idx === 0"
         class="disabled:opacity-50"
+        @click="emit('move', 'up')"
       >
         <app-icon icon="chevron-up" />
       </button>
       <button
-        @click="emit('move', 'top')"
         :disabled="idx === 0"
         class="disabled:opacity-50"
+        @click="emit('move', 'top')"
       >
         <app-icon icon="chevron-double-up" />
       </button>
       <button
-        @click="emit('move', 'bottom')"
         :disabled="idx === size - 1"
         class="disabled:opacity-50"
+        @click="emit('move', 'bottom')"
       >
         <app-icon icon="chevron-double-down" />
       </button>
       <button
-        @click="emit('move', 'down')"
         :disabled="idx === size - 1"
         class="disabled:opacity-50"
+        @click="emit('move', 'down')"
       >
         <app-icon icon="chevron-down" />
       </button>
@@ -94,16 +94,16 @@
 
     <label class="block">
       <div class="text-gray-700">ID</div>
-      <input class="input" v-model="entity.id" placeholder="ID" />
+      <input v-model="entity.id" class="input" placeholder="ID" />
     </label>
 
     <label class="block">
       <div class="text-gray-700">Label</div>
-      <input class="input" v-model="entity.label.de" placeholder="Label" />
+      <input v-model="entity.label.de" class="input" placeholder="Label" />
     </label>
 
     <label class="flex items-center">
-      <input type="checkbox" class="form-checkbox" v-model="entity.hidden" />
+      <input v-model="entity.hidden" type="checkbox" class="form-checkbox" />
       <span class="ml-2 text-gray-700">Verbergen</span>
     </label>
 
@@ -116,8 +116,8 @@
       <div class="flex justify-between items-center mb-3">
         <span class="text-gray-700 text-lg">Produkte</span>
         <button
-          @click="addModal = true"
           class="btn btn-green inline-flex items-center mr-1"
+          @click="addModal = true"
         >
           <app-icon icon="plus" class="w-5 h-5 mr-1" />
           Produkt
@@ -125,13 +125,15 @@
       </div>
 
       <draggable
+        v-if="entity.content.length > 0"
         v-model="entity.content"
         group="items"
         item-key="id"
         handle=".handle"
-        v-if="entity.content.length > 0"
       >
         <div
+          v-for="(item, i) in entity.content"
+          :key="`${item.id}-${i}`"
           class="
             bg-gray-100
             hover:bg-gray-200
@@ -141,11 +143,9 @@
             flex
             items-center
           "
-          v-for="(item, i) in entity.content"
-          :key="`${item.id}-${i}`"
         >
           <app-icon class="handle cursor-pointer" icon="menu" />
-          <app-catalog-list-item class="ml-2" :id="item.id" :kind="item.kind" />
+          <app-catalog-list-item :id="item.id" class="ml-2" :kind="item.kind" />
           <app-button-delete
             class="ml-auto"
             color="gray"

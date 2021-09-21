@@ -1,6 +1,11 @@
 <template>
   <div class="my-2">
-    <input class="input" placeholder="Suche" v-model="filter" />
+    <input
+      :value="filter"
+      class="input"
+      placeholder="Suche"
+      @input="(ev) => (filter = (ev.target as HTMLInputElement).value)"
+    />
   </div>
   <app-product-list :products="filtered" @selected="(id) => selected(id)" />
 </template>
@@ -12,10 +17,10 @@ import appProductList from "../components/ProductList.vue";
 import useProductStore from "@/store/products";
 
 export default defineComponent({
-  emits: ["selected"],
   components: {
     appProductList,
   },
+  emits: ["selected"],
   setup(props, { emit }) {
     const store = useProductStore();
 

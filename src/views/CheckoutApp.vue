@@ -1,22 +1,19 @@
 <template>
-  <app-modal :visible="rejectedModal" @close="rejectedModal = false">
-    <template #title>Zahlung abgelehnt</template>
-    <div>
-      <div class="mt-3 flex justify-between">
-        <button
-          class="
-            bg-blue-500
-            hover:bg-blue-700
-            text-white
-            font-bold
-            py-2
-            px-4
-            rounded
-          "
-          @click="rejectedModal = false"
-        >
-          OK
-        </button>
+  <app-modal v-model="rejectedModal" title="Zahlung abgelehnt" show-confirm>
+    <div class="flex justify-center">
+      <exclamation-icon class="h-48 w-48 text-red-500"></exclamation-icon>
+    </div>
+  </app-modal>
+
+  <app-modal
+    v-model="successModal"
+    title="Zahlung erfolgreich"
+    show-confirm
+    label-confirm="Beenden"
+  >
+    <div @click="successModal = false">
+      <div class="flex justify-center">
+        <check-circle-icon class="w-48 h-48 text-green-500"></check-circle-icon>
       </div>
     </div>
   </app-modal>
@@ -37,6 +34,8 @@
 import { defineComponent, watch, ref } from "vue";
 import { useRouter } from "vue-router";
 
+import { ExclamationIcon, CheckCircleIcon } from "@heroicons/vue/solid";
+
 import qrcodeVue from "qrcode.vue";
 
 import appButtonBack from "@/components/ButtonBack.vue";
@@ -51,11 +50,15 @@ export default defineComponent({
     appButtonBack,
     appModal,
     qrcodeVue,
+    ExclamationIcon,
+    CheckCircleIcon,
   },
   setup() {
     const router = useRouter();
     const link = ref("");
     const rejectedModal = ref(false);
+    const successModal = ref(false);
+
     const kasse = useKasse();
 
     const { entity, create, setStatus } = useAppPayment();
@@ -75,12 +78,22 @@ export default defineComponent({
             rejectedModal.value = true;
             break;
           case "paid":
-            console.log("paid!");
-            router.push("/checkout/success");
+            successModal.value = true;
             break;
           default:
             console.error("unknown app payment status:", status);
         }
+      }
+    });
+
+    const restart = () => {
+      kasse.$reset();
+      router.push("/");
+    };
+
+    watch(successModal, (newVal, oldVal) => {
+      if (!newVal) {
+        restart();
       }
     });
 
@@ -91,6 +104,7 @@ export default defineComponent({
       entity,
       setStatus,
       rejectedModal,
+      successModal,
     };
   },
 });
