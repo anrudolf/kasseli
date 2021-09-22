@@ -1,6 +1,6 @@
 import { ref, onUnmounted } from "vue";
 
-import { AppPayment, AppPaymentHandshake, AppPaymentStatus } from "@/types";
+import { AppPayment, AppPaymentStatus } from "@/types";
 
 import { db } from "../utils/db";
 

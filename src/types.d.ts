@@ -43,14 +43,6 @@ export interface Product {
   imageRef: string | null;
 }
 
-/*
-export enum AppPaymentStatus {
-  OPEN = "open",
-  REJECTED = "rejected",
-  PAID = "paid",
-}
-*/
-
 export type AppPaymentStatus = "open" | "reject" | "pay" | "rejected" | "paid";
 
 export interface AppPayment {
