@@ -1,16 +1,12 @@
 import { ref, onUnmounted } from "vue";
 
-import { useRouter } from "vue-router";
-
-import { AppPayment, AppPaymentStatus } from "@/types";
+import { AppPayment, AppPaymentHandshake, AppPaymentStatus } from "@/types";
 
 import { db } from "../utils/db";
 
 const CODE_RANGE = [1000, 9999];
 
-export default function(id = "") {
-  const router = useRouter();
-
+export default function (id = "") {
   const entity = ref<AppPayment | null>(null);
   const error = ref(0);
 
@@ -57,7 +53,7 @@ export default function(id = "") {
     });
   };
 
-  const create = (price: number) => {
+  const createPayment = (price: number) => {
     const id = `${randomXToY(CODE_RANGE[0], CODE_RANGE[1])}`;
 
     const appPayment: AppPayment = {
@@ -69,7 +65,6 @@ export default function(id = "") {
     };
 
     db.appPayments.doc(appPayment.id).set(appPayment);
-    listenForChanges(id);
 
     return id;
   };
@@ -80,8 +75,9 @@ export default function(id = "") {
 
   return {
     entity,
-    create,
+    createPayment,
     setStatus,
     error,
+    listenForChanges,
   };
 }

@@ -61,9 +61,11 @@ export default defineComponent({
 
     const kasse = useKasse();
 
-    const { entity, create, setStatus } = useAppPayment();
+    const { entity, createPayment, setStatus, listenForChanges } =
+      useAppPayment();
 
-    create(kasse.price);
+    const paymentId = createPayment(kasse.price);
+    listenForChanges(paymentId);
 
     watch(entity, (vnew) => {
       if (vnew) {
@@ -74,14 +76,16 @@ export default defineComponent({
         switch (status) {
           case "open":
             break;
-          case "rejected":
+          case "reject":
+            setStatus(vnew.id, "rejected");
             rejectedModal.value = true;
             break;
-          case "paid":
+          case "pay":
+            setStatus(vnew.id, "paid");
             successModal.value = true;
             break;
           default:
-            console.error("unknown app payment status:", status);
+            console.log("status:", status);
         }
       }
     });
@@ -102,7 +106,6 @@ export default defineComponent({
       size: 300,
       link,
       entity,
-      setStatus,
       rejectedModal,
       successModal,
     };

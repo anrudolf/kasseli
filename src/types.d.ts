@@ -51,7 +51,7 @@ export enum AppPaymentStatus {
 }
 */
 
-export type AppPaymentStatus = "open" | "rejected" | "paid";
+export type AppPaymentStatus = "open" | "reject" | "pay" | "rejected" | "paid";
 
 export interface AppPayment {
   id: string;
