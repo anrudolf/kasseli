@@ -78,8 +78,9 @@
                   left-6
                   text-green-500
                 "
+                @click="closeMenu"
                 ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
-                >App</router-link
+                >Pay</router-link
               >
             </div>
           </TransitionChild>
