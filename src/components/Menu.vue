@@ -1,116 +1,159 @@
 <template>
-  <!-- The overlay -->
-  <div id="myNav" class="overlay">
-    <!-- Button to close the overlay navigation -->
-    <a
-      href="javascript:void(0)"
-      :tabindex="tabindex"
-      class="closebtn"
-      @click="closeMenu()"
-      >&times;</a
-    >
+  <TransitionRoot appear :show="isOpen" as="template">
+    <Dialog as="div" @close="closeModal">
+      <div class="fixed inset-0 z-10 overflow-y-auto bg-yellow-200">
+        <div class="min-h-screen min-w-screen bg-yellow-100 px-4 text-center">
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100"
+            leave-to="opacity-0"
+          >
+            <DialogOverlay class="fixed inset-0" />
+          </TransitionChild>
 
-    <!-- Overlay content -->
-    <div class="overlay-content uppercase" @click="closeMenu">
-      <router-link to="/" :tabindex="tabindex">Home</router-link>
-      <router-link to="/products" :tabindex="tabindex">Products</router-link>
-      <router-link to="/tills" :tabindex="tabindex">Tills</router-link>
-      <router-link to="/about" :tabindex="tabindex">About</router-link>
-    </div>
-  </div>
+          <span class="inline-block h-screen align-middle" aria-hidden="true">
+            &#8203;
+          </span>
+
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <div
+              class="
+                inline-block
+                w-full
+                p-6
+                overflow-hidden
+                text-left
+                align-middle
+                transition-all
+                transform
+                bg-white
+                shadow-xl
+                rounded-2xl
+                pt-12
+              "
+            >
+              <button
+                class="app-menu-button absolute top-6 right-6"
+                @click="closeMenu"
+              >
+                <x-icon class="w-8 h-8"></x-icon>
+              </button>
+
+              <div class="mt-8">
+                <div class="flex flex-col uppercase" @click="closeMenu">
+                  <router-link class="app-menu-link" to="/">Home</router-link>
+                  <router-link class="app-menu-link" to="/products"
+                    >Products</router-link
+                  >
+                  <router-link class="app-menu-link" to="/tills"
+                    >Tills</router-link
+                  >
+                  <router-link class="app-menu-link" to="/about"
+                    >About</router-link
+                  >
+                </div>
+              </div>
+
+              <!-- Mobile Pay as last tabindex -->
+              <router-link
+                to="/pay"
+                class="
+                  app-menu-button
+                  flex
+                  items-center
+                  absolute
+                  top-6
+                  left-6
+                  text-green-500
+                "
+                ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
+                >App</router-link
+              >
+            </div>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
 </template>
 
 <script>
-import { computed, defineComponent } from "vue";
+import { ref, computed } from "vue";
+
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogOverlay,
+} from "@headlessui/vue";
+
+import { XIcon } from "@heroicons/vue/solid";
+import { DeviceMobileIcon } from "@heroicons/vue/outline";
 
 import useUiStore from "@/store/ui";
 
-export default defineComponent({
+export default {
+  components: {
+    TransitionRoot,
+    TransitionChild,
+    Dialog,
+    DialogOverlay,
+    XIcon,
+    DeviceMobileIcon,
+  },
+
   setup() {
     const ui = useUiStore();
 
-    const tabindex = computed(() => {
-      if (ui.menu) {
-        return 0;
-      }
-
-      return -1;
-    });
-
     return {
+      isOpen: computed(() => ui.menu),
+      closeModal: ui.closeMenu,
+      openModal: ui.openMenu,
       closeMenu: ui.closeMenu,
       openMenu: ui.openMenu,
-      tabindex,
     };
   },
-});
+};
 </script>
 
 <style scoped>
-/* The Overlay (background) */
-.overlay {
-  /* Height & width depends on how you want to reveal the overlay (see JS below) */
-  height: 100%;
-  width: 0;
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
-  right: 0;
-  top: 0;
-  /*background-color: rgb(255, 102, 0);*/ /* Black fallback color */
-  /*background-color: rgba(255, 102, 0, 0.9);*/ /* Black w/opacity */
-  background-color: rgb(255, 255, 255); /* White fallback color */
-  /*background-color: rgba(255, 255, 255, 0.9);*/ /* White w/opacity */
-  overflow-x: hidden; /* Disable horizontal scroll */
-  transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+/* see https://tailwindcss.com/docs/outline */
+.focusable {
+  @apply focus:outline-black focus-visible:outline-black;
 }
 
-/* Position the content inside the overlay */
-.overlay-content {
-  position: relative;
-  top: 25%; /* 25% from the top */
-  width: 100%; /* 100% width */
-  text-align: center; /* Centered text/links */
-  margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+.app-menu-link,
+.app-menu-button {
+  @apply focus:outline-black focus-visible:outline-black;
 }
 
-/* The navigation links inside the overlay */
-.overlay a {
+.app-menu-link {
   padding: 8px;
   text-decoration: none;
   font-size: 36px;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
-  /*color: #818181;*/
   color: rgba(51, 51, 51);
-  display: block; /* Display block instead of inline */
-  transition: 0.3s; /* Transition effects on hover (color) */
+  display: block;
 }
 
-/* When you mouse over the navigation links, change their color */
-.overlay a:hover,
-.overlay a:focus {
-  /*color: #f1f1f1;*/
+.app-menu-link:hover,
+.app-menu-link:focus,
+.app-menu-button:hover,
+.app-menu-button:focus {
   color: rgba(255, 102, 0);
-}
-
-/* Position the close button (top right corner) */
-.overlay .closebtn {
-  position: absolute;
-  top: 20px;
-  right: 45px;
-  font-size: 60px;
-}
-
-/* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
-@media screen and (max-height: 450px) {
-  .overlay a {
-    font-size: 20px;
-  }
-  .overlay .closebtn {
-    font-size: 40px;
-    top: 15px;
-    right: 35px;
-  }
 }
 </style>

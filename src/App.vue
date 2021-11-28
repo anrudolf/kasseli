@@ -2,15 +2,15 @@
   <div class="wrapper">
     <div class="p-2 flex justify-end items-center">
       <button
-        @click="openMenu()"
         class="inline-flex items-center mr-4"
         tabindex="-1"
+        @click="openMenu()"
       >
         Fullscreen
         <app-icon icon="solid:arrows-expand" class="ml-1" />
       </button>
 
-      <button @click="openMenu()" class="inline-flex items-center">
+      <button class="inline-flex items-center" @click="openMenu()">
         Menu <app-icon icon="menu" class="ml-1" />
       </button>
 
@@ -24,6 +24,7 @@
 
 <script>
 import appMenu from "@/components/Menu.vue";
+
 import appIcon from "@/components/Icon.vue";
 
 import useUiStore from "@/store/ui";
