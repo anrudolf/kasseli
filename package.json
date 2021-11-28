@@ -10,8 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.4.1",
-    "@heroicons/vue": "^1.0.4",
+    "@headlessui/vue": "^1.4.2",
+    "@heroicons/vue": "^1.0.5",
     "@vueuse/core": "^6.3.2",
     "blob-to-hash": "^0.0.1",
     "filepond": "^4.25.2",

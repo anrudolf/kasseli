@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeModal">
+    <Dialog as="div" @close="closeMenu">
       <div class="fixed inset-0 z-10 overflow-y-auto bg-yellow-200">
         <div class="min-h-screen min-w-screen bg-yellow-100 px-4 text-center">
           <TransitionChild
@@ -89,8 +89,8 @@
   </TransitionRoot>
 </template>
 
-<script>
-import { ref, computed } from "vue";
+<script lang="ts">
+import { computed, defineComponent } from "vue";
 
 import {
   TransitionRoot,
@@ -104,7 +104,7 @@ import { DeviceMobileIcon } from "@heroicons/vue/outline";
 
 import useUiStore from "@/store/ui";
 
-export default {
+export default defineComponent({
   components: {
     TransitionRoot,
     TransitionChild,
@@ -119,13 +119,10 @@ export default {
 
     return {
       isOpen: computed(() => ui.menu),
-      closeModal: ui.closeMenu,
-      openModal: ui.openMenu,
       closeMenu: ui.closeMenu,
-      openMenu: ui.openMenu,
     };
   },
-};
+});
 </script>
 
 <style scoped>
