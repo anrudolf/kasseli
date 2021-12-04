@@ -1,11 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="p-2 flex justify-end items-center">
-      <button
-        class="inline-flex items-center mr-4"
-        tabindex="-1"
-        @click="openMenu()"
-      >
+      <button v-if="false" class="inline-flex items-center mr-4" tabindex="-1">
         Fullscreen
         <app-icon icon="solid:arrows-expand" class="ml-1" />
       </button>

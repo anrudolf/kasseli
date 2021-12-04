@@ -2,10 +2,8 @@
   <div class="p-4">
     <h1>About</h1>
     <p class="my-2">
-      Kasseli is a play pretend super market self checkout register inspired by
-      Migros. You can use a barcode reader to scan products to buy, as well as
-      register new products in inventory mode. It is web based and runs in any
-      browser, such as on a tablet or on a Raspberry Pi with Touch screen.
+      Kasseli is a play pretend super market self-checkout register inspired by
+      Migros. Made with ❤ for my godchild Yara.
     </p>
     <h2 class="my-2">Code</h2>
     <p>
@@ -20,7 +18,7 @@
         >Github.</a
       >
     </p>
-    <p>
+    <p v-if="false">
       Current commit <span class="font-bold">{{ hash.substring(0, 6) }}</span>
     </p>
     <p>Built {{ date }}</p>
