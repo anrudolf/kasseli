@@ -18,6 +18,7 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "vue/no-side-effects-in-computed-properties": "off",
     "vue/no-mutating-props": "off",
+    "vue/multi-word-component-names": "off",
   },
   overrides: [
     {
