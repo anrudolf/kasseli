@@ -7,8 +7,10 @@ import "./index.css";
 
 registerSW();
 
-import { createPinia } from "pinia";
+import { createPinia, PiniaPlugin } from "pinia";
+import piniaPersist from "pinia-plugin-persist";
 
 const pinia = createPinia();
+pinia.use(piniaPersist);
 
 createApp(App).use(pinia).use(router).mount("#app");

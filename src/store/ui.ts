@@ -4,6 +4,11 @@ const store = defineStore({
   id: "ui",
   state: () => ({
     menu: false,
+    paymentOptions: {
+      card: true,
+      cash: true,
+      app: true,
+    },
   }),
   actions: {
     openMenu() {
@@ -20,6 +25,13 @@ const store = defineStore({
       }
       this.menu = false;
     },
+    enablePaymentOption(kind: string, enable: boolean) {
+      this.paymentOptions[kind] = enable;
+    },
+  },
+  persist: {
+    enabled: true,
+    strategies: [{ storage: localStorage, paths: ["paymentOptions"] }],
   },
 });
 

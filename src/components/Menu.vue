@@ -57,8 +57,8 @@
                   <router-link class="app-menu-link" to="/products"
                     >Products</router-link
                   >
-                  <router-link class="app-menu-link" to="/tills"
-                    >Tills</router-link
+                  <router-link class="app-menu-link" to="/settings"
+                    >Settings</router-link
                   >
                   <router-link class="app-menu-link" to="/about"
                     >About</router-link

@@ -16,6 +16,8 @@ import Tills from "../views/Tills.vue";
 import TillEdit from "../views/TillEdit.vue";
 import TillCatalog from "../views/TillCatalog.vue";
 
+import Settings from "../views/Settings.vue";
+
 import Debug from "../views/Debug.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -93,6 +95,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "tills-edit",
     component: TillEdit,
     props: (route) => ({ editId: route.query.id }),
+  },
+  {
+    path: "/settings",
+    name: "settings",
+    component: Settings,
   },
   {
     path: "/debug",
