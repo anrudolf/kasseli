@@ -12,9 +12,16 @@
     </div>
   </app-modal>
 
-  <app-button-back class="ml-2" @click="$router.push('/checkout')"
-    >Zurück</app-button-back
-  >
+  <div class="flex justify-between items-center max-w-md">
+    <app-button-back class="ml-2" @click="$router.push('/checkout')"
+      >Zurück</app-button-back
+    >
+    <light-bulb-icon
+      class="cursor-pointer w-12 h-12"
+      :class="{ 'text-green-500': showHint, 'text-gray-500': !showHint }"
+      @click="enableHint(!showHint)"
+    />
+  </div>
 
   <div class="p-2 max-w-md">
     <div class="row bg-gray-300 mt-4">
@@ -36,6 +43,7 @@
       <div v-for="element in smallCoins" :key="element.id">
         <app-money-coin
           class="cursor-pointer inline-block min-w-full"
+          :class="{ hint: showHint && element.id === hint }"
           :amount="element.id"
           @click="add(element.id)"
         />
@@ -46,6 +54,7 @@
       <div v-for="element in bigCoins" :key="element.id">
         <app-money-coin
           class="cursor-pointer inline-block min-w-full"
+          :class="{ hint: showHint && element.id === hint }"
           :amount="element.id"
           @click="add(element.id)"
         />
@@ -57,6 +66,7 @@
         v-for="element in notes"
         :key="element.id"
         class="cursor-pointer m-2 inline-block w-16"
+        :class="{ hint: showHint && element.id === hint }"
         :amount="element.id"
         @click="add(element.id)"
       />
@@ -67,6 +77,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
+
+import { LightBulbIcon } from "@heroicons/vue/outline";
 
 import appMoneyCoin from "@/components/money/MoneyCoin.vue";
 import appMoneyNote from "@/components/money/MoneyNote.vue";
@@ -85,6 +97,7 @@ export default defineComponent({
     appIcon,
     appMoneyCoin,
     appMoneyNote,
+    LightBulbIcon,
   },
   setup() {
     const router = useRouter();
@@ -150,6 +163,36 @@ export default defineComponent({
       }
     });
 
+    const showHint = ref(false);
+
+    const enableHint = (enable) => {
+      showHint.value = enable;
+    };
+
+    // max to min
+    const sortedMoney = [...notes, ...coins].sort((a, b) =>
+      a.id > b.id ? -1 : 1
+    );
+
+    const hint = computed(() => {
+      if (remainder.value <= 0) {
+        return 0;
+      }
+
+      // biggest amount
+      if (remainder.value > sortedMoney[0].id) {
+        return sortedMoney[0].id;
+      }
+
+      for (const money of sortedMoney) {
+        if (remainder.value - money.id >= 0) {
+          return money.id;
+        }
+      }
+
+      return 0;
+    });
+
     return {
       notes,
       coins,
@@ -161,6 +204,10 @@ export default defineComponent({
       remainder,
       showModal,
       restart,
+      // hints
+      showHint,
+      enableHint,
+      hint,
     };
   },
 });
@@ -182,5 +229,17 @@ export default defineComponent({
 
 .row {
   @apply flex justify-between text-xl p-1 px-2;
+}
+
+.hint {
+  transform: scale(1);
+  animation: hint 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes hint {
+  50% {
+    transform: scale(1.1);
+  }
 }
 </style>
