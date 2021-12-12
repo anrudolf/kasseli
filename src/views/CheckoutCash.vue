@@ -17,9 +17,13 @@
       >Zurück</app-button-back
     >
     <light-bulb-icon
+      v-if="paymentHints.enabled"
       class="cursor-pointer w-12 h-12"
-      :class="{ 'text-green-500': showHint, 'text-gray-500': !showHint }"
-      @click="enableHint(!showHint)"
+      :class="{
+        'text-green-500': paymentHints.active,
+        'text-gray-300': !paymentHints.active,
+      }"
+      @click="activateHints(!paymentHints.active)"
     />
   </div>
 
@@ -43,7 +47,7 @@
       <div v-for="element in smallCoins" :key="element.id">
         <app-money-coin
           class="cursor-pointer inline-block min-w-full"
-          :class="{ hint: showHint && element.id === hint }"
+          :class="{ hint: isHint(element.id) }"
           :amount="element.id"
           @click="add(element.id)"
         />
@@ -54,7 +58,7 @@
       <div v-for="element in bigCoins" :key="element.id">
         <app-money-coin
           class="cursor-pointer inline-block min-w-full"
-          :class="{ hint: showHint && element.id === hint }"
+          :class="{ hint: isHint(element.id) }"
           :amount="element.id"
           @click="add(element.id)"
         />
@@ -66,7 +70,7 @@
         v-for="element in notes"
         :key="element.id"
         class="cursor-pointer m-2 inline-block w-16"
-        :class="{ hint: showHint && element.id === hint }"
+        :class="{ hint: isHint(element.id) }"
         :amount="element.id"
         @click="add(element.id)"
       />
@@ -89,6 +93,7 @@ import appModal from "@/components/Modal.vue";
 import appIcon from "@/components/Icon.vue";
 
 import useKasseStore from "@/store/kasse";
+import useSettingsStore from "@/store/settings";
 
 export default defineComponent({
   components: {
@@ -102,6 +107,8 @@ export default defineComponent({
   setup() {
     const router = useRouter();
     const kasse = useKasseStore();
+    const settings = useSettingsStore();
+    const { paymentHints } = settings;
 
     const notes = [
       { type: "note", name: "10 CHF", id: 10 },
@@ -163,10 +170,8 @@ export default defineComponent({
       }
     });
 
-    const showHint = ref(false);
-
-    const enableHint = (enable) => {
-      showHint.value = enable;
+    const activateHints = (enable) => {
+      paymentHints.active = enable;
     };
 
     // max to min
@@ -175,23 +180,29 @@ export default defineComponent({
     );
 
     const hint = computed(() => {
+      const min = sortedMoney[sortedMoney.length - 1].id;
+      const d = min / 10;
+
+      // less or near zero remainder
       if (remainder.value <= 0) {
         return 0;
-      }
-
-      // biggest amount
-      if (remainder.value > sortedMoney[0].id) {
-        return sortedMoney[0].id;
+      } else if (Math.abs(remainder.value) <= d) {
+        return 0;
       }
 
       for (const money of sortedMoney) {
         if (remainder.value - money.id >= 0) {
+          return money.id;
+        } else if (Math.abs(remainder.value - money.id) <= d) {
           return money.id;
         }
       }
 
       return 0;
     });
+
+    const isHint = (id: number) =>
+      paymentHints.enabled && paymentHints.active && id == hint.value;
 
     return {
       notes,
@@ -205,9 +216,10 @@ export default defineComponent({
       showModal,
       restart,
       // hints
-      showHint,
-      enableHint,
       hint,
+      isHint,
+      activateHints,
+      paymentHints,
     };
   },
 });

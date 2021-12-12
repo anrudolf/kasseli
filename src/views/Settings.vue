@@ -10,8 +10,8 @@
     <app-switch v-model="paymentOptions.cash.enabled">Cash</app-switch>
     <app-switch v-model="paymentOptions.app.enabled">App</app-switch>
 
-    <h2>Has payment options</h2>
-    {{ hasPaymentOptions }}
+    <h2>Diverses</h2>
+    <app-switch v-model="paymentHints.enabled">Zahlungstipps</app-switch>
   </div>
 </template>
 
@@ -29,11 +29,12 @@ export default {
   setup() {
     const settingsStore = useSettingsStore();
 
-    const { paymentOptions } = settingsStore;
+    const { paymentOptions, paymentHints } = settingsStore;
     const hasPaymentOptions = computed(() => settingsStore.hasPaymentOptions);
 
     return {
       paymentOptions,
+      paymentHints,
       hasPaymentOptions,
     };
   },

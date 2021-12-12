@@ -8,6 +8,10 @@ const store = defineStore({
       cash: { enabled: true },
       app: { enabled: true },
     },
+    paymentHints: {
+      enabled: true,
+      active: false,
+    },
   }),
   getters: {
     hasPaymentOptions(state) {
@@ -18,7 +22,9 @@ const store = defineStore({
   },
   persist: {
     enabled: true,
-    strategies: [{ storage: localStorage, paths: ["paymentOptions"] }],
+    strategies: [
+      { storage: localStorage, paths: ["paymentOptions", "paymentHints"] },
+    ],
   },
 });
 
