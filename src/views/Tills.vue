@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <h1>Tills</h1>
+    <h1>Kassen</h1>
     <router-link to="/tills/new" class="btn btn-blue inline-flex items-center">
       <app-icon icon="plus" class="w-5 h-5 mr-1" />
       ADD

@@ -53,7 +53,10 @@
     <div class="flex justify-between">
       <h1 v-if="editing">Kasse editieren</h1>
       <h1 v-else>Kasse erstellen</h1>
-      <app-button-delete v-if="editing" @click="deleteModal = true" />
+      <app-button-delete
+        v-if="editing && removable"
+        @click="deleteModal = true"
+      />
     </div>
 
     <label class="block">
@@ -157,7 +160,7 @@ export default defineComponent({
     appTillProductEdit,
     appImageSelector,
   },
-  props: ["editId", "newId", "editing"],
+  props: ["editId", "newId", "editing", "removable"],
   setup(props) {
     const editId = toRef(props, "editId");
     const deleteModal = ref(false);
