@@ -20,17 +20,17 @@ import { computed } from "vue";
 
 import appSwitch from "@/components/ui/Switch.vue";
 
-import useUiStore from "@/store/ui";
+import useSettingsStore from "@/store/settings";
 
 export default {
   components: {
     appSwitch,
   },
   setup() {
-    const uiStore = useUiStore();
+    const settingsStore = useSettingsStore();
 
-    const { paymentOptions } = uiStore;
-    const hasPaymentOptions = computed(() => uiStore.hasPaymentOptions);
+    const { paymentOptions } = settingsStore;
+    const hasPaymentOptions = computed(() => settingsStore.hasPaymentOptions);
 
     return {
       paymentOptions,

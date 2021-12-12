@@ -4,19 +4,7 @@ const store = defineStore({
   id: "ui",
   state: () => ({
     menu: false,
-    paymentOptions: {
-      card: { enabled: true },
-      cash: { enabled: true },
-      app: { enabled: true },
-    },
   }),
-  getters: {
-    hasPaymentOptions(state) {
-      return Object.values(state.paymentOptions).some(
-        (option) => option.enabled
-      );
-    },
-  },
   actions: {
     openMenu() {
       const nav = document.getElementById("myNav");
@@ -32,10 +20,6 @@ const store = defineStore({
       }
       this.menu = false;
     },
-  },
-  persist: {
-    enabled: true,
-    strategies: [{ storage: localStorage, paths: ["paymentOptions"] }],
   },
 });
 

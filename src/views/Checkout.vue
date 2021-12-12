@@ -33,7 +33,7 @@ import { useRouter } from "vue-router";
 import appButtonBack from "@/components/ButtonBack.vue";
 import appCard from "@/components/Card.vue";
 
-import useUiStore from "@/store/ui";
+import useSettingsStore from "@/store/settings";
 
 export default defineComponent({
   components: {
@@ -42,19 +42,21 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const uiStore = useUiStore();
+    const settingsStore = useSettingsStore();
 
-    for (const o of Object.values(uiStore.paymentOptions)) {
+    for (const o of Object.values(settingsStore.paymentOptions)) {
       console.log(o);
     }
 
-    console.log(Object.values(uiStore.paymentOptions).every((o) => o.enabled));
+    console.log(
+      Object.values(settingsStore.paymentOptions).every((o) => o.enabled)
+    );
 
     //const noPaymentOptions = computed(() => Object.values())
 
     return {
       goBack: () => router.push("/"),
-      paymentOptions: uiStore.paymentOptions,
+      paymentOptions: settingsStore.paymentOptions,
     };
   },
 });
