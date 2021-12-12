@@ -5,11 +5,18 @@ const store = defineStore({
   state: () => ({
     menu: false,
     paymentOptions: {
-      card: true,
-      cash: true,
-      app: true,
+      card: { enabled: true },
+      cash: { enabled: true },
+      app: { enabled: true },
     },
   }),
+  getters: {
+    hasPaymentOptions(state) {
+      return Object.values(state.paymentOptions).some(
+        (option) => option.enabled
+      );
+    },
+  },
   actions: {
     openMenu() {
       const nav = document.getElementById("myNav");
@@ -24,9 +31,6 @@ const store = defineStore({
         nav.style.width = "0%";
       }
       this.menu = false;
-    },
-    enablePaymentOption(kind: string, enable: boolean) {
-      this.paymentOptions[kind] = enable;
     },
   },
   persist: {

@@ -6,13 +6,18 @@
     >
 
     <h2 class="mt-4">Zahlungsmöglichkeiten</h2>
-    <app-switch v-model="uiStore.paymentOptions.card">Karte</app-switch>
-    <app-switch v-model="uiStore.paymentOptions.cash">Cash</app-switch>
-    <app-switch v-model="uiStore.paymentOptions.app">App</app-switch>
+    <app-switch v-model="paymentOptions.card.enabled">Karte</app-switch>
+    <app-switch v-model="paymentOptions.cash.enabled">Cash</app-switch>
+    <app-switch v-model="paymentOptions.app.enabled">App</app-switch>
+
+    <h2>Has payment options</h2>
+    {{ hasPaymentOptions }}
   </div>
 </template>
 
 <script lang="ts">
+import { computed } from "vue";
+
 import appSwitch from "@/components/ui/Switch.vue";
 
 import useUiStore from "@/store/ui";
@@ -24,8 +29,12 @@ export default {
   setup() {
     const uiStore = useUiStore();
 
+    const { paymentOptions } = uiStore;
+    const hasPaymentOptions = computed(() => uiStore.hasPaymentOptions);
+
     return {
-      uiStore,
+      paymentOptions,
+      hasPaymentOptions,
     };
   },
 };
