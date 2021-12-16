@@ -2,8 +2,8 @@
   <div class="p-4 max-w-lg">
     <div v-if="!id">
       <h1>Bezahlen</h1>
-      <h2>Code eingeben</h2>
-      <div class="flex items-center my-2">
+      <h2 v-if="!scanning">Code eingeben</h2>
+      <div v-if="!scanning" class="flex items-center my-2">
         <input v-model="code" class="input" type="number" />
         <button
           class="btn btn-blue ml-2"
@@ -11,6 +11,10 @@
         >
           OK
         </button>
+      </div>
+
+      <div v-if="scanning" class="mt-8 h-64 w-full">
+        <qrcode-stream v-if="scanning" @decode="onScan" />
       </div>
 
       <button
@@ -28,7 +32,6 @@
         <qrcode-icon class="w-8 h-8 mr-2" />
         SCAN
       </button>
-      <qrcode-stream v-if="scanning" @decode="onScan" />
     </div>
     <div v-else>
       <h1 class="my-2">Zahlung #{{ id }}</h1>
