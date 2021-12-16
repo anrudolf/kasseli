@@ -22,10 +22,12 @@
 
   <div class="p-4">
     <h1>Bezahlen</h1>
-    <h2>App</h2>
-    <div v-if="link">
+    <h2 v-if="code">
+      Code <span class="font-bold">{{ code }}</span>
+    </h2>
+    <div v-if="link" class="mt-2">
       <qrcode-vue :value="link" :size="size" level="H" />
-      {{ link }}
+      <span v-if="false">{{ link }}</span>
     </div>
   </div>
 </template>
@@ -58,6 +60,7 @@ export default defineComponent({
     const link = ref("");
     const rejectedModal = ref(false);
     const successModal = ref(false);
+    const code = ref("");
 
     const kasse = useKasse();
 
@@ -72,6 +75,7 @@ export default defineComponent({
         const { id, status } = vnew;
 
         link.value = `${window.location.origin}/pay?id=${id}`;
+        code.value = id;
 
         switch (status) {
           case "open":
@@ -105,6 +109,7 @@ export default defineComponent({
       goBack: () => router.push("/checkout"),
       size: 300,
       link,
+      code,
       entity,
       rejectedModal,
       successModal,

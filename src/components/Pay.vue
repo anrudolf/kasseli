@@ -1,28 +1,93 @@
 <template>
   <div class="p-4 max-w-lg">
-    <app-modal v-if="entity" v-model="closedModal" :title="closedModalTitle">
-      <div v-if="entity.status == 'paid'">:)</div>
-      <div v-else>:(</div>
-    </app-modal>
-    <h1 class="my-2">Zahlung #{{ id }}</h1>
-    <div v-if="error">Keine Zahlung gefunden.</div>
-    <div v-else-if="entity">
-      <h2>Bitte bestätigen Sie die Zahlung von</h2>
-      <div class="my-4 p-4 text-center text-3xl bg-gray-200 rounded">
-        {{ entity.amount.toFixed(2) }} CHF
+    <div v-if="!id">
+      <h1>Bezahlen</h1>
+      <h2>Code eingeben</h2>
+      <div class="flex items-center my-2">
+        <input v-model="code" class="input" type="number" />
+        <button
+          class="btn btn-blue ml-2"
+          @click="router.push(`/pay?id=${code}`)"
+        >
+          OK
+        </button>
       </div>
+
       <button
-        class="my-2 w-full btn btn-red text-xl"
-        @click="() => setStatus(id, 'reject')"
+        class="
+          mt-4
+          w-full
+          text-xl
+          btn btn-blue
+          flex
+          justify-center
+          items-center
+        "
+        @click="scanning = !scanning"
       >
-        Ablehnen
+        <qrcode-icon class="w-8 h-8 mr-2" />
+        SCAN
       </button>
-      <button
-        class="w-full btn btn-blue text-xl"
-        @click="() => setStatus(id, 'pay')"
-      >
-        Bestätigen
-      </button>
+      <qrcode-stream v-if="scanning" @decode="onScan" />
+    </div>
+    <div v-else>
+      <h1 class="my-2">Zahlung #{{ id }}</h1>
+      <div v-if="error">
+        <h2>Keine Zahlung gefunden</h2>
+        <button class="my-2 w-full btn btn-blue" @click="router.push('/pay')">
+          Neue Zahlung
+        </button>
+      </div>
+      <div v-if="entity">
+        <div v-if="entity.status == 'paid'">
+          <h2>Zahlung erhalten</h2>
+          <button class="my-2 w-full btn btn-blue" @click="router.push('/pay')">
+            Neue Zahlung
+          </button>
+        </div>
+        <div v-else-if="entity.status == 'rejected'">
+          <h2>Zahlung abgelehnt</h2>
+          <button class="my-2 w-full btn btn-blue" @click="router.push('/pay')">
+            Neue Zahlung
+          </button>
+        </div>
+        <div v-else>
+          <h2>Bitte bestätigen Sie die Zahlung von</h2>
+          <div class="my-4 p-4 text-center text-3xl bg-gray-200 rounded">
+            {{ entity.amount.toFixed(2) }} CHF
+          </div>
+          <button
+            class="
+              my-2
+              w-full
+              btn btn-red
+              text-xl
+              flex
+              justify-center
+              items-center
+            "
+            :disabled="entity.status !== 'open'"
+            @click="() => setStatus(id, 'reject')"
+          >
+            <x-circle-icon
+              class="w-8 h-8 inline mr-2"
+              :class="{ 'animate-spin': entity.status === 'reject' }"
+            />
+            <span>Ablehnen</span>
+          </button>
+          <button
+            class="w-full btn btn-blue text-xl flex justify-center items-center"
+            :disabled="entity.status !== 'open'"
+            @click="() => setStatus(id, 'pay')"
+          >
+            <check-circle-icon
+              class="w-8 h-8 inline mr-2"
+              :class="{ 'animate-spin': entity.status === 'pay' }"
+            />
+            <span>Bestätigen</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -31,13 +96,22 @@
 import { defineComponent, watch, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import appModal from "@/components/Modal.vue";
+import {
+  XCircleIcon,
+  CheckCircleIcon,
+  QrcodeIcon,
+} from "@heroicons/vue/outline";
+
+import { QrcodeStream } from "vue3-qrcode-reader";
 
 import useAppPayment from "@/hooks/use-appPayment";
 
 export default defineComponent({
   components: {
-    appModal,
+    QrcodeStream,
+    XCircleIcon,
+    CheckCircleIcon,
+    QrcodeIcon,
   },
   props: {
     id: {
@@ -47,10 +121,22 @@ export default defineComponent({
     },
   },
   setup(props) {
+    console.log("setup");
     const router = useRouter();
     const closedModal = ref(false);
 
-    console.log(window.location);
+    const code = ref("");
+
+    const scanning = ref(false);
+    const onScan = (decodedString) => {
+      scanning.value = false;
+
+      const splits = decodedString.split("id=");
+      if (splits.length == 2) {
+        code.value = splits[1];
+        router.push(`/pay?id=${code.value}`);
+      }
+    };
 
     const { entity, setStatus, error, listenForChanges } = useAppPayment(
       props.id
@@ -60,35 +146,15 @@ export default defineComponent({
       listenForChanges(props.id);
     }
 
-    watch(entity, (vnew) => {
-      if (vnew) {
-        const { status } = vnew;
-
-        if (status === "paid" || status === "rejected") {
-          closedModal.value = true;
-        }
-      }
-    });
-
-    const closedModalTitle = computed(() => {
-      if (entity.value?.status === "paid") {
-        return "Zahlung erhalten";
-      }
-
-      if (entity.value?.status == "rejected") {
-        return "Zahlung abgelehnt";
-      }
-
-      return "???";
-    });
-
     return {
+      scanning,
+      onScan,
+      router,
+      code,
       location: window.location.origin,
       entity,
       setStatus,
       error,
-      closedModal,
-      closedModalTitle,
     };
   },
 });

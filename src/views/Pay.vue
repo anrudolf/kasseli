@@ -1,10 +1,10 @@
 <template>
-  <app-pay :id="pid" />
+  <app-pay :id="pid" :key="pid" />
 </template>
 
 <script lang="ts">
 import { defineComponent, watch, ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 
 import appPay from "@/components/Pay.vue";
 
@@ -12,17 +12,20 @@ export default defineComponent({
   components: {
     appPay,
   },
-  props: {
-    id: {
-      type: String,
-      required: true,
-      default: "",
-    },
-  },
   setup(props) {
     const router = useRouter();
+    const route = useRoute();
+    console.log(route.query);
 
-    return { pid: props.id };
+    const pid = computed(() => {
+      if (route.query.id) {
+        return `${route.query.id}`;
+      }
+
+      return "";
+    });
+
+    return { pid };
   },
 });
 </script>

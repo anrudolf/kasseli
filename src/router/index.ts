@@ -55,7 +55,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/pay",
     name: "pay",
     component: Pay,
-    props: (route) => ({ id: route.query.id }),
   },
   {
     path: "/products",

@@ -34,7 +34,8 @@
     "vue-draggable-next": "^2.0.1",
     "vue-filepond": "^7.0.0",
     "vue-router": "^4.0.0-0",
-    "vue-tsc": "^0.29.8"
+    "vue-tsc": "^0.29.8",
+    "vue3-qrcode-reader": "^0.0.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
