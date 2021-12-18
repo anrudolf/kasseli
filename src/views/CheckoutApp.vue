@@ -20,11 +20,19 @@
 
   <app-button-back class="ml-2" @click="goBack">Zurück</app-button-back>
 
-  <div class="p-4">
-    <h1>Bezahlen</h1>
-    <h2 v-if="code">
-      Code <span class="font-bold">{{ code }}</span>
-    </h2>
+  <div class="mx-4" style="width: 300px">
+    <div class="mt-4 flex items-center justify-between">
+      <h1 class="text-2xl">Bezahlen</h1>
+      <span class="text-2xl text-gray-800">{{ price.toFixed(2) }} CHF</span>
+    </div>
+    <div v-if="code" class="mt-2 flex flex-col">
+      <span class="text-gray-500">Code</span>
+      <span
+        class="font-bold text-4xl text-gray-800"
+        style="letter-spacing: 0.2em"
+        >{{ code }}</span
+      >
+    </div>
     <div v-if="link" class="mt-2">
       <qrcode-vue :value="link" :size="size" level="H" />
       <span v-if="false">{{ link }}</span>
@@ -113,6 +121,7 @@ export default defineComponent({
       entity,
       rejectedModal,
       successModal,
+      price: kasse.price,
     };
   },
 });
