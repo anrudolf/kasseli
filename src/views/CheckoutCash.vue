@@ -18,7 +18,7 @@
     >
     <light-bulb-icon
       v-if="paymentHints.enabled"
-      class="cursor-pointer w-12 h-12"
+      class="cursor-pointer w-12 h-12 mr-2"
       :class="{
         'text-green-500': paymentHints.active,
         'text-gray-300': !paymentHints.active,

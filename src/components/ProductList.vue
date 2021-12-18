@@ -31,9 +31,15 @@
       <app-select v-model.number="pageSize" :items="pageSizeOptions" />
     </div>
 
-    <div>
-      <button class="border p-2" @click="prev">PREV</button>
-      <button class="border p-2" @click="next">NEXT</button>
+    <div class="flex items-center space-x-2">
+      <button class="border p-2 flex" @click="prev">
+        <chevron-left-icon class="w-6 h-6" />
+        <span class="mx-2 hidden sm:inline">PREV</span>
+      </button>
+      <button class="border p-2 flex" @click="next">
+        <span class="mx-2 hidden sm:inline">NEXT</span>
+        <chevron-right-icon class="w-6 h-6" />
+      </button>
     </div>
 
     <div>{{ currentPage }} / {{ lastPage }}</div>
@@ -49,6 +55,9 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
+
+import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/vue/solid";
+
 import { useRouter } from "vue-router";
 import { useArrayPagination } from "../hooks/use-arraypagination";
 
@@ -59,14 +68,16 @@ import { Product } from "@/types";
 export default defineComponent({
   components: {
     appSelect,
+    ChevronLeftIcon,
+    ChevronRightIcon,
   },
-  emits: ["selected"],
   props: {
     products: {
       type: Object as PropType<Array<Product>>,
       required: true,
     },
   },
+  emits: ["selected"],
   setup(props, { emit }) {
     const router = useRouter();
     const products = toRef(props, "products");

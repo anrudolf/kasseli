@@ -44,16 +44,6 @@ export default defineComponent({
     const router = useRouter();
     const settingsStore = useSettingsStore();
 
-    for (const o of Object.values(settingsStore.paymentOptions)) {
-      console.log(o);
-    }
-
-    console.log(
-      Object.values(settingsStore.paymentOptions).every((o) => o.enabled)
-    );
-
-    //const noPaymentOptions = computed(() => Object.values())
-
     return {
       goBack: () => router.push("/"),
       paymentOptions: settingsStore.paymentOptions,
