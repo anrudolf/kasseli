@@ -21,8 +21,9 @@
         v-if="isOnline && paymentOptions.app.enabled"
         label="App"
         to="/checkout/app"
-        ><device-mobile-icon class="p-5 text-green-500"
-      /></app-card>
+      >
+        <div class="p-5"><device-mobile-icon class="text-green-500" /></div
+      ></app-card>
     </div>
   </div>
 </template>
