@@ -67,21 +67,23 @@
               </div>
 
               <!-- Mobile Pay as last tabindex -->
-              <router-link
-                to="/pay"
-                class="
-                  app-menu-button
-                  flex
-                  items-center
-                  absolute
-                  top-6
-                  left-6
-                  text-green-500
-                "
-                @click="closeMenu"
-                ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
-                >Pay</router-link
-              >
+              <div class="absolute top-6 left-6 flex items-center space-x-3">
+                <router-link
+                  to="/pay"
+                  class="app-menu-button flex items-center text-green-500"
+                  @click="closeMenu"
+                  ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
+                  >Pay</router-link
+                >
+                <button
+                  class="app-menu-button text-green-500 flex items-center"
+                  @click="refresh"
+                >
+                  <refresh-icon class="w-8 h-8" /><span class="ml-0.5"
+                    >Refresh</span
+                  >
+                </button>
+              </div>
             </div>
           </TransitionChild>
         </div>
@@ -101,7 +103,7 @@ import {
 } from "@headlessui/vue";
 
 import { XIcon } from "@heroicons/vue/solid";
-import { DeviceMobileIcon } from "@heroicons/vue/outline";
+import { DeviceMobileIcon, RefreshIcon } from "@heroicons/vue/outline";
 
 import useUiStore from "@/store/ui";
 
@@ -113,14 +115,20 @@ export default defineComponent({
     DialogOverlay,
     XIcon,
     DeviceMobileIcon,
+    RefreshIcon,
   },
 
   setup() {
     const ui = useUiStore();
 
+    const refresh = () => {
+      window.location.reload();
+    };
+
     return {
       isOpen: computed(() => ui.menu),
       closeMenu: ui.closeMenu,
+      refresh,
     };
   },
 });
