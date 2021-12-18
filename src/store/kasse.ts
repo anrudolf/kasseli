@@ -20,9 +20,11 @@ const store = defineStore({
   getters: {
     selected: (state) => state.items[state.selectedIndex],
     price: (state) => {
-      return state.items
+      const p = state.items
         .map((i) => i.quantity * i.price)
         .reduce((sum, x) => sum + x, 0);
+      const r = Math.round((p + Number.EPSILON) * 100) / 100;
+      return r;
     },
     hasItems: (state) => state.items.length > 0,
     page: (state) => {
