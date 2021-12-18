@@ -1,8 +1,8 @@
 <template>
   <button
     class="inline-block"
-    @click="() => to && router.push(to)"
     :class="wrapperClasses"
+    @click="() => to && router.push(to)"
   >
     <div
       class="
@@ -25,6 +25,9 @@
         class="flex-shrink-0"
         :class="imageClasses"
       />
+      <div v-else-if="hasDefaultSlot()" :class="imageClasses">
+        <slot></slot>
+      </div>
       <div
         v-else
         class="flex-shrink-0 opacity-60"
@@ -59,7 +62,7 @@ export default defineComponent({
     contain: Boolean,
     responsive: Boolean,
   },
-  setup(props) {
+  setup(props, { slots }) {
     const router = useRouter();
 
     const wrapperClasses = computed(() => {
@@ -113,6 +116,9 @@ export default defineComponent({
       return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
     };
 
+    const hasSlot = (name) => !!slots[name];
+    const hasDefaultSlot = () => hasSlot("default");
+
     return {
       router,
       getColor,
@@ -120,6 +126,8 @@ export default defineComponent({
       wrapperClasses,
       imageClasses,
       labelClasses,
+      hasSlot,
+      hasDefaultSlot,
     };
   },
 });

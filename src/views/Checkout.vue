@@ -18,10 +18,11 @@
         contain
       />
       <app-card
-        v-if="paymentOptions.app.enabled"
+        v-if="isOnline && paymentOptions.app.enabled"
         label="App"
         to="/checkout/app"
-      />
+        ><device-mobile-icon class="p-5 text-green-500"
+      /></app-card>
     </div>
   </div>
 </template>
@@ -29,6 +30,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
+import { useOnline } from "@vueuse/core";
+import { DeviceMobileIcon } from "@heroicons/vue/outline";
 
 import appButtonBack from "@/components/ButtonBack.vue";
 import appCard from "@/components/Card.vue";
@@ -39,14 +42,18 @@ export default defineComponent({
   components: {
     appButtonBack,
     appCard,
+    DeviceMobileIcon,
   },
   setup() {
     const router = useRouter();
     const settingsStore = useSettingsStore();
 
+    const isOnline = useOnline();
+
     return {
       goBack: () => router.push("/"),
       paymentOptions: settingsStore.paymentOptions,
+      isOnline,
     };
   },
 });
