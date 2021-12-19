@@ -32,7 +32,7 @@ import { ref, defineComponent, PropType } from "vue";
 import vueFilePond from "vue-filepond";
 import md5 from "md5";
 
-import appImageRef from "@/components/ImageRef.vue";
+import appImageRef from "@/components/image/ImageRef.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 
 import "filepond/dist/filepond.min.css";
@@ -41,7 +41,7 @@ import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-import firebase from "../firebaseInit";
+import firebase from "../../firebaseInit";
 const db = firebase.firestore();
 
 // Create component

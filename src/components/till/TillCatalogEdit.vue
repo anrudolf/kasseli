@@ -168,7 +168,7 @@ import appIcon from "@/components/ui/Icon.vue";
 import appModal from "@/components/Modal.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appProductSelector from "@/components/product/ProductSelector.vue";
-import appImageSelector from "@/components/ImageSelector.vue";
+import appImageSelector from "@/components/image/ImageSelector.vue";
 import appCatalogListItem from "@/components/CatalogListItem.vue";
 
 export default defineComponent({

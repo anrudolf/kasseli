@@ -3,17 +3,17 @@
     label-idle="Drag & Drop oder <span class='filepond--label-action'>Datei wählen</span>"
     :allow-multiple="false"
     accepted-file-types="image/png, image/jpeg"
-    @preparefile="onpreparefile"
-    @removefile="onremovefile"
-    allowImageResize="true"
-    imageResizeTargetWidth="200"
-    imageResizeTargetHeight="200"
-    imageResizeMode="contain"
-    imageResizeUpscale="false"
-    imageTransformOutputMimeType="image/jpeg"
-    imageTransformOutputQuality="90"
+    allow-image-resize="true"
+    image-resize-target-width="200"
+    image-resize-target-height="200"
+    image-resize-mode="contain"
+    image-resize-upscale="false"
+    image-transform-output-mime-type="image/jpeg"
+    image-transform-output-quality="90"
     :files="files"
     credits="false"
+    @preparefile="onpreparefile"
+    @removefile="onremovefile"
   />
 </template>
 
@@ -31,7 +31,7 @@ import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-import firebase from "../firebaseInit";
+import firebase from "../../firebaseInit";
 const db = firebase.firestore();
 
 // Create component
@@ -42,7 +42,6 @@ const FilePond = vueFilePond(
   FilePondPluginFileValidateType
 );
 export default {
-  emits: ["update:modelValue"],
   components: {
     FilePond,
   },
@@ -52,6 +51,7 @@ export default {
       default: null,
     },
   },
+  emits: ["update:modelValue"],
   setup(props, { emit }) {
     const modelValue = toRef(props, "modelValue");
     const internalHash = ref(null);

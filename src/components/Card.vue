@@ -47,7 +47,7 @@
 <script lang="ts">
 import { defineComponent, computed, PropType } from "vue";
 import { useRouter } from "vue-router";
-import appImageRef from "../components/ImageRef.vue";
+import appImageRef from "@/components/image/ImageRef.vue";
 
 export default defineComponent({
   name: "Card",

@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, PropType, Ref } from "vue";
-import useFirestoreDocument from "../hooks/use-firestore-document";
+import useFirestoreDocument from "../../hooks/use-firestore-document";
 
 import { ImageRef } from "@/types";
 

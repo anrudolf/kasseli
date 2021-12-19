@@ -143,7 +143,7 @@ import appIcon from "@/components/ui/Icon.vue";
 import appTillCatalogEdit from "@/components/till/TillCatalogEdit.vue";
 import appTillProductEdit from "@/components/till/TillProductEdit.vue";
 
-import appImageSelector from "@/components/ImageSelector.vue";
+import appImageSelector from "@/components/image/ImageSelector.vue";
 
 import useTillEdit from "@/hooks/use-tillEdit";
 

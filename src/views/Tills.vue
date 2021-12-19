@@ -29,7 +29,7 @@ import { ref } from "vue";
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
 import appIcon from "@/components/ui/Icon.vue";
 
-import appImageRef from "@/components/ImageRef.vue";
+import appImageRef from "@/components/image/ImageRef.vue";
 
 import db from "@/utils/db";
 
