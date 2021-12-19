@@ -59,9 +59,9 @@ import {
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/vue/solid";
 
 import { useRouter } from "vue-router";
-import { useArrayPagination } from "../hooks/use-arraypagination";
+import { useArrayPagination } from "@/hooks/use-arraypagination";
 
-import appSelect from "./ui/Select.vue";
+import appSelect from "@/components/ui/Select.vue";
 
 import { Product } from "@/types";
 

@@ -165,10 +165,10 @@ import { VueDraggableNext } from "vue-draggable-next";
 import { TillCatalog } from "@/types";
 
 import appIcon from "@/components/Icon.vue";
-import appModal from "../Modal.vue";
+import appModal from "@/components/Modal.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
-import appProductSelector from "../ProductSelector.vue";
-import appImageSelector from "../ImageSelector.vue";
+import appProductSelector from "@/components/product/ProductSelector.vue";
+import appImageSelector from "@/components/ImageSelector.vue";
 import appCatalogListItem from "@/components/CatalogListItem.vue";
 
 export default defineComponent({

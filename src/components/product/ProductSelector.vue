@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { ref, computed, defineComponent } from "vue";
-import appProductList from "../components/ProductList.vue";
+import appProductList from "./ProductList.vue";
 
 import useProductStore from "@/store/products";
 

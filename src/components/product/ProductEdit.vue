@@ -133,12 +133,12 @@
 import { ref, toRef, defineComponent } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
-import appButtonConfirm from "./ui/ButtonConfirm.vue";
-import appModal from "../components/Modal.vue";
-import appImageSelector from "../components/ImageSelector.vue";
+import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
+import appModal from "@/components/Modal.vue";
+import appImageSelector from "@/components/ImageSelector.vue";
 import appIcon from "@/components/Icon.vue";
 
-import useProductEdit from "../hooks/use-productEdit.js";
+import useProductEdit from "@/hooks/use-productEdit.js";
 
 import utils from "@/utils";
 

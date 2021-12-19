@@ -40,13 +40,13 @@
 import { reactive, ref, computed, defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
-import appSelect from "../components/ui/Select.vue";
-import appIcon from "../components/Icon.vue";
-import appProductList from "../components/ProductList.vue";
+import appSelect from "@/components/ui/Select.vue";
+import appIcon from "@/components/Icon.vue";
+import appProductList from "@/components/product/ProductList.vue";
 
-import dynamicSort from "../utils/dynamicSort";
-import useScanner from "../hooks/use-scanner";
-import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
+import dynamicSort from "@/utils/dynamicSort";
+import useScanner from "@/hooks/use-scanner";
+import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 
 import db from "@/utils/db";
 

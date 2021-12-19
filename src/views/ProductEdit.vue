@@ -2,8 +2,8 @@
   <app-product-edit
     :key="editing"
     :editing="editing"
-    :editId="editId"
-    :newId="newId"
+    :edit-id="editId"
+    :new-id="newId"
   />
 </template>
 
@@ -11,13 +11,13 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
-import appProductEdit from "../components/ProductEdit.vue";
+import appProductEdit from "../components/product/ProductEdit.vue";
 
 export default {
-  props: ["editId", "newId"],
   components: {
     appProductEdit,
   },
+  props: ["editId", "newId"],
   setup() {
     const route = useRoute();
 

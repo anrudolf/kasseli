@@ -109,9 +109,9 @@ import { ref, defineComponent, PropType, computed } from "vue";
 import { TillProduct } from "@/types";
 
 import appIcon from "@/components/Icon.vue";
-import appModal from "../Modal.vue";
+import appModal from "@/components/Modal.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
-import appProductSelector from "../ProductSelector.vue";
+import appProductSelector from "@/components/product/ProductSelector.vue";
 
 import useProductStore from "@/store/products";
 import { Product } from "@/types";
