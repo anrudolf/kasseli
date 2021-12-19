@@ -13,7 +13,7 @@ import { useRouter } from "vue-router";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
-import useScanner from "../hooks/use-scanner";
+import useScanner from "../../hooks/use-scanner";
 
 export default defineComponent({
   components: {

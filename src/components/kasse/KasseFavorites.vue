@@ -80,7 +80,7 @@ export default defineComponent({
     const clicked = (fav: TillCatalog | TillProduct) => {
       switch (fav.kind) {
         case "catalog":
-          router.push(`/till-catalog?id=${fav.id}`);
+          router.push(`/tills/catalog?id=${fav.id}`);
           break;
         case "product":
           kasseStore.add(fav.id);

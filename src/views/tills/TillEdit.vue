@@ -12,7 +12,7 @@
 import { computed, toRefs } from "vue";
 import { useRoute } from "vue-router";
 
-import appTillEdit from "../components/till/TillEdit.vue";
+import appTillEdit from "../../components/till/TillEdit.vue";
 
 export default {
   components: {

@@ -1,20 +1,20 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import Kasse from "../views/Kasse.vue";
-import Checkout from "../views/Checkout.vue";
-import CheckoutCash from "../views/CheckoutCash.vue";
-import CheckoutCard from "../views/CheckoutCard.vue";
-import CheckoutApp from "../views/CheckoutApp.vue";
-import CheckoutSuccess from "../views/CheckoutSuccess.vue";
+import Checkout from "../views/checkout/Checkout.vue";
+import CheckoutCash from "../views/checkout/CheckoutCash.vue";
+import CheckoutCard from "../views/checkout/CheckoutCard.vue";
+import CheckoutApp from "../views/checkout/CheckoutApp.vue";
+import CheckoutSuccess from "../views/checkout/CheckoutSuccess.vue";
 
 import Pay from "../views/Pay.vue";
 
-import Products from "../views/Products.vue";
-import ProductEdit from "../views/ProductEdit.vue";
+import Products from "../views/products/Products.vue";
+import ProductEdit from "../views/products/ProductEdit.vue";
 
-import Tills from "../views/Tills.vue";
-import TillEdit from "../views/TillEdit.vue";
-import TillCatalog from "../views/TillCatalog.vue";
+import Tills from "../views/tills/Tills.vue";
+import TillEdit from "../views/tills/TillEdit.vue";
+import TillCatalog from "../views/tills/TillCatalog.vue";
 
 import Settings from "../views/Settings.vue";
 
@@ -74,8 +74,8 @@ const routes: Array<RouteRecordRaw> = [
     props: (route) => ({ editId: route.query.id }),
   },
   {
-    path: "/till-catalog",
-    name: "till-catalog",
+    path: "/tills/catalog",
+    name: "tills-catalog",
     component: TillCatalog,
     props: (route) => ({ id: route.query.id }),
   },
