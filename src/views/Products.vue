@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="my-2">
-      <input class="input" placeholder="Suche" v-model="filter" />
+      <input v-model="filter" class="input" placeholder="Suche" />
     </div>
 
     <div class="my-1 w-full">
@@ -40,7 +40,7 @@
 import { reactive, ref, computed, defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
-import appSelect from "../components/Select.vue";
+import appSelect from "../components/ui/Select.vue";
 import appIcon from "../components/Icon.vue";
 import appProductList from "../components/ProductList.vue";
 
@@ -120,4 +120,3 @@ export default defineComponent({
   },
 });
 </script>
-
