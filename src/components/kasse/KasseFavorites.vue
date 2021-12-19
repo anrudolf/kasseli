@@ -22,7 +22,7 @@
 import { defineComponent, PropType } from "vue";
 import { useRouter } from "vue-router";
 
-import appCard from "@/components/Card.vue";
+import appCard from "@/components/ui/Card.vue";
 
 import { TillCatalog, TillProduct } from "@/types";
 

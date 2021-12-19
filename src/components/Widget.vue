@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import appCard from "../components/Card.vue";
+import appCard from "@/components/ui/Card.vue";
 
 import useProductStore from "@/store/products";
 
@@ -36,5 +36,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-</style>>
+<style scoped></style>
+>
