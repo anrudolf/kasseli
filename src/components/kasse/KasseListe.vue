@@ -78,7 +78,7 @@
 
 <script>
 import { defineComponent, computed } from "vue";
-import appKasseListeItem from "@/components/KasseListeItem.vue";
+import appKasseListeItem from "@/components/kasse/KasseListeItem.vue";
 import appIcon from "@/components/Icon.vue";
 
 import useKasseStore from "@/store/kasse";

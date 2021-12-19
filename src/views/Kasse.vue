@@ -11,13 +11,13 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import appKasseListe from "@/components/KasseListe.vue";
-import appKasseFavorites from "@/components/KasseFavorites.vue";
+import appKasseListe from "@/components/kasse/KasseListe.vue";
+import appKasseFavorites from "@/components/kasse/KasseFavorites.vue";
 
-import appKasseTotal from "@/components/KasseTotal.vue";
-import appKasseAnzahl from "@/components/KasseAnzahl.vue";
-import appKasseAktuell from "@/components/KasseAktuell.vue";
-import appKasseBezahlen from "@/components/KasseBezahlen.vue";
+import appKasseTotal from "@/components/kasse/KasseTotal.vue";
+import appKasseAnzahl from "@/components/kasse/KasseAnzahl.vue";
+import appKasseAktuell from "@/components/kasse/KasseAktuell.vue";
+import appKasseBezahlen from "@/components/kasse/KasseBezahlen.vue";
 
 import useScanner from "../hooks/use-scanner";
 
