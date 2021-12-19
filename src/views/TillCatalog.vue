@@ -18,7 +18,7 @@
 import { defineComponent, computed } from "vue";
 import { useRouter } from "vue-router";
 
-import appWidget from "@/components/Widget.vue";
+import appWidget from "@/components/ui/Widget.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import useKasseStore from "@/store/kasse";
