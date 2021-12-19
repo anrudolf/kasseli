@@ -5,10 +5,25 @@
     show-confirm
     label-confirm="Beenden"
   >
-    <div @click="restart">
+    <div class="cursor-pointer" @click="restart">
       <div class="flex justify-center">
         <app-icon icon="check-circle" class="w-48 h-48 text-green-500" />
       </div>
+    </div>
+
+    <div class="row bg-gray-300 mt-4">
+      <span>Total</span>
+      <span>{{ total.toFixed(2) }} CHF</span>
+    </div>
+
+    <div class="row bg-gray-100">
+      <span>Bezahlt</span>
+      <span>{{ paid.toFixed(2) }} CHF</span>
+    </div>
+
+    <div class="row bg-gray-100">
+      <span>Rückgeld</span>
+      <span>{{ change.toFixed(2) }} CHF</span>
     </div>
   </app-modal>
 
@@ -150,6 +165,11 @@ export default defineComponent({
       return ret;
     });
 
+    const change = computed(() => {
+      const ret = Math.abs(total - paid.value);
+      return ret;
+    });
+
     const showModal = ref(false);
 
     const add = (i: number) => {
@@ -213,6 +233,7 @@ export default defineComponent({
       paid,
       add,
       remainder,
+      change,
       showModal,
       restart,
       // hints
