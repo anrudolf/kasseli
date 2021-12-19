@@ -1,9 +1,7 @@
 <template>
-  <div class="p-4">
-    <h1>Settings</h1>
-    <router-link to="/tills" class="underline text-indigo-600"
-      >Kassen</router-link
-    >
+  <div class="p-4 max-w-lg">
+    <h1 class="my-2">Settings</h1>
+    <router-link to="/tills" class="link text-xl">Kassen</router-link>
 
     <h2 class="mt-4">Zahlungsmöglichkeiten</h2>
     <app-switch v-model="paymentOptions.card.enabled">Karte</app-switch>

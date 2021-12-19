@@ -1,22 +1,38 @@
 <template>
-  <div class="p-4">
-    <h1>Kassen</h1>
-    <router-link to="/tills/new" class="btn btn-blue inline-flex items-center">
-      <app-icon icon="plus" class="w-5 h-5 mr-1" />
-      ADD
-    </router-link>
+  <div class="p-4 max-w-lg">
+    <div class="flex justify-between items-center">
+      <h1>Kassen</h1>
+      <router-link
+        to="/tills/new"
+        class="btn btn-blue inline-flex items-center"
+      >
+        <app-icon icon="plus" class="w-5 h-5 mr-1" />
+        ADD
+      </router-link>
+    </div>
     <ul>
       <li
         v-for="till in tills"
         :key="till.id"
-        class="border p-2 mt-2 flex flex-col"
+        class="border rounded mt-2 flex items-center"
       >
-        <h3>{{ till.label.de }}</h3>
-        <app-image-ref :id="till.imageRef" class="self-center" />
+        <router-link :to="`/tills/edit?id=${till.id}`" class="p-2 flex-grow">
+          <div class="flex items-center space-x-2 w-full">
+            <div class="w-12 h-12 flex items-center">
+              <app-image-ref v-if="till.imageRef" :id="till.imageRef" />
+              <div
+                v-else
+                :style="{ background: getColor(till.label.de) }"
+                class="w-full h-full"
+              ></div>
+            </div>
+            <span class="text-2xl">{{ till.label.de }}</span>
+          </div>
+        </router-link>
         <router-link
           :to="`/tills/edit?id=${till.id}`"
-          class="uppercase text-blue-500 self-end mr-1 mt-2"
-          >Edit</router-link
+          class="uppercase text-blue-500 mx-2"
+          ><div class="flex items-center"><span>Edit</span></div></router-link
         >
       </li>
     </ul>
@@ -32,6 +48,7 @@ import appIcon from "@/components/ui/Icon.vue";
 import appImageRef from "@/components/image/ImageRef.vue";
 
 import db from "@/utils/db";
+import { getColor } from "@/utils";
 
 import { Till } from "@/types";
 
@@ -54,6 +71,7 @@ export default {
 
     return {
       tills,
+      getColor,
     };
   },
 };

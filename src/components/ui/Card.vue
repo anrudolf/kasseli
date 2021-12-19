@@ -49,6 +49,8 @@ import { defineComponent, computed, PropType } from "vue";
 import { useRouter } from "vue-router";
 import appImageRef from "@/components/image/ImageRef.vue";
 
+import { getColor } from "@/utils";
+
 export default defineComponent({
   name: "Card",
   components: {
@@ -98,22 +100,6 @@ export default defineComponent({
       // @ts-ignore: no time for this shit
       const modules = import.meta.globEager("/src/assets/*");
       return modules[path].default;
-    };
-
-    // from https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
-    const getColor = (str) => {
-      let hash = 0;
-      if (!str || str.length === 0) return hash;
-      for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        hash = hash & hash;
-      }
-      const rgb = [0, 0, 0];
-      for (let i = 0; i < 3; i++) {
-        const value = (hash >> (i * 8)) & 255;
-        rgb[i] = value;
-      }
-      return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
     };
 
     const hasSlot = (name) => !!slots[name];
