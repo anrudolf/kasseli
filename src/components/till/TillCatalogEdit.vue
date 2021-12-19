@@ -145,7 +145,11 @@
           "
         >
           <app-icon class="handle cursor-pointer" icon="menu" />
-          <app-catalog-list-item :id="item.id" class="ml-2" :kind="item.kind" />
+          <app-till-catalog-list-item
+            :id="item.id"
+            class="ml-2"
+            :kind="item.kind"
+          />
           <app-button-delete
             class="ml-auto"
             color="gray"
@@ -169,7 +173,7 @@ import appModal from "@/components/ui/Modal.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appProductSelector from "@/components/product/ProductSelector.vue";
 import appImageSelector from "@/components/image/ImageSelector.vue";
-import appCatalogListItem from "@/components/CatalogListItem.vue";
+import appTillCatalogListItem from "@/components/till/TillCatalogListItem.vue";
 
 export default defineComponent({
   props: {
@@ -192,7 +196,7 @@ export default defineComponent({
     appButtonDelete,
     appProductSelector,
     appImageSelector,
-    appCatalogListItem,
+    appTillCatalogListItem,
     draggable: VueDraggableNext,
   },
   setup(props, { emit }) {
