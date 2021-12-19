@@ -105,7 +105,7 @@ import appMoneyNote from "@/components/money/MoneyNote.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import appModal from "@/components/Modal.vue";
-import appIcon from "@/components/Icon.vue";
+import appIcon from "@/components/ui/Icon.vue";
 
 import useKasseStore from "@/store/kasse";
 import useSettingsStore from "@/store/settings";

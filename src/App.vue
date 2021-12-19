@@ -21,7 +21,7 @@
 <script>
 import appMenu from "@/components/Menu.vue";
 
-import appIcon from "@/components/Icon.vue";
+import appIcon from "@/components/ui/Icon.vue";
 
 import useUiStore from "@/store/ui";
 import useProductStore from "@/store/products";

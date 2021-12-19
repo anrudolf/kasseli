@@ -11,7 +11,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
-import appProductEdit from "../components/product/ProductEdit.vue";
+import appProductEdit from "@/components/product/ProductEdit.vue";
 
 export default {
   components: {

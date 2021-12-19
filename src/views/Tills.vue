@@ -27,7 +27,7 @@
 import { ref } from "vue";
 
 import useFirestoreCollectionSnapshot from "../hooks/use-firestore-collection-snapshot";
-import appIcon from "@/components/Icon.vue";
+import appIcon from "@/components/ui/Icon.vue";
 
 import appImageRef from "@/components/ImageRef.vue";
 
