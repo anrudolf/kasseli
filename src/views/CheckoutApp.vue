@@ -49,7 +49,7 @@ import { ExclamationIcon, CheckCircleIcon } from "@heroicons/vue/solid";
 import qrcodeVue from "qrcode.vue";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
-import appModal from "@/components/Modal.vue";
+import appModal from "@/components/ui/Modal.vue";
 
 import useAppPayment from "@/hooks/use-appPayment";
 

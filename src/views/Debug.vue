@@ -14,7 +14,7 @@
 import { ref, defineComponent } from "vue";
 import { ExclamationIcon } from "@heroicons/vue/solid";
 
-import appModal from "@/components/Modal.vue";
+import appModal from "@/components/ui/Modal.vue";
 
 export default defineComponent({
   components: { appModal, ExclamationIcon },

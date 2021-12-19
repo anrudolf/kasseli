@@ -134,7 +134,7 @@ import { ref, toRef, defineComponent } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
-import appModal from "@/components/Modal.vue";
+import appModal from "@/components/ui/Modal.vue";
 import appImageSelector from "@/components/image/ImageSelector.vue";
 import appIcon from "@/components/ui/Icon.vue";
 
