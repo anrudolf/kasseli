@@ -132,8 +132,8 @@
 <script>
 import { ref, toRef, defineComponent } from "vue";
 
-import appButtonDelete from "@/components/ButtonDelete.vue";
-import appButtonConfirm from "../components/ButtonConfirm.vue";
+import appButtonDelete from "@/components/ui/ButtonDelete.vue";
+import appButtonConfirm from "./ui/ButtonConfirm.vue";
 import appModal from "../components/Modal.vue";
 import appImageSelector from "../components/ImageSelector.vue";
 import appIcon from "@/components/Icon.vue";

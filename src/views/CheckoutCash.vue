@@ -102,7 +102,7 @@ import { LightBulbIcon } from "@heroicons/vue/outline";
 import appMoneyCoin from "@/components/money/MoneyCoin.vue";
 import appMoneyNote from "@/components/money/MoneyNote.vue";
 
-import appButtonBack from "@/components/ButtonBack.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import appModal from "@/components/Modal.vue";
 import appIcon from "@/components/Icon.vue";

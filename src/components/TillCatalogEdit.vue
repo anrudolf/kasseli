@@ -166,7 +166,7 @@ import { TillCatalog } from "@/types";
 
 import appIcon from "@/components/Icon.vue";
 import appModal from "../components/Modal.vue";
-import appButtonDelete from "@/components/ButtonDelete.vue";
+import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appProductSelector from "../components/ProductSelector.vue";
 import appImageSelector from "../components/ImageSelector.vue";
 import appCatalogListItem from "@/components/CatalogListItem.vue";

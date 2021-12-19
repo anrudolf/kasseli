@@ -34,7 +34,7 @@ import { useRouter } from "vue-router";
 import { useOnline } from "@vueuse/core";
 import { DeviceMobileIcon } from "@heroicons/vue/outline";
 
-import appButtonBack from "@/components/ButtonBack.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/Card.vue";
 
 import useSettingsStore from "@/store/settings";

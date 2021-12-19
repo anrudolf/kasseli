@@ -33,7 +33,7 @@ import vueFilePond from "vue-filepond";
 import md5 from "md5";
 
 import appImageRef from "@/components/ImageRef.vue";
-import appButtonDelete from "@/components/ButtonDelete.vue";
+import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 
 import "filepond/dist/filepond.min.css";
 

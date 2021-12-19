@@ -1,9 +1,9 @@
 <template>
   <div class="flex justify-center items-center bg-white">
     <app-button-confirm
-      @click="checkout()"
       class="w-full sm:w-auto"
       :disabled="disabled"
+      @click="checkout()"
       >Bezahlen</app-button-confirm
     >
   </div>
@@ -15,7 +15,7 @@ import { useRouter } from "vue-router";
 
 import useKasseStore from "@/store/kasse";
 
-import appButtonConfirm from "@/components/ButtonConfirm.vue";
+import appButtonConfirm from "@/components/ui/ButtonConfirm.vue";
 
 export default defineComponent({
   components: {

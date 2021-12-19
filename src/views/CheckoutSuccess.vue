@@ -11,7 +11,7 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
-import appButtonBack from "@/components/ButtonBack.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 export default defineComponent({
   components: {
@@ -26,5 +26,4 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-</style>
+<style scoped></style>

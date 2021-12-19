@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4" v-if="catalog">
+  <div v-if="catalog" class="p-4">
     <app-button-back @click="back">Zurück</app-button-back>
     <div class="mt-6 grid gap-y-4 grid-cols-2 md:grid-cols-4">
       <app-widget
@@ -7,8 +7,8 @@
         :key="i"
         :kind="widget.kind"
         :widget="widget"
-        @click="(ev) => add(widget.id)"
         contain
+        @click="(ev) => add(widget.id)"
       />
     </div>
   </div>
@@ -19,7 +19,7 @@ import { defineComponent, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import appWidget from "@/components/Widget.vue";
-import appButtonBack from "@/components/ButtonBack.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
