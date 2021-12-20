@@ -88,6 +88,10 @@ export const getColor = (str) => {
   return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 };
 
+export const getInitials = (str) => {
+  return str;
+};
+
 export default {
   isNumeric,
   isTemplate,
@@ -96,4 +100,5 @@ export default {
   createTemplate,
   toNumber,
   getColor,
+  getInitials,
 };

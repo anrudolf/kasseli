@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref, computed } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -126,7 +126,6 @@ export default defineComponent({
   setup(props) {
     console.log("setup");
     const router = useRouter();
-    const closedModal = ref(false);
 
     const code = ref("");
 
