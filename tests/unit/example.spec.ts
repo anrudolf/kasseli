@@ -1,12 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import HelloWorld from "@/components/HelloWorld.vue";
+import Pay from "@/components/Pay.vue";
 
-describe("HelloWorld.vue", () => {
+const routerPushMock = jest.fn();
+
+jest.mock("vue-router", () => ({
+  useRouter: () => ({
+    push: routerPushMock,
+  }),
+}));
+
+describe("Pay.vue", () => {
   it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
+    const id = "1001";
+    const wrapper = shallowMount(Pay, {
+      props: { id },
     });
-    expect(wrapper.text()).toMatch(msg);
+    expect(wrapper.text()).toMatch(id);
   });
 });

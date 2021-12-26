@@ -124,7 +124,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    console.log("setup");
     const router = useRouter();
 
     const code = ref("");
