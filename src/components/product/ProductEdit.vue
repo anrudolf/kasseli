@@ -138,7 +138,7 @@ import appModal from "@/components/ui/Modal.vue";
 import appImageSelector from "@/components/image/ImageSelector.vue";
 import appIcon from "@/components/ui/Icon.vue";
 
-import useProductEdit from "@/hooks/use-productEdit.js";
+import useProductEdit from "@/hooks/use-productEdit";
 
 import utils from "@/utils";
 

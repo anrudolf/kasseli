@@ -10,12 +10,17 @@ import useFirestoreDocument from "../../hooks/use-firestore-document";
 
 import { ImageRef } from "@/types";
 
+import useSettingsStore from "@/store/settings";
+
 export default defineComponent({
   props: {
     id: { type: String as PropType<string | null>, default: "" },
   },
   setup(props) {
     const show = ref(false);
+
+    const settings = useSettingsStore();
+
     const entity: Ref<ImageRef | null> = props.id
       ? useFirestoreDocument(`images/${props.id}`, { source: "cache" })
       : ref(null);

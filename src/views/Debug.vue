@@ -1,33 +1,37 @@
 <template>
   <h1>Debug</h1>
-  {{ selectedProduct }}
-  <button class="btn" @click="setIsOpen(true)">open</button>
-  <button class="btn" @click="setIsOpen(false)">close</button>
-  <app-modal v-model="isOpen" title="Ding dong" show-confirm>
-    <div class="flex justify-center">
-      <exclamation-icon class="h-48 w-48 text-red-500"></exclamation-icon>
-    </div>
-  </app-modal>
+  <input v-model="uid" class="input" />
+  {{ uid }}
+  <button class="btn btn-blue" @click="() => search(uid)">GO</button>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent } from "vue";
-import { ExclamationIcon } from "@heroicons/vue/solid";
 
-import appModal from "@/components/ui/Modal.vue";
+import db from "@/utils/db";
 
 export default defineComponent({
-  components: { appModal, ExclamationIcon },
   setup() {
-    const isOpen = ref(false);
-    const selectedProduct = ref(null);
+    const connie = "uHvaGPHeZbWVUgDFSgmbbhJSnYx2";
+
+    const uid = ref(connie);
+
+    const search = async (uid) => {
+      var members = db.fs.collectionGroup("members").where("uid", "==", uid);
+
+      try {
+        const snap = await members.get();
+        snap.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
     return {
-      isOpen,
-      setIsOpen(value) {
-        isOpen.value = value;
-      },
-      selectedProduct,
+      uid,
+      search,
     };
   },
 });

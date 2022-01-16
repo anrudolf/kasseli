@@ -4,37 +4,43 @@
     <router-link to="/tills" class="link text-xl">Kassen</router-link>
 
     <h2 class="mt-4">Zahlungsmöglichkeiten</h2>
-    <app-switch v-model="paymentOptions.card.enabled">Karte</app-switch>
-    <app-switch v-model="paymentOptions.cash.enabled">Cash</app-switch>
-    <app-switch v-model="paymentOptions.app.enabled">App</app-switch>
+    <app-switch v-model="settings.paymentOptions.card.enabled"
+      >Karte</app-switch
+    >
+    <app-switch v-model="settings.paymentOptions.cash.enabled">Cash</app-switch>
+    <app-switch v-model="settings.paymentOptions.app.enabled">App</app-switch>
+
+    <h2>Workspace</h2>
+    <input v-model="settings.workspace" class="input" />
 
     <h2>Diverses</h2>
-    <app-switch v-model="paymentHints.enabled">Zahlungstipps</app-switch>
+    <app-switch v-model="settings.paymentHints.enabled"
+      >Zahlungstipps</app-switch
+    >
   </div>
 </template>
 
 <script lang="ts">
-import { computed } from "vue";
+import { computed, defineComponent } from "vue";
 
 import appSwitch from "@/components/ui/Switch.vue";
 
 import useSettingsStore from "@/store/settings";
 
-export default {
+export default defineComponent({
   components: {
     appSwitch,
   },
   setup() {
-    const settingsStore = useSettingsStore();
+    const settings = useSettingsStore();
 
-    const { paymentOptions, paymentHints } = settingsStore;
-    const hasPaymentOptions = computed(() => settingsStore.hasPaymentOptions);
+    const hasPaymentOptions = computed(() => settings.hasPaymentOptions);
 
     return {
-      paymentOptions,
-      paymentHints,
+      settings,
+      // computed
       hasPaymentOptions,
     };
   },
-};
+});
 </script>

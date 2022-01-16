@@ -1,33 +1,32 @@
 import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
-import firebase from "../firebaseInit";
-
 import utils from "../utils";
 import { useDebounce } from "../hooks/use-debounce";
 
-const db = firebase.firestore();
+import { db } from "../utils/db";
 
-export default function({ editing = false, initialId = null }) {
+import { Product } from "@/types";
+
+export default function ({ editing = false, initialId = null }) {
   const router = useRouter();
 
-  const entity = reactive({
-    id: null,
+  const entity: Product = reactive({
+    id: "",
     label: {
-      de: null,
+      de: "",
       en: null,
     },
-    price: null,
+    price: 0,
     template: false,
-    created: null,
-    image: null,
+    created: Date.now(),
     imageRef: null,
   });
 
   let unmaskedId = "";
 
   if (initialId) {
-    db.collection("products")
+    db.products
       .doc(initialId)
       .get()
       .then((doc) => {
@@ -56,16 +55,12 @@ export default function({ editing = false, initialId = null }) {
       entity.price = null;
     }
 
-    db.collection("products")
-      .doc(entity.id)
-      .set(entity);
+    db.products.doc(entity.id).set(entity);
     router.push("/products");
   };
 
   const remove = () => {
-    db.collection("products")
-      .doc(entity.id)
-      .delete();
+    db.products.doc(entity.id).delete();
     router.push("/products");
   };
 
@@ -108,7 +103,7 @@ export default function({ editing = false, initialId = null }) {
       return;
     }
 
-    db.collection("products")
+    db.products
       .doc(v)
       .get()
       .then((doc) => {
