@@ -1,6 +1,10 @@
 import firebase from "firebase/app";
 
 import instance from "../firebaseInit";
+import workspace from "@/utils/workspace";
+
+console.log("db: workspace");
+console.log(workspace);
 
 import { Till, ImageRef, Product, AppPayment } from "@/types";
 
@@ -18,10 +22,10 @@ const dataPoint = <T>(collectionPath: string) =>
 const db = {
   // list your collections here
   // users: dataPoint<YourType>('users')
-  tills: dataPoint<Till>("tills"),
-  images: dataPoint<ImageRef>("images"),
-  products: dataPoint<Product>("products"),
-  appPayments: dataPoint<AppPayment>("appPayments"),
+  tills: dataPoint<Till>(`tills`),
+  images: dataPoint<ImageRef>(`images`),
+  products: dataPoint<Product>(`products`),
+  appPayments: dataPoint<AppPayment>(`${workspace}appPayments`),
 };
 
 export { db };
