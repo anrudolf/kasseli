@@ -1,31 +1,29 @@
 import { defineStore } from "pinia";
-import { firebaseApp } from "@/services/firebase";
-import { getAuth, onAuthStateChanged, getIdTokenResult } from "firebase/auth";
+import firebase from "firebase/app";
+import "firebase/auth";
 
-const auth = getAuth(firebaseApp);
-
-export const useAuth = defineStore({
+const store = defineStore({
   id: "auth",
   state() {
     return {
-      user: {},
-      token: {},
+      user: null as firebase.User | null,
     };
   },
   actions: {
     bindUser() {
-      return new Promise((resolve, reject) => {
-        onAuthStateChanged(
-          auth,
-          async (user) => {
-            this.user = user;
-            if (user) this.token = await getIdTokenResult(user);
-            resolve();
-          },
-          reject()
-        );
+      return new Promise<void>((resolve, reject) => {
+        firebase.auth().onAuthStateChanged(async (user) => {
+          if (user) {
+            console.log("logged in");
+          } else {
+            console.log("not logged in");
+          }
+          this.user = user;
+          resolve();
+        });
       });
     },
-    // ...
   },
 });
+
+export default store;
