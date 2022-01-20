@@ -18,16 +18,15 @@
 
 <script setup>
 import { ref } from "vue";
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "@/firebaseInit";
+import { getAuth } from "firebase/auth";
 
 import { useRouter } from "vue-router"; // import router
 const email = ref("");
 const password = ref("");
 const router = useRouter(); // get a reference to our vue router
 const register = () => {
-  firebase
-    .auth() // get the auth api
+  getAuth(firebase)
     .createUserWithEmailAndPassword(email.value, password.value) // need .value because ref()
     .then((data) => {
       console.log("Successfully registered!");

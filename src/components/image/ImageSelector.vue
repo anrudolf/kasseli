@@ -31,6 +31,7 @@
 import { ref, defineComponent, PropType } from "vue";
 import vueFilePond from "vue-filepond";
 import md5 from "md5";
+import { setDoc, doc } from "firebase/firestore";
 
 import appImageRef from "@/components/image/ImageRef.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
@@ -41,8 +42,7 @@ import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-import firebase from "../../firebaseInit";
-const db = firebase.firestore();
+import { db } from "@/utils/db";
 
 // Create component
 const FilePond: any = vueFilePond(
@@ -72,11 +72,11 @@ export default defineComponent({
       reader.readAsDataURL(output);
       reader.onloadend = function () {
         const hash = md5(reader.result);
-        db.collection("images").doc(hash).set({
+        setDoc(doc(db.images, hash), {
           id: hash,
           type: "DATA_URL",
           mediaType: "image/jpeg",
-          payload: reader.result,
+          payload: reader.result as string,
         });
         emit("update:modelValue", hash);
       };

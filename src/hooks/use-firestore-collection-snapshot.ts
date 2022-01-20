@@ -1,14 +1,18 @@
-import firebase from "firebase/app";
+import {
+  CollectionReference,
+  QuerySnapshot,
+  onSnapshot,
+} from "firebase/firestore";
 
 import { onUnmounted } from "vue";
 
 const useCollection = <T>(
-  collection: firebase.firestore.CollectionReference<T>,
-  callback = (snapshot: firebase.firestore.QuerySnapshot<T>) => {
+  collection: CollectionReference<T>,
+  callback = (snapshot: QuerySnapshot<T>) => {
     console.log("new snapshot", snapshot);
   }
 ) => {
-  const unsubscribe = collection.onSnapshot(callback);
+  const unsubscribe = onSnapshot(collection, callback);
 
   onUnmounted(() => {
     unsubscribe();

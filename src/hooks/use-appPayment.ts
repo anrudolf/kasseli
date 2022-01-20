@@ -2,6 +2,8 @@ import { ref, onUnmounted } from "vue";
 
 import { AppPayment, AppPaymentStatus } from "@/types";
 
+import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
+
 import { db } from "../utils/db";
 
 const CODE_RANGE = [1000, 9999];
@@ -11,9 +13,7 @@ export default function (id = "") {
   const error = ref(0);
 
   if (id) {
-    db.appPayments
-      .doc(id)
-      .get()
+    getDoc(doc(db.appPayments, id))
       .then((doc) => {
         if (!doc.exists) {
           error.value = 404;
@@ -38,8 +38,8 @@ export default function (id = "") {
   }
 
   const listenForChanges = (id) => {
-    const unsubscribe = db.appPayments.doc(id).onSnapshot((doc) => {
-      if (doc.exists) {
+    const unsubscribe = onSnapshot(doc(db.appPayments, id), (doc) => {
+      if (doc.exists()) {
         const data = doc.data();
         if (!data) {
           return;
@@ -64,13 +64,13 @@ export default function (id = "") {
       status: "open",
     };
 
-    db.appPayments.doc(appPayment.id).set(appPayment);
+    setDoc(doc(db.appPayments, appPayment.id), appPayment);
 
     return id;
   };
 
   const setStatus = (id: string, status: AppPaymentStatus) => {
-    db.appPayments.doc(id).update({ status: status });
+    updateDoc(doc(db.appPayments, id), { status: status });
   };
 
   return {

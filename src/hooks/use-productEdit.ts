@@ -1,5 +1,6 @@
 import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 
 import utils from "../utils";
 import { useDebounce } from "../hooks/use-debounce";
@@ -26,19 +27,16 @@ export default function ({ editing = false, initialId = null }) {
   let unmaskedId = "";
 
   if (initialId) {
-    db.products
-      .doc(initialId)
-      .get()
-      .then((doc) => {
-        // TODO: use document from Vuex store to make it faster in offline mode
-        if (doc.exists) {
-          const data = doc.data();
-          if (!data) {
-            return;
-          }
-          Object.assign(entity, { ...entity, ...data, id: doc.id });
+    getDoc(doc(db.products, initialId)).then((doc) => {
+      // TODO: use document from Vuex store to make it faster in offline mode
+      if (doc.exists()) {
+        const data = doc.data();
+        if (!data) {
+          return;
         }
-      });
+        Object.assign(entity, { ...entity, ...data, id: doc.id });
+      }
+    });
   }
 
   const exists = ref(false);
@@ -55,12 +53,12 @@ export default function ({ editing = false, initialId = null }) {
       entity.price = null;
     }
 
-    db.products.doc(entity.id).set(entity);
+    setDoc(doc(db.products, entity.id), entity);
     router.push("/products");
   };
 
   const remove = () => {
-    db.products.doc(entity.id).delete();
+    deleteDoc(doc(db.products, entity.id));
     router.push("/products");
   };
 
@@ -103,11 +101,9 @@ export default function ({ editing = false, initialId = null }) {
       return;
     }
 
-    db.products
-      .doc(v)
-      .get()
+    getDoc(doc(db.products, v))
       .then((doc) => {
-        if (doc.exists) {
+        if (doc.exists()) {
           exists.value = true;
         } else {
           exists.value = false;

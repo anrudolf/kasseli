@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { registerSW } from "virtual:pwa-register";
+import "@/firebaseInit";
 
 import App from "./App.vue";
 import router from "./router";

@@ -1,30 +1,28 @@
-import firebase from "firebase/app";
-import "firebase/firebase-firestore";
-import "firebase/firebase-storage";
-import "firebase/functions";
+import { initializeApp } from "firebase/app";
+import {
+  initializeFirestore,
+  enableIndexedDbPersistence,
+  CACHE_SIZE_UNLIMITED,
+} from "firebase/firestore";
 import config from "./firebaseConfig";
 
 const firebaseConfig = { ...config };
 
-const instance = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-firebase.firestore().settings({
-  cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
-  merge: true,
+const db = initializeFirestore(app, {
+  cacheSizeBytes: CACHE_SIZE_UNLIMITED,
 });
 
-firebase
-  .firestore()
-  .enablePersistence()
-  .catch(function (err) {
-    if (err.code == "failed-precondition") {
-      console.error("firestore: failed-precondition");
-    } else if (err.code == "unimplemented") {
-      console.error("firestore: unimplemented");
-    } else {
-      console.error("firestore: unknown", err);
-    }
-  });
+enableIndexedDbPersistence(db).catch(function (err) {
+  if (err.code == "failed-precondition") {
+    console.error("firestore: failed-precondition");
+  } else if (err.code == "unimplemented") {
+    console.error("firestore: unimplemented");
+  } else {
+    console.error("firestore: unknown", err);
+  }
+});
 
 // Initialize Firebase
-export default instance;
+export default app;

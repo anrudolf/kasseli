@@ -1,5 +1,6 @@
 import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { doc, getDoc, deleteDoc, setDoc } from "firebase/firestore";
 
 import { useDebounce } from "../hooks/use-debounce";
 
@@ -9,7 +10,7 @@ import { db } from "../utils/db";
 
 const DEFAULT_RETURN_ROUTE = "/tills";
 
-export default function({ editing = false, initialId = undefined }) {
+export default function ({ editing = false, initialId = undefined }) {
   const router = useRouter();
 
   const entity: Till = reactive({
@@ -26,18 +27,15 @@ export default function({ editing = false, initialId = undefined }) {
   const { id } = toRefs(entity);
 
   if (initialId) {
-    db.tills
-      .doc(initialId)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          const data = doc.data();
-          if (!data) {
-            return;
-          }
-          Object.assign(entity, { ...entity, ...data });
+    getDoc(doc(db.tills, initialId)).then((doc) => {
+      if (doc.exists()) {
+        const data = doc.data();
+        if (!data) {
+          return;
         }
-      });
+        Object.assign(entity, { ...entity, ...data });
+      }
+    });
   }
 
   const exists = ref(false);
@@ -48,12 +46,12 @@ export default function({ editing = false, initialId = undefined }) {
       entity.created = Date.now();
     }
 
-    db.tills.doc(entity.id).set(entity);
+    setDoc(doc(db.tills, entity.id), entity);
     router.push(DEFAULT_RETURN_ROUTE);
   };
 
   const remove = () => {
-    db.tills.doc(entity.id).delete();
+    deleteDoc(doc(db.tills, entity.id));
     router.push(DEFAULT_RETURN_ROUTE);
   };
 
@@ -107,11 +105,9 @@ export default function({ editing = false, initialId = undefined }) {
       return;
     }
 
-    db.tills
-      .doc(v)
-      .get()
+    getDoc(doc(db.tills, v))
       .then((doc) => {
-        if (doc.exists) {
+        if (doc.exists()) {
           exists.value = true;
         } else {
           exists.value = false;
