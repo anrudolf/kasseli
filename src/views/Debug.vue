@@ -7,6 +7,7 @@
 
 <script lang="ts">
 import { ref, defineComponent } from "vue";
+import { collectionGroup, getDocs, query, where } from "firebase/firestore";
 
 import db from "@/utils/db";
 
@@ -17,11 +18,15 @@ export default defineComponent({
     const uid = ref(connie);
 
     const search = async (uid) => {
-      var members = db.fs.collectionGroup("members").where("uid", "==", uid);
+      const mq = query(
+        collectionGroup(db.fs, "members"),
+        where("uid", "==", uid)
+      );
 
       try {
-        const snap = await members.get();
-        snap.forEach((doc) => {
+        const members = await getDocs(mq);
+
+        members.forEach((doc) => {
           console.log(doc.id, " => ", doc.data());
         });
       } catch (e) {
