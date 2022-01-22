@@ -16,7 +16,7 @@ const fetch = async (path, options, entity) => {
     try {
       snapshot = await getDocFromCache(doc(db, path));
     } catch (e) {
-      snapshot = await getDoc(doc(db, path));
+      snapshot = await getDocFromServer(doc(db, path));
     }
   } else {
     snapshot = await getDoc(doc(db, path));

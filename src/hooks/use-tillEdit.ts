@@ -6,7 +6,7 @@ import { useDebounce } from "../hooks/use-debounce";
 
 import { Till, TillCatalog, TillProduct } from "@/types";
 
-import { db } from "../utils/db";
+import db from "@/utils/db";
 
 const DEFAULT_RETURN_ROUTE = "/tills";
 

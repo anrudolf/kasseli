@@ -9,6 +9,8 @@
 import { ref, defineComponent } from "vue";
 import { collectionGroup, getDocs, query, where } from "firebase/firestore";
 
+import { getFirestore, getDoc, doc } from "firebase/firestore";
+
 import db from "@/utils/db";
 
 export default defineComponent({
@@ -19,15 +21,22 @@ export default defineComponent({
 
     const search = async (uid) => {
       const mq = query(
-        collectionGroup(db.fs, "members"),
+        collectionGroup(getFirestore(), "members"),
         where("uid", "==", uid)
       );
 
       try {
         const members = await getDocs(mq);
 
-        members.forEach((doc) => {
-          console.log(doc.id, " => ", doc.data());
+        members.forEach(async (m) => {
+          const workspaceRef = m.ref.parent.parent;
+          if (!workspaceRef) {
+            return;
+          }
+
+          const workspace = await getDoc(doc(db.workspaces, workspaceRef.id));
+
+          console.log(m.id, " => ", m.data(), "parent:", workspace.data());
         });
       } catch (e) {
         console.log(e);

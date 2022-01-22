@@ -4,7 +4,7 @@ import { AppPayment, AppPaymentStatus } from "@/types";
 
 import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 
-import { db } from "../utils/db";
+import db from "@/utils/db";
 
 const CODE_RANGE = [1000, 9999];
 

@@ -52,3 +52,10 @@ export interface AppPayment {
   amount: number;
   status: AppPaymentStatus;
 }
+
+export interface Workspace {
+  id: string;
+  created: string;
+  archived: boolean;
+  owner: string;
+}
