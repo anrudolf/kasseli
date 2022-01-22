@@ -55,7 +55,8 @@ export interface AppPayment {
 
 export interface Workspace {
   id: string;
+  owner: string;
+  name: string;
   created: string;
   archived: boolean;
-  owner: string;
 }
