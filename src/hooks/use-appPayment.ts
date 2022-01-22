@@ -58,7 +58,7 @@ export default function (id = "") {
 
     const appPayment: AppPayment = {
       id,
-      created: Date.now(),
+      created: new Date().toISOString(),
       kind: "KASSELI",
       amount: price,
       status: "open",

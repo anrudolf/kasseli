@@ -24,7 +24,7 @@ export interface Till {
   id: string;
   label: Label;
   imageRef: string | null;
-  created: number;
+  created: string;
   favorites: Array<TillCatalog | TillProduct>;
 }
 
@@ -39,7 +39,7 @@ export interface Product {
   label: Label;
   price: number | null;
   template: boolean;
-  created: number | null;
+  created: string;
   imageRef: string | null;
 }
 
@@ -47,7 +47,7 @@ export type AppPaymentStatus = "open" | "reject" | "pay" | "rejected" | "paid";
 
 export interface AppPayment {
   id: string;
-  created: number;
+  created: string;
   kind: string;
   amount: number;
   status: AppPaymentStatus;

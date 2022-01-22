@@ -20,7 +20,7 @@ export default function ({ editing = false, initialId = undefined }) {
       en: null,
     },
     imageRef: null,
-    created: Date.now(),
+    created: new Date().toISOString(),
     favorites: [],
   });
 
@@ -43,7 +43,7 @@ export default function ({ editing = false, initialId = undefined }) {
 
   const save = () => {
     if (!initialId) {
-      entity.created = Date.now();
+      entity.created = new Date().toISOString();
     }
 
     setDoc(doc(db.tills, entity.id), entity);

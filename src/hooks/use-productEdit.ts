@@ -20,7 +20,7 @@ export default function ({ editing = false, initialId = null }) {
     },
     price: 0,
     template: false,
-    created: Date.now(),
+    created: new Date().toISOString(),
     imageRef: null,
   });
 
@@ -46,7 +46,7 @@ export default function ({ editing = false, initialId = null }) {
 
   const save = () => {
     if (!initialId) {
-      entity.created = Date.now();
+      entity.created = new Date().toISOString();
     }
 
     if (entity.template) {

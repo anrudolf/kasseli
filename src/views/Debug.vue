@@ -1,17 +1,48 @@
 <template>
-  <h1>Debug</h1>
-  <input v-model="uid" class="input" />
-  {{ uid }}
-  <button class="btn btn-blue" @click="() => search(uid)">GO</button>
+  <div class="p-4">
+    <div class="flex flex-col space-y-2">
+      <h1>Debug</h1>
+      <label>UID</label>
+      <input v-model="uid" class="input" />
+      <button class="btn btn-blue" @click="() => search(uid)">
+        Query Workspaces
+      </button>
+    </div>
+    <div class="flex flex-col space-y-2 mt-4">
+      <h2>Refactor</h2>
+      <button class="btn btn-blue" @click="() => refactor.refactorProducts()">
+        Refactor Products
+      </button>
+      <button class="btn btn-blue" @click="() => refactor.refactorTills()">
+        Refactor Tills
+      </button>
+      <button
+        class="btn btn-blue"
+        @click="() => refactor.refactorAppPayments()"
+      >
+        Refactor App Payments
+      </button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent } from "vue";
-import { collectionGroup, getDocs, query, where } from "firebase/firestore";
-
-import { getFirestore, getDoc, doc } from "firebase/firestore";
+import {
+  collectionGroup,
+  getDocs,
+  query,
+  where,
+  getFirestore,
+  getDoc,
+  doc,
+  collection,
+  updateDoc,
+  deleteField,
+} from "firebase/firestore";
 
 import db from "@/utils/db";
+import refactor from "@/utils/refactor";
 
 export default defineComponent({
   setup() {
@@ -46,6 +77,7 @@ export default defineComponent({
     return {
       uid,
       search,
+      refactor,
     };
   },
 });
