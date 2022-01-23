@@ -10,12 +10,12 @@ import db from "@/utils/db";
 
 const DEFAULT_RETURN_ROUTE = "/workspaces";
 
-export default function ({ editing = false, initialId = undefined }) {
+export default function ({ editing = false, initialId = undefined, uid = "" }) {
   const router = useRouter();
 
   const entity: Workspace = reactive({
-    id: "",
-    owner: "",
+    id: doc(db.workspaces).id,
+    owner: uid,
     name: "",
     created: new Date().toISOString(),
     archived: false,
@@ -65,7 +65,7 @@ export default function ({ editing = false, initialId = undefined }) {
       return true;
     }
 
-    if (!entity.name) {
+    if (!entity.name || !entity.name.trim()) {
       return true;
     }
 

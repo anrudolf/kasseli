@@ -1,6 +1,11 @@
 <template>
   <div class="p-4">
     <h1>Workspaces</h1>
+    <div class="flex">
+      <router-link :to="{ name: 'workspaces-new' }" class="btn btn-blue"
+        >Add</router-link
+      >
+    </div>
     <app-workspace-list />
   </div>
 </template>

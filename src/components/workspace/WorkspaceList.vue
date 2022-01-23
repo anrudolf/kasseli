@@ -1,6 +1,10 @@
 <template>
   <ul>
-    <li v-for="workspace in workspaces" :key="workspace.id">
+    <li
+      v-for="workspace in workspaces"
+      :key="workspace.id"
+      class="p-3 my-1 border"
+    >
       <router-link :to="`/workspaces/edit?id=${workspace.id}`"
         >{{ workspace.id }} -- {{ workspace.name }}</router-link
       >

@@ -3,13 +3,15 @@
     <app-modal v-model="deleteModal">
       <template #title>Wirklich löschen?</template>
       <div>
-        <div>Zum Bestätigen bitte Produkt ID eintippen und löschen klicken</div>
+        <div>
+          Zum Bestätigen bitte Workspace ID eintippen und löschen klicken
+        </div>
         <label class="block">
           <div class="text-gray-700">{{ entity.id }}</div>
           <input
             v-model="deleteModalConfirmation"
             class="input"
-            placeholder="Produkt ID"
+            placeholder="Workspace ID"
           />
         </label>
         <div class="mt-3 flex justify-between">
@@ -82,6 +84,8 @@ import useWorkspaceEdit from "@/hooks/use-workspaceEdit";
 
 import utils from "@/utils";
 
+import useAuthStore from "@/store/auth";
+
 export default defineComponent({
   components: {
     appButtonDelete,
@@ -94,7 +98,13 @@ export default defineComponent({
     const deleteModal = ref(false);
     const deleteModalConfirmation = ref("");
 
-    const options = { editing: props.editing, initialId: editId.value };
+    const authStore = useAuthStore();
+
+    const options = {
+      editing: props.editing,
+      initialId: editId.value,
+      uid: authStore.user?.uid || "",
+    };
 
     const {
       entity,

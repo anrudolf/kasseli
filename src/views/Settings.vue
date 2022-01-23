@@ -1,6 +1,6 @@
 <template>
   <div class="p-4 max-w-lg flex flex-col space-y-3">
-    <h1 class="my-2">Settings</h1>
+    <h1>Settings</h1>
     <router-link to="/tills" class="link text-xl">Kassen</router-link>
     <router-link :to="{ name: 'workspaces' }" class="link text-xl"
       >Workspaces</router-link
