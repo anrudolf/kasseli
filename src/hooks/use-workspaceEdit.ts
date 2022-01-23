@@ -38,7 +38,7 @@ export default function ({ editing = false, initialId = undefined, uid = "" }) {
   const exists = ref(false);
   const loading = ref(false);
 
-  const save = () => {
+  const save = async () => {
     if (!initialId) {
       entity.created = new Date().toISOString();
     }
@@ -76,31 +76,7 @@ export default function ({ editing = false, initialId = undefined, uid = "" }) {
     return 0;
   };
 
-  const onIdChangedHandler = useDebounce((v) => {
-    exists.value = false;
-    if (!v) {
-      return;
-    }
-
-    getDoc(doc(db.workspaces, v))
-      .then((doc) => {
-        if (doc.exists()) {
-          exists.value = true;
-        } else {
-          exists.value = false;
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-        exists.value = false;
-      });
-  }, 300);
-
   const idDisabled = computed(() => editing);
-
-  watch(id, (v) => {
-    onIdChangedHandler(v);
-  });
 
   return {
     id,

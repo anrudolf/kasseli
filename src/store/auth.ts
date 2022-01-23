@@ -5,10 +5,13 @@ import { getAuth } from "firebase/auth";
 
 const store = defineStore({
   id: "auth",
-  state() {
-    return {
-      user: null as User | null,
-    };
+  state: () => ({
+    user: null as User | null,
+  }),
+  getters: {
+    isLoggedIn: (state) => {
+      return state.user != null;
+    },
   },
   actions: {
     bindUser() {
@@ -23,6 +26,9 @@ const store = defineStore({
           resolve();
         });
       });
+    },
+    logout() {
+      getAuth(firebase).signOut();
     },
   },
 });

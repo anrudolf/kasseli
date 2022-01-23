@@ -69,7 +69,6 @@
     <div class="text-xs">
       <pre>{{ JSON.stringify(entity, null, "  ") }}</pre>
     </div>
-    <div v-if="false">editing {{ editing }}</div>
   </div>
 </template>
 

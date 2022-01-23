@@ -1,12 +1,19 @@
 <template>
-  <div class="p-4 flex flex-col space-y-3">
+  <div class="max-w-md p-4 flex flex-col space-y-3">
     <h1>Login to Your Account</h1>
-    <input v-model="email" type="text" placeholder="Email" class="input" />
+    <input
+      v-model="email"
+      type="text"
+      placeholder="Email"
+      class="input"
+      @keyup.enter="signIn"
+    />
     <input
       v-model="password"
       type="password"
       placeholder="Password"
       class="input"
+      @keyup.enter="signIn"
     />
     <p v-if="errMsg">{{ errMsg }}</p>
     <button class="btn btn-blue" @click="signIn">Submit</button>
@@ -25,8 +32,7 @@ const router = useRouter(); // get a reference to our vue router
 const signIn = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value) // THIS LINE CHANGED
     .then((data) => {
-      console.log("Successfully logged in!");
-      router.push("/profile"); // redirect to the feed
+      router.push("/settings"); // redirect to the feed
     })
     .catch((error) => {
       switch (error.code) {
