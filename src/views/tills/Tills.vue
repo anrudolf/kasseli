@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 
 import useFirestoreCollectionSnapshot from "../../hooks/use-firestore-collection-snapshot";
 import appIcon from "@/components/ui/Icon.vue";
@@ -52,7 +52,7 @@ import { getColor } from "@/utils";
 
 import { Till } from "@/types";
 
-export default {
+export default defineComponent({
   components: {
     appIcon,
     appImageRef,
@@ -74,5 +74,5 @@ export default {
       getColor,
     };
   },
-};
+});
 </script>

@@ -30,7 +30,7 @@ export default function ({ editing = false, initialId = undefined }) {
         if (!data) {
           return;
         }
-        Object.assign(entity, { ...entity, ...data });
+        Object.assign(entity, { ...entity, ...data, id: doc.id });
       }
     });
   }

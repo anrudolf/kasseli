@@ -22,6 +22,9 @@ import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 
+import Workspaces from "@/views/workspaces/Workspaces.vue";
+import WorkspaceEdit from "@/views/workspaces/WorkspaceEdit.vue";
+
 import Debug from "../views/Debug.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -103,6 +106,22 @@ const routes: Array<RouteRecordRaw> = [
     path: "/settings",
     name: "settings",
     component: Settings,
+  },
+  {
+    path: "/workspaces",
+    name: "workspaces",
+    component: Workspaces,
+  },
+  {
+    path: "/workspaces/new",
+    name: "workspaces-new",
+    component: WorkspaceEdit,
+  },
+  {
+    path: "/workspaces/edit",
+    name: "workspaces-edit",
+    component: WorkspaceEdit,
+    props: (route) => ({ editId: route.query.id }),
   },
   {
     path: "/register",
