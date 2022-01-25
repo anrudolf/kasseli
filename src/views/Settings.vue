@@ -11,11 +11,8 @@
   <div class="p-4 max-w-lg flex flex-col space-y-3">
     <h1>Settings</h1>
     <router-link to="/tills" class="link text-xl">Kassen</router-link>
-    <router-link :to="{ name: 'workspaces' }" class="link text-xl"
-      >Workspaces</router-link
-    >
 
-    <h2 class="mt-4">Zahlungsmöglichkeiten</h2>
+    <h2>Zahlungsmöglichkeiten</h2>
     <app-switch v-model="settings.paymentOptions.card.enabled"
       >Karte</app-switch
     >
@@ -31,16 +28,23 @@
     >
 
     <h2>Account</h2>
-    <div v-if="auth.isLoggedIn">
-      Eingeloggt als <span class="font-bold">{{ auth.user?.email }}</span>
-      <div class="my-2">
-        <button class="btn btn-blue" @click="showLogoutModal = true">
-          Logout
-        </button>
+    <div v-if="auth.isLoggedIn" class="flex flex-col space-y-3">
+      <div>
+        <router-link :to="{ name: 'workspaces' }" class="link text-xl"
+          >Workspaces</router-link
+        >
+      </div>
+      <div>
+        Eingeloggt als <span class="font-bold">{{ auth.user?.email }}</span>
+        <div class="my-2">
+          <button class="btn btn-blue" @click="showLogoutModal = true">
+            Logout
+          </button>
+        </div>
       </div>
     </div>
     <div v-else class="my-2">
-      <router-link to="/signin">Login</router-link>
+      <router-link class="btn btn-blue" to="/signin">Login</router-link>
     </div>
   </div>
 </template>

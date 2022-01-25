@@ -18,7 +18,6 @@ import TillCatalog from "../views/tills/TillCatalog.vue";
 
 import Settings from "../views/Settings.vue";
 
-import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 
@@ -122,11 +121,6 @@ const routes: Array<RouteRecordRaw> = [
     name: "workspaces-edit",
     component: WorkspaceEdit,
     props: (route) => ({ editId: route.query.id }),
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: Register,
   },
   {
     path: "/signin",
