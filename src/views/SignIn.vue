@@ -1,31 +1,9 @@
 <template>
   <app-modal v-model="showPasswordReset" title="Passwort zurücksetzen">
     <div class="flex flex-col space-y-4">
-      <p>
-        Bitte gib deine Email an. Danach wird dir ein Link zugeschickt, um dein
-        Passwort neu zu setzen.
-      </p>
+      <p>Bitte gib deine Email Adresse an</p>
       <input id="email" v-model="email" class="input" placeholder="Email" />
-      <p
-        v-if="passwordResetError"
-        class="
-          bg-red-100
-          text-gray-500
-          p-2
-          rounded
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <exclamation-circle-icon
-          class="w-8 h-8 inline text-red-500"
-        ></exclamation-circle-icon>
-        {{ passwordResetError }}
-        <button @click="passwordResetError = ''">
-          <x-icon class="w-6 h-6 inline text-black"></x-icon>
-        </button>
-      </p>
+      <app-error-box v-model="passwordResetError"></app-error-box>
       <div class="flex justify-between">
         <button class="btn btn-blue" @click="showPasswordReset = false">
           Cancel
@@ -76,27 +54,7 @@
         Login...
       </button>
     </div>
-
-    <p
-      v-if="errMsg"
-      class="
-        bg-red-100
-        text-gray-500
-        p-2
-        rounded
-        flex
-        items-center
-        justify-between
-      "
-    >
-      <exclamation-circle-icon
-        class="w-8 h-8 inline text-red-500"
-      ></exclamation-circle-icon>
-      {{ errMsg }}
-      <button @click="errMsg = ''">
-        <x-icon class="w-6 h-6 inline text-black"></x-icon>
-      </button>
-    </p>
+    <app-error-box v-model="errMsg"></app-error-box>
   </div>
 </template>
 
@@ -108,11 +66,11 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { ExclamationCircleIcon, XIcon } from "@heroicons/vue/outline";
 
 import resolveAuthErrors from "@/utils/resolveAuthErrors";
 
 import appModal from "@/components/ui/Modal.vue";
+import appErrorBox from "@/components/ui/ErrorBox.vue";
 
 import { useRouter } from "vue-router";
 const email = ref("");
