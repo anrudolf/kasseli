@@ -36,9 +36,15 @@
       </div>
       <div>
         Eingeloggt als <span class="font-bold">{{ auth.user?.email }}</span>
-        <div class="my-2">
+        <div class="my-2 space-x-2">
+          <router-link
+            class="btn btn-blue inline-block"
+            :to="{ name: 'profile' }"
+          >
+            Bearbeiten...
+          </router-link>
           <button class="btn btn-blue" @click="showLogoutModal = true">
-            Logout
+            Logout...
           </button>
         </div>
       </div>

@@ -1,17 +1,17 @@
 <template>
   <app-base-box
-    class="bg-red-100 text-red-700"
+    class="bg-green-100 text-green-700"
     :model-value="props.modelValue"
     @update:model-value="(ev) => emit('update:modelValue', ev)"
   >
-    <exclamation-circle-icon></exclamation-circle-icon>
+    <check-icon></check-icon>
   </app-base-box>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 import appBaseBox from "./BaseBox.vue";
-import { ExclamationCircleIcon } from "@heroicons/vue/solid";
+import { CheckIcon } from "@heroicons/vue/solid";
 
 const props = defineProps({
   modelValue: {
