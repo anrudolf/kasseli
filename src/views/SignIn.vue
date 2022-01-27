@@ -1,4 +1,41 @@
 <template>
+  <app-modal v-model="showPasswordReset" title="Passwort zurücksetzen">
+    <div class="flex flex-col space-y-4">
+      <p>
+        Bitte gib deine Email an. Danach wird dir ein Link zugeschickt, um dein
+        Passwort neu zu setzen.
+      </p>
+      <input id="email" v-model="email" class="input" placeholder="Email" />
+      <p
+        v-if="passwordResetError"
+        class="
+          bg-red-100
+          text-gray-500
+          p-2
+          rounded
+          flex
+          items-center
+          justify-between
+        "
+      >
+        <exclamation-circle-icon
+          class="w-8 h-8 inline text-red-500"
+        ></exclamation-circle-icon>
+        {{ passwordResetError }}
+        <button @click="passwordResetError = ''">
+          <x-icon class="w-6 h-6 inline text-black"></x-icon>
+        </button>
+      </p>
+      <div class="flex justify-between">
+        <button class="btn btn-blue" @click="showPasswordReset = false">
+          Cancel
+        </button>
+        <button class="btn btn-blue" @click="() => sendPasswordReset(email)">
+          OK
+        </button>
+      </div>
+    </div>
+  </app-modal>
   <div class="max-w-md p-4 flex flex-col space-y-3">
     <h1 v-if="mode == Mode.LOGIN">Login</h1>
     <h1 v-else>Register</h1>
@@ -28,6 +65,9 @@
       <button class="btn btn-blue" @click="submit">Login</button>
       <button class="btn text-gray-500" @click="mode = Mode.REGISTER">
         Register...
+      </button>
+      <button class="btn text-gray-500" @click="showPasswordReset = true">
+        Passwort vergessen...
       </button>
     </div>
     <div v-else class="flex flex-col space-y-3">
@@ -66,8 +106,13 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { ExclamationCircleIcon, XIcon } from "@heroicons/vue/outline";
+
+import resolveAuthErrors from "@/utils/resolveAuthErrors";
+
+import appModal from "@/components/ui/Modal.vue";
 
 import { useRouter } from "vue-router";
 const email = ref("");
@@ -91,20 +136,7 @@ const signIn = (email: string, password: string) => {
       router.push(DEFAULT_REDIRECT);
     })
     .catch((error) => {
-      switch (error.code) {
-        case "auth/invalid-email":
-          errMsg.value = "E-Mail ungültig";
-          break;
-        case "auth/user-not-found":
-          errMsg.value = "Kein Account mit dieser Email gefunden";
-          break;
-        case "auth/wrong-password":
-          errMsg.value = "Passwort nicht korrekt";
-          break;
-        default:
-          errMsg.value = `Fehler: ${error.code}`;
-          break;
-      }
+      errMsg.value = resolveAuthErrors(error);
     });
 };
 
@@ -123,24 +155,22 @@ const register = (
       router.push(DEFAULT_REDIRECT);
     })
     .catch((error) => {
-      console.log("error: ", error.code);
-      switch (error.code) {
-        case "auth/invalid-email":
-          errMsg.value = "E-Mail ungültig";
-          break;
-        case "auth/wrong-password":
-          errMsg.value = "Passwort nicht korrekt";
-          break;
-        case "auth/weak-password":
-          errMsg.value = "Passwort ist zu schwach";
-          break;
-        case "auth/email-already-in-use":
-          errMsg.value = "Ein Account mit dieser Email existiert bereits";
-          break;
-        default:
-          errMsg.value = `Fehler: ${error.code}`;
-          break;
-      }
+      errMsg.value = resolveAuthErrors(error);
+    });
+};
+
+const showPasswordReset = ref(false);
+const passwordResetError = ref("");
+
+const sendPasswordReset = (email: string) => {
+  const auth = getAuth();
+  sendPasswordResetEmail(auth, email)
+    .then(() => {
+      showPasswordReset.value = false;
+      passwordResetError.value = "";
+    })
+    .catch((error) => {
+      passwordResetError.value = resolveAuthErrors(error);
     });
 };
 

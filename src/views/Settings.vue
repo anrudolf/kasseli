@@ -44,7 +44,7 @@
       </div>
     </div>
     <div v-else class="my-2">
-      <router-link class="btn btn-blue" to="/signin">Login</router-link>
+      <router-link class="btn btn-blue" to="/signin">Login...</router-link>
     </div>
   </div>
 </template>
