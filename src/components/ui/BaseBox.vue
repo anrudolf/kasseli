@@ -3,12 +3,12 @@
     v-if="props.modelValue"
     class="p-2 rounded flex items-center justify-between"
   >
-    <div class="w-8 h-8 inline">
+    <div class="w-8 h-8 flex items-center">
       <slot>
         <question-mark-circle-icon></question-mark-circle-icon>
       </slot>
     </div>
-    {{ props.modelValue }}
+    <div class="mx-2">{{ props.modelValue }}</div>
     <button @click="emit('update:modelValue', '')">
       <x-icon class="w-6 h-6 inline"></x-icon>
     </button>
