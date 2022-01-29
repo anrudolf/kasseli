@@ -1,35 +1,35 @@
 <template>
   <div class="p-4 max-w-md">
-    <h1>Profile</h1>
+    <router-link :to="{ name: 'settings' }">
+      <app-button-back>Zurück</app-button-back>
+    </router-link>
+
+    <h1 class="mt-4">Profile</h1>
     <div v-if="store.user != null">
-      Signed in
-      <div>{{ store.user.uid }} -- {{ store.user.email }}</div>
+      <div>{{ store.user.email }}</div>
     </div>
+    <div v-else>Du bist nicht eingeloggt.</div>
   </div>
-  <div class="max-w-md p-4">
+
+  <div v-if="store.user" class="max-w-md px-4">
     <Disclosure class="my-2" as="div">
       <DisclosureButton
         class="app-disclosure-button"
-        @click="showSignout = !showSignout"
+        @click="showForgotPassword = !showForgotPassword"
       >
-        <span>Ausloggen...</span>
+        <span>Passwort vergessen...</span>
         <chevron-up-icon
-          :class="showSignout ? '' : 'transform rotate-180'"
+          :class="showForgotPassword ? '' : 'transform rotate-180'"
           class="w-5 h-5 text-blue-500"
         />
       </DisclosureButton>
-      <div v-show="showSignout">
+      <div v-show="showForgotPassword">
         <DisclosurePanel class="app-disclosure-panel" static>
-          <div v-if="store.user" class="flex flex-col space-y-3">
-            Du bist eingeloggt als {{ store.user.email }}
-            <button class="btn btn-blue ali" @click="initiateSignOut">
-              Logout
+          <div class="flex flex-col space-y-3">
+            <p>Erhalte einen Link per Email, um dein Passwort zu ändern.</p>
+            <button class="btn btn-blue" @click="initiateForgotPassword">
+              Link senden
             </button>
-            <app-error-box v-model="errMsg" class="my-3"></app-error-box>
-            <app-success-box
-              v-model="successMsg"
-              class="my-3"
-            ></app-success-box>
           </div>
         </DisclosurePanel>
       </div>
@@ -66,14 +66,9 @@
               placeholder="Neues Passwort (Wiederholung)"
               class="input"
             />
-            <button class="btn btn-blue ali" @click="initiatePasswordUpdate">
+            <button class="btn btn-blue" @click="initiatePasswordUpdate">
               Passwort ändern
             </button>
-            <app-error-box v-model="errMsg" class="my-3"></app-error-box>
-            <app-success-box
-              v-model="successMsg"
-              class="my-3"
-            ></app-success-box>
           </div>
         </DisclosurePanel>
       </div>
@@ -101,21 +96,54 @@
             <input v-model="newEmail" placeholder="Neue Email" class="input" />
             <input
               v-model="newEmailConfirmation"
-              placeholder="Neues Email (Wiederholung)"
+              placeholder="Neue Email (Wiederholung)"
               class="input"
             />
-            <button class="btn btn-blue ali" @click="initiateEmailUpdate">
+            <button class="btn btn-blue" @click="initiateEmailUpdate">
               Email ändern
             </button>
-            <app-error-box v-model="errMsg" class="my-3"></app-error-box>
-            <app-success-box
-              v-model="successMsg"
-              class="my-3"
-            ></app-success-box>
           </div>
         </DisclosurePanel>
       </div>
     </Disclosure>
+    <Disclosure class="my-2" as="div">
+      <DisclosureButton
+        class="app-disclosure-button"
+        @click="showDeleteUser = !showDeleteUser"
+      >
+        <span>Account löschen...</span>
+        <chevron-up-icon
+          :class="showDeleteUser ? '' : 'transform rotate-180'"
+          class="w-5 h-5 text-blue-500"
+        />
+      </DisclosureButton>
+      <div v-show="showDeleteUser">
+        <DisclosurePanel class="app-disclosure-panel" static>
+          <div class="flex flex-col space-y-3">
+            <input
+              v-model="currentPassword"
+              type="password"
+              placeholder="Passwort"
+              class="input"
+            />
+            <app-switch v-model="deleteConfirmation"
+              >Ich möchte meinen Account unwiderruflich löschen</app-switch
+            >
+            <button
+              class="btn btn-red"
+              :disabled="!deleteConfirmation"
+              @click="initiateDeleteUser"
+            >
+              Account löschen
+            </button>
+          </div>
+        </DisclosurePanel>
+      </div>
+    </Disclosure>
+  </div>
+  <div class="px-4 max-w-md">
+    <app-error-box v-model="errMsg" class="my-2"></app-error-box>
+    <app-success-box v-model="successMsg" class="my-2"></app-success-box>
   </div>
 </template>
 
@@ -124,11 +152,13 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import {
   getAuth,
+  sendPasswordResetEmail,
   reauthenticateWithCredential,
   EmailAuthProvider,
   updatePassword,
   updateEmail,
   signOut,
+  deleteUser,
 } from "firebase/auth";
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
@@ -136,6 +166,8 @@ import { ChevronUpIcon } from "@heroicons/vue/solid";
 
 import appSuccessBox from "@/components/ui/SuccessBox.vue";
 import appErrorBox from "@/components/ui/ErrorBox.vue";
+import appSwitch from "@/components/ui/Switch.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import resolveAuthErrors from "@/utils/resolveAuthErrors";
 
@@ -150,19 +182,37 @@ const successMsg = ref("");
 
 const initiateSignOut = () => {
   signOut(getAuth()).then(() => {
-    router.push("/signin");
+    router.push("/settings");
   });
 };
 
-const showSignout = ref(false);
+const showForgotPassword = ref(false);
 const showUpdatePassword = ref(false);
 const showUpdateEmail = ref(false);
+const showDeleteUser = ref(false);
 
 const currentPassword = ref("");
 const newPassword = ref("");
 const newPasswordConfirmation = ref("");
 const newEmail = ref("");
 const newEmailConfirmation = ref("");
+const deleteConfirmation = ref(false);
+
+const initiateForgotPassword = async () => {
+  const { currentUser } = getAuth();
+
+  if (!currentUser || !currentUser.email) {
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(getAuth(), currentUser.email);
+    showForgotPassword.value = false;
+    successMsg.value = "Link wurde versendet";
+  } catch (err: any) {
+    errMsg.value = resolveAuthErrors(err);
+  }
+};
 
 const initiatePasswordUpdate = async () => {
   if (newPassword.value !== newPasswordConfirmation.value) {
@@ -190,6 +240,8 @@ const initiatePasswordUpdate = async () => {
     currentPassword.value = "";
     newPassword.value = "";
     newPasswordConfirmation.value = "";
+
+    showUpdatePassword.value = false;
   } catch (err: any) {
     errMsg.value = resolveAuthErrors(err);
   }
@@ -221,6 +273,34 @@ const initiateEmailUpdate = async () => {
     currentPassword.value = "";
     newEmail.value = "";
     newEmailConfirmation.value = "";
+
+    showUpdateEmail.value = false;
+  } catch (err: any) {
+    errMsg.value = resolveAuthErrors(err);
+  }
+};
+
+const initiateDeleteUser = async () => {
+  const { currentUser } = getAuth();
+
+  if (!currentUser || !currentUser.email) {
+    return;
+  }
+
+  const credential = EmailAuthProvider.credential(
+    currentUser.email,
+    currentPassword.value
+  );
+
+  try {
+    await reauthenticateWithCredential(currentUser, credential);
+    await deleteUser(currentUser);
+
+    successMsg.value = `Dein Account ${newEmail.value} wurde gelöscht.`;
+
+    currentPassword.value = "";
+
+    showDeleteUser.value = false;
   } catch (err: any) {
     errMsg.value = resolveAuthErrors(err);
   }
