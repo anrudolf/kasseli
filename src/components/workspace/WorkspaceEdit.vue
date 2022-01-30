@@ -81,8 +81,6 @@ import appModal from "@/components/ui/Modal.vue";
 
 import useWorkspaceEdit from "@/hooks/use-workspaceEdit";
 
-import utils from "@/utils";
-
 import useAuthStore from "@/store/auth";
 
 export default defineComponent({
@@ -91,7 +89,11 @@ export default defineComponent({
     appButtonConfirm,
     appModal,
   },
-  props: ["editId", "newId", "editing"],
+  props: {
+    editId: { type: String, default: "" },
+    newId: { type: String, default: "" },
+    editing: { type: Boolean },
+  },
   setup(props) {
     const editId = toRef(props, "editId");
     const deleteModal = ref(false);
