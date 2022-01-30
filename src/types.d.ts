@@ -60,3 +60,7 @@ export interface Workspace {
   created: string;
   archived: boolean;
 }
+
+export interface WorkspaceMember {
+  role: number;
+}

@@ -1,6 +1,13 @@
 import { ref, reactive, computed, watch, toRefs } from "vue";
 import { useRouter } from "vue-router";
-import { doc, getDoc, deleteDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  deleteDoc,
+  setDoc,
+  runTransaction,
+  getFirestore,
+} from "firebase/firestore";
 
 import { useDebounce } from "../hooks/use-debounce";
 
@@ -40,11 +47,26 @@ export default function ({ editing = false, initialId = undefined, uid = "" }) {
 
   const save = async () => {
     if (!initialId) {
+      // creating a new workspace and member with owner role
       entity.created = new Date().toISOString();
-    }
 
-    setDoc(doc(db.workspaces, entity.id), entity);
-    router.push(DEFAULT_RETURN_ROUTE);
+      try {
+        const workspaceRef = doc(db.workspaces, entity.id);
+        const workspaceMemberOwnerRef = doc(
+          db.workspaceMembers(entity.id),
+          uid
+        );
+        await setDoc(workspaceRef, entity);
+        await setDoc(workspaceMemberOwnerRef, { role: 9 });
+        router.push(DEFAULT_RETURN_ROUTE);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    } else {
+      // editing an existing workspace
+      setDoc(doc(db.workspaces, entity.id), entity);
+      router.push(DEFAULT_RETURN_ROUTE);
+    }
   };
 
   const remove = () => {

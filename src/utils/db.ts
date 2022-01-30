@@ -10,7 +10,14 @@ import workspace from "@/utils/workspace";
 console.log("db: workspace");
 console.log(workspace);
 
-import { Till, ImageRef, Product, AppPayment, Workspace } from "@/types";
+import {
+  Till,
+  ImageRef,
+  Product,
+  AppPayment,
+  Workspace,
+  WorkspaceMember,
+} from "@/types";
 
 const fs = getFirestore();
 
@@ -28,6 +35,8 @@ const db = {
   products: dataPoint<Product>(`${workspace}products`),
   appPayments: dataPoint<AppPayment>("appPayments"),
   workspaces: dataPoint<Workspace>("workspaces"),
+  workspaceMembers: (wid: string) =>
+    dataPoint<WorkspaceMember>(`workspaces/${wid}/members`),
 };
 
 export default db;

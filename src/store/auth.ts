@@ -7,6 +7,8 @@ const store = defineStore({
   id: "auth",
   state: () => ({
     user: null as User | null,
+    email: "",
+    uid: "",
   }),
   getters: {
     isLoggedIn: (state) => {
@@ -19,10 +21,15 @@ const store = defineStore({
         getAuth(firebase).onAuthStateChanged(async (user) => {
           if (user) {
             console.log("logged in");
+            this.uid = user.uid;
+            this.email = user.email ? user.email : "";
           } else {
             console.log("not logged in");
+            this.uid = "";
+            this.email = "";
           }
           this.user = user;
+
           resolve();
         });
       });
