@@ -1,18 +1,7 @@
-import { ref, reactive, computed, watch, toRefs } from "vue";
+import { ref, reactive, computed, toRefs } from "vue";
 import { useRouter } from "vue-router";
-import {
-  doc,
-  getDoc,
-  deleteDoc,
-  setDoc,
-  runTransaction,
-  getFirestore,
-} from "firebase/firestore";
+import { doc, getDoc, deleteDoc, setDoc } from "firebase/firestore";
 
-import { useDebounce } from "../hooks/use-debounce";
-
-import useTillEdit from "./use-tillEdit";
-import useProductEdit from "./use-productEdit";
 import { createSampleProduct, createSampleTill } from "@/utils/samples";
 
 import { Product, Till, Workspace } from "@/types";
@@ -21,7 +10,7 @@ import db from "@/utils/db";
 
 const DEFAULT_RETURN_ROUTE = "/workspaces";
 
-export default function ({ editing = false, initialId = undefined, uid = "" }) {
+export default function ({ editing = false, initialId = "", uid = "" }) {
   const router = useRouter();
 
   const entity: Workspace = reactive({
@@ -50,6 +39,10 @@ export default function ({ editing = false, initialId = undefined, uid = "" }) {
   const loading = ref(false);
 
   const save = async () => {
+    if (!uid) {
+      return;
+    }
+
     if (!initialId) {
       // create a new workspace and member with owner role
       // also adds a sample product and sample till
