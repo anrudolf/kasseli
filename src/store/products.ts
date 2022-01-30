@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 
 import { Product } from "@/types";
+import { onSnapshot, Unsubscribe } from "firebase/firestore";
 
-import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 import utils from "../utils";
 
 import db from "@/utils/db";
@@ -11,6 +11,7 @@ const store = defineStore({
   id: "products",
   state: () => ({
     items: [] as Product[],
+    unsubscribe: null as Unsubscribe | null,
   }),
   getters: {
     item: (state) => (code: string) => {
@@ -32,11 +33,14 @@ const store = defineStore({
   },
   actions: {
     init() {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
       // eslint-disable-next-line
       const tmp = this;
-      useFirestoreCollectionSnapshot(db.products, function(snapshot) {
+      this.unsubscribe = onSnapshot(db.products, function (snapshot) {
         const items = [] as Product[];
-        snapshot.forEach(function(doc) {
+        snapshot.forEach(function (doc) {
           items.push({ ...doc.data(), id: doc.id });
         });
         tmp.items = items;

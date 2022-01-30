@@ -34,9 +34,7 @@
             :key="workspace.id"
             class="p-3 my-1 border"
           >
-            <router-link :to="`/workspaces/edit?id=${workspace.id}`"
-              >{{ workspace.id }} -- {{ workspace.name }}</router-link
-            >
+            <app-workspace-list-item :value="workspace" />
           </li>
         </ul>
       </TabPanel>
@@ -47,9 +45,7 @@
             :key="workspace.id"
             class="p-3 my-1 border"
           >
-            <router-link :to="`/workspaces/edit?id=${workspace.id}`"
-              >{{ workspace.id }} -- {{ workspace.name }}</router-link
-            >
+            <app-workspace-list-item :value="workspace" />
           </li>
         </ul>
       </TabPanel>
@@ -60,9 +56,7 @@
             :key="workspace.id"
             class="p-3 my-1 border"
           >
-            <router-link :to="`/workspaces/edit?id=${workspace.id}`"
-              >{{ workspace.id }} -- {{ workspace.name }}</router-link
-            >
+            <app-workspace-list-item :value="workspace" />
           </li>
         </ul>
       </TabPanel>
@@ -79,6 +73,8 @@ import db from "@/utils/db";
 
 import { Workspace } from "@/types";
 import useAuth from "@/store/auth";
+
+import appWorkspaceListItem from "@/components/workspace/WorkspaceListItem.vue";
 
 const workspaces = ref<Workspace[]>([]);
 
