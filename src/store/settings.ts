@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
 
+import useTillstore from "./till";
+import useProductStore from "./products";
+
 const store = defineStore({
   id: "settings",
   state: () => ({
@@ -14,6 +17,21 @@ const store = defineStore({
     },
     workspace: "",
   }),
+  actions: {
+    setWorkspace(id: string) {
+      if (id) {
+        this.workspace = `workspaces/${id}/`;
+      } else {
+        this.workspace = "";
+      }
+
+      const tillStore = useTillstore();
+      tillStore.init();
+
+      const productStore = useProductStore();
+      productStore.init();
+    },
+  },
   getters: {
     hasPaymentOptions(state) {
       return Object.values(state.paymentOptions).some(
