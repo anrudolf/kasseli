@@ -125,6 +125,25 @@ export default function ({ editing = false, initialId = undefined }) {
     onIdChangedHandler(v);
   });
 
+  const createExample = ({
+    id,
+    favorites = [],
+  }: {
+    id: string;
+    favorites?: (TillProduct | TillCatalog)[];
+  }): Till => {
+    return {
+      id: id,
+      label: {
+        de: "Beispiel Kasse",
+        en: null,
+      },
+      imageRef: null,
+      created: new Date().toISOString(),
+      favorites: favorites,
+    };
+  };
+
   return {
     id,
     entity,
@@ -136,5 +155,6 @@ export default function ({ editing = false, initialId = undefined }) {
     // special functions
     addCatalog,
     addProduct,
+    createExample,
   };
 }

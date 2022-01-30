@@ -130,6 +130,20 @@ export default function ({ editing = false, initialId = null }) {
     }
   });
 
+  const createExample = ({ id }: { id: string }): Product => {
+    return {
+      id: id,
+      label: {
+        de: "Beispiel Produkt",
+        en: null,
+      },
+      price: 1.0,
+      template: false,
+      created: new Date().toISOString(),
+      imageRef: null,
+    };
+  };
+
   return {
     entity,
     exists,
@@ -138,5 +152,7 @@ export default function ({ editing = false, initialId = null }) {
     saveDisabled,
     idDisabled,
     templateEnabled,
+    // special functions
+    createExample,
   };
 }

@@ -72,7 +72,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, toRef, defineComponent } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
@@ -105,16 +105,8 @@ export default defineComponent({
       uid: authStore.user?.uid || "",
     };
 
-    const {
-      entity,
-      exists,
-      remove,
-      save,
-      saveDisabled,
-      idDisabled,
-      templateEnabled,
-      uploadImage,
-    } = useWorkspaceEdit(options);
+    const { entity, exists, remove, save, saveDisabled, idDisabled } =
+      useWorkspaceEdit(options);
 
     if (props.newId) {
       entity.id = `${props.newId}`;
@@ -131,10 +123,6 @@ export default defineComponent({
       save,
       saveDisabled,
       idDisabled,
-      templateEnabled,
-      uploadImage,
-      // utils
-      toNumber: utils.toNumber,
     };
   },
 });

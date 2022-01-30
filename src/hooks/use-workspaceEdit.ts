@@ -11,7 +11,11 @@ import {
 
 import { useDebounce } from "../hooks/use-debounce";
 
-import { Workspace } from "@/types";
+import useTillEdit from "./use-tillEdit";
+import useProductEdit from "./use-productEdit";
+import { createSampleProduct, createSampleTill } from "@/utils/samples";
+
+import { Product, Till, Workspace } from "@/types";
 
 import db from "@/utils/db";
 
@@ -47,17 +51,46 @@ export default function ({ editing = false, initialId = undefined, uid = "" }) {
 
   const save = async () => {
     if (!initialId) {
-      // creating a new workspace and member with owner role
+      // create a new workspace and member with owner role
+      // also adds a sample product and sample till
       entity.created = new Date().toISOString();
 
       try {
+        // create workspace
         const workspaceRef = doc(db.workspaces, entity.id);
+        await setDoc(workspaceRef, entity);
+
+        // add self to members with owner role
         const workspaceMemberOwnerRef = doc(
           db.workspaceMembers(entity.id),
           uid
         );
-        await setDoc(workspaceRef, entity);
         await setDoc(workspaceMemberOwnerRef, { role: 9 });
+
+        // add example product
+        const product: Product = createSampleProduct({ id: "example" });
+        const workspaceSampleProductRef = doc(
+          workspaceRef,
+          "products",
+          product.id
+        );
+        await setDoc(workspaceSampleProductRef, product);
+
+        // add default till with sample product as favorite
+        const till: Till = createSampleTill({
+          id: "default",
+          favorites: [
+            {
+              kind: "product",
+              id: product.id,
+              hidden: false,
+            },
+          ],
+        });
+
+        const workspaceDefaultTillRef = doc(workspaceRef, "tills", till.id);
+        await setDoc(workspaceDefaultTillRef, till);
+
         router.push(DEFAULT_RETURN_ROUTE);
       } catch (error) {
         console.log("Error:", error);
