@@ -1,4 +1,4 @@
-const PUBLIC_WORKSPACE = "";
+const PUBLIC_WORKSPACE = "public";
 const DEFAULT_WORKSPACE = PUBLIC_WORKSPACE;
 
 const settingsRaw = localStorage.getItem("settings");
@@ -12,4 +12,15 @@ if (settingsRaw) {
   }
 }
 
-export default workspace;
+export const getWorkspace = () => workspace;
+export const getWorkspacePrefix = () => {
+  return createWorkspacePrefix(getWorkspace());
+};
+
+export const createWorkspacePrefix = (workspace: string) => {
+  if (workspace === PUBLIC_WORKSPACE || workspace === "") {
+    return "";
+  }
+
+  return `workspaces/${workspace}/`;
+};

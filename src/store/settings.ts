@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 
 import useTillstore from "./till";
 import useProductStore from "./products";
+import { createWorkspacePrefix } from "@/utils/workspace";
+import { updateWorkspace as updateDatabaseWorkspace } from "@/utils/db";
 
 const store = defineStore({
   id: "settings",
@@ -18,12 +20,9 @@ const store = defineStore({
     workspace: "",
   }),
   actions: {
-    setWorkspace(id: string) {
-      if (id) {
-        this.workspace = `workspaces/${id}/`;
-      } else {
-        this.workspace = "";
-      }
+    setWorkspace(ws: string) {
+      this.workspace = ws;
+      updateDatabaseWorkspace(ws);
 
       const tillStore = useTillstore();
       tillStore.init();
@@ -37,6 +36,9 @@ const store = defineStore({
       return Object.values(state.paymentOptions).some(
         (option) => option.enabled
       );
+    },
+    workspacePrefix(state) {
+      return createWorkspacePrefix(state.workspace);
     },
   },
   persist: {

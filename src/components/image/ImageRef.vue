@@ -22,7 +22,9 @@ export default defineComponent({
     const settings = useSettingsStore();
 
     const entity: Ref<ImageRef | null> = props.id
-      ? useFirestoreDocument(`images/${props.id}`, { source: "cache" })
+      ? useFirestoreDocument(`${settings.workspacePrefix}images/${props.id}`, {
+          source: "cache",
+        })
       : ref(null);
 
     return { entity, show };

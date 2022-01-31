@@ -5,10 +5,15 @@ import {
   WithFieldValue,
 } from "firebase/firestore";
 
-import workspace from "@/utils/workspace";
+import {
+  getWorkspacePrefix,
+  getWorkspace,
+  createWorkspacePrefix,
+} from "@/utils/workspace";
+const workspacePrefix = getWorkspacePrefix();
 
-console.log("db: workspace");
-console.log(workspace);
+console.log("db: workspace:", getWorkspace());
+console.log("db: workspacePrefix:", getWorkspacePrefix());
 
 import {
   Till,
@@ -30,13 +35,20 @@ const dataPoint = <T>(collectionPath: string) =>
   collection(fs, collectionPath).withConverter(converter<T>());
 
 const db = {
-  tills: dataPoint<Till>(`${workspace}tills`),
-  images: dataPoint<ImageRef>(`${workspace}images`),
-  products: dataPoint<Product>(`${workspace}products`),
+  tills: dataPoint<Till>(`${workspacePrefix}tills`),
+  images: dataPoint<ImageRef>(`${workspacePrefix}images`),
+  products: dataPoint<Product>(`${workspacePrefix}products`),
   appPayments: dataPoint<AppPayment>("appPayments"),
   workspaces: dataPoint<Workspace>("workspaces"),
   workspaceMembers: (wid: string) =>
     dataPoint<WorkspaceMember>(`workspaces/${wid}/members`),
+};
+
+export const updateWorkspace = (ws) => {
+  const prefix = createWorkspacePrefix(ws);
+  db.tills = dataPoint<Till>(`${prefix}tills`);
+  db.images = dataPoint<ImageRef>(`${prefix}images`);
+  db.products = dataPoint<Product>(`${prefix}products`);
 };
 
 export default db;
