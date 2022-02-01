@@ -4,6 +4,8 @@
       <app-button-back>Zurück</app-button-back>
     </router-link>
 
+    <app-workspace-selector class="my-4"></app-workspace-selector>
+
     <div class="my-4 flex justify-between items-center">
       <h1>Workspaces</h1>
       <router-link :to="{ name: 'workspaces-new' }" class="btn btn-blue"
@@ -71,6 +73,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import appWorkspaceList from "@/components/workspace/WorkspaceList.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
+import appWorkspaceSelector from "@/components/workspace/WorkspaceSelector.vue";
 
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 import db from "@/utils/db";

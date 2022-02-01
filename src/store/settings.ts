@@ -5,6 +5,8 @@ import useProductStore from "./products";
 import { createWorkspacePrefix } from "@/utils/workspace";
 import { initWorkspace as initDbWorkspace } from "@/utils/db";
 
+import { PUBLIC_WORKSPACE } from "@/utils/workspace";
+
 const store = defineStore({
   id: "settings",
   state: () => ({
@@ -17,7 +19,7 @@ const store = defineStore({
       enabled: true,
       active: false,
     },
-    workspace: "",
+    workspace: PUBLIC_WORKSPACE,
   }),
   actions: {
     setWorkspace(ws: string) {
@@ -29,6 +31,9 @@ const store = defineStore({
 
       const productStore = useProductStore();
       productStore.init();
+    },
+    clearWorkspace() {
+      this.setWorkspace(PUBLIC_WORKSPACE);
     },
   },
   getters: {
