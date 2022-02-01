@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import useTillstore from "./till";
 import useProductStore from "./products";
 import { createWorkspacePrefix } from "@/utils/workspace";
-import { updateWorkspace as updateDatabaseWorkspace } from "@/utils/db";
+import { initWorkspace as initDbWorkspace } from "@/utils/db";
 
 const store = defineStore({
   id: "settings",
@@ -22,7 +22,7 @@ const store = defineStore({
   actions: {
     setWorkspace(ws: string) {
       this.workspace = ws;
-      updateDatabaseWorkspace(ws);
+      initDbWorkspace(ws);
 
       const tillStore = useTillstore();
       tillStore.init();

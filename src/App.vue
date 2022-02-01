@@ -18,7 +18,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, onUnmounted } from "vue";
 import appMenu from "@/components/Menu.vue";
 
 import appIcon from "@/components/ui/Icon.vue";
@@ -26,8 +27,11 @@ import appIcon from "@/components/ui/Icon.vue";
 import useUiStore from "@/store/ui";
 import useProductStore from "@/store/products";
 import useTillStore from "@/store/till";
+import useSettingsStore from "@/store/settings";
 
-export default {
+import { initWorkspace as initDbWorkspace } from "@/utils/db";
+
+export default defineComponent({
   components: {
     appMenu,
     appIcon,
@@ -36,13 +40,15 @@ export default {
     const uiStore = useUiStore();
     const productStore = useProductStore();
     const tillStore = useTillStore();
+    const settings = useSettingsStore();
 
+    initDbWorkspace(settings.workspace);
     productStore.init();
     tillStore.init();
 
     return { closeMenu: uiStore.closeMenu, openMenu: uiStore.openMenu };
   },
-};
+});
 </script>
 
 <style lang="scss">

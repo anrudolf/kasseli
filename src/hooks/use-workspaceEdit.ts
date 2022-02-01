@@ -2,7 +2,11 @@ import { ref, reactive, computed, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { doc, getDoc, deleteDoc, setDoc } from "firebase/firestore";
 
-import { createSampleProduct, createSampleTill } from "@/utils/samples";
+import {
+  createSampleProduct,
+  createSampleTill,
+  createSampleImage,
+} from "@/utils/samples";
 
 import { Product, Till, Workspace } from "@/types";
 
@@ -60,8 +64,20 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
         );
         await setDoc(workspaceMemberOwnerRef, { role: 9 });
 
+        // add example image
+        const sampleImage = createSampleImage();
+        const workspaceSampleImageRef = doc(
+          workspaceRef,
+          "images",
+          sampleImage.id
+        );
+        await setDoc(workspaceSampleImageRef, sampleImage);
+
         // add example product
-        const product: Product = createSampleProduct({ id: "example" });
+        const product: Product = createSampleProduct({
+          id: "example",
+          imageRef: sampleImage.id,
+        });
         const workspaceSampleProductRef = doc(
           workspaceRef,
           "products",
