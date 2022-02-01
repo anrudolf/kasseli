@@ -1,7 +1,11 @@
 <template>
   <div class="p-4">
-    <h1>Workspaces</h1>
-    <div class="flex">
+    <router-link :to="{ name: 'settings' }">
+      <app-button-back>Zurück</app-button-back>
+    </router-link>
+
+    <div class="my-4 flex justify-between items-center">
+      <h1>Workspaces</h1>
       <router-link :to="{ name: 'workspaces-new' }" class="btn btn-blue"
         >Add</router-link
       >
@@ -62,9 +66,11 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 
 import appWorkspaceList from "@/components/workspace/WorkspaceList.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 import db from "@/utils/db";
@@ -73,6 +79,12 @@ import useAuth from "@/store/auth";
 import useSettings from "@/store/settings";
 
 import { Workspace } from "@/types";
+
+const router = useRouter();
+
+const goBack = () => {
+  router.push({ name: "settings" });
+};
 
 const workspaces = ref<Workspace[]>([]);
 
