@@ -71,7 +71,6 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
           "images",
           sampleImage.id
         );
-        await setDoc(workspaceSampleImageRef, sampleImage);
 
         // add example product
         const product: Product = createSampleProduct({
@@ -83,7 +82,6 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
           "products",
           product.id
         );
-        await setDoc(workspaceSampleProductRef, product);
 
         // add default till with sample product as favorite
         const till: Till = createSampleTill({
@@ -96,9 +94,13 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
             },
           ],
         });
-
         const workspaceDefaultTillRef = doc(workspaceRef, "tills", till.id);
-        await setDoc(workspaceDefaultTillRef, till);
+
+        await Promise.all([
+          setDoc(workspaceSampleImageRef, sampleImage),
+          setDoc(workspaceSampleProductRef, product),
+          setDoc(workspaceDefaultTillRef, till),
+        ]);
 
         router.push(DEFAULT_RETURN_ROUTE);
       } catch (error) {
