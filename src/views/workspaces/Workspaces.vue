@@ -56,7 +56,10 @@
       </TabList>
       <TabPanels>
         <TabPanel>
-          <app-workspace-list v-model="workspaces" @select="selectWorkspace" />
+          <app-workspace-list
+            v-model="workspacesAll"
+            @select="selectWorkspace"
+          />
         </TabPanel>
         <TabPanel>
           <app-workspace-list
@@ -89,8 +92,17 @@ import db from "@/utils/db";
 
 import useAuth from "@/store/auth";
 import useSettings from "@/store/settings";
+import {
+  query,
+  collectionGroup,
+  getFirestore,
+  where,
+  getDocs,
+  getDoc,
+  doc,
+} from "firebase/firestore";
 
-import { Workspace } from "@/types";
+import { Workspace, WorkspaceMember, WorkspaceRole } from "@/types";
 
 const router = useRouter();
 
@@ -98,25 +110,65 @@ const goBack = () => {
   router.push({ name: "settings" });
 };
 
-const workspaces = ref<Workspace[]>([]);
+const workspacesAll = ref<Workspace[]>([]);
+const workspacesCreator = ref<Workspace[]>([]);
+const workspacesMember = ref<Workspace[]>([]);
 
 useFirestoreCollectionSnapshot(db.workspaces, (snap) => {
-  workspaces.value = [];
+  workspacesAll.value = [];
   snap.forEach((w) => {
     const workspace = { ...w.data(), id: w.id };
-    workspaces.value.push(workspace);
+    workspacesAll.value.push(workspace);
   });
 });
 
 const auth = useAuth();
 
-const workspacesMember = computed(() => {
-  return workspaces.value.filter((workspace) => workspace.creator !== auth.uid);
-});
+const searchPersonalWorkspaces = async (uid: string) => {
+  if (!uid) {
+    return;
+  }
 
-const workspacesCreator = computed(() => {
-  return workspaces.value.filter((workspace) => workspace.creator === auth.uid);
-});
+  const mq = query(
+    collectionGroup(getFirestore(), "members"),
+    where("uid", "==", uid)
+  );
+
+  try {
+    const memberSnapshots = await getDocs(mq);
+    workspacesCreator.value = [];
+    workspacesMember.value = [];
+
+    memberSnapshots.forEach(async (memberSnapshot) => {
+      if (!memberSnapshot.exists()) {
+        return;
+      }
+
+      const workspaceRef = memberSnapshot.ref.parent.parent;
+      if (!workspaceRef) {
+        return;
+      }
+
+      const member = memberSnapshot.data() as WorkspaceMember;
+      const workspaceSnapshot = await getDoc(
+        doc(db.workspaces, workspaceRef.id)
+      );
+      if (!workspaceSnapshot.exists()) {
+        return;
+      }
+
+      if (member.role >= WorkspaceRole.Creator) {
+        workspacesCreator.value.push(workspaceSnapshot.data());
+      } else {
+        workspacesMember.value.push(workspaceSnapshot.data());
+      }
+    });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+searchPersonalWorkspaces(auth.uid);
 
 const selectWorkspace = (id: string) => {
   console.log("workspace select:", id);

@@ -70,5 +70,7 @@ export enum WorkspaceRole {
 }
 
 export interface WorkspaceMember {
+  uid: string;
   role: WorkspaceRole;
+  created: string;
 }

@@ -62,7 +62,11 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
           db.workspaceMembers(entity.id),
           uid
         );
-        await setDoc(workspaceMemberOwnerRef, { role: WorkspaceRole.Creator });
+        await setDoc(workspaceMemberOwnerRef, {
+          uid: uid,
+          role: WorkspaceRole.Creator,
+          created: new Date().toISOString(),
+        });
 
         // add example image
         const sampleImage = createSampleImage();
