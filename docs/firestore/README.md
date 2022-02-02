@@ -30,27 +30,27 @@ service cloud.firestore {
     // workspaces
     match /workspaces/{workspace} {
     	function isAllowedToEditWorkspace() {
-        return (request.auth.uid != null) &&
-          ((resource.data['owner'] == request.auth.uid) || exists(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid)));
+        return (request.auth != null) &&
+          ((resource.data['creator'] == request.auth.uid) || exists(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid)));
       }
 
       function isAllowedToAddSelfToMembers() {
-        return (request.auth.uid != null) &&
+        return (request.auth != null) &&
           (request.resource.id == request.auth.uid) &&
-          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.owner == request.auth.uid);
+          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid);
       }
 
       function isAllowedToEditSubcollections() {
-        return (request.auth.uid != null) &&
-          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.owner == request.auth.uid ||
+        return (request.auth != null) &&
+          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid ||
           	exists(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid))
           );
       }
 
       allow read: if true;
-      // allow create if signed in and owner field is uid
-      allow create: if request.auth.uid != null && request.resource.data['owner'] == request.auth.uid
-      // allow update if owner or member, and only name is changed
+      // allow create if signed in and creator field is uid
+      allow create: if request.auth != null && request.resource.data['creator'] == request.auth.uid
+      // allow update if member, and only name is changed
       allow update: if isAllowedToEditWorkspace() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
 
       match /members/{member} {

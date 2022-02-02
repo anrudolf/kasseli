@@ -8,7 +8,7 @@ import {
   createSampleImage,
 } from "@/utils/samples";
 
-import { Product, Till, Workspace } from "@/types";
+import { Product, Till, Workspace, WorkspaceRole } from "@/types";
 
 import db from "@/utils/db";
 
@@ -19,7 +19,7 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
 
   const entity: Workspace = reactive({
     id: doc(db.workspaces).id,
-    owner: uid,
+    creator: uid,
     name: "",
     created: new Date().toISOString(),
     archived: false,
@@ -48,7 +48,7 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
     }
 
     if (!initialId) {
-      // create a new workspace and member with owner role
+      // create a new workspace and member with creator role
       // also adds a sample product and sample till
       entity.created = new Date().toISOString();
 
@@ -57,12 +57,12 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
         const workspaceRef = doc(db.workspaces, entity.id);
         await setDoc(workspaceRef, entity);
 
-        // add self to members with owner role
+        // add self to members with creator role
         const workspaceMemberOwnerRef = doc(
           db.workspaceMembers(entity.id),
           uid
         );
-        await setDoc(workspaceMemberOwnerRef, { role: 9 });
+        await setDoc(workspaceMemberOwnerRef, { role: WorkspaceRole.Creator });
 
         // add example image
         const sampleImage = createSampleImage();

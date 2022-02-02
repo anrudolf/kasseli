@@ -60,13 +60,13 @@
         </TabPanel>
         <TabPanel>
           <app-workspace-list
-            v-model="workspacesMember"
+            v-model="workspacesCreator"
             @select="selectWorkspace"
           />
         </TabPanel>
         <TabPanel>
           <app-workspace-list
-            v-model="workspacesOwner"
+            v-model="workspacesMember"
             @select="selectWorkspace"
           />
         </TabPanel>
@@ -111,11 +111,11 @@ useFirestoreCollectionSnapshot(db.workspaces, (snap) => {
 const auth = useAuth();
 
 const workspacesMember = computed(() => {
-  return workspaces.value.filter((workspace) => workspace.owner !== auth.uid);
+  return workspaces.value.filter((workspace) => workspace.creator !== auth.uid);
 });
 
-const workspacesOwner = computed(() => {
-  return workspaces.value.filter((workspace) => workspace.owner === auth.uid);
+const workspacesCreator = computed(() => {
+  return workspaces.value.filter((workspace) => workspace.creator === auth.uid);
 });
 
 const selectWorkspace = (id: string) => {

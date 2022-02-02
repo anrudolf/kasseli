@@ -55,12 +55,20 @@ export interface AppPayment {
 
 export interface Workspace {
   id: string;
-  owner: string;
+  creator: string;
   name: string;
   created: string;
   archived: boolean;
 }
 
+export enum WorkspaceRole {
+  None = 0,
+  User = 1,
+  Admin = 2,
+  Owner = 3,
+  Creator = 4,
+}
+
 export interface WorkspaceMember {
-  role: number;
+  role: WorkspaceRole;
 }
