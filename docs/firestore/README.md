@@ -40,6 +40,11 @@ service cloud.firestore {
           (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid);
       }
 
+      function isAdmin() {
+        return (request.auth != null) &&
+          (get(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid)).data.role >= 2);
+      }
+
       function isAllowedToEditSubcollections() {
         return (request.auth != null) &&
           (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid ||
@@ -51,11 +56,15 @@ service cloud.firestore {
       // allow create if signed in and creator field is uid
       allow create: if request.auth != null && request.resource.data['creator'] == request.auth.uid
       // allow update if member, and only name is changed
-      allow update: if isAllowedToEditWorkspace() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
+      allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
 
       match /members/{member} {
         // TODO: allow from invites
       	allow read, write: if isAllowedToAddSelfToMembers();
+      }
+
+      match /invites/{invite} {
+        allow write, read: if isAdmin();
       }
 
       match /tills/{till} {

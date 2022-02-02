@@ -74,3 +74,9 @@ export interface WorkspaceMember {
   role: WorkspaceRole;
   created: string;
 }
+
+export interface WorkspaceInvite {
+  workspace: string;
+  role: WorkspaceRole;
+  code: string;
+}
