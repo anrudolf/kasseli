@@ -20,12 +20,14 @@
       </div>
       <div v-else class="flex w-full">
         <div v-if="workspace" class="flex w-full justify-between items-center">
-          <div class="text-xl">{{ workspace.name }}</div>
-          <button class="btn btn-blue" @click="showDisableModal = true">
-            CLEAR
+          <div v-if="workspace" class="text-xl">{{ workspace.name }}</div>
+          <div v-else class="text-xl text-red-500">
+            Workspace {{ wid }} nicht gefunden!
+          </div>
+          <button class="text-green-500" @click="showDisableModal = true">
+            Deaktivieren
           </button>
         </div>
-        <div v-else>Workspace not found</div>
       </div>
     </div>
   </div>

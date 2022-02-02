@@ -4,10 +4,16 @@
       <app-button-back>Zurück</app-button-back>
     </router-link>
 
+    <h1 class="my-4">Workspaces</h1>
+    <p class="text-secondary">
+      Mit Workspaces kannst du ein privates Kasseli mit eigenen Produkten,
+      Kassen und Bildern machen.
+    </p>
+    <h2 class="my-4">Momentan ausgewählt</h2>
     <app-workspace-selector class="my-4"></app-workspace-selector>
 
     <div class="my-4 flex justify-between items-center">
-      <h1>Workspaces</h1>
+      <h2>Liste</h2>
       <router-link :to="{ name: 'workspaces-new' }" class="btn btn-blue"
         >Add</router-link
       >
