@@ -1,16 +1,19 @@
 <template>
-  <div class="border h-16 p-3 flex items-center">
+  <div class="border-2 rounded h-16 p-3 flex items-center">
     <app-modal
       v-model="showDisableModal"
-      title="Switch Workspace"
+      title="Workspace deaktivieren"
       show-confirm
       show-cancel
       @confirm="settings.clearWorkspace"
     >
-      Möchtest du anstatt eines eigenen Workspaces den öffentlichen Workspace
+      Möchtest du deinen Workspace deaktivieren und Kasseli wieder öffentlich
       verwenden?
     </app-modal>
-    <div v-if="!hasWorkspaceSelected" class="text-xl">Public</div>
+    <div v-if="!hasWorkspaceSelected" class="text-secondary">
+      <div class="text-lg">Es ist kein Workspace aktiviert</div>
+      <div class="text-sm">öffentlich</div>
+    </div>
     <div v-else class="flex w-full">
       <div v-if="loading" class="animate-pulse w-full">
         <div class="flex w-full justify-between">
@@ -19,9 +22,12 @@
         </div>
       </div>
       <div v-else class="flex w-full">
-        <div v-if="workspace" class="flex w-full justify-between items-center">
-          <div v-if="workspace" class="text-xl">{{ workspace.name }}</div>
-          <div v-else class="text-xl text-red-500">
+        <div class="flex w-full justify-between items-center">
+          <div v-if="workspace">
+            <div class="text-xl">{{ workspace.name }}</div>
+            <div class="text-sm text-secondary">privat</div>
+          </div>
+          <div v-else class="text-red-500">
             Workspace {{ wid }} nicht gefunden!
           </div>
           <button class="text-green-500" @click="showDisableModal = true">

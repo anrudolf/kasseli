@@ -6,10 +6,13 @@
 
     <h1 class="my-4">Workspaces</h1>
     <p class="text-secondary">
-      Mit Workspaces kannst du ein privates Kasseli mit eigenen Produkten,
-      Kassen und Bildern machen.
+      Normalerweise wird Kasseli ohne Workspace verwendet... so haben alle
+      Zugriff auf Produkte, Kassen und Bilder, welche du hinzufügst - und
+      umgekehrt! Mit Workspaces kannst du ein privates Kasseli mit eigenen
+      Produkten, Kassen und Bildern machen. Erstelle dazu einen neuen Workspace
+      oder wähle einen von der Liste aus.
     </p>
-    <h2 class="my-4">Momentan ausgewählt</h2>
+    <h2 class="my-4">Aktiv</h2>
     <app-workspace-selector class="my-4"></app-workspace-selector>
 
     <div class="my-4 flex justify-between items-center">
