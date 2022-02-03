@@ -9,7 +9,7 @@
   <ul>
     <li
       v-for="invite in props.modelValue"
-      :key="invite.code"
+      :key="invite.id"
       class="p-2 my-2 border"
     >
       {{ invite }}
