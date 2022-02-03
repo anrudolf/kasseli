@@ -11,7 +11,7 @@
       verwenden?
     </app-modal>
     <div v-if="!hasWorkspaceSelected" class="text-secondary">
-      <div class="text-lg">Es ist kein Workspace aktiviert</div>
+      <div class="text-lg">Kein Workspace aktiviert</div>
       <div class="text-sm">öffentlich</div>
     </div>
     <div v-else class="flex w-full">

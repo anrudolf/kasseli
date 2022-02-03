@@ -14,6 +14,7 @@ import {
   AppPayment,
   Workspace,
   WorkspaceMember,
+  WorkspaceInvite,
 } from "@/types";
 
 const fs = getFirestore();
@@ -34,6 +35,8 @@ const db = {
   workspaces: dataPoint<Workspace>("workspaces"),
   workspaceMembers: (wid: string) =>
     dataPoint<WorkspaceMember>(`workspaces/${wid}/members`),
+  workspaceInvites: (wid: string) =>
+    dataPoint<WorkspaceInvite>(`workspaces/${wid}/invites`),
 };
 
 export const initWorkspace = (ws) => {

@@ -5,7 +5,9 @@
       :key="workspace.id"
       class="p-3 my-1 border flex space-x-3"
     >
-      <span>{{ workspace.name }}</span>
+      <router-link :to="{ name: 'workspace', params: { id: workspace.id } }">{{
+        workspace.name
+      }}</router-link>
       <router-link
         :to="{ name: 'workspaces-edit', query: { id: workspace.id } }"
         >EDIT</router-link

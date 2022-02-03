@@ -23,6 +23,7 @@ import SignIn from "../views/SignIn.vue";
 
 import Workspaces from "@/views/workspaces/Workspaces.vue";
 import WorkspaceEdit from "@/views/workspaces/WorkspaceEdit.vue";
+import Workspace from "@/views/workspaces/Workspace.vue";
 
 import Debug from "../views/Debug.vue";
 
@@ -121,6 +122,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "workspaces-edit",
     component: WorkspaceEdit,
     props: (route) => ({ editId: route.query.id }),
+  },
+  {
+    path: "/workspaces/:id",
+    name: "workspace",
+    component: Workspace,
   },
   {
     path: "/signin",
