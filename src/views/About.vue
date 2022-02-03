@@ -23,10 +23,6 @@
     </p>
     <p>Built {{ date }}</p>
   </div>
-  <div v-show="false">
-    <button @click="getProduct">LOG</button>
-    {{ products }}
-  </div>
 </template>
 
 <script>
@@ -34,7 +30,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   setup() {
-    // replaced dyanmically
+    // replaced dynanmically
     const date = "__DATE__";
     const hash = "123456789";
     return { date, hash };
