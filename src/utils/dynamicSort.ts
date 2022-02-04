@@ -1,11 +1,11 @@
-function dynamicSort(property, lang = "de") {
+function dynamicSort(property: string, lang = "de") {
   let sortOrder = 1;
   if (property[0] === "-" || property[0] === "+") {
     sortOrder = property[0] === "-" ? -1 : 1;
     property = property.substr(1);
   }
 
-  return function(a, b) {
+  return function (a, b) {
     if (property === "label") {
       const result =
         a["label"][lang] < b["label"][lang]

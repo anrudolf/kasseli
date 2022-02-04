@@ -88,7 +88,7 @@ export const getColor = (str) => {
   return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 };
 
-export const getInitials = (str) => {
+export const getInitials = (str: string) => {
   return str;
 };
 
