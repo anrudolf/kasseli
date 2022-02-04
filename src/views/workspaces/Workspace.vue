@@ -21,11 +21,10 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { v4 as uuidv4 } from "uuid";
 
-import { doc, getDoc, getDocs, addDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import db from "@/utils/db";
-import { Workspace, WorkspaceInvite, WorkspaceRole } from "@/types";
+import { Workspace, WorkspaceInvite } from "@/types";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceInvites from "@/components/workspace/WorkspaceInvites.vue";
 
