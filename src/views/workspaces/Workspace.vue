@@ -9,7 +9,11 @@
       <div v-if="workspace">
         {{ workspace.name }}
       </div>
-      <app-workspace-invites v-model="invites" @add="addInvite" />
+      <app-workspace-invites
+        v-model="invites"
+        @add="addInvite"
+        @remove="removeInvite"
+      />
     </div>
   </div>
 </template>
@@ -28,6 +32,8 @@ import appWorkspaceInvites from "@/components/workspace/WorkspaceInvites.vue";
 import useAuthStore from "@/store/auth";
 
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
+
+import useWorkspaceInvitation from "@/hooks/use-workspace-invitation";
 
 const authStore = useAuthStore();
 
@@ -53,13 +59,8 @@ useFirestoreCollectionSnapshot(db.workspaceInvites(wid), (snaps) => {
   });
 });
 
-const addInvite = (role: WorkspaceRole) => {
-  const randomId = doc(db.workspaceInvites(wid)).id;
-  setDoc(doc(db.workspaceInvites(wid), randomId), {
-    id: randomId,
-    workspace: wid,
-    role: role,
-    creator: authStore.uid,
-  });
-};
+const { addInvite, removeInvite } = useWorkspaceInvitation({
+  wid,
+  uid: authStore.uid,
+});
 </script>

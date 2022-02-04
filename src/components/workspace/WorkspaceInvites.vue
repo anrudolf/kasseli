@@ -13,6 +13,9 @@
       class="p-2 my-2 border"
     >
       {{ invite }}
+      <button class="btn btn-red" @click="emit('remove', invite.id)">
+        REMOVE
+      </button>
     </li>
   </ul>
 </template>
@@ -32,5 +35,6 @@ const roleToAdd = ref(WorkspaceRole.Admin);
 const props = defineProps<{ modelValue: WorkspaceInvite[] }>();
 const emit = defineEmits<{
   (e: "add", v: number): void;
+  (e: "remove", v: string): void;
 }>();
 </script>
