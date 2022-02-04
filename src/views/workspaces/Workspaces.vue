@@ -8,9 +8,8 @@
     <p class="text-secondary">
       Normalerweise wird Kasseli ohne Workspace verwendet... so haben alle
       Zugriff auf Produkte, Kassen und Bilder, welche du hinzufügst - und
-      umgekehrt! Mit Workspaces kannst du ein privates Kasseli mit eigenen
-      Produkten, Kassen und Bildern machen. Erstelle dazu einen neuen Workspace
-      oder wähle einen von der Liste aus.
+      umgekehrt! Mit Workspaces kannst du ein privates Kasseli machen. Erstelle
+      dazu einen neuen Workspace oder wähle einen von der Liste aus.
     </p>
     <h2 class="my-4">Aktiv</h2>
     <app-workspace-selector class="my-4"></app-workspace-selector>
@@ -22,34 +21,19 @@
       >
     </div>
     <TabGroup>
-      <TabList class="flex p-1 space-x-1 bg-blue-900 rounded-xl">
+      <TabList class="flex space-x-1 border rounded">
         <Tab v-slot="{ selected }" as="template">
-          <button
-            class="app-tab-btn"
-            :class="[
-              selected ? 'bg-blue-500 text-white' : 'bg-white text-black',
-            ]"
-          >
+          <button :class="[selected ? 'app-tab-btn-selected' : 'app-tab-btn']">
             All
           </button>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
-          <button
-            class="app-tab-btn"
-            :class="[
-              selected ? 'bg-blue-500 text-white' : 'bg-white text-black',
-            ]"
-          >
+          <button :class="[selected ? 'app-tab-btn-selected' : 'app-tab-btn']">
             Owner
           </button>
         </Tab>
         <Tab v-slot="{ selected }" as="template">
-          <button
-            class="app-tab-btn"
-            :class="[
-              selected ? 'bg-blue-500 text-white' : 'bg-white text-black',
-            ]"
-          >
+          <button :class="[selected ? 'app-tab-btn-selected' : 'app-tab-btn']">
             Member
           </button>
         </Tab>
@@ -179,7 +163,14 @@ const selectWorkspace = (id: string) => {
 
 <style scoped>
 .app-tab-btn {
-  @apply w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg
-          focus:outline-none focus:ring-2 ring-offset-2 ring-offset-blue-400 ring-white ring-opacity-60;
+  @apply w-full py-2.5 text-sm leading-5 font-medium text-blue-500 rounded;
+}
+
+.app-tab-btn:hover {
+  @apply bg-gray-100;
+}
+
+.app-tab-btn-selected {
+  @apply w-full py-2.5 text-sm leading-5 font-medium text-white bg-blue-500 rounded;
 }
 </style>

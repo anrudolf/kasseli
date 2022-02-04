@@ -3,7 +3,7 @@
     <li
       v-for="workspace in props.modelValue"
       :key="workspace.id"
-      class="p-3 my-1 border flex space-x-3"
+      class="p-3 my-1 border rounded flex space-x-3"
     >
       <router-link :to="{ name: 'workspace', params: { id: workspace.id } }">{{
         workspace.name

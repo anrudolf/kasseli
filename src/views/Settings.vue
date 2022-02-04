@@ -45,14 +45,14 @@
       </div>
       <div class="flex space-x-2">
         <router-link
-          class="btn border link inline-block flex items-center"
+          class="btn btn-white inline-block flex items-center"
           :to="{ name: 'profile' }"
         >
           <cog-icon class="inline w-5 h-5 mr-1.5"></cog-icon>
           Profile
         </router-link>
         <button
-          class="btn border link flex items-center"
+          class="btn btn-white link flex items-center"
           @click="showLogoutModal = true"
         >
           <logout-icon class="w-5 h-5 mr-1.5"></logout-icon>
