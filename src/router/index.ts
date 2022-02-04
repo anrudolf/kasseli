@@ -24,6 +24,7 @@ import SignIn from "../views/SignIn.vue";
 import Workspaces from "@/views/workspaces/Workspaces.vue";
 import WorkspaceEdit from "@/views/workspaces/WorkspaceEdit.vue";
 import Workspace from "@/views/workspaces/Workspace.vue";
+import WorkspaceInvite from "@/views/workspaces/WorkspaceInvite.vue";
 
 import Debug from "../views/Debug.vue";
 
@@ -127,6 +128,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/workspaces/:id",
     name: "workspace",
     component: Workspace,
+  },
+  {
+    path: "/workspaces/:wid/invite/:id",
+    name: "workspaces-invite",
+    component: WorkspaceInvite,
   },
   {
     path: "/signin",
