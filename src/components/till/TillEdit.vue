@@ -145,7 +145,7 @@ import appTillProductEdit from "@/components/till/TillProductEdit.vue";
 
 import appImageSelector from "@/components/image/ImageSelector.vue";
 
-import useTillEdit from "@/hooks/use-tillEdit";
+import useTillEdit from "@/hooks/use-till-edit";
 
 import utils from "@/utils";
 import arrayUtil from "@/utils/array";

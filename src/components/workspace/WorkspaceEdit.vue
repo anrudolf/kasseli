@@ -79,7 +79,7 @@ import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
 import appModal from "@/components/ui/Modal.vue";
 
-import useWorkspaceEdit from "@/hooks/use-workspaceEdit";
+import useWorkspaceEdit from "@/hooks/use-workspace-edit";
 
 import useAuthStore from "@/store/auth";
 

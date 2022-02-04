@@ -107,7 +107,7 @@ import {
 
 import { QrcodeStream } from "vue3-qrcode-reader";
 
-import useAppPayment from "@/hooks/use-appPayment";
+import useAppPayment from "@/hooks/use-app-payment";
 
 export default defineComponent({
   components: {

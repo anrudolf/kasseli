@@ -51,7 +51,7 @@ import qrcodeVue from "qrcode.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appModal from "@/components/ui/Modal.vue";
 
-import useAppPayment from "@/hooks/use-appPayment";
+import useAppPayment from "@/hooks/use-app-payment";
 
 import useKasse from "@/store/kasse";
 

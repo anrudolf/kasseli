@@ -25,10 +25,14 @@ import { Workspace, WorkspaceInvite, WorkspaceRole } from "@/types";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceInvites from "@/components/workspace/WorkspaceInvites.vue";
 
+import useAuthStore from "@/store/auth";
+
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 
+const authStore = useAuthStore();
+
 const route = useRoute();
-const id = route.params.id as string;
+const wid = route.params.id as string;
 const workspace = ref<Workspace | null>(null);
 const invites = ref<WorkspaceInvite[]>([]);
 
@@ -38,9 +42,9 @@ const getWorkspace = async (wid: string) => {
     workspace.value = snap.data();
   }
 };
-getWorkspace(id);
+getWorkspace(wid);
 
-useFirestoreCollectionSnapshot(db.workspaceInvites(id), (snaps) => {
+useFirestoreCollectionSnapshot(db.workspaceInvites(wid), (snaps) => {
   invites.value = [];
   snaps.forEach((doc) => {
     if (doc.exists()) {
@@ -50,11 +54,12 @@ useFirestoreCollectionSnapshot(db.workspaceInvites(id), (snaps) => {
 });
 
 const addInvite = (role: WorkspaceRole) => {
-  const randomId = doc(db.workspaceInvites(id)).id;
-  setDoc(doc(db.workspaceInvites(id), randomId), {
+  const randomId = doc(db.workspaceInvites(wid)).id;
+  setDoc(doc(db.workspaceInvites(wid), randomId), {
     id: randomId,
-    workspace: id,
+    workspace: wid,
     role: role,
+    creator: authStore.uid,
   });
 };
 </script>
