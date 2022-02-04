@@ -33,7 +33,9 @@ const store = defineStore({
       productStore.init();
     },
     clearWorkspace() {
-      this.setWorkspace(PUBLIC_WORKSPACE);
+      if (this.workspace !== PUBLIC_WORKSPACE) {
+        this.setWorkspace(PUBLIC_WORKSPACE);
+      }
     },
   },
   getters: {

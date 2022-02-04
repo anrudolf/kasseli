@@ -3,6 +3,8 @@ import firebase from "@/firebaseInit";
 import { User } from "firebase/auth";
 import { getAuth } from "firebase/auth";
 
+import useSettingsStore from "@/store/settings";
+
 const store = defineStore({
   id: "auth",
   state: () => ({
@@ -35,6 +37,9 @@ const store = defineStore({
       });
     },
     logout() {
+      const settingsStore = useSettingsStore();
+      settingsStore.clearWorkspace();
+
       getAuth(firebase).signOut();
     },
   },
