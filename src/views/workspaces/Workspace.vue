@@ -4,7 +4,7 @@
       <app-button-back>Zurück</app-button-back>
     </router-link>
     <div class="my-2">
-      <small>{{ id }}</small>
+      <small>{{ wid }}</small>
       <h1>Workspace</h1>
       <div v-if="workspace">
         {{ workspace.name }}
