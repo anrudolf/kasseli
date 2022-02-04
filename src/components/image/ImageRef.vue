@@ -4,32 +4,44 @@
   </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, PropType, Ref } from "vue";
-import useFirestoreDocument from "../../hooks/use-firestore-document";
+<script lang="ts" setup>
+import { ref, Ref, defineProps } from "vue";
+import {
+  getDocFromCache,
+  getDocFromServer,
+  doc,
+  DocumentSnapshot,
+} from "firebase/firestore";
 
 import { ImageRef } from "@/types";
 
-import useSettingsStore from "@/store/settings";
+import db from "@/utils/db";
 
-export default defineComponent({
-  props: {
-    id: { type: String as PropType<string | null>, default: "" },
-  },
-  setup(props) {
-    const show = ref(false);
-
-    const settings = useSettingsStore();
-
-    const entity: Ref<ImageRef | null> = props.id
-      ? useFirestoreDocument(`${settings.workspacePrefix}images/${props.id}`, {
-          source: "cache",
-        })
-      : ref(null);
-
-    return { entity, show };
+const props = defineProps({
+  id: {
+    type: String,
+    default: "",
   },
 });
+
+const entity: Ref<ImageRef | null> = ref(null);
+
+const getImage = async (id: string) => {
+  let snapshot: DocumentSnapshot<ImageRef>;
+  try {
+    snapshot = await getDocFromCache(doc(db.images, id));
+  } catch (e) {
+    snapshot = await getDocFromServer(doc(db.images, id));
+  }
+
+  if (snapshot.exists()) {
+    entity.value = snapshot.data();
+  }
+};
+
+if (props.id) {
+  getImage(props.id);
+}
 </script>
 
 <style scoped>
