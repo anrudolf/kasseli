@@ -40,9 +40,19 @@ service cloud.firestore {
           (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid);
       }
 
+      function isWorkspaceCreator() {
+        return (request.auth != null) &&
+          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid);
+      }
+
       function isAdmin() {
         return (request.auth != null) &&
           (get(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid)).data.role >= 2);
+      }
+
+      function isMember() {
+        return (request.auth != null) &&
+          (exists(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid)));
       }
 
       function isAllowedToEditSubcollections() {
@@ -52,6 +62,11 @@ service cloud.firestore {
           );
       }
 
+      function hasInvite(id, role) {
+      	return (request.auth != null) &&
+          (get(/databases/$(database)/documents/workspaces/$(workspace)/invites/$(id)).data.role == role)
+      }
+
       allow read: if true;
       // allow create if signed in and creator field is uid
       allow create: if request.auth != null && request.resource.data['creator'] == request.auth.uid
@@ -59,12 +74,19 @@ service cloud.firestore {
       allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
 
       match /members/{member} {
-        // TODO: allow from invites
-      	allow read, write: if isAllowedToAddSelfToMembers();
+      	allow read: if isWorkspaceCreator() || isMember();
+        allow create: if isAllowedToAddSelfToMembers() || hasInvite(request.resource.data.invite, request.resource.data.role);
+        allow delete: if request.auth != null && request.auth.uid == member
       }
 
       match /invites/{invite} {
-        allow write, read: if isAdmin();
+      	allow get: if true;
+        allow delete: if true;
+
+        allow create: if isAdmin();
+        allow list: if isAdmin();
+
+        allow update: if false;
       }
 
       match /tills/{till} {

@@ -32,7 +32,7 @@ import useAuthStore from "@/store/auth";
 
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 
-import useWorkspaceInvitation from "@/hooks/use-workspace-invitation";
+import useWorkspaceInvite from "@/hooks/use-workspace-invite";
 
 const authStore = useAuthStore();
 
@@ -58,7 +58,7 @@ useFirestoreCollectionSnapshot(db.workspaceInvites(wid), (snaps) => {
   });
 });
 
-const { addInvite, removeInvite } = useWorkspaceInvitation({
+const { addInvite, removeInvite } = useWorkspaceInvite({
   wid,
   uid: authStore.uid,
 });

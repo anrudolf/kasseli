@@ -73,6 +73,7 @@ export interface WorkspaceMember {
   uid: string;
   role: WorkspaceRole;
   created: string;
+  invite: string;
 }
 
 export interface WorkspaceInvite {

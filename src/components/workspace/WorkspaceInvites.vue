@@ -12,6 +12,15 @@
       :key="invite.id"
       class="p-2 my-2 border"
     >
+      <router-link
+        class="block link"
+        :to="{
+          name: 'workspaces-invite',
+          params: { wid: invite.workspace, id: invite.id },
+          query: { role: invite.role },
+        }"
+        >Link</router-link
+      >
       {{ invite }}
       <button class="btn btn-red" @click="emit('remove', invite.id)">
         REMOVE

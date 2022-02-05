@@ -66,6 +66,7 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
           uid: uid,
           role: WorkspaceRole.Creator,
           created: new Date().toISOString(),
+          invite: "",
         });
 
         // add example image

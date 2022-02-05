@@ -48,30 +48,39 @@ export default function ({
 
   const claim = async (id: string) => {
     try {
+      console.log("trying to claim");
       const inviteRef = doc(db.workspaceInvites(wid), id);
+      console.log("ref: ", inviteRef.path);
 
       const inviteSnap = await getDoc(inviteRef);
-      if (inviteSnap.exists()) {
+      if (!inviteSnap.exists()) {
+        console.log("does not exist");
         return;
       }
 
       const invite = inviteSnap.data();
       if (!invite) {
+        console.log("data is empty");
         return;
       }
+
+      console.log("found invite:", invite);
 
       if (invite.creator === uid) {
         console.log(`cannot claim yourself: wid=${wid}, uid=${uid}, id=${id}`);
         return;
       }
 
+      console.log("adding to members");
       const workspaceMemberOwnerRef = doc(db.workspaceMembers(wid), uid);
       await setDoc(workspaceMemberOwnerRef, {
         uid: uid,
         role: invite.role,
         created: new Date().toISOString(),
+        invite: id,
       });
 
+      console.log("deleting invite");
       await deleteDoc(inviteRef);
     } catch (err) {
       console.error(err);
