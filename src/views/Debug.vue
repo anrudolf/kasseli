@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 max-w-md">
     <div class="flex flex-col space-y-2">
       <h1>Debug</h1>
       <label>UID</label>
@@ -7,6 +7,15 @@
       <button class="btn btn-blue" @click="() => search(uid)">
         Query Workspaces
       </button>
+    </div>
+    <div class="my-2 flex flex-col space-y-1">
+      <h2>Trials</h2>
+      <input v-model="trialId" class="input" placeholder="id" />
+      <input v-model="trialCode" class="input" placeholder="code" />
+      <button class="btn btn-blue" @click="addTrial(trialId, trialCode)">
+        Add trial
+      </button>
+      <button class="btn btn-blue" @click="getTrials">Get trials</button>
     </div>
     <div class="flex flex-col space-y-2 mt-4">
       <h2>Refactor</h2>
@@ -39,6 +48,7 @@ import {
   collection,
   updateDoc,
   deleteField,
+  setDoc,
 } from "firebase/firestore";
 
 import db from "@/utils/db";
@@ -74,10 +84,37 @@ export default defineComponent({
       }
     };
 
+    const addTrial = (id: string, code: string) => {
+      const d = doc(getFirestore(), "trials", id);
+      setDoc(d, { code: code });
+    };
+
+    const getTrials = () => {
+      const c = collection(getFirestore(), "trials");
+      getDocs(c)
+        .then((snap) => {
+          snap.forEach((s) => {
+            if (s.exists()) {
+              console.log(s.data());
+            }
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+
+    const trialId = ref("");
+    const trialCode = ref("");
+
     return {
       uid,
       search,
       refactor,
+      addTrial,
+      getTrials,
+      trialId,
+      trialCode,
     };
   },
 });
