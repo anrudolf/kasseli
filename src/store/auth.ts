@@ -2,8 +2,15 @@ import { defineStore } from "pinia";
 import firebase from "@/firebaseInit";
 import { User } from "firebase/auth";
 import { getAuth } from "firebase/auth";
+import {
+  getFirestore,
+  waitForPendingWrites,
+  clearIndexedDbPersistence,
+  terminate,
+} from "firebase/firestore";
 
 import useSettingsStore from "@/store/settings";
+import { initFirestore } from "@/firebaseInit";
 
 const store = defineStore({
   id: "auth",
@@ -39,8 +46,19 @@ const store = defineStore({
     logout() {
       const settingsStore = useSettingsStore();
       settingsStore.clearWorkspace();
-
       getAuth(firebase).signOut();
+    },
+    async logoutAndClearLocalFirestoreCache() {
+      const fs = getFirestore();
+      console.log("terminate...");
+      await terminate(fs);
+      console.log("clearIndexedDbPersistence...");
+      await clearIndexedDbPersistence(fs);
+      console.log("initFirestore...");
+      initFirestore();
+      console.log("logout...");
+      this.logout();
+      return true;
     },
   },
 });

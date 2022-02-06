@@ -1,13 +1,8 @@
 <template>
-  <app-modal
+  <app-logout-modal
     v-model="showLogoutModal"
-    title="Wirklich Ausloggen?"
-    show-cancel
-    show-confirm
-    @confirm="auth.logout"
-  >
-    <p>Du bist momentan eingeloggt als {{ auth.user?.email }}</p>
-  </app-modal>
+    @confirm="auth.logoutAndClearLocalFirestoreCache"
+  ></app-logout-modal>
   <div class="p-4 max-w-lg flex flex-col space-y-2">
     <h1>Settings</h1>
     <router-link to="/tills" class="link text-xl">Kassen</router-link>
@@ -82,7 +77,7 @@ import appSwitch from "@/components/ui/Switch.vue";
 import useSettingsStore from "@/store/settings";
 import useAuthStore from "@/store/auth";
 
-import appModal from "@/components/ui/Modal.vue";
+import appLogoutModal from "@/components/ui/LogoutModal.vue";
 
 const settings = useSettingsStore();
 const auth = useAuthStore();

@@ -36,24 +36,22 @@
   </SwitchGroup>
 </template>
 
-<script lang="ts">
-import { computed } from "vue";
+<script lang="ts" setup>
+import { computed, defineProps, defineEmits } from "vue";
 import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
 
-export default {
-  components: { Switch, SwitchGroup, SwitchLabel },
-  props: {
-    modelValue: Boolean,
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
   },
-  setup(props, { emit }) {
-    const enabled = computed({
-      get: () => props.modelValue,
-      set: (value) => emit("update:modelValue", value),
-    });
+});
 
-    return {
-      enabled,
-    };
-  },
-};
+const emit = defineEmits<{
+  (e: "update:modelValue", v: boolean): void;
+}>();
+
+const enabled = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 </script>
