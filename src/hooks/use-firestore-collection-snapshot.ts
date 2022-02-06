@@ -2,17 +2,21 @@ import {
   CollectionReference,
   QuerySnapshot,
   onSnapshot,
+  FirestoreError,
 } from "firebase/firestore";
 
 import { onUnmounted } from "vue";
 
 const useCollection = <T>(
   collection: CollectionReference<T>,
-  callback = (snapshot: QuerySnapshot<T>) => {
+  successCallback = (snapshot: QuerySnapshot<T>) => {
     console.log("new snapshot", snapshot);
+  },
+  errorCallback = (err: FirestoreError) => {
+    console.error(err);
   }
 ) => {
-  const unsubscribe = onSnapshot(collection, callback);
+  const unsubscribe = onSnapshot(collection, successCallback, errorCallback);
 
   onUnmounted(() => {
     unsubscribe();

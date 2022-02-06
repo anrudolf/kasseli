@@ -49,14 +49,20 @@ const getWorkspace = async (wid: string) => {
 };
 getWorkspace(wid);
 
-useFirestoreCollectionSnapshot(db.workspaceInvites(wid), (snaps) => {
-  invites.value = [];
-  snaps.forEach((doc) => {
-    if (doc.exists()) {
-      invites.value.push(doc.data());
-    }
-  });
-});
+useFirestoreCollectionSnapshot(
+  db.workspaceInvites(wid),
+  (snaps) => {
+    invites.value = [];
+    snaps.forEach((doc) => {
+      if (doc.exists()) {
+        invites.value.push(doc.data());
+      }
+    });
+  },
+  (err) => {
+    console.log("useFirestoreCollectionSnapshot: error:", err);
+  }
+);
 
 const { addInvite, removeInvite } = useWorkspaceInvite({
   wid,
