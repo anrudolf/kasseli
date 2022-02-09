@@ -1,15 +1,20 @@
 <template>
-  <h1>Workspace Einladung</h1>
-  <div v-if="workspace">
-    <h2>Workspace</h2>
-    {{ workspace }}
-  </div>
-  <div v-if="invite">
-    <h2>Invite</h2>
-    {{ invite }}
-  </div>
+  <div class="p-4">
+    <h1>Workspace Einladung</h1>
+    <div v-if="authStore.isLoggedIn">
+      Du bist eingeloggt als {{ authStore.email }}
+    </div>
+    <div v-if="workspace">
+      <h2>Workspace</h2>
+      {{ workspace }}
+    </div>
+    <div v-if="invite">
+      <h2>Invite</h2>
+      {{ invite }}
+    </div>
 
-  <button class="btn btn-blue" @click="claim(id)">CLAIM</button>
+    <button class="btn btn-blue" @click="claim(id)">CLAIM</button>
+  </div>
 </template>
 
 <script lang="ts" setup>

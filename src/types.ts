@@ -81,4 +81,5 @@ export interface WorkspaceInvite {
   workspace: string;
   role: WorkspaceRole;
   creator: string;
+  created: string;
 }

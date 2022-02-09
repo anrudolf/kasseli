@@ -28,9 +28,9 @@
     <h2 v-if="auth.isLoggedIn">Workspace</h2>
     <div v-if="auth.isLoggedIn">
       <p v-if="settings.hasWorkspaceSelected" class="text-secondary">
-        Privater Workspace aktiviert
+        Es ist ein privater Workspace aktiviert.
       </p>
-      <p v-else class="text-secondary">Kein Workspace aktiviert.</p>
+      <p v-else class="text-secondary">Es ist kein Workspace aktiviert.</p>
       <p class="mt-2">
         <router-link
           v-if="auth.isLoggedIn"

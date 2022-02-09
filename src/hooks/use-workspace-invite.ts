@@ -38,6 +38,7 @@ export default function ({
       workspace: wid,
       role: role,
       creator: uid,
+      created: new Date().toISOString(),
     });
   };
 

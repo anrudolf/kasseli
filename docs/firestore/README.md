@@ -21,6 +21,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    match /trials/{trial} {
+      allow create: if true;
+      allow read: if false;
+    }
+
     // collection group: members
     match /{path=**}/members/{member} {
       // TODO: maybe only allow self search?
@@ -34,13 +39,7 @@ service cloud.firestore {
           ((resource.data['creator'] == request.auth.uid) || exists(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid)));
       }
 
-      function isAllowedToAddSelfToMembers() {
-        return (request.auth != null) &&
-          (request.resource.id == request.auth.uid) &&
-          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid);
-      }
-
-      function isWorkspaceCreator() {
+      function isCreator() {
         return (request.auth != null) &&
           (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid);
       }
@@ -56,10 +55,7 @@ service cloud.firestore {
       }
 
       function isAllowedToEditSubcollections() {
-        return (request.auth != null) &&
-          (get(/databases/$(database)/documents/workspaces/$(workspace)).data.creator == request.auth.uid ||
-          	exists(/databases/$(database)/documents/workspaces/$(workspace)/members/$(request.auth.uid))
-          );
+        return isCreator() || isAdmin();
       }
 
       function hasInvite(id, role) {
@@ -74,8 +70,9 @@ service cloud.firestore {
       allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
 
       match /members/{member} {
-      	allow read: if isWorkspaceCreator() || isMember();
-        allow create: if isAllowedToAddSelfToMembers() || hasInvite(request.resource.data.invite, request.resource.data.role);
+      	allow read: if isCreator() || isMember();
+        allow create: if (request.resource.id == request.auth.uid) &&
+          (isCreator() || hasInvite(request.resource.data.invite, request.resource.data.role));
         allow delete: if request.auth != null && request.auth.uid == member
       }
 
