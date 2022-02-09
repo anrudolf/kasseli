@@ -29,11 +29,9 @@ const store = defineStore({
       return new Promise<void>((resolve, reject) => {
         getAuth(firebase).onAuthStateChanged(async (user) => {
           if (user) {
-            console.log("logged in");
             this.uid = user.uid;
             this.email = user.email ? user.email : "";
           } else {
-            console.log("not logged in");
             this.uid = "";
             this.email = "";
           }
@@ -43,22 +41,20 @@ const store = defineStore({
         });
       });
     },
-    logout() {
+    async logout(clearCache = false) {
+      if (clearCache) {
+        const fs = getFirestore();
+        await terminate(fs);
+        await clearIndexedDbPersistence(fs);
+        initFirestore();
+      }
+
       const settingsStore = useSettingsStore();
       settingsStore.clearWorkspace();
       getAuth(firebase).signOut();
     },
-    async logoutAndClearLocalFirestoreCache() {
-      const fs = getFirestore();
-      console.log("terminate...");
-      await terminate(fs);
-      console.log("clearIndexedDbPersistence...");
-      await clearIndexedDbPersistence(fs);
-      console.log("initFirestore...");
-      initFirestore();
-      console.log("logout...");
-      this.logout();
-      return true;
+    logoutAndClearLocalFirestoreCache() {
+      this.logout(true);
     },
   },
 });

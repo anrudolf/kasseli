@@ -1,7 +1,7 @@
 <template>
   <app-logout-modal
     v-model="showLogoutModal"
-    @confirm="auth.logoutAndClearLocalFirestoreCache"
+    @confirm="auth.logout"
   ></app-logout-modal>
   <div class="p-4 max-w-lg flex flex-col space-y-2">
     <h1>Settings</h1>
@@ -26,12 +26,20 @@
     </div>
 
     <h2 v-if="auth.isLoggedIn">Workspace</h2>
-    <router-link
-      v-if="auth.isLoggedIn"
-      :to="{ name: 'workspaces' }"
-      class="link text-xl"
-      >Select Workspace</router-link
-    >
+    <div v-if="auth.isLoggedIn">
+      <p v-if="settings.hasWorkspaceSelected" class="text-secondary">
+        Privater Workspace aktiviert
+      </p>
+      <p v-else class="text-secondary">Kein Workspace aktiviert.</p>
+      <p class="mt-2">
+        <router-link
+          v-if="auth.isLoggedIn"
+          :to="{ name: 'workspaces' }"
+          class="link text-xl"
+          >Select Workspace</router-link
+        >
+      </p>
+    </div>
 
     <h2>Account</h2>
     <div v-if="auth.isLoggedIn">

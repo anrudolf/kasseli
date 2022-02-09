@@ -7,11 +7,27 @@
     <p>
       Du bist momentan eingeloggt als <strong>{{ authStore.email }}</strong>
     </p>
-    <div v-if="hasPendingWrites" class="my-3">
+    <div class="my-3">
+      <label class="flex py-2 items-center">
+        <input v-model="computer" type="radio" value="private" class="mx-3" />
+        <div>
+          <div>Privater Computer</div>
+          <small class="text-secondary">Lokale Daten bleiben gespeichert</small>
+        </div>
+      </label>
+      <label class="flex py-2 items-center">
+        <input v-model="computer" type="radio" value="public" class="mx-3" />
+        <div>
+          <div>Öffentlicher Computer</div>
+          <small class="text-secondary">Lokale Daten werden gelöscht</small>
+        </div></label
+      >
+    </div>
+    <div v-if="clearCache && hasPendingWrites" class="my-3">
       <div class="p-2 bg-red-500 rounded text-white flex items-center">
         <div>
           <exclamation-circle-icon
-            class="w-6 h-6 mr-2"
+            class="w-6 h-6 mr-3"
           ></exclamation-circle-icon>
         </div>
         Lokale Daten sind nicht mit der Cloud synchronisiert! Bitte gehe online,
@@ -20,12 +36,8 @@
       </div>
       <div class="py-3">
         <label>
-          <input
-            v-model="forceLogout"
-            type="checkbox"
-            class="form-checkbox mr-2"
-          />
-          Lokale Daten verwerfen & ausloggen (!!!)
+          <input v-model="forceLogout" type="checkbox" class="mx-3" />
+          Lokale Daten verwerfen & ausloggen...
         </label>
       </div>
     </div>
@@ -39,10 +51,10 @@
       <button
         class="btn"
         :class="[hasPendingWrites ? 'btn-red' : 'btn-blue']"
-        :disabled="hasPendingWrites && !forceLogout"
+        :disabled="clearCache && hasPendingWrites && !forceLogout"
         @click="
           () => {
-            emit('confirm');
+            emit('confirm', clearCache);
             emit('update:modelValue', false);
           }
         "
@@ -54,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits, watch } from "vue";
+import { ref, defineProps, defineEmits, watch, computed } from "vue";
 import { getFirestore, waitForPendingWrites } from "firebase/firestore";
 
 import { ExclamationCircleIcon } from "@heroicons/vue/outline";
@@ -71,13 +83,15 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: "update:modelValue", v: boolean): void;
-  (e: "confirm"): void;
+  (e: "confirm", v: boolean): void;
 }>();
 
 const authStore = useAuthStore();
 
 const hasPendingWrites = ref(true);
 const forceLogout = ref(false);
+const computer = ref("private");
+const clearCache = computed(() => computer.value === "public");
 
 const checkPendingWrites = async () => {
   hasPendingWrites.value = true;
@@ -87,7 +101,7 @@ const checkPendingWrites = async () => {
 
 watch(
   () => props.modelValue,
-  (newVal, oldVal) => {
+  (newVal, _) => {
     if (newVal) {
       checkPendingWrites();
     }

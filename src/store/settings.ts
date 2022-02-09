@@ -45,6 +45,9 @@ const store = defineStore({
     workspacePrefix(state) {
       return createWorkspacePrefix(state.workspace);
     },
+    hasWorkspaceSelected(state) {
+      return state.workspace !== PUBLIC_WORKSPACE;
+    },
   },
   persist: {
     enabled: true,
