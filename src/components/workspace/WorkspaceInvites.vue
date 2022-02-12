@@ -5,9 +5,7 @@
     </app-modal>
     <h2 class="mr-auto">Invites</h2>
 
-    <button class="btn btn-blue" @click="() => emit('add', roleToAdd)">
-      ADD
-    </button>
+    <button class="btn btn-blue" @click="emit('add')">ADD</button>
   </div>
   <ul>
     <li
@@ -17,7 +15,7 @@
     >
       <div class="mr-auto">
         <div>{{ invite.created }}</div>
-        <small> {{ getRole(invite) }}</small>
+        <small> {{ getRole(invite) }} - {{ getUsage(invite) }}</small>
       </div>
       <div class="flex flex-col">
         <button class="btn btn-blue" @click="showModal = true">VIEW</button>
@@ -37,32 +35,15 @@ import { useClipboard } from "@vueuse/core";
 import appSelect from "@/components/ui/Select.vue";
 import appModal from "@/components/ui/Modal.vue";
 
+import { getRole, getUsage, getLink } from "@/utils/workspace";
+
 import { WorkspaceInvite, WorkspaceRole } from "@/types";
-
-const items = [
-  { text: "User", value: WorkspaceRole.User },
-  { text: "Admin", value: WorkspaceRole.Admin },
-  { text: "Owner", value: WorkspaceRole.Owner },
-];
-const roleToAdd = ref(WorkspaceRole.Admin);
-
-const getRole = (invite: WorkspaceInvite) => {
-  const found = items.find((item) => (item.value = invite.role));
-  if (!found) {
-    return "???";
-  }
-  return found.text;
-};
 
 const props = defineProps<{ modelValue: WorkspaceInvite[] }>();
 const emit = defineEmits<{
-  (e: "add", v: number): void;
+  (e: "add"): void;
   (e: "remove", v: string): void;
 }>();
-
-const getLink = (invite: WorkspaceInvite) => {
-  return `${window.location}/workspaces/${invite.workspace}/invite/${invite.id}`;
-};
 
 const source = ref("");
 const { text, copy, copied, isSupported } = useClipboard({ source });

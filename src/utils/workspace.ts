@@ -22,7 +22,15 @@ export const itemsUsage = [
 ];
 
 export const getRole = (invite: WorkspaceInvite) => {
-  const found = itemsRole.find((item) => (item.value = invite.role));
+  const found = itemsRole.find((item) => item.value == invite.role);
+  if (!found) {
+    return "???";
+  }
+  return found.text;
+};
+
+export const getUsage = (invite: WorkspaceInvite) => {
+  const found = itemsUsage.find((item) => item.value == invite.usage);
   if (!found) {
     return "???";
   }
