@@ -6,10 +6,16 @@
   >
     <div v-if="!invite">
       <p class="my-2">Lade deine Freunde zu diesem Workspace ein.</p>
-      <label>
-        <div>Wähle eine Rolle</div>
-        <app-select v-model.number="roleToAdd" :items="items" />
-      </label>
+      <div class="flex">
+        <label class="mr-4">
+          <div>Rolle</div>
+          <app-select v-model.number="role" :items="itemsRole" />
+        </label>
+        <label>
+          <div>Verwendung</div>
+          <app-select v-model="usage" :items="itemsUsage"></app-select>
+        </label>
+      </div>
     </div>
 
     <div v-else>
@@ -62,13 +68,14 @@ import { useClipboard } from "@vueuse/core";
 
 import appSelect from "@/components/ui/Select.vue";
 
-import { WorkspaceInvite, WorkspaceRole } from "@/types";
+import { WorkspaceInvite, WorkspaceInviteUsage, WorkspaceRole } from "@/types";
 
-import { items, getRole, getLink } from "@/utils/workspace";
+import { itemsRole, itemsUsage, getRole, getLink } from "@/utils/workspace";
 
 import useWorkspaceInvite from "@/hooks/use-workspace-invite";
 
-const roleToAdd = ref(WorkspaceRole.Admin);
+const role = ref(WorkspaceRole.Admin);
+const usage = ref<WorkspaceInviteUsage>(WorkspaceInviteUsage.SINGLE);
 
 const props = defineProps({
   modelValue: {
@@ -92,7 +99,7 @@ const emit = defineEmits<{
 const invite = ref<WorkspaceInvite | null>(null);
 
 const create = () => {
-  invite.value = addInvite(roleToAdd.value);
+  invite.value = addInvite(role.value, usage.value);
 };
 
 const { addInvite } = useWorkspaceInvite({
@@ -101,7 +108,7 @@ const { addInvite } = useWorkspaceInvite({
 });
 
 const source = ref("");
-const { text, copy, copied, isSupported } = useClipboard({ source });
+const { copy, copied, isSupported } = useClipboard({ source });
 
 const copyLink = (invite: WorkspaceInvite | null) => {
   if (!invite) {

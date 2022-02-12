@@ -76,10 +76,16 @@ export interface WorkspaceMember {
   invite: string;
 }
 
+export enum WorkspaceInviteUsage {
+  SINGLE = "single",
+  MULTI = "multi",
+}
+
 export interface WorkspaceInvite {
   id: string;
   workspace: string;
   role: WorkspaceRole;
   creator: string;
   created: string;
+  usage: WorkspaceInviteUsage;
 }

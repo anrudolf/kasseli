@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-import { WorkspaceRole, WorkspaceInvite } from "@/types";
+import { WorkspaceRole, WorkspaceInvite, WorkspaceInviteUsage } from "@/types";
 
 import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 
@@ -31,7 +31,10 @@ export default function ({
       });
   }
 
-  const addInvite = (role: WorkspaceRole): WorkspaceInvite => {
+  const addInvite = (
+    role: WorkspaceRole,
+    usage = WorkspaceInviteUsage.SINGLE
+  ): WorkspaceInvite => {
     const randomId = doc(db.workspaceInvites(wid)).id;
     const invite = {
       id: randomId,
@@ -39,6 +42,7 @@ export default function ({
       role: role,
       creator: uid,
       created: new Date().toISOString(),
+      usage,
     };
     setDoc(doc(db.workspaceInvites(wid), randomId), invite);
     return invite;

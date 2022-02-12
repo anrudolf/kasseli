@@ -6,10 +6,10 @@
   >
     <option
       v-for="item in items"
-      :key="item.value || item"
-      :value="item.value || item"
+      :key="item.value ?? item"
+      :value="item.value ?? item"
     >
-      {{ item.text || item }}
+      {{ item.text ?? item }}
     </option>
   </select>
 </template>
