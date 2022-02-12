@@ -31,15 +31,17 @@ export default function ({
       });
   }
 
-  const addInvite = (role: WorkspaceRole) => {
+  const addInvite = (role: WorkspaceRole): WorkspaceInvite => {
     const randomId = doc(db.workspaceInvites(wid)).id;
-    setDoc(doc(db.workspaceInvites(wid), randomId), {
+    const invite = {
       id: randomId,
       workspace: wid,
       role: role,
       creator: uid,
       created: new Date().toISOString(),
-    });
+    };
+    setDoc(doc(db.workspaceInvites(wid), randomId), invite);
+    return invite;
   };
 
   const removeInvite = (id: string) => {

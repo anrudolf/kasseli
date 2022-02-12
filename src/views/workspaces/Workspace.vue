@@ -3,6 +3,12 @@
     <router-link :to="{ name: 'workspaces' }">
       <app-button-back>Zurück</app-button-back>
     </router-link>
+    <app-workspace-add-modal
+      v-model="showAddModal"
+      :wid="wid"
+      :uid="authStore.uid"
+    >
+    </app-workspace-add-modal>
     <div class="my-2">
       <small>{{ wid }}</small>
       <h1>Workspace</h1>
@@ -11,7 +17,11 @@
       </div>
       <app-workspace-invites
         v-model="invites"
-        @add="addInvite"
+        @add="
+          () => {
+            showAddModal = true;
+          }
+        "
         @remove="removeInvite"
       />
     </div>
@@ -27,6 +37,8 @@ import db from "@/utils/db";
 import { Workspace, WorkspaceInvite } from "@/types";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceInvites from "@/components/workspace/WorkspaceInvites.vue";
+
+import appWorkspaceAddModal from "@/components/workspace/WorkspaceAddModal.vue";
 
 import useAuthStore from "@/store/auth";
 
@@ -63,6 +75,8 @@ useFirestoreCollectionSnapshot(
     console.log("useFirestoreCollectionSnapshot: error:", err);
   }
 );
+
+const showAddModal = ref(false);
 
 const { addInvite, removeInvite } = useWorkspaceInvite({
   wid,

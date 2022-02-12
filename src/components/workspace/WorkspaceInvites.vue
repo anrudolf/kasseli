@@ -4,8 +4,8 @@
       <p>Einladung</p>
     </app-modal>
     <h2 class="mr-auto">Invites</h2>
-    <app-select v-model.number="roleToAdd" :items="items" />
-    <button class="ml-1 btn btn-blue" @click="() => emit('add', roleToAdd)">
+
+    <button class="btn btn-blue" @click="() => emit('add', roleToAdd)">
       ADD
     </button>
   </div>
@@ -19,11 +19,13 @@
         <div>{{ invite.created }}</div>
         <small> {{ getRole(invite) }}</small>
       </div>
-      <button class="btn btn-blue" @click="showModal = true">VIEW</button>
-      <button class="btn btn-blue" @click="copyLink(invite)">COPY</button>
-      <button class="btn btn-red" @click="emit('remove', invite.id)">
-        REMOVE
-      </button>
+      <div class="flex flex-col">
+        <button class="btn btn-blue" @click="showModal = true">VIEW</button>
+        <button class="btn btn-blue" @click="copyLink(invite)">COPY</button>
+        <button class="btn btn-red" @click="emit('remove', invite.id)">
+          REMOVE
+        </button>
+      </div>
     </li>
   </ul>
 </template>
