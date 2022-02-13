@@ -71,7 +71,7 @@ service cloud.firestore {
 
       match /members/{member} {
       	allow read: if isCreator() || isMember();
-        allow create: if (request.resource.id == request.auth.uid) &&
+        allow create, update: if (request.resource.id == request.auth.uid) &&
           (isCreator() || hasInvite(request.resource.data.invite, request.resource.data.role));
         allow delete: if request.auth != null && request.auth.uid == member
       }
