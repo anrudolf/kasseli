@@ -1,19 +1,15 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 max-w-lg">
     <router-link :to="{ name: 'workspaces' }">
       <app-button-back>Zurück</app-button-back>
     </router-link>
     <div class="my-2">
-      <small>{{ wid }}</small>
+      <small class="text-secondary">{{ wid }}</small>
       <h1>Workspace</h1>
       <div v-if="workspace">
         {{ workspace.name }}
       </div>
-      <app-workspace-invites
-        v-model="invites"
-        @add="gotoNewInvite"
-        @remove="removeInvite"
-      />
+      <app-workspace-invites v-model="invites" :wid="wid" class="mt-4" />
     </div>
   </div>
 </template>

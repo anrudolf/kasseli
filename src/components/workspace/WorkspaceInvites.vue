@@ -1,51 +1,59 @@
 <template>
-  <div class="mt-4 flex items-center">
-    <h2 class="mr-auto">Invites</h2>
+  <div>
+    <div class="flex items-center">
+      <h2 class="mr-auto">Invites</h2>
 
-    <button class="btn btn-blue" @click="emit('add')">ADD</button>
-  </div>
-  <ul>
-    <li
-      v-for="invite in props.modelValue"
-      :key="invite.id"
-      class="p-2 my-2 border flex space-x-2 items-center"
-    >
-      <div class="mr-auto">
-        <div>{{ invite.created }}</div>
-        <small> {{ getRole(invite) }} - {{ getUsage(invite) }}</small>
-      </div>
-      <div class="flex flex-col">
+      <router-link
+        class="btn btn-blue"
+        :to="{ name: 'workspaces-invite-new', params: { wid } }"
+        >ADD</router-link
+      >
+    </div>
+    <ul>
+      <li
+        v-for="invite in props.modelValue"
+        :key="invite.id"
+        class="my-2 border flex justify-between items-center"
+      >
         <router-link
-          class="btn btn-blue"
+          class="p-2 w-full"
           :to="{
             name: 'workspaces-invite',
             params: { wid: invite.workspace, id: invite.id },
           }"
-          >View</router-link
         >
-        <button class="btn btn-red" @click="emit('remove', invite.id)">
-          REMOVE
+          <div>
+            <div>
+              <span>{{ getLocaleDateString(invite.created) }}</span>
+              <span class="ml-2 text-secondary">{{
+                getLocaleTimeString(invite.created)
+              }}</span>
+            </div>
+            <small> {{ getRole(invite) }} &bull; {{ getUsage(invite) }}</small>
+          </div>
+        </router-link>
+
+        <button
+          class="mx-1 btn btn-white border-none"
+          @click="copyLink(invite)"
+        >
+          <duplicate-icon class="w-5 h-5"></duplicate-icon>
         </button>
-      </div>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { defineProps, defineEmits, ref } from "vue";
 import { useClipboard } from "@vueuse/core";
-
-import appModal from "@/components/ui/Modal.vue";
+import { DuplicateIcon, CheckIcon } from "@heroicons/vue/outline";
 
 import { getRole, getUsage, getLink } from "@/utils/workspace";
 
 import { WorkspaceInvite } from "@/types";
 
-const props = defineProps<{ modelValue: WorkspaceInvite[] }>();
-const emit = defineEmits<{
-  (e: "add"): void;
-  (e: "remove", v: string): void;
-}>();
+const props = defineProps<{ modelValue: WorkspaceInvite[]; wid: string }>();
 
 const source = ref("");
 const { text, copy, copied, isSupported } = useClipboard({ source });
@@ -53,6 +61,18 @@ const { text, copy, copied, isSupported } = useClipboard({ source });
 const copyLink = (invite: WorkspaceInvite) => {
   source.value = getLink(invite);
   copy();
+};
+
+const getLocaleString = (iso: string) => {
+  return new Date(iso).toLocaleString("de");
+};
+
+const getLocaleDateString = (iso: string) => {
+  return new Date(iso).toLocaleDateString("de");
+};
+
+const getLocaleTimeString = (iso: string) => {
+  return new Date(iso).toLocaleTimeString("de");
 };
 
 const showModal = ref(false);

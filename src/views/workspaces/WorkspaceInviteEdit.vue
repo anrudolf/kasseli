@@ -35,6 +35,7 @@
 
       <div v-if="invite" class="py-2">
         <div
+          v-if="!editing"
           class="my-2 flex items-center p-2 rounded bg-green-100 text-green-700"
         >
           <check-icon class="w-5 h-5 mr-2"></check-icon>
@@ -58,11 +59,13 @@
       </div>
     </div>
 
-    <div class="flex mt-4">
-      <button v-if="!invite" class="btn btn-blue" @click="create">
-        Erstellen
-      </button>
-    </div>
+    <button
+      v-if="!invite && !editing"
+      class="mt-4 btn btn-blue"
+      @click="create"
+    >
+      Erstellen
+    </button>
   </div>
 </template>
 
