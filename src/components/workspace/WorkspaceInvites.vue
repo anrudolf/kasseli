@@ -1,8 +1,5 @@
 <template>
   <div class="mt-4 flex items-center">
-    <app-modal v-model="showModal" title="Einladung">
-      <p>Einladung</p>
-    </app-modal>
     <h2 class="mr-auto">Invites</h2>
 
     <button class="btn btn-blue" @click="emit('add')">ADD</button>
@@ -18,8 +15,14 @@
         <small> {{ getRole(invite) }} - {{ getUsage(invite) }}</small>
       </div>
       <div class="flex flex-col">
-        <button class="btn btn-blue" @click="showModal = true">VIEW</button>
-        <button class="btn btn-blue" @click="copyLink(invite)">COPY</button>
+        <router-link
+          class="btn btn-blue"
+          :to="{
+            name: 'workspaces-invite',
+            params: { wid: invite.workspace, id: invite.id },
+          }"
+          >View</router-link
+        >
         <button class="btn btn-red" @click="emit('remove', invite.id)">
           REMOVE
         </button>
@@ -32,12 +35,11 @@
 import { defineProps, defineEmits, ref } from "vue";
 import { useClipboard } from "@vueuse/core";
 
-import appSelect from "@/components/ui/Select.vue";
 import appModal from "@/components/ui/Modal.vue";
 
 import { getRole, getUsage, getLink } from "@/utils/workspace";
 
-import { WorkspaceInvite, WorkspaceRole } from "@/types";
+import { WorkspaceInvite } from "@/types";
 
 const props = defineProps<{ modelValue: WorkspaceInvite[] }>();
 const emit = defineEmits<{

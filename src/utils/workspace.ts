@@ -38,5 +38,5 @@ export const getUsage = (invite: WorkspaceInvite) => {
 };
 
 export const getLink = (invite: WorkspaceInvite) => {
-  return `${window.location}/workspaces/${invite.workspace}/invite/${invite.id}`;
+  return `${window.location.origin}/workspaces/${invite.workspace}/invite/${invite.id}/claim`;
 };

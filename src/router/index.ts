@@ -25,6 +25,7 @@ import Workspaces from "@/views/workspaces/Workspaces.vue";
 import WorkspaceEdit from "@/views/workspaces/WorkspaceEdit.vue";
 import Workspace from "@/views/workspaces/Workspace.vue";
 import WorkspaceInvite from "@/views/workspaces/WorkspaceInvite.vue";
+import WorkspaceInviteEdit from "@/views/workspaces/WorkspaceInviteEdit.vue";
 
 import Debug from "../views/Debug.vue";
 
@@ -130,8 +131,18 @@ const routes: Array<RouteRecordRaw> = [
     component: Workspace,
   },
   {
+    path: "/workspaces/:wid/invite/new",
+    name: "workspaces-invite-new",
+    component: WorkspaceInviteEdit,
+  },
+  {
     path: "/workspaces/:wid/invite/:id",
     name: "workspaces-invite",
+    component: WorkspaceInviteEdit,
+  },
+  {
+    path: "/workspaces/:wid/invite/:id/claim",
+    name: "workspaces-invite-claim",
     component: WorkspaceInvite,
   },
   {

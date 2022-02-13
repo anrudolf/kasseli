@@ -3,12 +3,6 @@
     <router-link :to="{ name: 'workspaces' }">
       <app-button-back>Zurück</app-button-back>
     </router-link>
-    <app-workspace-add-modal
-      v-model="showAddModal"
-      :wid="wid"
-      :uid="authStore.uid"
-    >
-    </app-workspace-add-modal>
     <div class="my-2">
       <small>{{ wid }}</small>
       <h1>Workspace</h1>
@@ -17,11 +11,7 @@
       </div>
       <app-workspace-invites
         v-model="invites"
-        @add="
-          () => {
-            showAddModal = true;
-          }
-        "
+        @add="gotoNewInvite"
         @remove="removeInvite"
       />
     </div>
@@ -30,15 +20,13 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/utils/db";
 import { Workspace, WorkspaceInvite } from "@/types";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceInvites from "@/components/workspace/WorkspaceInvites.vue";
-
-import appWorkspaceAddModal from "@/components/workspace/WorkspaceAddModal.vue";
 
 import useAuthStore from "@/store/auth";
 
@@ -49,6 +37,8 @@ import useWorkspaceInvite from "@/hooks/use-workspace-invite";
 const authStore = useAuthStore();
 
 const route = useRoute();
+const router = useRouter();
+
 const wid = route.params.id as string;
 const workspace = ref<Workspace | null>(null);
 const invites = ref<WorkspaceInvite[]>([]);
@@ -76,9 +66,11 @@ useFirestoreCollectionSnapshot(
   }
 );
 
-const showAddModal = ref(false);
+const gotoNewInvite = () => {
+  router.push({ name: "workspaces-invite-new", params: { wid } });
+};
 
-const { addInvite, removeInvite } = useWorkspaceInvite({
+const { removeInvite } = useWorkspaceInvite({
   wid,
   uid: authStore.uid,
 });

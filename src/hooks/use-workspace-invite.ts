@@ -45,6 +45,7 @@ export default function ({
       usage,
     };
     setDoc(doc(db.workspaceInvites(wid), randomId), invite);
+    entity.value = invite;
     return invite;
   };
 
