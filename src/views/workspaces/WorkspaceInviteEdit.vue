@@ -1,14 +1,25 @@
 <template>
   <div class="p-4 max-w-md">
+    <app-modal v-model="removeModal" title="Löschen bestätigen">
+      Willst du diese Einladung löschen?
+      <div class="mt-3 flex justify-between">
+        <button class="btn btn-white" @click="removeModal = false">
+          Abbrechen
+        </button>
+        <button class="btn btn-red" @click="remove">Löschen</button>
+      </div>
+    </app-modal>
     <app-button-back class="mb-4" @click="goBack">Zurück</app-button-back>
     <h1 v-if="editing" class="flex justify-between items-center">
-      Einladung<app-button-delete @click="remove"></app-button-delete>
+      Einladung<app-button-delete
+        @click="removeModal = true"
+      ></app-button-delete>
     </h1>
     <h1 v-else>Neue Einladung</h1>
 
     <div v-if="workspace">
       <div>
-        <p class="my-2">
+        <p v-if="!editing" class="my-2">
           Erstelle einen geheimen Einladungs-Link und sende diesen Link deinen
           Freunden, um sie zum Workspace
           <strong>{{ workspace.name }}</strong> einzuladen.
@@ -80,6 +91,7 @@ import { useClipboard } from "@vueuse/core";
 import appSelect from "@/components/ui/Select.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
+import appModal from "@/components/ui/Modal.vue";
 
 import {
   Workspace,
@@ -88,7 +100,7 @@ import {
   WorkspaceRole,
 } from "@/types";
 
-import { itemsRole, itemsUsage, getRole, getLink } from "@/utils/workspace";
+import { itemsRole, itemsUsage, getLink } from "@/utils/workspace";
 
 import useWorkspaceInvite from "@/hooks/use-workspace-invite";
 import useAuthstore from "@/store/auth";
@@ -133,6 +145,7 @@ const create = () => {
   addInvite(role.value, usage.value);
 };
 
+const removeModal = ref(false);
 const remove = () => {
   removeInvite(id);
   router.go(-1);

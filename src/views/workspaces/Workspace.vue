@@ -3,14 +3,22 @@
     <router-link :to="{ name: 'workspaces' }">
       <app-button-back>Zurück</app-button-back>
     </router-link>
-    <div class="my-2">
-      <small class="text-secondary">{{ wid }}</small>
-      <h1>Workspace</h1>
-      <div v-if="workspace">
-        {{ workspace.name }}
+    <div class="my-2 flex justify-between items-start">
+      <div>
+        <small class="text-secondary">{{ wid }}</small>
+        <h1>Workspace</h1>
+        <div v-if="workspace">
+          {{ workspace.name }}
+        </div>
       </div>
-      <app-workspace-invites v-model="invites" :wid="wid" class="mt-4" />
+      <router-link
+        class="btn btn-white"
+        :to="{ name: 'workspaces-edit', query: { id: wid } }"
+        >Edit</router-link
+      >
     </div>
+
+    <app-workspace-invites v-model="invites" :wid="wid" class="mt-4" />
   </div>
 </template>
 

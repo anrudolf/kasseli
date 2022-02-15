@@ -68,6 +68,8 @@ service cloud.firestore {
       allow create: if request.auth != null && request.resource.data['creator'] == request.auth.uid
       // allow update if member, and only name is changed
       allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name'])
+      // allow delete if creator
+      allow delete: if isCreator();
 
       match /members/{member} {
       	allow read: if isCreator() || isMember();

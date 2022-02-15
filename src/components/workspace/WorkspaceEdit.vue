@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 max-w-lg">
+  <div>
     <app-modal v-model="deleteModal">
       <template #title>Wirklich löschen?</template>
       <div>
