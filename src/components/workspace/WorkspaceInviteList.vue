@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="flex items-center">
-      <h2 class="mr-auto">Invites</h2>
+      <h2 class="mr-auto leading-3">
+        Invites
+        <div class="mt-2 text-xs text-secondary">Lade deine Freunde ein</div>
+      </h2>
 
       <router-link
         class="btn btn-blue"

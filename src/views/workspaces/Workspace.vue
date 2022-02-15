@@ -3,11 +3,10 @@
     <router-link :to="{ name: 'workspaces' }">
       <app-button-back>Zurück</app-button-back>
     </router-link>
-    <div class="my-2 flex justify-between items-start">
+    <div class="mt-4 flex justify-between items-start">
       <div>
-        <small class="text-secondary">{{ wid }}</small>
-        <h1>Workspace</h1>
-        <div v-if="workspace">
+        <h1 class="text-xl">Workspace</h1>
+        <div v-if="workspace" class="text-3xl">
           {{ workspace.name }}
         </div>
       </div>
@@ -17,8 +16,30 @@
         >Edit</router-link
       >
     </div>
+    <div v-if="settings.workspace === PUBLIC_WORKSPACE">
+      <p class="py-2 text-secondary">Kein Workspace aktiviert.</p>
+      <button class="btn btn-blue" @click="selectWorkspace(wid)">
+        AKTIVIEREN
+      </button>
+    </div>
+    <div v-else-if="settings.workspace === wid">
+      <p class="py-2 text-secondary">
+        Dieser Workspace ist momentan aktiviert.
+      </p>
+      <button class="btn btn-blue" @click="selectWorkspace(PUBLIC_WORKSPACE)">
+        DEAKTIVIEREN
+      </button>
+    </div>
+    <div v-else>
+      <p class="py-2 text-secondary">
+        Ein anderer Workspace ist momentan aktiviert
+      </p>
+      <button class="btn btn-blue" @click="selectWorkspace(wid)">
+        AKTIVIEREN
+      </button>
+    </div>
 
-    <app-workspace-invites v-model="invites" :wid="wid" class="mt-4" />
+    <app-workspace-invite-list v-model="invites" :wid="wid" class="mt-8" />
   </div>
 </template>
 
@@ -30,15 +51,15 @@ import { doc, getDoc } from "firebase/firestore";
 import db from "@/utils/db";
 import { Workspace, WorkspaceInvite } from "@/types";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
-import appWorkspaceInvites from "@/components/workspace/WorkspaceInvites.vue";
+import appWorkspaceInviteList from "@/components/workspace/WorkspaceInviteList.vue";
 
-import useAuthStore from "@/store/auth";
+import useSettings from "@/store/settings";
 
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 
-import useWorkspaceInvite from "@/hooks/use-workspace-invite";
+import { PUBLIC_WORKSPACE } from "@/utils/workspace";
 
-const authStore = useAuthStore();
+const settings = useSettings();
 
 const route = useRoute();
 const router = useRouter();
@@ -70,12 +91,8 @@ useFirestoreCollectionSnapshot(
   }
 );
 
-const gotoNewInvite = () => {
-  router.push({ name: "workspaces-invite-new", params: { wid } });
+const selectWorkspace = (id: string) => {
+  settings.setWorkspace(id);
+  router.go(-1);
 };
-
-const { removeInvite } = useWorkspaceInvite({
-  wid,
-  uid: authStore.uid,
-});
 </script>

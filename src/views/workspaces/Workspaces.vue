@@ -40,22 +40,13 @@
       </TabList>
       <TabPanels>
         <TabPanel>
-          <app-workspace-list
-            v-model="workspacesAll"
-            @select="selectWorkspace"
-          />
+          <app-workspace-list v-model="workspacesAll" />
         </TabPanel>
         <TabPanel>
-          <app-workspace-list
-            v-model="workspacesCreator"
-            @select="selectWorkspace"
-          />
+          <app-workspace-list v-model="workspacesCreator" />
         </TabPanel>
         <TabPanel>
-          <app-workspace-list
-            v-model="workspacesMember"
-            @select="selectWorkspace"
-          />
+          <app-workspace-list v-model="workspacesMember" />
         </TabPanel>
       </TabPanels>
     </TabGroup>
