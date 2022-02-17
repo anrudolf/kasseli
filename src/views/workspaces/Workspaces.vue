@@ -1,8 +1,6 @@
 <template>
   <div class="p-4">
-    <router-link :to="{ name: 'settings' }">
-      <app-button-back>Zurück</app-button-back>
-    </router-link>
+    <app-button-back>Zurück</app-button-back>
 
     <h1 class="my-4">Workspaces</h1>
     <p class="text-secondary">
@@ -20,53 +18,20 @@
         >Add</router-link
       >
     </div>
-    <TabGroup>
-      <TabList class="flex space-x-1 border rounded">
-        <Tab v-slot="{ selected }" as="template">
-          <button :class="[selected ? 'app-tab-btn-selected' : 'app-tab-btn']">
-            All
-          </button>
-        </Tab>
-        <Tab v-slot="{ selected }" as="template">
-          <button :class="[selected ? 'app-tab-btn-selected' : 'app-tab-btn']">
-            Owner
-          </button>
-        </Tab>
-        <Tab v-slot="{ selected }" as="template">
-          <button :class="[selected ? 'app-tab-btn-selected' : 'app-tab-btn']">
-            Member
-          </button>
-        </Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel>
-          <app-workspace-list v-model="workspacesAll" />
-        </TabPanel>
-        <TabPanel>
-          <app-workspace-list v-model="workspacesCreator" />
-        </TabPanel>
-        <TabPanel>
-          <app-workspace-list v-model="workspacesMember" />
-        </TabPanel>
-      </TabPanels>
-    </TabGroup>
+    <app-workspace-list v-model="workspaces" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import { ref } from "vue";
 
 import appWorkspaceList from "@/components/workspace/WorkspaceList.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceSelector from "@/components/workspace/WorkspaceSelector.vue";
 
-import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 import db from "@/utils/db";
 
 import useAuth from "@/store/auth";
-import useSettings from "@/store/settings";
 import {
   query,
   collectionGroup,
@@ -77,25 +42,9 @@ import {
   doc,
 } from "firebase/firestore";
 
-import { Workspace, WorkspaceMember, WorkspaceRole } from "@/types";
+import { Workspace, WorkspaceMember } from "@/types";
 
-const router = useRouter();
-
-const goBack = () => {
-  router.push({ name: "settings" });
-};
-
-const workspacesAll = ref<Workspace[]>([]);
-const workspacesCreator = ref<Workspace[]>([]);
-const workspacesMember = ref<Workspace[]>([]);
-
-useFirestoreCollectionSnapshot(db.workspaces, (snap) => {
-  workspacesAll.value = [];
-  snap.forEach((w) => {
-    const workspace = { ...w.data(), id: w.id };
-    workspacesAll.value.push(workspace);
-  });
-});
+const workspaces = ref<Workspace[]>([]);
 
 const auth = useAuth();
 
@@ -111,8 +60,7 @@ const searchPersonalWorkspaces = async (uid: string) => {
 
   try {
     const memberSnapshots = await getDocs(mq);
-    workspacesCreator.value = [];
-    workspacesMember.value = [];
+    workspaces.value = [];
 
     memberSnapshots.forEach(async (memberSnapshot) => {
       if (!memberSnapshot.exists()) {
@@ -132,11 +80,7 @@ const searchPersonalWorkspaces = async (uid: string) => {
         return;
       }
 
-      if (member.role >= WorkspaceRole.Creator) {
-        workspacesCreator.value.push(workspaceSnapshot.data());
-      } else {
-        workspacesMember.value.push(workspaceSnapshot.data());
-      }
+      workspaces.value.push(workspaceSnapshot.data());
     });
   } catch (e) {
     console.error(e);
@@ -144,12 +88,6 @@ const searchPersonalWorkspaces = async (uid: string) => {
 };
 
 searchPersonalWorkspaces(auth.uid);
-
-const selectWorkspace = (id: string) => {
-  console.log("workspace select:", id);
-  const settings = useSettings();
-  settings.setWorkspace(id);
-};
 </script>
 
 <style scoped>

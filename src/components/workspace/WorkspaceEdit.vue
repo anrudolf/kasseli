@@ -66,9 +66,6 @@
     <app-button-confirm class="mt-4" :disabled="saveDisabled" @click="save"
       >Speichern</app-button-confirm
     >
-    <div class="text-xs">
-      <pre>{{ JSON.stringify(entity, null, "  ") }}</pre>
-    </div>
   </div>
 </template>
 

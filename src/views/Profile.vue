@@ -1,8 +1,6 @@
 <template>
   <div class="p-4 max-w-md">
-    <router-link :to="{ name: 'settings' }">
-      <app-button-back>Zurück</app-button-back>
-    </router-link>
+    <app-button-back>Zurück</app-button-back>
 
     <h1 class="mt-4">Profile</h1>
     <div v-if="store.user != null">

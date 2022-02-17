@@ -6,7 +6,7 @@
       class="mt-1 border rounded flex space-x-3"
     >
       <router-link
-        class="w-full p-2"
+        class="w-full p-3"
         :to="{ name: 'workspace', params: { id: workspace.id } }"
         >{{ workspace.name }}</router-link
       >

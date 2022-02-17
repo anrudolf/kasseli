@@ -107,20 +107,20 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
           setDoc(workspaceDefaultTillRef, till),
         ]);
 
-        router.push(DEFAULT_RETURN_ROUTE);
+        router.go(-1);
       } catch (error) {
         console.log("Error:", error);
       }
     } else {
       // editing an existing workspace
       setDoc(doc(db.workspaces, entity.id), entity);
-      router.push(DEFAULT_RETURN_ROUTE);
+      router.go(-1);
     }
   };
 
   const remove = () => {
     deleteDoc(doc(db.workspaces, entity.id));
-    router.push(DEFAULT_RETURN_ROUTE);
+    router.go(-2);
   };
 
   const saveDisabled = computed(() => {
