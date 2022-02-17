@@ -66,7 +66,7 @@
     <div v-else class="my-2 flex">
       <router-link
         class="btn border link inline-block flex items-center"
-        to="/signin"
+        :to="{ name: 'login' }"
       >
         <login-icon class="w-5 h-5 mr-1.5"></login-icon>
         Login

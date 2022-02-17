@@ -72,13 +72,20 @@ import resolveAuthErrors from "@/utils/resolveAuthErrors";
 import appModal from "@/components/ui/Modal.vue";
 import appErrorBox from "@/components/ui/ErrorBox.vue";
 
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 const email = ref("");
 const password = ref("");
 const passwordConfirmation = ref("");
 
 const errMsg = ref();
 const router = useRouter();
+const route = useRoute();
+const inviteId = route.query.invite as string;
+const inviteWorkspace = route.query.workspace as string;
+
+console.log("inviteId:", inviteId);
+console.log("inviteWorkspace:", inviteWorkspace);
+
 const DEFAULT_REDIRECT = { name: "settings" };
 
 enum Mode {
@@ -91,6 +98,13 @@ const mode = ref<Mode>(Mode.LOGIN);
 const signIn = (email: string, password: string) => {
   signInWithEmailAndPassword(getAuth(), email, password)
     .then((data) => {
+      if (inviteId && inviteWorkspace) {
+        router.push({
+          name: "workspaces-invite-claim",
+          params: { wid: inviteWorkspace, id: inviteId },
+        });
+        return;
+      }
       router.push(DEFAULT_REDIRECT);
     })
     .catch((error) => {
@@ -110,6 +124,13 @@ const register = (
 
   createUserWithEmailAndPassword(getAuth(), email, password)
     .then((data) => {
+      if (inviteId && inviteWorkspace) {
+        router.push({
+          name: "workspaces-invite-claim",
+          params: { wid: inviteWorkspace, id: inviteId },
+        });
+        return;
+      }
       router.push(DEFAULT_REDIRECT);
     })
     .catch((error) => {

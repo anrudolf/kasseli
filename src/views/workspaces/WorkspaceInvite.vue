@@ -1,25 +1,45 @@
 <template>
   <div class="p-4">
-    <h1>Workspace Einladung</h1>
-    <div v-if="authStore.isLoggedIn">
-      Du bist eingeloggt als {{ authStore.email }}
-    </div>
-    <div v-if="workspace">
-      <h2>Workspace</h2>
-      {{ workspace }}
-    </div>
-    <div v-if="invite">
-      <h2>Invite</h2>
-      {{ invite }}
-    </div>
+    <h1>Einladung</h1>
 
-    <button class="btn btn-blue" @click="claim(id)">CLAIM</button>
+    <div v-if="workspace && invite">
+      <p class="mt-2">
+        Du wurdest zum Workspace
+        <strong>{{ workspace.name }}</strong> eingeladen!
+      </p>
+      <div v-if="authStore.isLoggedIn">
+        <p class="my-2">
+          <label class="flex items-center">
+            <input
+              v-model="switchToWorkspace"
+              type="checkbox"
+              class="form-checkbox mr-2"
+            />
+            Workspace nach Beitreten aktivieren
+          </label>
+        </p>
+        <button class="btn btn-blue" @click="claimAndContinue">
+          Beitreten
+        </button>
+      </div>
+      <div v-else>
+        <p class="mb-2">
+          Erstelle einen Account oder melde dich an, um die Einladung
+          anzunehmen.
+        </p>
+        <router-link
+          class="inline-block btn btn-blue"
+          :to="{ name: 'login', query: { invite: id, workspace: wid } }"
+          >Login/Register</router-link
+        >
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { getDoc, doc } from "firebase/firestore";
 
 import db from "@/utils/db";
@@ -27,12 +47,16 @@ import { Workspace } from "@/types";
 
 import useWorkspaceInvite from "@/hooks/use-workspace-invite";
 import useAuthstore from "@/store/auth";
+import useSettings from "@/store/settings";
 
 const route = useRoute();
+const router = useRouter();
+
 const wid = route.params.wid as string;
 const id = route.params.id as string;
 
 const workspace = ref<Workspace | null>(null);
+const switchToWorkspace = ref(true);
 
 const authStore = useAuthstore();
 
@@ -49,4 +73,14 @@ const getWorkspace = async (wid: string) => {
   }
 };
 getWorkspace(wid);
+
+const settings = useSettings();
+
+const claimAndContinue = async () => {
+  await claim(id);
+  if (switchToWorkspace.value) {
+    settings.setWorkspace(wid);
+  }
+  router.push("/");
+};
 </script>

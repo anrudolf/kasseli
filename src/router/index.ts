@@ -18,7 +18,7 @@ import TillCatalog from "../views/tills/TillCatalog.vue";
 import Settings from "../views/Settings.vue";
 
 import Profile from "../views/Profile.vue";
-import SignIn from "../views/SignIn.vue";
+import Login from "../views/Login.vue";
 
 import Workspaces from "@/views/workspaces/Workspaces.vue";
 import WorkspaceEdit from "@/views/workspaces/WorkspaceEdit.vue";
@@ -140,9 +140,9 @@ const routes: Array<RouteRecordRaw> = [
     component: WorkspaceInvite,
   },
   {
-    path: "/signin",
-    name: "signin",
-    component: SignIn,
+    path: "/login",
+    name: "login",
+    component: Login,
   },
   {
     path: "/profile",
