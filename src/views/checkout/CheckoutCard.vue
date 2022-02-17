@@ -1,5 +1,5 @@
 <template>
-  <app-button-back class="ml-2" @click="goBack">Zurück</app-button-back>
+  <app-button-back class="ml-2">Zurück</app-button-back>
 
   <div class="p-4">
     <h1>Bezahlen</h1>
@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
@@ -20,18 +19,12 @@ export default defineComponent({
     appButtonBack,
   },
   setup() {
-    const router = useRouter();
-
     useScanner(
       (code) => {
         console.log(`paid with card ${code}`);
       },
       [10]
     );
-
-    return {
-      goBack: () => router.push("/checkout"),
-    };
   },
 });
 </script>

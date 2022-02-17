@@ -9,7 +9,7 @@
         <button class="btn btn-red" @click="remove">Löschen</button>
       </div>
     </app-modal>
-    <app-button-back class="mb-4" @click="goBack">Zurück</app-button-back>
+    <app-button-back class="mb-4">Zurück</app-button-back>
     <h1 v-if="editing" class="flex justify-between items-center">
       Einladung<app-button-delete
         @click="removeModal = true"
@@ -160,9 +160,5 @@ const copyLink = (invite: WorkspaceInvite | null) => {
   }
   source.value = getLink(invite);
   copy();
-};
-
-const goBack = () => {
-  router.go(-1);
 };
 </script>

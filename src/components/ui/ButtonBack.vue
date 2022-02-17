@@ -1,5 +1,8 @@
 <template>
-  <button class="button-confirm inline-flex items-center">
+  <button
+    class="button-confirm inline-flex items-center"
+    @click="router.go(-1)"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -19,6 +22,11 @@
     <slot></slot>
   </button>
 </template>
+
+<script lang="ts" setup>
+import { useRouter } from "vue-router";
+const router = useRouter();
+</script>
 
 <style scoped>
 .button-confirm {

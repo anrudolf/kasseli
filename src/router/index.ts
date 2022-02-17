@@ -5,7 +5,6 @@ import Checkout from "../views/checkout/Checkout.vue";
 import CheckoutCash from "../views/checkout/CheckoutCash.vue";
 import CheckoutCard from "../views/checkout/CheckoutCard.vue";
 import CheckoutApp from "../views/checkout/CheckoutApp.vue";
-import CheckoutSuccess from "../views/checkout/CheckoutSuccess.vue";
 
 import Pay from "../views/Pay.vue";
 
@@ -54,11 +53,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/checkout/app",
     name: "checkout-app",
     component: CheckoutApp,
-  },
-  {
-    path: "/checkout/success",
-    name: "checkout-success",
-    component: CheckoutSuccess,
   },
   {
     path: "/pay",

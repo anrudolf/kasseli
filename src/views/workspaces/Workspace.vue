@@ -1,8 +1,6 @@
 <template>
   <div class="p-4 max-w-lg">
-    <router-link :to="{ name: 'workspaces' }">
-      <app-button-back>Zurück</app-button-back>
-    </router-link>
+    <app-button-back>Zurück</app-button-back>
     <div class="mt-4 flex justify-between items-start">
       <div>
         <h1 class="text-xl">Workspace</h1>

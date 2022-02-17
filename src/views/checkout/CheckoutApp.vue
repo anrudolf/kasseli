@@ -18,7 +18,7 @@
     </div>
   </app-modal>
 
-  <app-button-back class="ml-2" @click="goBack">Zurück</app-button-back>
+  <app-button-back class="ml-2">Zurück</app-button-back>
 
   <div class="mx-4" style="width: 300px">
     <div class="mt-4 flex items-center justify-between">
@@ -114,7 +114,6 @@ export default defineComponent({
     });
 
     return {
-      goBack: () => router.push("/checkout"),
       size: 300,
       link,
       code,

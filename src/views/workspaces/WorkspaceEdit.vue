@@ -1,8 +1,6 @@
 <template>
   <div class="p-4 max-w-lg">
-    <app-button-back class="mb-3" @click="router.go(-1)"
-      >Zurück</app-button-back
-    >
+    <app-button-back class="mb-3">Zurück</app-button-back>
     <app-workspace-edit
       :key="editing"
       :editing="editing"
@@ -27,13 +25,12 @@ export default {
   props: ["editId", "newId"],
   setup() {
     const route = useRoute();
-    const router = useRouter();
 
     const editing = computed(
       () => !route.matched.some(({ name }) => name === "workspaces-new")
     );
 
-    return { editing, router };
+    return { editing };
   },
 };
 </script>

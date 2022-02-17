@@ -1,6 +1,6 @@
 <template>
   <div v-if="catalog" class="p-4">
-    <app-button-back @click="back">Zurück</app-button-back>
+    <app-button-back>Zurück</app-button-back>
     <div class="mt-6 grid gap-y-4 grid-cols-2 md:grid-cols-4">
       <app-widget
         v-for="(widget, i) in catalog.content"
@@ -51,7 +51,7 @@ export default defineComponent({
       router.push("/");
     };
 
-    return { catalog, add, back: () => router.push("/") };
+    return { catalog, add };
   },
 });
 </script>

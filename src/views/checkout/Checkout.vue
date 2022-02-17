@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <app-button-back @click="goBack">Zurück</app-button-back>
+    <app-button-back>Zurück</app-button-back>
 
     <div class="mt-4 flex gap-4 flex-wrap">
       <app-card

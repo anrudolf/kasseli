@@ -28,9 +28,7 @@
   </app-modal>
 
   <div class="flex justify-between items-center max-w-md">
-    <app-button-back class="ml-2" @click="$router.push('/checkout')"
-      >Zurück</app-button-back
-    >
+    <app-button-back class="ml-2">Zurück</app-button-back>
     <light-bulb-icon
       v-if="paymentHints.enabled"
       class="cursor-pointer w-12 h-12 mr-2"
