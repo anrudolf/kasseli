@@ -16,10 +16,12 @@ export default function ({
   id?: string;
 }) {
   const entity = ref<WorkspaceInvite | null>(null);
+  const loading = ref(!!id);
 
   if (id) {
     getDoc(doc(db.workspaceInvites(wid), id))
       .then((doc) => {
+        loading.value = false;
         if (!doc.exists()) {
           return;
         }
@@ -27,6 +29,7 @@ export default function ({
         entity.value = doc.data();
       })
       .catch((err) => {
+        loading.value = false;
         console.error(err);
       });
   }
@@ -100,5 +103,6 @@ export default function ({
     addInvite,
     removeInvite,
     claim,
+    loading,
   };
 }
