@@ -47,12 +47,12 @@ export default function ({ editing = false, initialId = undefined }) {
     }
 
     setDoc(doc(db.tills, entity.id), entity);
-    router.push(DEFAULT_RETURN_ROUTE);
+    router.go(-1);
   };
 
   const remove = () => {
     deleteDoc(doc(db.tills, entity.id));
-    router.push(DEFAULT_RETURN_ROUTE);
+    router.go(-1);
   };
 
   const saveDisabled = computed(() => {

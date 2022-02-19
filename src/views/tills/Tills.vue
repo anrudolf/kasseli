@@ -1,6 +1,7 @@
 <template>
   <div class="p-4 max-w-lg">
-    <div class="flex justify-between items-center">
+    <app-button-back>Zurück</app-button-back>
+    <div class="mt-2 flex justify-between items-center">
       <h1>Kassen</h1>
       <router-link
         to="/tills/new"
@@ -14,7 +15,8 @@
       <li
         v-for="till in tills"
         :key="till.id"
-        class="border rounded mt-2 flex items-center"
+        class="rounded mt-2 flex items-center border-2"
+        :class="{ selected: till.id === settings.till }"
       >
         <button class="p-2 flex-grow" @click="settings.setTill(till.id)">
           <div class="flex items-center space-x-2 w-full">
@@ -31,7 +33,7 @@
         </button>
         <router-link
           :to="`/tills/edit?id=${till.id}`"
-          class="uppercase text-blue-500 mx-2"
+          class="uppercase mx-2 link"
           ><div class="flex items-center"><span>Edit</span></div></router-link
         >
       </li>
@@ -44,6 +46,7 @@ import { ref } from "vue";
 
 import useFirestoreCollectionSnapshot from "../../hooks/use-firestore-collection-snapshot";
 import appIcon from "@/components/ui/Icon.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import appImageRef from "@/components/image/ImageRef.vue";
 
@@ -66,3 +69,9 @@ useFirestoreCollectionSnapshot(db.tills, function (snapshot) {
   tills.value.push(...tmp);
 });
 </script>
+
+<style>
+.selected {
+  @apply border-indigo-500;
+}
+</style>
