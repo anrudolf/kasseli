@@ -6,6 +6,7 @@ import { createWorkspacePrefix } from "@/utils/workspace";
 import { initWorkspace as initDbWorkspace } from "@/utils/db";
 
 import { PUBLIC_WORKSPACE } from "@/utils/workspace";
+const DEFAULT_TILL = "default";
 
 const store = defineStore({
   id: "settings",
@@ -19,10 +20,16 @@ const store = defineStore({
       enabled: true,
       active: false,
     },
+    till: DEFAULT_TILL,
     workspace: PUBLIC_WORKSPACE,
   }),
   actions: {
+    setTill(till: string) {
+      this.till = till;
+    },
     setWorkspace(ws: string) {
+      this.setTill(DEFAULT_TILL);
+
       this.workspace = ws;
       initDbWorkspace(ws);
 
@@ -54,7 +61,7 @@ const store = defineStore({
     strategies: [
       {
         storage: localStorage,
-        paths: ["paymentOptions", "paymentHints", "workspace"],
+        paths: ["paymentOptions", "paymentHints", "workspace", "till"],
       },
     ],
   },

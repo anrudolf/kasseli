@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { Till } from "@/types";
 import { onSnapshot, Unsubscribe } from "firebase/firestore";
 
+import useSettingsStore from "./settings";
+
 import db from "@/utils/db";
 
 const store = defineStore({
@@ -14,6 +16,10 @@ const store = defineStore({
   getters: {
     getDefault: (state) => {
       return state.items.find((item) => item.id === "default");
+    },
+    getTill: (state) => {
+      const settings = useSettingsStore();
+      return state.items.find((item) => item.id === settings.till);
     },
   },
   actions: {

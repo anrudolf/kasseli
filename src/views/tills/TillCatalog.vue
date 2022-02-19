@@ -41,7 +41,7 @@ export default defineComponent({
 
     const catalog = computed(
       () =>
-        tillStore.getDefault?.favorites
+        tillStore.getTill?.favorites
           .filter((f) => f.kind === "catalog")
           .find((f) => f.id === props.id) as TillCatalog
     );

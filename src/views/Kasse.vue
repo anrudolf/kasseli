@@ -42,7 +42,7 @@ export default defineComponent({
       kasseStore.add(code);
     });
 
-    return { favorites: computed(() => tillStore.getDefault?.favorites) };
+    return { favorites: computed(() => tillStore.getTill?.favorites) };
   },
 });
 </script>
