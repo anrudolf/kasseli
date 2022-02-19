@@ -91,8 +91,10 @@ export default function ({
         invite: id,
       });
 
-      console.log("deleting invite");
-      await deleteDoc(inviteRef);
+      if (invite.usage === WorkspaceInviteUsage.SINGLE) {
+        console.log("deleting invite");
+        await deleteDoc(inviteRef);
+      }
     } catch (err) {
       console.error(err);
     }

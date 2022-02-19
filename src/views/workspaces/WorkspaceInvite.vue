@@ -1,15 +1,34 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 max-w-lg">
     <h1>Einladung</h1>
 
     <div v-if="loading">...</div>
-    <div v-else-if="!invite">
-      <p>Keine Einlaung mit diesem Code gefunden.</p>
-      <p v-if="existingMembership && existingMembership.invite === id">
-        Du hast diesen Code bereits verwendet und bist Mitglied!
+    <div v-else-if="!invite" class="flex flex-col space-y-2">
+      <p class="flex items-center border rounded p-2">
+        <exclamation-circle-icon
+          class="w-6 h-6 inline mr-2"
+        ></exclamation-circle-icon>
+        Keine Einlaung mit diesem Code gefunden.
       </p>
-      <p v-else-if="existingMembership && existingMembership.invite !== id">
+      <p
+        v-if="existingMembership && existingMembership.invite === id"
+        class="flex items-center border rounded p-2"
+      >
+        <information-circle-icon
+          class="w-6 h-6 inline mr-2"
+        ></information-circle-icon>
+        Du hast diesen Code bereits verwendet und bist Mitglied!
+        <router-link to="/" class="link block my-2">Weiter</router-link>
+      </p>
+      <p
+        v-else-if="existingMembership && existingMembership.invite !== id"
+        class="flex items-center border rounded p-2"
+      >
+        <information-circle-icon
+          class="w-6 h-6 inline mr-2"
+        ></information-circle-icon>
         Du bist bereits Mitglied in diesem Workspace.
+        <router-link to="/" class="link block my-2">Weiter</router-link>
       </p>
     </div>
     <div v-else>
@@ -28,9 +47,20 @@
             Workspace nach Beitreten aktivieren
           </label>
         </p>
-        <button class="btn btn-blue" @click="claimAndContinue">
+        <button
+          class="btn btn-blue"
+          :disabled="selfInvite"
+          @click="claimAndContinue"
+        >
           Beitreten
         </button>
+        <p v-if="selfInvite" class="flex items-center border rounded p-2 mt-2">
+          <exclamation-circle-icon
+            class="w-6 h-6 inline mr-2"
+          ></exclamation-circle-icon>
+          Diese Einladung wurde von dir erstellt... Du kannst sie deshalb nicht
+          verwenden.
+        </p>
       </div>
       <div v-else>
         <p class="mb-2">
@@ -48,9 +78,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getDoc, doc } from "firebase/firestore";
+import {
+  ExclamationCircleIcon,
+  InformationCircleIcon,
+} from "@heroicons/vue/outline";
 
 import db from "@/utils/db";
 import { Workspace, WorkspaceMember } from "@/types";
@@ -97,6 +131,18 @@ const claimAndContinue = async () => {
   }
   router.push("/");
 };
+
+const selfInvite = computed(() => {
+  if (!authStore.isLoggedIn || !invite.value) {
+    return false;
+  }
+
+  if (authStore.uid === invite.value.creator) {
+    return true;
+  }
+
+  return false;
+});
 
 const existingMembership = ref<WorkspaceMember | null>(null);
 
