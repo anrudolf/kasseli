@@ -35,8 +35,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import {
   collectionGroup,
   getDocs,
@@ -46,76 +46,60 @@ import {
   getDoc,
   doc,
   collection,
-  updateDoc,
-  deleteField,
   setDoc,
 } from "firebase/firestore";
 
 import db from "@/utils/db";
 import refactor from "@/utils/refactor";
 
-export default defineComponent({
-  setup() {
-    const connie = "uHvaGPHeZbWVUgDFSgmbbhJSnYx2";
+const connie = "uHvaGPHeZbWVUgDFSgmbbhJSnYx2";
 
-    const uid = ref(connie);
+const uid = ref(connie);
 
-    const search = async (uid) => {
-      const mq = query(
-        collectionGroup(getFirestore(), "members"),
-        where("uid", "==", uid)
-      );
+const search = async (uid) => {
+  const mq = query(
+    collectionGroup(getFirestore(), "members"),
+    where("uid", "==", uid)
+  );
 
-      try {
-        const members = await getDocs(mq);
+  try {
+    const members = await getDocs(mq);
 
-        members.forEach(async (m) => {
-          const workspaceRef = m.ref.parent.parent;
-          if (!workspaceRef) {
-            return;
-          }
-
-          const workspace = await getDoc(doc(db.workspaces, workspaceRef.id));
-
-          console.log(m.id, " => ", m.data(), "parent:", workspace.data());
-        });
-      } catch (e) {
-        console.log(e);
+    members.forEach(async (m) => {
+      const workspaceRef = m.ref.parent.parent;
+      if (!workspaceRef) {
+        return;
       }
-    };
 
-    const addTrial = (id: string, code: string) => {
-      const d = doc(getFirestore(), "trials", id);
-      setDoc(d, { code: code });
-    };
+      const workspace = await getDoc(doc(db.workspaces, workspaceRef.id));
 
-    const getTrials = () => {
-      const c = collection(getFirestore(), "trials");
-      getDocs(c)
-        .then((snap) => {
-          snap.forEach((s) => {
-            if (s.exists()) {
-              console.log(s.data());
-            }
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    };
+      console.log(m.id, " => ", m.data(), "parent:", workspace.data());
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-    const trialId = ref("");
-    const trialCode = ref("");
+const addTrial = (id: string, code: string) => {
+  const d = doc(getFirestore(), "trials", id);
+  setDoc(d, { code: code });
+};
 
-    return {
-      uid,
-      search,
-      refactor,
-      addTrial,
-      getTrials,
-      trialId,
-      trialCode,
-    };
-  },
-});
+const getTrials = () => {
+  const c = collection(getFirestore(), "trials");
+  getDocs(c)
+    .then((snap) => {
+      snap.forEach((s) => {
+        if (s.exists()) {
+          console.log(s.data());
+        }
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+const trialId = ref("");
+const trialCode = ref("");
 </script>

@@ -23,7 +23,9 @@
   <div class="mx-4" style="width: 300px">
     <div class="mt-4 flex items-center justify-between">
       <h1 class="text-2xl">Bezahlen</h1>
-      <span class="text-2xl text-gray-800">{{ price.toFixed(2) }} CHF</span>
+      <span class="text-2xl text-gray-800"
+        >{{ kasse.price.toFixed(2) }} CHF</span
+      >
     </div>
     <div v-if="code" class="mt-2 flex flex-col">
       <span class="text-gray-500">Code</span>
@@ -40,8 +42,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, watch, ref } from "vue";
+<script lang="ts" setup>
+import { watch, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import { ExclamationIcon, CheckCircleIcon } from "@heroicons/vue/solid";
@@ -55,74 +57,54 @@ import useAppPayment from "@/hooks/use-app-payment";
 
 import useKasse from "@/store/kasse";
 
-export default defineComponent({
-  components: {
-    appButtonBack,
-    appModal,
-    qrcodeVue,
-    ExclamationIcon,
-    CheckCircleIcon,
-  },
-  setup() {
-    const router = useRouter();
-    const link = ref("");
-    const rejectedModal = ref(false);
-    const successModal = ref(false);
-    const code = ref("");
+const router = useRouter();
+const link = ref("");
+const rejectedModal = ref(false);
+const successModal = ref(false);
+const code = ref("");
 
-    const kasse = useKasse();
+const kasse = useKasse();
 
-    const { entity, createPayment, setStatus, listenForChanges } =
-      useAppPayment();
+const { entity, createPayment, setStatus, listenForChanges } = useAppPayment();
 
-    const paymentId = createPayment(kasse.price);
-    listenForChanges(paymentId);
+const paymentId = createPayment(kasse.price);
+listenForChanges(paymentId);
 
-    watch(entity, (vnew) => {
-      if (vnew) {
-        const { id, status } = vnew;
+watch(entity, (vnew) => {
+  if (vnew) {
+    const { id, status } = vnew;
 
-        link.value = `${window.location.origin}/pay?id=${id}`;
-        code.value = id;
+    link.value = `${window.location.origin}/pay?id=${id}`;
+    code.value = id;
 
-        switch (status) {
-          case "open":
-            break;
-          case "reject":
-            setStatus(vnew.id, "rejected");
-            rejectedModal.value = true;
-            break;
-          case "pay":
-            setStatus(vnew.id, "paid");
-            successModal.value = true;
-            break;
-          default:
-            console.log("status:", status);
-        }
-      }
-    });
-
-    const restart = () => {
-      kasse.$reset();
-      router.push("/");
-    };
-
-    watch(successModal, (newVal, oldVal) => {
-      if (!newVal) {
-        restart();
-      }
-    });
-
-    return {
-      size: 300,
-      link,
-      code,
-      entity,
-      rejectedModal,
-      successModal,
-      price: kasse.price,
-    };
-  },
+    switch (status) {
+      case "open":
+        break;
+      case "reject":
+        setStatus(vnew.id, "rejected");
+        rejectedModal.value = true;
+        break;
+      case "pay":
+        setStatus(vnew.id, "paid");
+        successModal.value = true;
+        break;
+      default:
+        console.log("status:", status);
+    }
+  }
 });
+
+const restart = () => {
+  kasse.$reset();
+  router.push("/");
+};
+
+watch(successModal, (newVal, oldVal) => {
+  if (!newVal) {
+    restart();
+  }
+});
+
+const size = 300;
 </script>
 <style scoped></style>

@@ -7,25 +7,15 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
+<script lang="ts" setup>
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import useScanner from "../../hooks/use-scanner";
 
-export default defineComponent({
-  components: {
-    appButtonBack,
+useScanner(
+  (code) => {
+    console.log(`paid with card ${code}`);
   },
-  setup() {
-    useScanner(
-      (code) => {
-        console.log(`paid with card ${code}`);
-      },
-      [10]
-    );
-  },
-});
+  [10]
+);
 </script>
-<style scoped></style>

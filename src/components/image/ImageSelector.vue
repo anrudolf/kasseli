@@ -27,8 +27,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent, PropType } from "vue";
+<script lang="ts" setup>
+import { ref, PropType, defineProps, defineEmits } from "vue";
 import vueFilePond from "vue-filepond";
 import md5 from "md5";
 import { setDoc, doc } from "firebase/firestore";
@@ -50,49 +50,39 @@ const FilePond: any = vueFilePond(
   FilePondPluginImageTransform,
   FilePondPluginFileValidateType
 );
-export default defineComponent({
-  components: {
-    appImageRef,
-    appButtonDelete,
-    FilePond,
-  },
-  props: {
-    modelValue: { type: String as PropType<string | null>, default: "" },
-  },
-  emits: ["update:modelValue"],
-  setup(props, { emit }) {
-    const files = ref([]);
 
-    const onpreparefile = (fileItem, output) => {
-      if (props.modelValue) {
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.readAsDataURL(output);
-      reader.onloadend = function () {
-        const hash = md5(reader.result);
-        setDoc(doc(db.images, hash), {
-          id: hash,
-          type: "DATA_URL",
-          mediaType: "image/jpeg",
-          payload: reader.result as string,
-        });
-        emit("update:modelValue", hash);
-      };
-    };
-
-    const onremovefile = (error, file) => {
-      emit("update:modelValue", null);
-    };
-
-    return {
-      onpreparefile,
-      onremovefile,
-      files,
-    };
-  },
+const props = defineProps({
+  modelValue: { type: String as PropType<string | null>, default: "" },
 });
+
+const emit = defineEmits<{
+  (e: "update:modelValue", v: string | null);
+}>();
+
+const files = ref([]);
+
+const onpreparefile = (fileItem, output) => {
+  if (props.modelValue) {
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.readAsDataURL(output);
+  reader.onloadend = function () {
+    const hash = md5(reader.result);
+    setDoc(doc(db.images, hash), {
+      id: hash,
+      type: "DATA_URL",
+      mediaType: "image/jpeg",
+      payload: reader.result as string,
+    });
+    emit("update:modelValue", hash);
+  };
+};
+
+const onremovefile = (error, file) => {
+  emit("update:modelValue", null);
+};
 </script>
 
 <style scoped>

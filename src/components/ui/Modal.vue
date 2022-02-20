@@ -82,8 +82,8 @@
   </TransitionRoot>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { defineEmits, defineProps } from "vue";
 
 import {
   Dialog,
@@ -93,59 +93,49 @@ import {
   TransitionChild,
 } from "@headlessui/vue";
 
-export default defineComponent({
-  components: {
-    Dialog,
-    DialogOverlay,
-    DialogTitle,
-    TransitionRoot,
-    TransitionChild,
+const props = defineProps({
+  modelValue: Boolean,
+  title: {
+    type: String,
+    default: "",
   },
-  props: {
-    modelValue: Boolean,
-    title: {
-      type: String,
-      default: "",
-    },
-    showConfirm: {
-      type: Boolean,
-      default: false,
-    },
-    showCancel: {
-      type: Boolean,
-      default: false,
-    },
-    labelConfirm: {
-      type: String,
-      default: "OK",
-    },
-    labelCancel: {
-      type: String,
-      default: "Cancel",
-    },
+  showConfirm: {
+    type: Boolean,
+    default: false,
   },
-  setup(props, { emit }) {
-    const closeModal = () => {
-      emit("update:modelValue", false);
-    };
-
-    const confirm = () => {
-      emit("confirm");
-      closeModal();
-    };
-
-    const cancel = () => {
-      emit("cancel");
-      closeModal();
-    };
-
-    return {
-      closeModal,
-      confirm,
-      cancel,
-    };
+  showCancel: {
+    type: Boolean,
+    default: false,
+  },
+  labelConfirm: {
+    type: String,
+    default: "OK",
+  },
+  labelCancel: {
+    type: String,
+    default: "Cancel",
   },
 });
+
+const emit = defineEmits<{
+  (e: "update:modelValue", v: boolean);
+  (e: "confirm", v: void);
+  (e: "cancel", v: void);
+}>();
+
+const closeModal = () => {
+  emit("update:modelValue", false);
+};
+
+const confirm = () => {
+  emit("confirm");
+  closeModal();
+};
+
+const cancel = () => {
+  emit("cancel");
+  closeModal();
+};
 </script>
 
 <style scoped>

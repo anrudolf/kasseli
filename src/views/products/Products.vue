@@ -36,8 +36,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { reactive, ref, computed, defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import appSelect from "@/components/ui/Select.vue";
@@ -52,71 +52,49 @@ import db from "@/utils/db";
 
 import { Product } from "@/types";
 
-export default defineComponent({
-  components: {
-    appSelect,
-    appIcon,
-    appProductList,
-  },
-  setup() {
-    const router = useRouter();
+const router = useRouter();
 
-    const products = ref<Product[]>([]);
-    const modal = reactive({ visible: false });
-    const sortOrder = ref(-1);
-    const sort = ref("created");
-    const filter = ref("");
-    const sortOptions = [
-      { text: "ID", value: "id" },
-      { text: "Label", value: "label" },
-      { text: "Preis", value: "price" },
-      { text: "Datum", value: "created" },
-    ];
+const products = ref<Product[]>([]);
+const sortOrder = ref(-1);
+const sort = ref("created");
+const filter = ref("");
+const sortOptions = [
+  { text: "ID", value: "id" },
+  { text: "Label", value: "label" },
+  { text: "Preis", value: "price" },
+  { text: "Datum", value: "created" },
+];
 
-    useFirestoreCollectionSnapshot(db.products, function (snapshot) {
-      const tmp = [] as Product[];
-      snapshot.forEach(function (doc) {
-        tmp.push({ ...doc.data(), id: doc.id });
-      });
-      products.value = [];
-      products.value.push(...tmp);
-    });
+useFirestoreCollectionSnapshot(db.products, function (snapshot) {
+  const tmp = [] as Product[];
+  snapshot.forEach(function (doc) {
+    tmp.push({ ...doc.data(), id: doc.id });
+  });
+  products.value = [];
+  products.value.push(...tmp);
+});
 
-    const sorted = computed(() => {
-      return products.value.sort(
-        dynamicSort(`${sortOrder.value === 1 ? "+" : "-"}${sort.value}`)
-      );
-    });
+const sorted = computed(() => {
+  return products.value.sort(
+    dynamicSort(`${sortOrder.value === 1 ? "+" : "-"}${sort.value}`)
+  );
+});
 
-    const filtered = computed(() => {
-      return sorted.value.filter(
-        (p) =>
-          (p && p.label.de.toLowerCase().includes(filter.value)) ||
-          p.id === filter.value
-      );
-    });
+const filtered = computed(() => {
+  return sorted.value.filter(
+    (p) =>
+      (p && p.label.de.toLowerCase().includes(filter.value)) ||
+      p.id === filter.value
+  );
+});
 
-    useScanner((v) => {
-      const found = products.value.find((x) => x.id === v);
-      if (found) {
-        router.push(`/products/edit?id=${v}`);
-        return;
-      }
-      // TODO: sanity check v for length, characters, etc.
-      router.push(`/products/new?id=${v}`);
-    });
-
-    return {
-      filter,
-      products,
-      modal,
-      sorted,
-      filtered,
-      sort,
-      sortOrder,
-      sortOptions,
-      router,
-    };
-  },
+useScanner((v) => {
+  const found = products.value.find((x) => x.id === v);
+  if (found) {
+    router.push(`/products/edit?id=${v}`);
+    return;
+  }
+  // TODO: sanity check v for length, characters, etc.
+  router.push(`/products/new?id=${v}`);
 });
 </script>

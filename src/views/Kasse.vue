@@ -9,8 +9,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 import appKasseListe from "@/components/kasse/KasseListe.vue";
 import appKasseFavorites from "@/components/kasse/KasseFavorites.vue";
 
@@ -24,27 +24,14 @@ import useScanner from "../hooks/use-scanner";
 import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
 
-export default defineComponent({
-  name: "Home",
-  components: {
-    appKasseListe,
-    appKasseFavorites,
-    appKasseTotal,
-    appKasseAnzahl,
-    appKasseAktuell,
-    appKasseBezahlen,
-  },
-  setup() {
-    const kasseStore = useKasseStore();
-    const tillStore = useTillStore();
+const kasseStore = useKasseStore();
+const tillStore = useTillStore();
 
-    useScanner((code) => {
-      kasseStore.add(code);
-    });
-
-    return { favorites: computed(() => tillStore.getTill?.favorites) };
-  },
+useScanner((code) => {
+  kasseStore.add(code);
 });
+
+const favorites = computed(() => tillStore.getTill?.favorites);
 </script>
 
 <style scoped>

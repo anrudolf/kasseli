@@ -4,21 +4,21 @@
 
     <div class="mt-4 flex gap-4 flex-wrap">
       <app-card
-        v-if="paymentOptions.card.enabled"
+        v-if="settingsStore.paymentOptions.card.enabled"
         label="Karte"
         to="/checkout/card"
         image-asset="kreditkarten.jpg"
         contain
       />
       <app-card
-        v-if="paymentOptions.cash.enabled"
+        v-if="settingsStore.paymentOptions.cash.enabled"
         label="Bar"
         to="/checkout/cash"
         image-asset="CHF_note_20_front.jpg"
         contain
       />
       <app-card
-        v-if="isOnline && paymentOptions.app.enabled"
+        v-if="isOnline && settingsStore.paymentOptions.app.enabled"
         label="App"
         to="/checkout/app"
       >
@@ -28,9 +28,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+<script lang="ts" setup>
 import { useOnline } from "@vueuse/core";
 import { DeviceMobileIcon } from "@heroicons/vue/outline";
 
@@ -39,24 +37,8 @@ import appCard from "@/components/ui/Card.vue";
 
 import useSettingsStore from "@/store/settings";
 
-export default defineComponent({
-  components: {
-    appButtonBack,
-    appCard,
-    DeviceMobileIcon,
-  },
-  setup() {
-    const router = useRouter();
-    const settingsStore = useSettingsStore();
+const settingsStore = useSettingsStore();
 
-    const isOnline = useOnline();
-
-    return {
-      goBack: () => router.push("/"),
-      paymentOptions: settingsStore.paymentOptions,
-      isOnline,
-    };
-  },
-});
+const isOnline = useOnline();
 </script>
 <style scoped></style>

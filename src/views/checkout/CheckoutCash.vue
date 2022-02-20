@@ -91,8 +91,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watch } from "vue";
+<script lang="ts" setup>
+import { ref, computed, watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { LightBulbIcon } from "@heroicons/vue/outline";
@@ -108,140 +108,107 @@ import appIcon from "@/components/ui/Icon.vue";
 import useKasseStore from "@/store/kasse";
 import useSettingsStore from "@/store/settings";
 
-export default defineComponent({
-  components: {
-    appButtonBack,
-    appModal,
-    appIcon,
-    appMoneyCoin,
-    appMoneyNote,
-    LightBulbIcon,
-  },
-  setup() {
-    const router = useRouter();
-    const kasse = useKasseStore();
-    const settings = useSettingsStore();
-    const { paymentHints } = settings;
+const router = useRouter();
+const kasse = useKasseStore();
+const settings = useSettingsStore();
+const { paymentHints } = settings;
 
-    const notes = [
-      { type: "note", name: "10 CHF", id: 10 },
-      { type: "note", name: "20 CHF", id: 20 },
-      { type: "note", name: "50 CHF", id: 50 },
-      { type: "note", name: "100 CHF", id: 100 },
-    ];
+const notes = [
+  { type: "note", name: "10 CHF", id: 10 },
+  { type: "note", name: "20 CHF", id: 20 },
+  { type: "note", name: "50 CHF", id: 50 },
+  { type: "note", name: "100 CHF", id: 100 },
+];
 
-    const coins = [
-      { type: "coin", name: "0.05 CHF", id: 0.05 },
-      { type: "coin", name: "0.10 CHF", id: 0.1 },
-      { type: "coin", name: "0.20 CHF", id: 0.2 },
-      { type: "coin", name: "0.50 CHF", id: 0.5 },
-      { type: "coin", name: "1.00 CHF", id: 1.0 },
-      { type: "coin", name: "2.00 CHF", id: 2.0 },
-      { type: "coin", name: "5.00 CHF", id: 5.0 },
-    ];
+const coins = [
+  { type: "coin", name: "0.05 CHF", id: 0.05 },
+  { type: "coin", name: "0.10 CHF", id: 0.1 },
+  { type: "coin", name: "0.20 CHF", id: 0.2 },
+  { type: "coin", name: "0.50 CHF", id: 0.5 },
+  { type: "coin", name: "1.00 CHF", id: 1.0 },
+  { type: "coin", name: "2.00 CHF", id: 2.0 },
+  { type: "coin", name: "5.00 CHF", id: 5.0 },
+];
 
-    const smallCoins = [
-      { type: "coin", name: "0.05 CHF", id: 0.05 },
-      { type: "coin", name: "0.10 CHF", id: 0.1 },
-      { type: "coin", name: "0.20 CHF", id: 0.2 },
-      { type: "coin", name: "0.50 CHF", id: 0.5 },
-    ];
+const smallCoins = [
+  { type: "coin", name: "0.05 CHF", id: 0.05 },
+  { type: "coin", name: "0.10 CHF", id: 0.1 },
+  { type: "coin", name: "0.20 CHF", id: 0.2 },
+  { type: "coin", name: "0.50 CHF", id: 0.5 },
+];
 
-    const bigCoins = [
-      { type: "coin", name: "1.00 CHF", id: 1.0 },
-      { type: "coin", name: "2.00 CHF", id: 2.0 },
-      { type: "coin", name: "5.00 CHF", id: 5.0 },
-    ];
+const bigCoins = [
+  { type: "coin", name: "1.00 CHF", id: 1.0 },
+  { type: "coin", name: "2.00 CHF", id: 2.0 },
+  { type: "coin", name: "5.00 CHF", id: 5.0 },
+];
 
-    const total = kasse.price;
-    const paid = ref(0);
-    const remainder = computed(() => {
-      const ret = total - paid.value;
-      if (ret < 0.001) {
-        return 0;
-      }
-      return ret;
-    });
-
-    const change = computed(() => {
-      const ret = Math.abs(total - paid.value);
-      return ret;
-    });
-
-    const showModal = ref(false);
-
-    const add = (i: number) => {
-      paid.value += i;
-      if (remainder.value == 0) {
-        showModal.value = true;
-      }
-    };
-
-    const restart = () => {
-      kasse.$reset();
-      router.push("/");
-    };
-
-    watch(showModal, (newVal, oldVal) => {
-      if (!newVal) {
-        restart();
-      }
-    });
-
-    const activateHints = (enable) => {
-      paymentHints.active = enable;
-    };
-
-    // max to min
-    const sortedMoney = [...notes, ...coins].sort((a, b) =>
-      a.id > b.id ? -1 : 1
-    );
-
-    const hint = computed(() => {
-      const min = sortedMoney[sortedMoney.length - 1].id;
-      const d = min / 10;
-
-      // less or near zero remainder
-      if (remainder.value <= 0) {
-        return 0;
-      } else if (Math.abs(remainder.value) <= d) {
-        return 0;
-      }
-
-      for (const money of sortedMoney) {
-        if (remainder.value - money.id >= 0) {
-          return money.id;
-        } else if (Math.abs(remainder.value - money.id) <= d) {
-          return money.id;
-        }
-      }
-
-      return 0;
-    });
-
-    const isHint = (id: number) =>
-      paymentHints.enabled && paymentHints.active && id == hint.value;
-
-    return {
-      notes,
-      coins,
-      smallCoins,
-      bigCoins,
-      total,
-      paid,
-      add,
-      remainder,
-      change,
-      showModal,
-      restart,
-      // hints
-      hint,
-      isHint,
-      activateHints,
-      paymentHints,
-    };
-  },
+const total = kasse.price;
+const paid = ref(0);
+const remainder = computed(() => {
+  const ret = total - paid.value;
+  if (ret < 0.001) {
+    return 0;
+  }
+  return ret;
 });
+
+const change = computed(() => {
+  const ret = Math.abs(total - paid.value);
+  return ret;
+});
+
+const showModal = ref(false);
+
+const add = (i: number) => {
+  paid.value += i;
+  if (remainder.value == 0) {
+    showModal.value = true;
+  }
+};
+
+const restart = () => {
+  kasse.$reset();
+  router.push("/");
+};
+
+watch(showModal, (newVal, oldVal) => {
+  if (!newVal) {
+    restart();
+  }
+});
+
+const activateHints = (enable) => {
+  paymentHints.active = enable;
+};
+
+// max to min
+const sortedMoney = [...notes, ...coins].sort((a, b) => (a.id > b.id ? -1 : 1));
+
+const hint = computed(() => {
+  const min = sortedMoney[sortedMoney.length - 1].id;
+  const d = min / 10;
+
+  // less or near zero remainder
+  if (remainder.value <= 0) {
+    return 0;
+  } else if (Math.abs(remainder.value) <= d) {
+    return 0;
+  }
+
+  for (const money of sortedMoney) {
+    if (remainder.value - money.id >= 0) {
+      return money.id;
+    } else if (Math.abs(remainder.value - money.id) <= d) {
+      return money.id;
+    }
+  }
+
+  return 0;
+});
+
+const isHint = (id: number) =>
+  paymentHints.enabled && paymentHints.active && id == hint.value;
 </script>
 <style scoped>
 .small-coin-grid {

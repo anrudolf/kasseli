@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeMenu">
+    <Dialog as="div" @close="ui.closeMenu">
       <div class="fixed inset-0 z-10 overflow-y-auto bg-yellow-200">
         <div class="min-h-screen min-w-screen bg-yellow-100 px-4 text-center">
           <TransitionChild
@@ -46,13 +46,13 @@
             >
               <button
                 class="app-menu-button absolute top-6 right-6"
-                @click="closeMenu"
+                @click="ui.closeMenu"
               >
                 <x-icon class="w-8 h-8"></x-icon>
               </button>
 
               <div class="mt-8">
-                <div class="flex flex-col uppercase" @click="closeMenu">
+                <div class="flex flex-col uppercase" @click="ui.closeMenu">
                   <router-link class="app-menu-link" to="/">Home</router-link>
                   <router-link class="app-menu-link" to="/products"
                     >Products</router-link
@@ -71,7 +71,7 @@
                 <router-link
                   to="/pay"
                   class="app-menu-button flex items-center text-green-500"
-                  @click="closeMenu"
+                  @click="ui.closeMenu"
                   ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
                   >Pay</router-link
                 >
@@ -92,8 +92,8 @@
   </TransitionRoot>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
 import {
   TransitionRoot,
@@ -107,31 +107,13 @@ import { DeviceMobileIcon, RefreshIcon } from "@heroicons/vue/outline";
 
 import useUiStore from "@/store/ui";
 
-export default defineComponent({
-  components: {
-    TransitionRoot,
-    TransitionChild,
-    Dialog,
-    DialogOverlay,
-    XIcon,
-    DeviceMobileIcon,
-    RefreshIcon,
-  },
+const ui = useUiStore();
 
-  setup() {
-    const ui = useUiStore();
+const refresh = () => {
+  window.location.reload();
+};
 
-    const refresh = () => {
-      window.location.reload();
-    };
-
-    return {
-      isOpen: computed(() => ui.menu),
-      closeMenu: ui.closeMenu,
-      refresh,
-    };
-  },
-});
+const isOpen = computed(() => ui.menu);
 </script>
 
 <style scoped>

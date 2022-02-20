@@ -14,8 +14,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed, defineProps } from "vue";
 import { useRouter } from "vue-router";
 
 import appWidget from "@/components/ui/Widget.vue";
@@ -25,33 +25,27 @@ import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
 import { TillCatalog } from "@/types";
 
-export default defineComponent({
-  components: {
-    appWidget,
-    appButtonBack,
-  },
-  props: {
-    id: String,
-  },
-  setup(props) {
-    const kasseStore = useKasseStore();
-    const tillStore = useTillStore();
-
-    const router = useRouter();
-
-    const catalog = computed(
-      () =>
-        tillStore.getTill?.favorites
-          .filter((f) => f.kind === "catalog")
-          .find((f) => f.id === props.id) as TillCatalog
-    );
-
-    const add = (code) => {
-      kasseStore.add(code);
-      router.push("/");
-    };
-
-    return { catalog, add };
+const props = defineProps({
+  id: {
+    type: String,
+    default: "",
   },
 });
+
+const kasseStore = useKasseStore();
+const tillStore = useTillStore();
+
+const router = useRouter();
+
+const catalog = computed(
+  () =>
+    tillStore.getTill?.favorites
+      .filter((f) => f.kind === "catalog")
+      .find((f) => f.id === props.id) as TillCatalog
+);
+
+const add = (code) => {
+  kasseStore.add(code);
+  router.push("/");
+};
 </script>

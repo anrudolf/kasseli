@@ -6,7 +6,7 @@
         <app-icon icon="solid:arrows-expand" class="ml-1" />
       </button>
 
-      <button class="inline-flex items-center" @click="openMenu()">
+      <button class="inline-flex items-center" @click="uiStore.openMenu">
         Menu <app-icon icon="menu" class="ml-1" />
       </button>
 
@@ -18,8 +18,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onUnmounted } from "vue";
+<script lang="ts" setup>
 import appMenu from "@/components/Menu.vue";
 
 import appIcon from "@/components/ui/Icon.vue";
@@ -31,24 +30,14 @@ import useSettingsStore from "@/store/settings";
 
 import { initWorkspace as initDbWorkspace } from "@/utils/db";
 
-export default defineComponent({
-  components: {
-    appMenu,
-    appIcon,
-  },
-  setup() {
-    const uiStore = useUiStore();
-    const productStore = useProductStore();
-    const tillStore = useTillStore();
-    const settings = useSettingsStore();
+const uiStore = useUiStore();
+const productStore = useProductStore();
+const tillStore = useTillStore();
+const settings = useSettingsStore();
 
-    initDbWorkspace(settings.workspace);
-    productStore.init();
-    tillStore.init();
-
-    return { closeMenu: uiStore.closeMenu, openMenu: uiStore.openMenu };
-  },
-});
+initDbWorkspace(settings.workspace);
+productStore.init();
+tillStore.init();
 </script>
 
 <style lang="scss">
