@@ -25,17 +25,10 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  setup() {
-    // replaced dynanmically
-    const date = "__DATE__";
-    const hash = "123456789";
-    return { date, hash };
-  },
-});
+<script setup lang="ts">
+// replaced dynanmically
+const date = "__DATE__";
+const hash = "123456789";
 </script>
 
 <style scoped>
