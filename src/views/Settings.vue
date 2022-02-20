@@ -38,24 +38,11 @@
       </section>
 
       <section v-if="auth.isLoggedIn">
-        <h2>Workspace</h2>
-        <p v-if="settings.hasWorkspaceSelected" class="text-secondary">
-          Es ist ein privater Workspace aktiviert.
-        </p>
-        <p v-else class="text-secondary">Es ist kein Workspace aktiviert.</p>
-        <p>
-          <router-link :to="{ name: 'workspaces' }" class="link text-xl"
-            >Workspace wählen...</router-link
-          >
-        </p>
-      </section>
-
-      <section v-if="auth.isLoggedIn">
         <h2>Account</h2>
         <div>
           Eingeloggt als <span class="font-bold">{{ auth.user?.email }}</span>
         </div>
-        <div class="flex space-x-2">
+        <div class="pt-1 flex space-x-2">
           <router-link
             class="btn btn-white inline-block flex items-center"
             :to="{ name: 'profile' }"
@@ -82,6 +69,19 @@
           <login-icon class="w-5 h-5 mr-1.5"></login-icon>
           Login
         </router-link>
+      </section>
+
+      <section v-if="auth.isLoggedIn">
+        <h2>Workspace</h2>
+        <p v-if="settings.hasWorkspaceSelected" class="text-secondary">
+          Es ist ein privater Workspace aktiviert.
+        </p>
+        <p v-else class="text-secondary">Es ist kein Workspace aktiviert.</p>
+        <p>
+          <router-link :to="{ name: 'workspaces' }" class="link text-xl"
+            >Workspace wählen...</router-link
+          >
+        </p>
       </section>
     </div>
   </div>
