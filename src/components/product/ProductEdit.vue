@@ -64,7 +64,7 @@
         :value="product.id"
         placeholder="Produkt ID"
         :disabled="idDisabled"
-        @input="(ev) => (product.id = ev.target.value)"
+        @input="(ev) => (product.id = (ev.target as HTMLInputElement).value)"
       />
     </label>
 
@@ -100,7 +100,7 @@
         :value="product.template ? '' : product.price"
         :placeholder="product.template ? '(von Strichcode)' : '2.90'"
         :disabled="product.template"
-        @input="(ev) => (product.price = toNumber(ev.target.value))"
+        @input="(ev) => (product.price = utils.toNumber((ev.target as HTMLInputElement).value))"
       />
     </label>
 
@@ -129,8 +129,8 @@
   </div>
 </template>
 
-<script>
-import { ref, toRef, defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, toRef, defineProps } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
@@ -142,55 +142,39 @@ import useProductEdit from "@/hooks/use-product-edit";
 
 import utils from "@/utils";
 
-export default defineComponent({
-  components: {
-    appButtonDelete,
-    appButtonConfirm,
-    appModal,
-    appImageSelector,
-    appIcon,
+const props = defineProps({
+  editId: {
+    type: String,
+    default: "",
   },
-  props: ["editId", "newId", "editing"],
-  setup(props) {
-    const editId = toRef(props, "editId");
-    const deleteModal = ref(false);
-    const deleteModalConfirmation = ref("");
-
-    const options = { editing: props.editing, initialId: editId.value };
-
-    const {
-      entity: product,
-      exists,
-      remove,
-      save,
-      saveDisabled,
-      idDisabled,
-      templateEnabled,
-      uploadImage,
-    } = useProductEdit(options);
-
-    if (props.newId) {
-      product.id = `${props.newId}`;
-    }
-
-    return {
-      // modal
-      deleteModal,
-      deleteModalConfirmation,
-      // product edit
-      product,
-      exists,
-      remove,
-      save,
-      saveDisabled,
-      idDisabled,
-      templateEnabled,
-      uploadImage,
-      // utils
-      toNumber: utils.toNumber,
-    };
+  newId: {
+    type: String,
+    default: "",
+  },
+  editing: {
+    type: Boolean,
   },
 });
+
+const editId = toRef(props, "editId");
+const deleteModal = ref(false);
+const deleteModalConfirmation = ref("");
+
+const options = { editing: props.editing, initialId: editId.value };
+
+const {
+  entity: product,
+  exists,
+  remove,
+  save,
+  saveDisabled,
+  idDisabled,
+  templateEnabled,
+} = useProductEdit(options);
+
+if (props.newId) {
+  product.id = `${props.newId}`;
+}
 </script>
 
 <style scoped>

@@ -9,7 +9,7 @@ import db from "@/utils/db";
 
 import { Product } from "@/types";
 
-export default function ({ editing = false, initialId = null }) {
+export default function ({ editing = false, initialId = "" }) {
   const router = useRouter();
 
   const entity: Product = reactive({
