@@ -1,5 +1,6 @@
 <template>
   <div class="p-4 max-w-lg">
+    <app-button-back class="mb-3">Zurück</app-button-back>
     <app-modal v-model="deleteModal">
       <template #title>Wirklich löschen?</template>
       <div>
@@ -142,6 +143,7 @@ import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
 import appTillCatalogEdit from "@/components/till/TillCatalogEdit.vue";
 import appTillProductEdit from "@/components/till/TillProductEdit.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import appImageSelector from "@/components/image/ImageSelector.vue";
 
@@ -159,6 +161,7 @@ export default defineComponent({
     appTillCatalogEdit,
     appTillProductEdit,
     appImageSelector,
+    appButtonBack,
   },
   props: ["editId", "newId", "editing", "removable"],
   setup(props) {

@@ -8,8 +8,6 @@ import { Till, TillCatalog, TillProduct } from "@/types";
 
 import db from "@/utils/db";
 
-const DEFAULT_RETURN_ROUTE = "/tills";
-
 export default function ({ editing = false, initialId = undefined }) {
   const router = useRouter();
 
@@ -69,6 +67,10 @@ export default function ({ editing = false, initialId = undefined }) {
     }
 
     if (!entity.label.de) {
+      return true;
+    }
+
+    if (entity.favorites.length === 0) {
       return true;
     }
 

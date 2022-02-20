@@ -45,14 +45,13 @@
         <p v-else class="text-secondary">Es ist kein Workspace aktiviert.</p>
         <p>
           <router-link :to="{ name: 'workspaces' }" class="link text-xl"
-            >Select Workspace</router-link
+            >Workspace wählen...</router-link
           >
         </p>
       </section>
 
       <section v-if="auth.isLoggedIn">
         <h2>Account</h2>
-
         <div>
           Eingeloggt als <span class="font-bold">{{ auth.user?.email }}</span>
         </div>
@@ -110,6 +109,9 @@ const hasPaymentOptions = computed(() => settings.hasPaymentOptions);
 
 <style scoped>
 section {
-  @apply space-y-2 py-3;
+  @apply space-y-2 py-2;
+}
+h2 {
+  @apply mt-3;
 }
 </style>
