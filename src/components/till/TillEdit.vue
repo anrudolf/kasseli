@@ -117,13 +117,13 @@
 
       <div v-for="(favorite, idx) in entity.favorites" :key="idx">
         <component
-          :is="`app-till-${favorite.kind}-edit`"
+          :is="getComponent(favorite.kind)"
           :entity="favorite"
           :idx="idx"
           :size="entity.favorites.length"
           class="my-4 border-4"
           @remove="entity.favorites.splice(idx, 1)"
-          @move="(pos) => moveFavorite(idx, pos)"
+          @move="(pos: string) => moveFavorite(idx, pos)"
         />
       </div>
     </section>
@@ -132,10 +132,11 @@
       >Speichern</app-button-confirm
     >
   </div>
+  {{ entity }}
 </template>
 
-<script lang="ts">
-import { ref, toRef, defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, defineProps } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@/components/ui/ButtonConfirm.vue";
@@ -149,84 +150,66 @@ import appImageSelector from "@/components/image/ImageSelector.vue";
 
 import useTillEdit from "@/hooks/use-till-edit";
 
-import utils from "@/utils";
 import arrayUtil from "@/utils/array";
 
-export default defineComponent({
-  components: {
-    appButtonDelete,
-    appButtonConfirm,
-    appModal,
-    appIcon,
-    appTillCatalogEdit,
-    appTillProductEdit,
-    appImageSelector,
-    appButtonBack,
-  },
-  props: ["editId", "newId", "editing", "removable"],
-  setup(props) {
-    const editId = toRef(props, "editId");
-    const deleteModal = ref(false);
-    const deleteModalConfirmation = ref("");
-
-    const options = { editing: props.editing, initialId: editId.value };
-
-    const {
-      id,
-      entity,
-      exists,
-      remove,
-      save,
-      saveDisabled,
-      idDisabled,
-      addCatalog,
-      addProduct,
-    } = useTillEdit(options);
-
-    if (props.newId) {
-      entity.id = `${props.newId}`;
-    }
-
-    const moveFavorite = (idx, pos) => {
-      switch (pos) {
-        case "up":
-          arrayUtil.moveDown(entity.favorites, idx);
-          break;
-        case "top":
-          arrayUtil.moveBottom(entity.favorites, idx);
-          break;
-        case "down":
-          arrayUtil.moveUp(entity.favorites, idx);
-          break;
-        case "bottom":
-          arrayUtil.moveTop(entity.favorites, idx);
-          break;
-        default:
-          break;
-      }
-    };
-
-    return {
-      // modal
-      deleteModal,
-      deleteModalConfirmation,
-      // till edit
-      id,
-      entity,
-      exists,
-      remove,
-      save,
-      saveDisabled,
-      idDisabled,
-      // utils
-      toNumber: utils.toNumber,
-      // special functions
-      addCatalog,
-      addProduct,
-      moveFavorite,
-    };
-  },
+const props = defineProps({
+  editId: { type: String, default: "" },
+  newId: { type: String, default: "" },
+  editing: Boolean,
+  removable: Boolean,
 });
+
+const deleteModal = ref(false);
+const deleteModalConfirmation = ref("");
+
+const options = { editing: props.editing, initialId: props.editId };
+
+const {
+  id,
+  entity,
+  exists,
+  remove,
+  save,
+  saveDisabled,
+  idDisabled,
+  addCatalog,
+  addProduct,
+} = useTillEdit(options);
+
+if (props.newId) {
+  entity.id = `${props.newId}`;
+}
+
+const getComponent = (kind: string) => {
+  if (kind === "catalog") {
+    return appTillCatalogEdit;
+  }
+
+  if (kind === "product") {
+    return appTillProductEdit;
+  }
+
+  return null;
+};
+
+const moveFavorite = (idx: number, pos: string) => {
+  switch (pos) {
+    case "up":
+      arrayUtil.moveDown(entity.favorites, idx);
+      break;
+    case "top":
+      arrayUtil.moveBottom(entity.favorites, idx);
+      break;
+    case "down":
+      arrayUtil.moveUp(entity.favorites, idx);
+      break;
+    case "bottom":
+      arrayUtil.moveTop(entity.favorites, idx);
+      break;
+    default:
+      break;
+  }
+};
 </script>
 
 <style scoped>

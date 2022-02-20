@@ -8,7 +8,13 @@ import { Till, TillCatalog, TillProduct } from "@/types";
 
 import db from "@/utils/db";
 
-export default function ({ editing = false, initialId = undefined }) {
+export default function ({
+  editing = false,
+  initialId = "",
+}: {
+  editing: boolean;
+  initialId?: string;
+}) {
   const router = useRouter();
 
   const entity: Till = reactive({
