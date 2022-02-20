@@ -103,8 +103,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent, PropType, computed } from "vue";
+<script lang="ts" setup>
+import { ref, defineProps, PropType, defineEmits, computed } from "vue";
 
 import { TillProduct } from "@/types";
 
@@ -116,66 +116,49 @@ import appProductSelector from "@/components/product/ProductSelector.vue";
 import useProductStore from "@/store/products";
 import { Product } from "@/types";
 
-export default defineComponent({
-  props: {
-    entity: {
-      type: Object as PropType<TillProduct>,
-      required: true,
-    },
-    idx: {
-      type: Number,
-      required: true,
-    },
-    size: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  entity: {
+    type: Object as PropType<TillProduct>,
+    required: true,
   },
-  components: {
-    appIcon,
-    appModal,
-    appButtonDelete,
-    appProductSelector,
+  idx: {
+    type: Number,
+    required: true,
   },
-  setup(props, { emit }) {
-    const addModal = ref(false);
-    const deleteModal = ref(false);
-    const deleteModalConfirmation = ref("");
-
-    const setProduct = (id) => {
-      props.entity.id = id;
-      addModal.value = false;
-    };
-
-    const remove = () => {
-      deleteModal.value = false;
-      deleteModalConfirmation.value = "";
-      emit("remove");
-    };
-
-    const store = useProductStore();
-
-    const product = computed(() => {
-      const found = store.item(props.entity.id);
-      if (found) {
-        return found as Product;
-      }
-      return null;
-    });
-
-    return {
-      product,
-      setProduct,
-      // modal
-      addModal,
-      deleteModal,
-      deleteModalConfirmation,
-      // remove this favorite
-      remove,
-      // emit
-      emit,
-    };
+  size: {
+    type: Number,
+    required: true,
   },
+});
+
+const emit = defineEmits<{
+  (e: "remove", v: void);
+  (e: "move", v: string);
+}>();
+
+const addModal = ref(false);
+const deleteModal = ref(false);
+const deleteModalConfirmation = ref("");
+
+const setProduct = (id) => {
+  props.entity.id = id;
+  addModal.value = false;
+};
+
+const remove = () => {
+  deleteModal.value = false;
+  deleteModalConfirmation.value = "";
+  emit("remove");
+};
+
+const store = useProductStore();
+
+const product = computed(() => {
+  const found = store.item(props.entity.id);
+  if (found) {
+    return found as Product;
+  }
+  return null;
 });
 </script>
 

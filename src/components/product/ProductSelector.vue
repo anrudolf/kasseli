@@ -10,46 +10,40 @@
   <app-product-list :products="filtered" @selected="(id) => selected(id)" />
 </template>
 
-<script lang="ts">
-import { ref, computed, defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, computed, defineEmits } from "vue";
 import appProductList from "./ProductList.vue";
 
 import useProductStore from "@/store/products";
 
-export default defineComponent({
-  components: {
-    appProductList,
-  },
-  emits: ["selected"],
-  setup(props, { emit }) {
-    const store = useProductStore();
+const emit = defineEmits<{
+  (e: "selected", v: string);
+}>();
 
-    const filter = ref("");
+const store = useProductStore();
 
-    const selected = (id) => {
-      emit("selected", id);
-      filter.value = "";
-    };
+const filter = ref("");
 
-    const filtered = computed(() => {
-      return store.items.filter((p) => {
-        if (p.template) {
-          return false;
-        }
+const selected = (id: string) => {
+  emit("selected", id);
+  filter.value = "";
+};
 
-        if (p.id === filter.value) {
-          return true;
-        }
+const filtered = computed(() => {
+  return store.items.filter((p) => {
+    if (p.template) {
+      return false;
+    }
 
-        if (p.label.de.toLowerCase().includes(filter.value.toLowerCase())) {
-          return true;
-        }
+    if (p.id === filter.value) {
+      return true;
+    }
 
-        return false;
-      });
-    });
+    if (p.label.de.toLowerCase().includes(filter.value.toLowerCase())) {
+      return true;
+    }
 
-    return { filter, filtered, selected };
-  },
+    return false;
+  });
 });
 </script>

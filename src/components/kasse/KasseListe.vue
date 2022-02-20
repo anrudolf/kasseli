@@ -46,7 +46,7 @@
         "
         :disabled="!hasPrev"
         :class="{ disabled: !hasPrev }"
-        @click="prev"
+        @click="store.prev"
       >
         <app-icon icon="arrow-page-up" color="gray" />
       </button>
@@ -67,7 +67,7 @@
         "
         :disabled="!hasNext"
         :class="{ disabled: !hasNext }"
-        @click="next"
+        @click="store.next"
       >
         <app-icon icon="arrow-page-down" color="gray" />
       </button>
@@ -76,62 +76,32 @@
   </div>
 </template>
 
-<script>
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 import appKasseListeItem from "@/components/kasse/KasseListeItem.vue";
 import appIcon from "@/components/ui/Icon.vue";
 
 import useKasseStore from "@/store/kasse";
 
-export default defineComponent({
-  name: "KasseListe",
-  components: {
-    appKasseListeItem,
-    appIcon,
-  },
-  setup() {
-    const store = useKasseStore();
+const store = useKasseStore();
 
-    const offset = computed(() => store.offset);
-    const page = computed(() => store.page);
-    const pageSize = computed(() => store.pageSize);
-    const hasPrev = computed(() => store.hasPrev);
-    const hasNext = computed(() => store.hasNext);
-    const selectedIndexInPage = computed(() => store.selectedIndexInPage);
+const offset = computed(() => store.offset);
+const page = computed(() => store.page);
+const pageSize = computed(() => store.pageSize);
+const hasPrev = computed(() => store.hasPrev);
+const hasNext = computed(() => store.hasNext);
+const selectedIndexInPage = computed(() => store.selectedIndexInPage);
 
-    const selectFromPage = (i) => {
-      store.selectFromPage(i);
-    };
+const selectFromPage = (i: number) => {
+  store.selectFromPage(i);
+};
 
-    const getItem = (i) => {
-      return page.value[i];
-    };
-
-    return {
-      offset,
-      page,
-      pageSize,
-      hasPrev,
-      hasNext,
-      selectedIndexInPage,
-      // functions
-      selectFromPage,
-      getItem,
-      next: () => store.next(),
-      prev: () => store.prev(),
-    };
-  },
-});
+const getItem = (i: number) => {
+  return page.value[i];
+};
 </script>
 
 <style scoped>
-li {
-  /*
-  display: flex;
-  align-items: center;
-  */
-}
-
 li:nth-child(odd) {
   color: #777;
   background: #eee;

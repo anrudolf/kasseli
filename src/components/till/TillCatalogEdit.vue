@@ -162,9 +162,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent, PropType } from "vue";
-import { VueDraggableNext } from "vue-draggable-next";
+<script lang="ts" setup>
+import { ref, defineProps, PropType, defineEmits } from "vue";
+import { VueDraggableNext as draggable } from "vue-draggable-next";
 
 import { TillCatalog } from "@/types";
 
@@ -175,65 +175,44 @@ import appProductSelector from "@/components/product/ProductSelector.vue";
 import appImageSelector from "@/components/image/ImageSelector.vue";
 import appTillCatalogListItem from "@/components/till/TillCatalogListItem.vue";
 
-export default defineComponent({
-  props: {
-    entity: {
-      type: Object as PropType<TillCatalog>,
-      required: true,
-    },
-    idx: {
-      type: Number,
-      required: true,
-    },
-    size: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  entity: {
+    type: Object as PropType<TillCatalog>,
+    required: true,
   },
-  components: {
-    appIcon,
-    appModal,
-    appButtonDelete,
-    appProductSelector,
-    appImageSelector,
-    appTillCatalogListItem,
-    draggable: VueDraggableNext,
+  idx: {
+    type: Number,
+    required: true,
   },
-  setup(props, { emit }) {
-    const addModal = ref(false);
-    const deleteModal = ref(false);
-    const deleteModalConfirmation = ref("");
-
-    const addProduct = (id) => {
-      props.entity.content.push({ id, kind: "product" });
-      addModal.value = false;
-    };
-
-    const removeProduct = (idx) => {
-      props.entity.content.splice(idx, 1);
-    };
-
-    const remove = () => {
-      deleteModal.value = false;
-      deleteModalConfirmation.value = "";
-      emit("remove");
-    };
-
-    return {
-      // modal
-      addModal,
-      deleteModal,
-      deleteModalConfirmation,
-      // product
-      addProduct,
-      removeProduct,
-      // remove this catalog
-      remove,
-      // emit
-      emit,
-    };
+  size: {
+    type: Number,
+    required: true,
   },
 });
+
+const emit = defineEmits<{
+  (e: "remove", v: void);
+  (e: "move", v: string);
+}>();
+
+const addModal = ref(false);
+const deleteModal = ref(false);
+const deleteModalConfirmation = ref("");
+
+const addProduct = (id) => {
+  props.entity.content.push({ id, kind: "product" });
+  addModal.value = false;
+};
+
+const removeProduct = (idx) => {
+  props.entity.content.splice(idx, 1);
+};
+
+const remove = () => {
+  deleteModal.value = false;
+  deleteModalConfirmation.value = "";
+  emit("remove");
+};
 </script>
 
 <style scoped>

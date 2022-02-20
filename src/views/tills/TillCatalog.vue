@@ -44,7 +44,7 @@ const catalog = computed(
       .find((f) => f.id === props.id) as TillCatalog
 );
 
-const add = (code) => {
+const add = (code: string) => {
   kasseStore.add(code);
   router.push("/");
 };

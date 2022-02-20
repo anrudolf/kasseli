@@ -33,34 +33,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
 import useKasseStore from "@/store/kasse";
 
-export default defineComponent({
-  setup() {
-    const store = useKasseStore();
+const store = useKasseStore();
 
-    const selected = computed(() => store.selected);
-    const quantity = computed(() => {
-      if (!selected.value) {
-        return "";
-      }
-      return store.selected.quantity;
-    });
-
-    const add = () => selected.value && store.add(selected.value.code);
-    const remove = () => selected.value && store.remove();
-
-    return {
-      selected,
-      quantity,
-      add,
-      remove,
-    };
-  },
+const selected = computed(() => store.selected);
+const quantity = computed(() => {
+  if (!selected.value) {
+    return "";
+  }
+  return store.selected.quantity;
 });
+
+const add = () => selected.value && store.add(selected.value.code);
+const remove = () => selected.value && store.remove();
 </script>
 
 <style scoped>
@@ -72,4 +61,3 @@ export default defineComponent({
   @apply h-6 sm:h-8 text-lg sm:text-xl font-medium;
 }
 </style>
-

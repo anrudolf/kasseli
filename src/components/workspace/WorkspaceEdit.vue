@@ -69,8 +69,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ref, toRef, defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, toRef, defineProps } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
@@ -80,51 +80,30 @@ import useWorkspaceEdit from "@/hooks/use-workspace-edit";
 
 import useAuthStore from "@/store/auth";
 
-export default defineComponent({
-  components: {
-    appButtonDelete,
-    appButtonConfirm,
-    appModal,
-  },
-  props: {
-    editId: { type: String, default: "" },
-    newId: { type: String, default: "" },
-    editing: { type: Boolean },
-  },
-  setup(props) {
-    const editId = toRef(props, "editId");
-    const deleteModal = ref(false);
-    const deleteModalConfirmation = ref("");
-
-    const authStore = useAuthStore();
-
-    const options = {
-      editing: props.editing,
-      initialId: editId.value,
-      uid: authStore.user?.uid || "",
-    };
-
-    const { entity, exists, remove, save, saveDisabled, idDisabled } =
-      useWorkspaceEdit(options);
-
-    if (props.newId) {
-      entity.id = `${props.newId}`;
-    }
-
-    return {
-      // modal
-      deleteModal,
-      deleteModalConfirmation,
-      // entity edit
-      entity,
-      exists,
-      remove,
-      save,
-      saveDisabled,
-      idDisabled,
-    };
-  },
+const props = defineProps({
+  editId: { type: String, default: "" },
+  newId: { type: String, default: "" },
+  editing: { type: Boolean },
 });
+
+const editId = toRef(props, "editId");
+const deleteModal = ref(false);
+const deleteModalConfirmation = ref("");
+
+const authStore = useAuthStore();
+
+const options = {
+  editing: props.editing,
+  initialId: editId.value,
+  uid: authStore.user?.uid || "",
+};
+
+const { entity, exists, remove, save, saveDisabled, idDisabled } =
+  useWorkspaceEdit(options);
+
+if (props.newId) {
+  entity.id = `${props.newId}`;
+}
 </script>
 
 <style scoped>

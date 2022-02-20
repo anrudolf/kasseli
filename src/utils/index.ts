@@ -73,7 +73,7 @@ export function toNumber(val) {
 }
 
 // from https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
-export const getColor = (str) => {
+export const getColor = (str: string) => {
   let hash = 0;
   if (!str || str.length === 0) return hash;
   for (let i = 0; i < str.length; i++) {

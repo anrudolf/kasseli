@@ -7,34 +7,22 @@
   />
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { defineProps, computed } from "vue";
 import appCard from "@/components/ui/Card.vue";
 
 import useProductStore from "@/store/products";
 
-export default defineComponent({
-  name: "Widget",
-  components: {
-    appCard,
+const props = defineProps({
+  kind: { type: String, default: "" },
+  widget: {
+    type: Object,
+    required: true,
   },
-  props: {
-    kind: String,
-    widget: {
-      type: Object,
-      required: true,
-    },
-    contain: Boolean,
-  },
-  setup(props) {
-    const productStore = useProductStore();
-
-    const product = computed(() => productStore.item(props.widget.id));
-
-    return { product };
-  },
+  contain: Boolean,
 });
-</script>
 
-<style scoped></style>
->
+const productStore = useProductStore();
+
+const product = computed(() => productStore.item(props.widget.id));
+</script>

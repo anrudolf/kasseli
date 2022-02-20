@@ -95,8 +95,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { defineProps, ref } from "vue";
 import { useRouter } from "vue-router";
 
 import {
@@ -109,55 +109,33 @@ import { QrcodeStream } from "vue3-qrcode-reader";
 
 import useAppPayment from "@/hooks/use-app-payment";
 
-export default defineComponent({
-  components: {
-    QrcodeStream,
-    XCircleIcon,
-    CheckCircleIcon,
-    QrcodeIcon,
-  },
-  props: {
-    id: {
-      type: String,
-      required: true,
-      default: "",
-    },
-  },
-  setup(props) {
-    const router = useRouter();
-
-    const code = ref("");
-
-    const scanning = ref(false);
-    const onScan = (decodedString) => {
-      scanning.value = false;
-
-      const splits = decodedString.split("id=");
-      if (splits.length == 2) {
-        code.value = splits[1];
-        router.push(`/pay?id=${code.value}`);
-      }
-    };
-
-    const { entity, setStatus, error, listenForChanges } = useAppPayment(
-      props.id
-    );
-
-    if (props.id) {
-      listenForChanges(props.id);
-    }
-
-    return {
-      scanning,
-      onScan,
-      router,
-      code,
-      location: window.location.origin,
-      entity,
-      setStatus,
-      error,
-    };
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+    default: "",
   },
 });
+
+const router = useRouter();
+
+const code = ref("");
+
+const scanning = ref(false);
+const onScan = (decodedString: string) => {
+  scanning.value = false;
+
+  const splits = decodedString.split("id=");
+  if (splits.length == 2) {
+    code.value = splits[1];
+    router.push(`/pay?id=${code.value}`);
+  }
+};
+
+const { entity, setStatus, error, listenForChanges } = useAppPayment(props.id);
+
+if (props.id) {
+  listenForChanges(props.id);
+}
 </script>
 <style scoped></style>

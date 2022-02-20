@@ -3,37 +3,28 @@
     <app-button-confirm
       class="w-full sm:w-auto"
       :disabled="disabled"
-      @click="checkout()"
+      @click="checkout"
       >Bezahlen</app-button-confirm
     >
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 import useKasseStore from "@/store/kasse";
 
 import appButtonConfirm from "@/components/ui/ButtonConfirm.vue";
 
-export default defineComponent({
-  components: {
-    appButtonConfirm,
-  },
-  setup() {
-    const router = useRouter();
-    const kasse = useKasseStore();
+const router = useRouter();
+const kasse = useKasseStore();
 
-    const disabled = computed(() => kasse.price == 0);
+const disabled = computed(() => kasse.price == 0);
 
-    const checkout = () => {
-      router.push("/checkout");
-    };
-
-    return { checkout, disabled };
-  },
-});
+const checkout = () => {
+  router.push("/checkout");
+};
 </script>
 
 <style scoped>

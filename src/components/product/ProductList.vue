@@ -46,104 +46,81 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {
   toRef,
   watch,
-  defineComponent,
+  defineProps,
   PropType,
+  defineEmits,
   onMounted,
   onBeforeUnmount,
 } from "vue";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/vue/solid";
 
-import { useRouter } from "vue-router";
 import { useArrayPagination } from "@/hooks/use-arraypagination";
 
 import appSelect from "@/components/ui/Select.vue";
 
 import { Product } from "@/types";
 
-export default defineComponent({
-  components: {
-    appSelect,
-    ChevronLeftIcon,
-    ChevronRightIcon,
+const props = defineProps({
+  products: {
+    type: Object as PropType<Array<Product>>,
+    required: true,
   },
-  props: {
-    products: {
-      type: Object as PropType<Array<Product>>,
-      required: true,
-    },
-  },
-  emits: ["selected"],
-  setup(props, { emit }) {
-    const router = useRouter();
-    const products = toRef(props, "products");
+});
 
-    const pageSizeOptions = [
-      { text: "5", value: 5 },
-      { text: "10", value: 10 },
-      { text: "20", value: 20 },
-      { text: "50", value: 50 },
-      { text: "100", value: 100 },
-    ];
+const emit = defineEmits<{
+  (e: "selected", v: string);
+}>();
 
-    const { next, prev, currentPage, lastPage, result, pageSize, offset } =
-      useArrayPagination(products, {
-        pageSize: pageSizeOptions[0].value,
-        currentPage: 1,
-      });
+const products = toRef(props, "products");
 
-    watch(products, () => {
-      currentPage.value = 1;
-    });
+const pageSizeOptions = [
+  { text: "5", value: 5 },
+  { text: "10", value: 10 },
+  { text: "20", value: 20 },
+  { text: "50", value: 50 },
+  { text: "100", value: 100 },
+];
 
-    const selected = (id) => {
-      currentPage.value = 1;
-      pageSize.value = pageSizeOptions[0].value;
-      emit("selected", id);
-    };
+const { next, prev, currentPage, lastPage, result, pageSize, offset } =
+  useArrayPagination(products, {
+    pageSize: pageSizeOptions[0].value,
+    currentPage: 1,
+  });
 
-    const arrowLeftRightListener = (e) => {
-      switch (e.code) {
-        case "PageUp":
-          prev();
-          break;
-        case "PageDown":
-          next();
-          break;
-        default:
-          break;
-      }
-    };
+watch(products, () => {
+  currentPage.value = 1;
+});
 
-    onMounted(() => {
-      document.addEventListener("keyup", arrowLeftRightListener);
-    });
+const selected = (id: string) => {
+  currentPage.value = 1;
+  pageSize.value = pageSizeOptions[0].value;
+  emit("selected", id);
+};
 
-    onBeforeUnmount(() => {
-      document.removeEventListener("keyup", arrowLeftRightListener);
-    });
+const arrowLeftRightListener = (e: KeyboardEvent) => {
+  switch (e.code) {
+    case "PageUp":
+      prev();
+      break;
+    case "PageDown":
+      next();
+      break;
+    default:
+      break;
+  }
+};
 
-    return {
-      // product selector
-      selected,
-      // pagination
-      next,
-      prev,
-      currentPage,
-      lastPage,
-      pageSize,
-      result,
-      offset,
-      // page size selector
-      pageSizeOptions,
-      // router
-      router,
-    };
-  },
+onMounted(() => {
+  document.addEventListener("keyup", arrowLeftRightListener);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keyup", arrowLeftRightListener);
 });
 </script>
 

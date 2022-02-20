@@ -11,26 +11,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
 import useKasseStore from "@/store/kasse";
 
-export default defineComponent({
-  setup() {
-    const store = useKasseStore();
+const store = useKasseStore();
 
-    const item = computed(() => store.selected);
-    const label = computed(() => {
-      if (!item.value) {
-        return "";
-      }
-      const label = item.value.product.label.de;
-      return label || "???";
-    });
-
-    return { item, label };
-  },
+const item = computed(() => store.selected);
+const label = computed(() => {
+  if (!item.value) {
+    return "";
+  }
+  const label = item.value.product.label.de;
+  return label || "???";
 });
 </script>
 
