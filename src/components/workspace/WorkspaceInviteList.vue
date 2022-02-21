@@ -48,13 +48,15 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, ref } from "vue";
 import { useClipboard } from "@vueuse/core";
-import { DuplicateIcon, CheckIcon } from "@heroicons/vue/outline";
+import { DuplicateIcon } from "@heroicons/vue/outline";
 
 import { getRole, getUsage, getLink } from "@/utils/workspace";
 
 import { WorkspaceInvite } from "@/types";
+
+import { getLocaleDateString, getLocaleTimeString } from "@/utils/date";
 
 const props = defineProps<{ modelValue: WorkspaceInvite[]; wid: string }>();
 
@@ -65,18 +67,4 @@ const copyLink = (invite: WorkspaceInvite) => {
   source.value = getLink(invite);
   copy();
 };
-
-const getLocaleString = (iso: string) => {
-  return new Date(iso).toLocaleString("de");
-};
-
-const getLocaleDateString = (iso: string) => {
-  return new Date(iso).toLocaleDateString("de");
-};
-
-const getLocaleTimeString = (iso: string) => {
-  return new Date(iso).toLocaleTimeString("de");
-};
-
-const showModal = ref(false);
 </script>

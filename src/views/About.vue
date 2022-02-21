@@ -21,14 +21,19 @@
     <p v-if="false">
       Current commit <span class="font-bold">{{ hash.substring(0, 6) }}</span>
     </p>
-    <p>Built {{ date }}</p>
+    <p>Built {{ localeDate }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { getLocaleDateTimeString } from "@/utils/date";
+
 // replaced dynanmically
 const date = "__DATE__";
 const hash = "123456789";
+
+const localeDate = computed(() => getLocaleDateTimeString(date));
 </script>
 
 <style scoped>
