@@ -31,7 +31,13 @@ useScanner((code) => {
   kasseStore.add(code);
 });
 
-const favorites = computed(() => tillStore.getTill?.favorites);
+const favorites = computed(() => {
+  const till = tillStore.getTill;
+  if (!till) {
+    return [];
+  }
+  return till.favorites;
+});
 </script>
 
 <style scoped>
