@@ -20,7 +20,7 @@ import appButtonConfirm from "@/components/ui/ButtonConfirm.vue";
 const router = useRouter();
 const kasse = useKasseStore();
 
-const disabled = computed(() => kasse.price == 0);
+const disabled = computed(() => kasse.items.length === 0);
 
 const checkout = () => {
   router.push("/checkout");

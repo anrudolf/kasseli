@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
 import { LightBulbIcon } from "@heroicons/vue/outline";
@@ -145,9 +145,14 @@ const bigCoins = [
 
 const total = kasse.price;
 const paid = ref(0);
+
+// max to min
+const sortedMoney = [...notes, ...coins].sort((a, b) => (a.id > b.id ? -1 : 1));
+const leastMoney = computed(() => sortedMoney[sortedMoney.length - 1].id);
+
 const remainder = computed(() => {
   const ret = total - paid.value;
-  if (ret < 0.001) {
+  if (ret < leastMoney.value / 10) {
     return 0;
   }
   return ret;
@@ -162,9 +167,6 @@ const showModal = ref(false);
 
 const add = (i: number) => {
   paid.value += i;
-  if (remainder.value == 0) {
-    showModal.value = true;
-  }
 };
 
 const restart = () => {
@@ -178,15 +180,22 @@ watch(showModal, (newVal, oldVal) => {
   }
 });
 
+watch(
+  remainder,
+  (newVal, oldVal) => {
+    if (newVal === 0) {
+      showModal.value = true;
+    }
+  },
+  { immediate: true }
+);
+
 const activateHints = (enable) => {
   paymentHints.active = enable;
 };
 
-// max to min
-const sortedMoney = [...notes, ...coins].sort((a, b) => (a.id > b.id ? -1 : 1));
-
 const hint = computed(() => {
-  const min = sortedMoney[sortedMoney.length - 1].id;
+  const min = leastMoney.value;
   const d = min / 10;
 
   // less or near zero remainder
@@ -204,7 +213,7 @@ const hint = computed(() => {
     }
   }
 
-  return 0;
+  return min;
 });
 
 const isHint = (id: number) =>

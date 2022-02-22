@@ -132,7 +132,6 @@
       >Speichern</app-button-confirm
     >
   </div>
-  {{ entity }}
 </template>
 
 <script lang="ts" setup>
