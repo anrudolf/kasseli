@@ -21,7 +21,6 @@
     "filepond-plugin-image-transform": "^3.7.5",
     "firebase": "^9.6.3",
     "focus-visible": "^5.2.0",
-    "git-revision-webpack-plugin": "^3.0.6",
     "md5": "^2.3.0",
     "pinia": "^2.0.6",
     "pinia-plugin-persist": "^0.0.92",
