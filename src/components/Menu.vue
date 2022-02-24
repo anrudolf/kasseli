@@ -63,6 +63,9 @@
                   <router-link class="app-menu-link" to="/about"
                     >About</router-link
                   >
+                  <router-link class="app-menu-link" to="/scan"
+                    >Scan</router-link
+                  >
                 </div>
               </div>
 
