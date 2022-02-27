@@ -1,9 +1,9 @@
 <template>
   <div class="w-max-md">
-    <div>code: {{ code }}</div>
     <app-quaga-scanner
       :on-detected="onDetected"
       :reader-types="readerTypes"
+      @cancel="router.go(-1)"
     ></app-quaga-scanner>
   </div>
 </template>
@@ -13,8 +13,9 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import appQuagaScanner from "@/components/scanner/QuaggaScanner.vue";
 
+import { readerTypes } from "@/utils/camerascanner";
+
 const code = ref("");
-const readerTypes = ["ean_reader"];
 
 const router = useRouter();
 

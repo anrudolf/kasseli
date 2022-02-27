@@ -1,5 +1,13 @@
 <template>
-  <div class="p-4 max-w-lg">
+  <div v-if="scanning" class="w-full p-1">
+    <app-quaga-scanner
+      :on-detected="onDetected"
+      :reader-types="readerTypes"
+      @cancel="scanning = false"
+    ></app-quaga-scanner>
+  </div>
+
+  <div v-else class="p-4 max-w-lg">
     <app-modal v-model="deleteModal">
       <template #title>Wirklich löschen?</template>
       <div>
@@ -50,10 +58,17 @@
       </div>
     </app-modal>
 
-    <div class="flex justify-between">
+    <div class="flex justify-between items-center">
       <h1 v-if="editing">Produkt editieren</h1>
       <h1 v-else>Produkt erstellen</h1>
       <app-button-delete v-if="editing" @click="deleteModal = true" />
+      <button
+        v-else
+        class="btn btn-green flex items-center"
+        @click="scanning = true"
+      >
+        <camera-icon class="w-5 h-5 mr-1" />SCAN
+      </button>
     </div>
 
     <label class="block">
@@ -122,25 +137,25 @@
     <app-button-confirm class="mt-4" :disabled="saveDisabled" @click="save"
       >Speichern</app-button-confirm
     >
-    <div class="text-xs">
-      <pre>{{ JSON.stringify(product, null, "  ") }}</pre>
-    </div>
-    <div v-if="false">editing {{ editing }}</div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, toRef, defineProps } from "vue";
 
+import { CameraIcon } from "@heroicons/vue/outline";
+
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
 import appModal from "@/components/ui/Modal.vue";
 import appImageSelector from "@/components/image/ImageSelector.vue";
 import appIcon from "@/components/ui/Icon.vue";
+import appQuagaScanner from "@/components/scanner/QuaggaScanner.vue";
 
 import useProductEdit from "@/hooks/use-product-edit";
 
 import utils from "@/utils";
+import { readerTypes } from "@/utils/camerascanner";
 
 const props = defineProps({
   editId: {
@@ -175,6 +190,12 @@ const {
 if (props.newId) {
   product.id = `${props.newId}`;
 }
+
+const scanning = ref(false);
+const onDetected = (data: any) => {
+  product.id = data.codeResult.code;
+  scanning.value = false;
+};
 </script>
 
 <style scoped>

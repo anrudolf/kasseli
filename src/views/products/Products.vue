@@ -7,7 +7,7 @@
         to="/products/new"
       >
         <app-icon icon="plus-circle" class="h-6 w-6" />
-        <span class="ml-1">ADD PRODUCT</span>
+        <span class="ml-1">ADD</span>
       </router-link>
     </div>
     <div class="my-2">

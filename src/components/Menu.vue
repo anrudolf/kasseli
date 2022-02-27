@@ -63,9 +63,6 @@
                   <router-link class="app-menu-link" to="/about"
                     >About</router-link
                   >
-                  <router-link class="app-menu-link" to="/scan"
-                    >Scan</router-link
-                  >
                 </div>
               </div>
 
@@ -78,13 +75,19 @@
                   ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
                   >Pay</router-link
                 >
+                <router-link
+                  to="/scan"
+                  class="app-menu-button flex items-center text-green-500"
+                  @click="ui.closeMenu"
+                  ><camera-icon class="w-8 h-8 mr-1"></camera-icon
+                  >Scan</router-link
+                >
                 <button
                   class="app-menu-button text-green-500 flex items-center"
                   @click="refresh"
                 >
-                  <refresh-icon class="w-8 h-8" /><span class="ml-0.5"
-                    >Refresh</span
-                  >
+                  <refresh-icon class="w-8 h-8 mr-1" />
+                  Refresh
                 </button>
               </div>
             </div>
@@ -106,7 +109,11 @@ import {
 } from "@headlessui/vue";
 
 import { XIcon } from "@heroicons/vue/solid";
-import { DeviceMobileIcon, RefreshIcon } from "@heroicons/vue/outline";
+import {
+  DeviceMobileIcon,
+  RefreshIcon,
+  CameraIcon,
+} from "@heroicons/vue/outline";
 
 import useUiStore from "@/store/ui";
 

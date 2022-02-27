@@ -1,7 +1,12 @@
 <template>
-  <div id="interactive" class="viewport scanner">
-    <video />
-    <canvas class="drawingBuffer" />
+  <div>
+    <button class="block w-full btn btn-red mb-1" @click="$emit('cancel')">
+      Cancel
+    </button>
+    <div id="interactive" class="viewport scanner">
+      <video />
+      <canvas class="drawingBuffer" />
+    </div>
   </div>
 </template>
 
@@ -88,6 +93,7 @@ export default {
       default: () => "environment",
     },
   },
+  emits: ["cancel"],
   data: function () {
     return {
       quaggaState: {
