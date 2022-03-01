@@ -1,31 +1,32 @@
 <template>
   <app-product-edit
-    :key="editing"
+    :key="`${editing}`"
     :editing="editing"
-    :edit-id="editId"
-    :new-id="newId"
+    :edit-id="props.editId"
+    :new-id="props.newId"
   />
 </template>
 
-<script>
-import { computed } from "vue";
+<script lang="ts" setup>
+import { computed, defineProps } from "vue";
 import { useRoute } from "vue-router";
 
 import appProductEdit from "@/components/product/ProductEdit.vue";
 
-export default {
-  components: {
-    appProductEdit,
+const props = defineProps({
+  editId: {
+    type: String,
+    default: "",
   },
-  props: ["editId", "newId"],
-  setup() {
-    const route = useRoute();
-
-    const editing = computed(
-      () => !route.matched.some(({ name }) => name === "products-new")
-    );
-
-    return { editing };
+  newId: {
+    type: String,
+    default: "",
   },
-};
+});
+
+const route = useRoute();
+
+const editing = computed(
+  () => !route.matched.some(({ name }) => name === "products-new")
+);
 </script>
