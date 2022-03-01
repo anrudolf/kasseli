@@ -1,9 +1,9 @@
 <template>
   <svg
-    v-if="icon === 'sort-ascending'"
+    v-if="props.icon === 'sort-ascending'"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    :fill="color"
+    :fill="props.color"
     class="w-5 h-5"
   >
     <path
@@ -11,10 +11,10 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'sort-descending'"
+    v-else-if="props.icon === 'sort-descending'"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    :fill="color"
+    :fill="props.color"
     class="w-5 h-5"
   >
     <path
@@ -22,11 +22,11 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'menu'"
+    v-else-if="props.icon === 'menu'"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
-    :stroke="color"
+    :stroke="props.color"
     class="w-6 h-6"
   >
     <path
@@ -38,7 +38,7 @@
   </svg>
 
   <svg
-    v-else-if="icon === 'arrow-narrow-up'"
+    v-else-if="props.icon === 'arrow-narrow-up'"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -53,7 +53,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'arrow-narrow-down'"
+    v-else-if="props.icon === 'arrow-narrow-down'"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -68,10 +68,10 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'arrow-page-up'"
+    v-else-if="props.icon === 'arrow-page-up'"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    :fill="color"
+    :fill="props.color"
     class="w-5 h-5"
   >
     <path
@@ -80,10 +80,10 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'arrow-page-down'"
+    v-else-if="props.icon === 'arrow-page-down'"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    :fill="color"
+    :fill="props.color"
     class="w-5 h-5"
   >
     <path
@@ -92,7 +92,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'plus'"
+    v-else-if="props.icon === 'plus'"
     class="w-4 h-4"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
@@ -105,7 +105,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'plus-circle'"
+    v-else-if="props.icon === 'plus-circle'"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -120,10 +120,10 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'info'"
+    v-else-if="props.icon === 'info'"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    :fill="color"
+    :fill="props.color"
     class="h-5 w-5"
   >
     <path
@@ -133,7 +133,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'outline:arrows-expand'"
+    v-else-if="props.icon === 'outline:arrows-expand'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-6 w-6"
     fill="none"
@@ -149,7 +149,7 @@
   </svg>
 
   <svg
-    v-else-if="icon === 'solid:arrows-expand'"
+    v-else-if="props.icon === 'solid:arrows-expand'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-5 w-5"
     viewBox="0 0 20 20"
@@ -164,7 +164,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'chevron-double-up'"
+    v-else-if="props.icon === 'chevron-double-up'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-6 w-6"
     fill="none"
@@ -179,7 +179,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'chevron-double-down'"
+    v-else-if="props.icon === 'chevron-double-down'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-6 w-6"
     fill="none"
@@ -194,7 +194,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'chevron-down'"
+    v-else-if="props.icon === 'chevron-down'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-6 w-6"
     fill="none"
@@ -209,7 +209,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'chevron-up'"
+    v-else-if="props.icon === 'chevron-up'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-6 w-6"
     fill="none"
@@ -224,7 +224,7 @@
     />
   </svg>
   <svg
-    v-else-if="icon === 'check-circle'"
+    v-else-if="props.icon === 'check-circle'"
     xmlns="http://www.w3.org/2000/svg"
     class="h-5 w-5"
     viewBox="0 0 20 20"
@@ -240,7 +240,7 @@
     v-else
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    :fill="color"
+    :fill="props.color"
   >
     <path
       fill-rule="evenodd"
@@ -250,17 +250,17 @@
   </svg>
 </template>
 
-<script>
-export default {
-  props: {
-    icon: {
-      type: String,
-      default: "question-mark-circle",
-    },
-    color: {
-      type: String,
-      default: "currentColor",
-    },
+<script lang="ts" setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  icon: {
+    type: String,
+    default: "question-mark-circle",
   },
-};
+  color: {
+    type: String,
+    default: "currentColor",
+  },
+});
 </script>

@@ -1,11 +1,11 @@
 <template>
   <select
     class="border rounded"
-    :value="modelValue"
-    @input="(ev) => $emit('update:modelValue', ev.target.value)"
+    :value="props.modelValue"
+    @input="(ev) => emit('update:modelValue', (ev.target as HTMLSelectElement).value)"
   >
     <option
-      v-for="item in items"
+      v-for="item in props.items"
       :key="item.value ?? item"
       :value="item.value ?? item"
     >
@@ -14,10 +14,11 @@
   </select>
 </template>
 
-<script>
-export default {
-  props: ["modelValue", "items"],
-};
+<script lang="ts" setup>
+import { defineProps, defineEmits } from "vue";
+
+const props = defineProps(["modelValue", "items"]);
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style scoped>

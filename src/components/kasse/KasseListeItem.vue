@@ -1,33 +1,36 @@
 <template>
   <div
     class="flex items-center h-full w-full text-xl"
-    :class="{ selected: selected, 'bg-gray-500': selected }"
+    :class="{ selected: props.selected, 'bg-gray-500': props.selected }"
   >
-    <div class="w-12 mr-4 text-right">{{ quantity }}x</div>
+    <div class="w-12 mr-4 text-right">{{ props.quantity }}x</div>
     <div class="w-0 flex-grow truncate">
-      {{ label }}
+      {{ props.label }}
     </div>
-    <div class="mr-4">{{ `${(quantity * price).toFixed(2)}` }}</div>
+    <div class="mr-4">{{ `${(props.quantity * props.price).toFixed(2)}` }}</div>
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    quantity: {
-      type: Number,
-    },
-    label: {
-      type: String,
-    },
-    price: {
-      type: Number,
-    },
-    selected: {
-      type: Boolean,
-    },
+<script lang="ts" setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  quantity: {
+    type: Number,
+    default: 0,
   },
-};
+  label: {
+    type: String,
+    default: "",
+  },
+  price: {
+    type: Number,
+    default: 0,
+  },
+  selected: {
+    type: Boolean,
+  },
+});
 </script>
 
 <style scoped>

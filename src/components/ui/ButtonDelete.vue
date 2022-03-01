@@ -1,8 +1,8 @@
 <template>
   <button
     :class="{
-      'text-red-400': color === 'red',
-      'text-gray-400': color === 'gray',
+      'text-red-400': props.color === 'red',
+      'text-gray-400': props.color === 'gray',
     }"
   >
     <svg
@@ -22,13 +22,13 @@
   </button>
 </template>
 
-<script>
-export default {
-  props: {
-    color: {
-      type: String,
-      default: "red",
-    },
+<script lang="ts" setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  color: {
+    type: String,
+    default: "red",
   },
-};
+});
 </script>
