@@ -158,11 +158,7 @@ import utils from "@/utils";
 import { readerTypes } from "@/utils/camerascanner";
 
 const props = defineProps({
-  editId: {
-    type: String,
-    default: "",
-  },
-  newId: {
+  id: {
     type: String,
     default: "",
   },
@@ -171,11 +167,10 @@ const props = defineProps({
   },
 });
 
-const editId = toRef(props, "editId");
 const deleteModal = ref(false);
 const deleteModalConfirmation = ref("");
 
-const options = { editing: props.editing, initialId: editId.value };
+const options = { editing: props.editing, id: props.id };
 
 const {
   entity: product,
@@ -186,10 +181,6 @@ const {
   idDisabled,
   templateEnabled,
 } = useProductEdit(options);
-
-if (props.newId) {
-  product.id = `${props.newId}`;
-}
 
 const scanning = ref(false);
 const onDetected = (data: any) => {

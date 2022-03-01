@@ -70,13 +70,13 @@ const routes: Array<RouteRecordRaw> = [
     path: "/products/new",
     name: "products-new",
     component: ProductEdit,
-    props: (route) => ({ newId: route.query.id }),
+    props: (route) => ({ id: route.query.id }),
   },
   {
     path: "/products/edit",
     name: "products-edit",
     component: ProductEdit,
-    props: (route) => ({ editId: route.query.id }),
+    props: (route) => ({ id: route.query.id }),
   },
   {
     path: "/tills/catalog",

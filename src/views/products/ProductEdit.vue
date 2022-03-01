@@ -1,10 +1,5 @@
 <template>
-  <app-product-edit
-    :key="`${editing}`"
-    :editing="editing"
-    :edit-id="props.editId"
-    :new-id="props.newId"
-  />
+  <app-product-edit :id="props.id" :key="`${editing}`" :editing="editing" />
 </template>
 
 <script lang="ts" setup>
@@ -14,11 +9,7 @@ import { useRoute } from "vue-router";
 import appProductEdit from "@/components/product/ProductEdit.vue";
 
 const props = defineProps({
-  editId: {
-    type: String,
-    default: "",
-  },
-  newId: {
+  id: {
     type: String,
     default: "",
   },

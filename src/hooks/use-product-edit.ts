@@ -9,7 +9,7 @@ import db from "@/utils/db";
 
 import { Product } from "@/types";
 
-export default function ({ editing = false, initialId = "" }) {
+export default function ({ editing = false, id = "" }) {
   const router = useRouter();
 
   const entity: Product = reactive({
@@ -26,14 +26,21 @@ export default function ({ editing = false, initialId = "" }) {
 
   let unmaskedId = "";
 
-  if (initialId) {
-    getDoc(doc(db.products, initialId)).then((doc) => {
+  if (id) {
+    entity.id = id;
+    getDoc(doc(db.products, id)).then((doc) => {
       // TODO: use document from Vuex store to make it faster in offline mode
       if (doc.exists()) {
         const data = doc.data();
         if (!data) {
           return;
         }
+
+        if (!editing) {
+          exists.value = true;
+          return;
+        }
+
         Object.assign(entity, { ...entity, ...data, id: doc.id });
       }
     });
@@ -42,10 +49,10 @@ export default function ({ editing = false, initialId = "" }) {
   const exists = ref(false);
   const loading = ref(false);
 
-  const { id, template } = toRefs(entity);
+  const { id: watchedId, template } = toRefs(entity);
 
   const save = () => {
-    if (!initialId) {
+    if (!editing) {
       entity.created = new Date().toISOString();
     }
 
@@ -117,7 +124,7 @@ export default function ({ editing = false, initialId = "" }) {
 
   const idDisabled = computed(() => editing || entity.template);
 
-  watch(id, (v) => {
+  watch(watchedId, (v) => {
     onIdChangedHandler(v);
   });
 
