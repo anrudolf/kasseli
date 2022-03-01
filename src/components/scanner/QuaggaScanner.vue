@@ -1,8 +1,22 @@
 <template>
   <div>
-    <button class="block w-full btn btn-red mb-1" @click="$emit('cancel')">
-      Cancel
-    </button>
+    <div class="flex mb-1">
+      <button
+        class="btn btn-green mr-2 flex items-center justify-center"
+        @click="toggleTorch"
+      >
+        <light-bulb-icon class="w-5 h-5 mr-1"></light-bulb-icon>
+        Licht
+      </button>
+      <button
+        class="w-full btn btn-red flex items-center justify-center"
+        @click="$emit('cancel')"
+      >
+        <x-circle-icon class="w-5 h-5 mr-1"></x-circle-icon>
+        Cancel
+      </button>
+    </div>
+
     <div id="interactive" class="viewport scanner">
       <video />
       <canvas class="drawingBuffer" />
@@ -11,11 +25,15 @@
 </template>
 
 <script>
-//import Quagga from "quagga";
 import Quagga from "@ericblade/quagga2";
+import { LightBulbIcon, XCircleIcon } from "@heroicons/vue/outline";
 
 export default {
   name: "QuaggaScanner",
+  components: {
+    LightBulbIcon,
+    XCircleIcon,
+  },
   props: {
     onDetected: {
       type: Function,
@@ -117,6 +135,7 @@ export default {
         },
         locate: true,
       },
+      torch: false,
     };
   },
   watch: {
@@ -143,6 +162,24 @@ export default {
     if (this.onDetected) Quagga.offDetected(this.onDetected);
     if (this.onProcessed) Quagga.offProcessed(this.offProcessed);
     Quagga.stop();
+  },
+  methods: {
+    getCapabilities: function () {
+      const caps = Quagga.CameraAccess.getActiveTrack()?.getCapabilities();
+      console.log(caps);
+    },
+    toggleTorch: function () {
+      this.torch = !this.torch;
+
+      const track = Quagga.CameraAccess.getActiveTrack();
+      if (track) {
+        track
+          .applyConstraints({
+            advanced: [{ torch: this.torch }],
+          })
+          .catch((e) => console.log(e));
+      }
+    },
   },
 };
 </script>

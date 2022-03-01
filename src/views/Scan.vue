@@ -1,5 +1,5 @@
 <template>
-  <div class="w-max-md">
+  <div class="w-max-md p-1">
     <app-quaga-scanner
       :on-detected="onDetected"
       :reader-types="readerTypes"
