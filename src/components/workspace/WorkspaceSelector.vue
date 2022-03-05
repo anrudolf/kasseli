@@ -23,10 +23,16 @@
       </div>
       <div v-else class="flex w-full">
         <div class="flex w-full justify-between items-center">
-          <div v-if="workspace">
-            <div class="text-xl">{{ workspace.name }}</div>
-            <div class="text-sm text-secondary">privat</div>
-          </div>
+          <router-link
+            v-if="workspace"
+            class="w-full"
+            :to="{ name: 'workspace', params: { id: workspace.id } }"
+          >
+            <div>
+              <div class="text-xl">{{ workspace.name }}</div>
+              <div class="text-sm text-secondary">privat</div>
+            </div>
+          </router-link>
           <div v-else class="text-red-500">
             Workspace {{ wid }} nicht gefunden!
           </div>
