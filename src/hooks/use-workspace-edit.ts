@@ -14,7 +14,7 @@ import db from "@/utils/db";
 
 const DEFAULT_RETURN_ROUTE = "/workspaces";
 
-export default function ({ editing = false, initialId = "", uid = "" }) {
+export default function ({ editing = false, id = "", uid = "" }) {
   const router = useRouter();
 
   const entity: Workspace = reactive({
@@ -25,10 +25,10 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
     archived: false,
   });
 
-  const { id } = toRefs(entity);
+  //const { id } = toRefs(entity);
 
-  if (initialId) {
-    getDoc(doc(db.workspaces, initialId)).then((doc) => {
+  if (id) {
+    getDoc(doc(db.workspaces, id)).then((doc) => {
       if (doc.exists()) {
         const data = doc.data();
         if (!data) {
@@ -47,7 +47,7 @@ export default function ({ editing = false, initialId = "", uid = "" }) {
       return;
     }
 
-    if (!initialId) {
+    if (!editing) {
       // create a new workspace and member with creator role
       // also adds a sample product and sample till
       entity.created = new Date().toISOString();

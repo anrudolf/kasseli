@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, toRef, defineProps } from "vue";
+import { ref, defineProps } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";
@@ -81,12 +81,11 @@ import useWorkspaceEdit from "@/hooks/use-workspace-edit";
 import useAuthStore from "@/store/auth";
 
 const props = defineProps({
-  editId: { type: String, default: "" },
-  newId: { type: String, default: "" },
+  idDisabled: { type: String, default: "" },
+  id: { type: String, default: "" },
   editing: { type: Boolean },
 });
 
-const editId = toRef(props, "editId");
 const deleteModal = ref(false);
 const deleteModalConfirmation = ref("");
 
@@ -94,16 +93,11 @@ const authStore = useAuthStore();
 
 const options = {
   editing: props.editing,
-  initialId: editId.value,
+  id: props.id,
   uid: authStore.user?.uid || "",
 };
 
-const { entity, exists, remove, save, saveDisabled, idDisabled } =
-  useWorkspaceEdit(options);
-
-if (props.newId) {
-  entity.id = `${props.newId}`;
-}
+const { entity, remove, save, saveDisabled } = useWorkspaceEdit(options);
 </script>
 
 <style scoped>

@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/workspaces/edit",
     name: "workspaces-edit",
     component: WorkspaceEdit,
-    props: (route) => ({ editId: route.query.id }),
+    props: (route) => ({ id: route.query.id }),
   },
   {
     path: "/workspaces/:id",
