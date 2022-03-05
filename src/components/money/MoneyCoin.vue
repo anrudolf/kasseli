@@ -2,35 +2,34 @@
   <img :src="getAssetSrc()" />
 </template>
 
-<script>
-export default {
-  props: {
-    currency: {
-      type: String,
-      default: "CHF",
-    },
-    side: {
-      type: String,
-      default: "front",
-    },
-    amount: {
-      type: Number,
-      default: 1,
-    },
+<script lang="ts" setup>
+import { defineProps } from "vue";
+
+const props = defineProps({
+  currency: {
+    type: String,
+    default: "CHF",
   },
-  methods: {
-    // https://vitejs.dev/guide/features.html#glob-import
-    getAssetSrc() {
-      const path = `/src/assets/currencies/${this.currency}/${
-        this.currency
-      }_coin_${this.amount.toFixed(2)}_${this.side}.png`;
-      const modules = import.meta.globEager(`/src/assets/currencies/*/*`);
-      if (!modules[path]) {
-        console.log("not found", path);
-        return null;
-      }
-      return modules[path].default;
-    },
+  side: {
+    type: String,
+    default: "front",
   },
+  amount: {
+    type: Number,
+    default: 1,
+  },
+});
+
+// https://vitejs.dev/guide/features.html#glob-import
+const getAssetSrc = () => {
+  const path = `/src/assets/currencies/${props.currency}/${
+    props.currency
+  }_coin_${props.amount.toFixed(2)}_${props.side}.png`;
+  const modules = import.meta.globEager(`/src/assets/currencies/*/*`);
+  if (!modules[path]) {
+    console.log("not found", path);
+    return null;
+  }
+  return modules[path].default;
 };
 </script>
