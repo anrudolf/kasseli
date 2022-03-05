@@ -40,3 +40,7 @@ To serve Kasseli locally on [http://localhost:8080](http://localhost:8080) for d
 ```
 npm run serve
 ```
+
+## Misc
+
+Favicons generated with [https://favicon.io/favicon-converter/](https://favicon.io/favicon-converter/)
