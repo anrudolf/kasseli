@@ -1,36 +1,32 @@
 <template>
   <app-till-edit
+    :id="props.id"
     :key="`${editing}`"
     :editing="editing"
-    :edit-id="editId"
-    :new-id="newId"
     :removable="removable"
   />
 </template>
 
-<script lang="ts">
-import { computed, toRefs } from "vue";
+<script lang="ts" setup>
+import { computed, toRefs, defineProps } from "vue";
 import { useRoute } from "vue-router";
 
 import appTillEdit from "../../components/till/TillEdit.vue";
 
-export default {
-  components: {
-    appTillEdit,
+const props = defineProps({
+  id: {
+    type: String,
+    default: "",
   },
-  props: ["editId", "newId"],
-  setup(props) {
-    const route = useRoute();
+});
 
-    const editing = computed(
-      () => !route.matched.some(({ name }) => name === "tills-new")
-    );
+const route = useRoute();
 
-    const { editId } = toRefs(props);
+const editing = computed(
+  () => !route.matched.some(({ name }) => name === "tills-new")
+);
 
-    const removable = computed(() => editId.value !== "default");
+const { id: reactiveId } = toRefs(props);
 
-    return { editing, removable };
-  },
-};
+const removable = computed(() => reactiveId.value !== "default");
 </script>

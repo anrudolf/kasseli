@@ -8,13 +8,7 @@ import { Till, TillCatalog, TillProduct } from "@/types";
 
 import db from "@/utils/db";
 
-export default function ({
-  editing = false,
-  initialId = "",
-}: {
-  editing: boolean;
-  initialId?: string;
-}) {
+export default function ({ editing = false, id = "" }) {
   const router = useRouter();
 
   const entity: Till = reactive({
@@ -28,15 +22,20 @@ export default function ({
     favorites: [],
   });
 
-  const { id } = toRefs(entity);
-
-  if (initialId) {
-    getDoc(doc(db.tills, initialId)).then((doc) => {
+  if (id) {
+    entity.id = id;
+    getDoc(doc(db.tills, id)).then((doc) => {
       if (doc.exists()) {
         const data = doc.data();
         if (!data) {
           return;
         }
+
+        if (!editing) {
+          exists.value = true;
+          return;
+        }
+
         Object.assign(entity, { ...entity, ...data });
       }
     });
@@ -45,8 +44,10 @@ export default function ({
   const exists = ref(false);
   const loading = ref(false);
 
+  const { id: watchedId } = toRefs(entity);
+
   const save = () => {
-    if (!initialId) {
+    if (!editing) {
       entity.created = new Date().toISOString();
     }
 
@@ -129,7 +130,7 @@ export default function ({
 
   const idDisabled = computed(() => editing);
 
-  watch(id, (v) => {
+  watch(watchedId, (v) => {
     onIdChangedHandler(v);
   });
 

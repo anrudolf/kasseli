@@ -6,7 +6,7 @@
       <div>
         <div>Zum Bestätigen bitte Kasse ID eintippen und löschen klicken</div>
         <label class="block">
-          <div class="text-gray-700">{{ entity.id }}</div>
+          <div class="text-gray-700">{{ till.id }}</div>
           <input
             v-model="deleteModalConfirmation"
             class="input"
@@ -15,7 +15,7 @@
         </label>
         <div class="mt-3 flex justify-between">
           <button
-            :disabled="entity.id !== deleteModalConfirmation"
+            :disabled="till.id !== deleteModalConfirmation"
             class="
               disabled:opacity-50
               bg-red-500
@@ -63,7 +63,7 @@
     <label class="block">
       <div class="text-gray-700">ID</div>
       <input
-        v-model="entity.id"
+        v-model="till.id"
         class="input"
         :class="{ disabled: idDisabled }"
         placeholder="Kasse ID"
@@ -78,7 +78,7 @@
       <app-icon icon="info" color="gray" />
       <span class="ml-2">Kasse existiert bereits</span>
       <router-link
-        :to="`/tills/edit?id=${id}`"
+        :to="`/tills/edit?id=${till.id}`"
         class="ml-auto underline text-blue-500"
         >Editieren</router-link
       >
@@ -86,13 +86,13 @@
 
     <label class="block">
       <div class="text-gray-700">Label</div>
-      <input v-model="entity.label.de" class="input" placeholder="Kasse Name" />
+      <input v-model="till.label.de" class="input" placeholder="Kasse Name" />
     </label>
 
     <label class="block">
       <div class="text-gray-700">Bild</div>
     </label>
-    <app-image-selector v-model="entity.imageRef" />
+    <app-image-selector v-model="till.imageRef" />
 
     <section class="mt-4">
       <h2 class="flex justify-between items-center text-gray-700 text-lg">
@@ -115,14 +115,14 @@
         </div>
       </h2>
 
-      <div v-for="(favorite, idx) in entity.favorites" :key="idx">
+      <div v-for="(favorite, idx) in till.favorites" :key="idx">
         <component
           :is="getComponent(favorite.kind)"
           :entity="favorite"
           :idx="idx"
-          :size="entity.favorites.length"
+          :size="till.favorites.length"
           class="my-4 border-4"
-          @remove="entity.favorites.splice(idx, 1)"
+          @remove="till.favorites.splice(idx, 1)"
           @move="(pos: string) => moveFavorite(idx, pos)"
         />
       </div>
@@ -152,8 +152,7 @@ import useTillEdit from "@/hooks/use-till-edit";
 import arrayUtil from "@/utils/array";
 
 const props = defineProps({
-  editId: { type: String, default: "" },
-  newId: { type: String, default: "" },
+  id: { type: String, default: "" },
   editing: Boolean,
   removable: Boolean,
 });
@@ -161,11 +160,10 @@ const props = defineProps({
 const deleteModal = ref(false);
 const deleteModalConfirmation = ref("");
 
-const options = { editing: props.editing, initialId: props.editId };
+const options = { editing: props.editing, id: props.id };
 
 const {
-  id,
-  entity,
+  entity: till,
   exists,
   remove,
   save,
@@ -174,10 +172,6 @@ const {
   addCatalog,
   addProduct,
 } = useTillEdit(options);
-
-if (props.newId) {
-  entity.id = `${props.newId}`;
-}
 
 const getComponent = (kind: string) => {
   if (kind === "catalog") {
@@ -194,16 +188,16 @@ const getComponent = (kind: string) => {
 const moveFavorite = (idx: number, pos: string) => {
   switch (pos) {
     case "up":
-      arrayUtil.moveDown(entity.favorites, idx);
+      arrayUtil.moveDown(till.favorites, idx);
       break;
     case "top":
-      arrayUtil.moveBottom(entity.favorites, idx);
+      arrayUtil.moveBottom(till.favorites, idx);
       break;
     case "down":
-      arrayUtil.moveUp(entity.favorites, idx);
+      arrayUtil.moveUp(till.favorites, idx);
       break;
     case "bottom":
-      arrayUtil.moveTop(entity.favorites, idx);
+      arrayUtil.moveTop(till.favorites, idx);
       break;
     default:
       break;

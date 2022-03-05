@@ -98,7 +98,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/tills/edit",
     name: "tills-edit",
     component: TillEdit,
-    props: (route) => ({ editId: route.query.id }),
+    props: (route) => ({ id: route.query.id }),
   },
   {
     path: "/settings",
