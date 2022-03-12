@@ -57,6 +57,8 @@ import useAppPayment from "@/hooks/use-app-payment";
 
 import useKasse from "@/store/kasse";
 
+import { createReceipt } from "@/services/receipts";
+
 const router = useRouter();
 const link = ref("");
 const rejectedModal = ref(false);
@@ -95,6 +97,7 @@ watch(entity, (vnew) => {
 });
 
 const restart = () => {
+  createReceipt();
   kasse.$reset();
   router.push("/");
 };

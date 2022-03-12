@@ -89,3 +89,16 @@ export interface WorkspaceInvite {
   created: string;
   usage: WorkspaceInviteUsage;
 }
+
+export interface ReceiptItem {
+  product: Product;
+  quantity: number;
+  price: number;
+}
+
+export interface Receipt {
+  id: string;
+  created: string;
+  content: Array<ReceiptItem>;
+  price: number;
+}

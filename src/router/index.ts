@@ -26,6 +26,8 @@ import Workspace from "@/views/workspaces/Workspace.vue";
 import WorkspaceInvite from "@/views/workspaces/WorkspaceInvite.vue";
 import WorkspaceInviteEdit from "@/views/workspaces/WorkspaceInviteEdit.vue";
 
+import Receipts from "@/views/receipts/Receipts.vue";
+
 import Scan from "@/views/Scan.vue";
 
 import Debug from "../views/Debug.vue";
@@ -155,6 +157,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/scan",
     name: "scan",
     component: Scan,
+  },
+  {
+    path: "/receipts",
+    name: "receipts",
+    component: Receipts,
   },
   {
     path: "/debug",

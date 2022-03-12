@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 
 import useProductStore from "./products";
 
+import { Product } from "@/types";
+
 interface Item {
   code: string;
   quantity: number;
-  product: any;
+  product: Product;
   price: number;
 }
 

@@ -9,9 +9,9 @@
         </div>
       </div>
       <router-link
-        class="btn btn-white"
+        class="btn btn-white flex items-center"
         :to="{ name: 'workspaces-edit', query: { id: wid } }"
-        >Edit</router-link
+        ><pencil-icon class="w-5 h-5 mr-2"></pencil-icon>Edit</router-link
       >
     </div>
     <div v-if="settings.workspace === PUBLIC_WORKSPACE">
@@ -37,6 +37,13 @@
       </button>
     </div>
 
+    <div class="mt-8">
+      <h2>Quittungen</h2>
+      <router-link class="link" :to="{ name: 'receipts' }"
+        >Ansehen...</router-link
+      >
+    </div>
+
     <app-workspace-invite-list v-model="invites" :wid="wid" class="mt-8" />
   </div>
 </template>
@@ -44,6 +51,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { PencilIcon } from "@heroicons/vue/outline";
 
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/services/db";

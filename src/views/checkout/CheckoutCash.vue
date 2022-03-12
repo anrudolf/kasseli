@@ -108,6 +108,8 @@ import appIcon from "@/components/ui/Icon.vue";
 import useKasseStore from "@/store/kasse";
 import useSettingsStore from "@/store/settings";
 
+import { createReceipt } from "@/services/receipts";
+
 const router = useRouter();
 const kasse = useKasseStore();
 const settings = useSettingsStore();
@@ -170,6 +172,7 @@ const add = (i: number) => {
 };
 
 const restart = () => {
+  createReceipt();
   kasse.$reset();
   router.push("/");
 };
