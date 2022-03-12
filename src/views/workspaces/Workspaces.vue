@@ -29,7 +29,7 @@ import appWorkspaceList from "@/components/workspace/WorkspaceList.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceSelector from "@/components/workspace/WorkspaceSelector.vue";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 import useAuth from "@/store/auth";
 import {

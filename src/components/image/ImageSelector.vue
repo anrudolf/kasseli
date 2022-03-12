@@ -42,7 +42,7 @@ import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 // Create component
 const FilePond: any = vueFilePond(

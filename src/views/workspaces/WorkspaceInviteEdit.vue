@@ -105,7 +105,7 @@ import { itemsRole, itemsUsage, getLink } from "@/utils/workspace";
 import useWorkspaceInvite from "@/hooks/use-workspace-invite";
 import useAuthstore from "@/store/auth";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 const route = useRoute();
 const router = useRouter();

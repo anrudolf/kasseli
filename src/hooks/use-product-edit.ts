@@ -5,7 +5,7 @@ import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import utils from "../utils";
 import { useDebounce } from "../hooks/use-debounce";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 import { Product } from "@/types";
 

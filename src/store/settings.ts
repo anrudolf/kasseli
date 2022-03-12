@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import useTillstore from "./till";
 import useProductStore from "./products";
 import { createWorkspacePrefix } from "@/utils/workspace";
-import { initWorkspace as initDbWorkspace } from "@/utils/db";
+import { initWorkspace as initDbWorkspace } from "@/services/db";
 
 import { PUBLIC_WORKSPACE } from "@/utils/workspace";
 const DEFAULT_TILL = "default";

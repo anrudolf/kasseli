@@ -10,9 +10,7 @@ import {
 
 import { Product, Till, Workspace, WorkspaceRole } from "@/types";
 
-import db from "@/utils/db";
-
-const DEFAULT_RETURN_ROUTE = "/workspaces";
+import db from "@/services/db";
 
 export default function ({ editing = false, id = "", uid = "" }) {
   const router = useRouter();

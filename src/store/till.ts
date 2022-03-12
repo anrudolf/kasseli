@@ -5,7 +5,7 @@ import { onSnapshot, Unsubscribe } from "firebase/firestore";
 
 import useSettingsStore from "./settings";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 const store = defineStore({
   id: "tills",

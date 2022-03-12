@@ -49,7 +49,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 import refactor from "@/utils/refactor";
 
 const connie = "uHvaGPHeZbWVUgDFSgmbbhJSnYx2";

@@ -6,7 +6,7 @@ import { useDebounce } from "../hooks/use-debounce";
 
 import { Till, TillCatalog, TillProduct } from "@/types";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 export default function ({ editing = false, id = "" }) {
   const router = useRouter();

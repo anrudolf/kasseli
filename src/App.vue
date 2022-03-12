@@ -28,7 +28,7 @@ import useProductStore from "@/store/products";
 import useTillStore from "@/store/till";
 import useSettingsStore from "@/store/settings";
 
-import { initWorkspace as initDbWorkspace } from "@/utils/db";
+import { initWorkspace as initDbWorkspace } from "@/services/db";
 
 const uiStore = useUiStore();
 const productStore = useProductStore();

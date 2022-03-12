@@ -52,7 +52,7 @@ import useSettings from "@/store/settings";
 import { Workspace } from "@/types";
 import { PUBLIC_WORKSPACE } from "@/utils/workspace";
 import { getDoc, doc } from "firebase/firestore";
-import db from "@/utils/db";
+import db from "@/services/db";
 import appModal from "@/components/ui/Modal.vue";
 
 const { isLoggedIn } = useAuth();

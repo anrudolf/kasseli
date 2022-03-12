@@ -52,7 +52,7 @@ import appImageRef from "@/components/image/ImageRef.vue";
 
 import useSettings from "@/store/settings";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 import { getColor } from "@/utils";
 
 import { Till } from "@/types";

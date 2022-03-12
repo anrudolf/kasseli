@@ -86,7 +86,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/vue/outline";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 import { Workspace, WorkspaceMember } from "@/types";
 
 import useWorkspaceInvite from "@/hooks/use-workspace-invite";

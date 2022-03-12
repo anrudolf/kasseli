@@ -4,7 +4,7 @@ import { WorkspaceRole, WorkspaceInvite, WorkspaceInviteUsage } from "@/types";
 
 import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 export default function ({
   uid = "",

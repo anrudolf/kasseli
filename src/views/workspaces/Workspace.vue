@@ -46,7 +46,7 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import { doc, getDoc } from "firebase/firestore";
-import db from "@/utils/db";
+import db from "@/services/db";
 import { Workspace, WorkspaceInvite } from "@/types";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appWorkspaceInviteList from "@/components/workspace/WorkspaceInviteList.vue";

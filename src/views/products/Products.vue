@@ -48,7 +48,7 @@ import dynamicSort from "@/utils/dynamicSort";
 import useScanner from "@/hooks/use-scanner";
 import useFirestoreCollectionSnapshot from "@/hooks/use-firestore-collection-snapshot";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 import { Product } from "@/types";
 

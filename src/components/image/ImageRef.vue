@@ -15,7 +15,7 @@ import {
 
 import { ImageRef } from "@/types";
 
-import db from "@/utils/db";
+import db from "@/services/db";
 
 const props = defineProps({
   id: {
