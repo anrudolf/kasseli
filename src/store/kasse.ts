@@ -2,19 +2,12 @@ import { defineStore } from "pinia";
 
 import useProductStore from "./products";
 
-import { Product } from "@/types";
-
-interface Item {
-  code: string;
-  quantity: number;
-  product: Product;
-  price: number;
-}
+import { Product, ReceiptItem } from "@/types";
 
 const store = defineStore({
   id: "kasse",
   state: () => ({
-    items: [] as Item[],
+    items: [] as ReceiptItem[],
     selectedIndex: 0,
     offset: 0,
     pageSize: 4,

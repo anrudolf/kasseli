@@ -91,6 +91,7 @@ export interface WorkspaceInvite {
 }
 
 export interface ReceiptItem {
+  code: string;
   product: Product;
   quantity: number;
   price: number;

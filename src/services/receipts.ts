@@ -50,7 +50,7 @@ export const createReceipt = () => {
 
   kasse.items.forEach((item) => {
     content.push(item);
-    price += item.price;
+    price += item.price * item.quantity;
   });
 
   const receiptRef = doc(db.receipts);
