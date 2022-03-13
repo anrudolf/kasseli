@@ -36,6 +36,7 @@
     "vue-filepond": "^7.0.0",
     "vue-router": "^4.0.0-0",
     "vue-tsc": "^0.29.8",
+    "vue3-date-time-picker": "^2.8.0",
     "vue3-qrcode-reader": "^0.0.1"
   },
   "devDependencies": {

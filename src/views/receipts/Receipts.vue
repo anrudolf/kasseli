@@ -34,17 +34,20 @@
 
     <h1>Quittungen</h1>
 
-    <div class="flex space-x-2">
-      <label>
-        von
-        <input v-model="from" class="input" />
-      </label>
-
-      <label>
-        bis
-        <input v-model="to" class="input" />
-      </label>
+    <div class="datepicker">
+      <Datepicker
+        v-model="date"
+        range
+        inline
+        inline-with-input
+        auto-apply
+        :preset-ranges="presetRanges"
+        input-class-name="dp-custom-input"
+        menu-class-name="dp-custom-menu"
+      />
     </div>
+
+    {{ date }}
 
     <app-select v-model.number="pageSize" :items="pageSizeOptions" />
 
@@ -99,6 +102,17 @@ import { getReceipts } from "@/services/receipts";
 import appModal from "@/components/ui/Modal.vue";
 import appSelect from "@/components/ui/Select.vue";
 
+import {
+  endOfMonth,
+  endOfYear,
+  startOfMonth,
+  startOfYear,
+  subMonths,
+} from "date-fns";
+
+import Datepicker from "vue3-date-time-picker";
+import "vue3-date-time-picker/dist/main.css";
+
 import { getLocaleDateTimeString } from "@/utils/date";
 
 const pageSizeOptions = [
@@ -115,6 +129,26 @@ const pageSizeOptions = [
 ];
 
 const pageSize = ref(pageSizeOptions[0].value);
+
+const date = ref();
+const presetRanges = ref([
+  { label: "Today", range: [new Date(), new Date()] },
+  {
+    label: "This month",
+    range: [startOfMonth(new Date()), endOfMonth(new Date())],
+  },
+  {
+    label: "Last month",
+    range: [
+      startOfMonth(subMonths(new Date(), 1)),
+      endOfMonth(subMonths(new Date(), 1)),
+    ],
+  },
+  {
+    label: "This year",
+    range: [startOfYear(new Date()), endOfYear(new Date())],
+  },
+]);
 
 const receipts = ref<Receipt[]>([]);
 
@@ -169,5 +203,15 @@ watch(pageSize, (newVal, oldVal) => {
 th,
 td {
   @apply p-2;
+}
+</style>
+
+<style>
+.dp-custom-input {
+  width: 32rem;
+}
+
+.dp-custom-menu {
+  margin-top: 0.75rem;
 }
 </style>
