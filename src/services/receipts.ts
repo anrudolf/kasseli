@@ -3,7 +3,7 @@ import db from "@/services/db";
 import {
   setDoc,
   doc,
-  collection,
+  limit,
   query,
   where,
   getDocs,
@@ -14,18 +14,13 @@ import useKasse from "@/store/kasse";
 
 import { Receipt, ReceiptItem } from "@/types";
 
-export const getReceipts = async ({
-  from,
-  to,
-}: {
-  from?: string;
-  to?: string;
-}) => {
+export const getReceipts = async ({ from = "", to = "", max = 5 }) => {
   const q = query(
     db.receipts,
     where("created", ">=", from),
     where("created", "<", to),
-    orderBy("created", "desc")
+    orderBy("created", "desc"),
+    limit(max)
   );
 
   const querySnapshot = await getDocs(q);

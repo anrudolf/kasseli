@@ -5,7 +5,8 @@
         <thead>
           <tr>
             <th colspan="3">
-              <span>Datum </span> <span>{{ receipt.created }}</span>
+              <span>Datum </span>
+              <span>{{ getLocaleDateTimeString(receipt.created) }}</span>
             </th>
           </tr>
           <tr class="border-b border-black">
@@ -45,6 +46,8 @@
       </label>
     </div>
 
+    <app-select v-model.number="pageSize" :items="pageSizeOptions" />
+
     <table class="mt-4 border-collapse border w-full">
       <thead>
         <tr>
@@ -65,7 +68,7 @@
           class="cursor-pointer"
           @click="select(r)"
         >
-          <td>{{ r.created }}</td>
+          <td>{{ getLocaleDateTimeString(r.created) }}</td>
           <td class="text-right">{{ r.price.toFixed(2) }}</td>
           <td>
             <button class="link flex items-center">
@@ -86,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 import { EyeIcon } from "@heroicons/vue/solid";
 
@@ -94,14 +97,28 @@ import { Receipt } from "@/types";
 import { getReceipts } from "@/services/receipts";
 
 import appModal from "@/components/ui/Modal.vue";
+import appSelect from "@/components/ui/Select.vue";
+
+import { getLocaleDateTimeString } from "@/utils/date";
+
+const pageSizeOptions = [
+  { text: "5", value: 5 },
+  { text: "10", value: 10 },
+  { text: "20", value: 20 },
+  { text: "50", value: 50 },
+  { text: "100", value: 100 },
+  { text: "200", value: 200 },
+  { text: "500", value: 500 },
+  { text: "1000", value: 1000 },
+  { text: "2000", value: 2000 },
+  { text: "5000", value: 5000 },
+];
+
+const pageSize = ref(pageSizeOptions[0].value);
 
 const receipts = ref<Receipt[]>([]);
 
 const grandTotal = computed(() => {
-  if (receipts.value.length === 0) {
-    //return 0;
-  }
-
   return receipts.value.reduce((prev, cur) => prev + cur.price, 0);
 });
 
@@ -116,8 +133,16 @@ const select = (r: Receipt) => {
   showModal.value = true;
 };
 
-const fetchData = async (from: string, to: string) => {
-  const tmp = await getReceipts({ from, to });
+const fetchData = async ({
+  from,
+  to,
+  max,
+}: {
+  from: string;
+  to: string;
+  max: number;
+}) => {
+  const tmp = await getReceipts({ from, to, max });
   receipts.value = tmp;
 };
 
@@ -125,7 +150,19 @@ const today = new Date();
 const yesterday = new Date(today);
 yesterday.setDate(yesterday.getDate() - 1);
 
-fetchData(yesterday.toISOString(), today.toISOString());
+fetchData({
+  from: yesterday.toISOString(),
+  to: today.toISOString(),
+  max: pageSize.value,
+});
+
+watch(pageSize, (newVal, oldVal) => {
+  fetchData({
+    from: yesterday.toISOString(),
+    to: today.toISOString(),
+    max: pageSize.value,
+  });
+});
 </script>
 
 <style scoped>
