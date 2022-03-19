@@ -36,7 +36,7 @@
 
     <div class="datepicker">
       <Datepicker
-        v-model="date"
+        v-model="range"
         range
         inline
         inline-with-input
@@ -44,10 +44,12 @@
         :preset-ranges="presetRanges"
         input-class-name="dp-custom-input"
         menu-class-name="dp-custom-menu"
+        :enable-time-picker="false"
+        :format="format"
       />
     </div>
 
-    {{ date }}
+    {{ range }}
 
     <app-select v-model.number="pageSize" :items="pageSizeOptions" />
 
@@ -108,6 +110,8 @@ import {
   startOfMonth,
   startOfYear,
   subMonths,
+  startOfDay,
+  endOfDay,
 } from "date-fns";
 
 import Datepicker from "vue3-date-time-picker";
@@ -130,23 +134,35 @@ const pageSizeOptions = [
 
 const pageSize = ref(pageSizeOptions[0].value);
 
-const date = ref();
+const format = (d: Date[]) => {
+  console.log(d);
+  const DD0 = `${d[0].getDate()}`.padStart(2, "0");
+  const MM0 = `${d[0].getMonth() + 1}`.padStart(2, "0");
+  const YYYY0 = d[0].getFullYear();
+
+  const DD1 = `${d[1].getDate()}`.padStart(2, "0");
+  const MM1 = `${d[1].getMonth() + 1}`.padStart(2, "0");
+  const YYYY1 = d[1].getFullYear();
+
+  return `${YYYY0}-${MM0}-${DD0} - ${YYYY1}-${MM1}-${DD1}`;
+};
+
+const now = new Date();
+const range = ref<Date[]>([startOfMonth(now), endOfMonth(now)]);
+
 const presetRanges = ref([
-  { label: "Today", range: [new Date(), new Date()] },
+  { label: "Today", range: [now, now] },
   {
     label: "This month",
-    range: [startOfMonth(new Date()), endOfMonth(new Date())],
+    range: [startOfMonth(now), endOfMonth(now)],
   },
   {
     label: "Last month",
-    range: [
-      startOfMonth(subMonths(new Date(), 1)),
-      endOfMonth(subMonths(new Date(), 1)),
-    ],
+    range: [startOfMonth(subMonths(now, 1)), endOfMonth(subMonths(now, 1))],
   },
   {
     label: "This year",
-    range: [startOfYear(new Date()), endOfYear(new Date())],
+    range: [startOfYear(now), endOfYear(now)],
   },
 ]);
 
@@ -156,9 +172,6 @@ const grandTotal = computed(() => {
   return receipts.value.reduce((prev, cur) => prev + cur.price, 0);
 });
 
-const from = ref("");
-const to = ref("");
-
 const showModal = ref(false);
 const receipt = ref<Receipt | null>(null);
 
@@ -167,15 +180,10 @@ const select = (r: Receipt) => {
   showModal.value = true;
 };
 
-const fetchData = async ({
-  from,
-  to,
-  max,
-}: {
-  from: string;
-  to: string;
-  max: number;
-}) => {
+const fetchData = async () => {
+  const from = range.value[0].toISOString();
+  const to = range.value[1].toISOString();
+  const max = pageSize.value;
   const tmp = await getReceipts({ from, to, max });
   receipts.value = tmp;
 };
@@ -184,18 +192,19 @@ const today = new Date();
 const yesterday = new Date(today);
 yesterday.setDate(yesterday.getDate() - 1);
 
-fetchData({
-  from: yesterday.toISOString(),
-  to: today.toISOString(),
-  max: pageSize.value,
-});
+fetchData();
 
 watch(pageSize, (newVal, oldVal) => {
-  fetchData({
-    from: yesterday.toISOString(),
-    to: today.toISOString(),
-    max: pageSize.value,
-  });
+  fetchData();
+});
+
+watch(range, (newVal, oldVal) => {
+  if (newVal) {
+    const f = startOfDay(newVal[0]);
+    const t = endOfDay(newVal[1]);
+    range.value = [f, t];
+    fetchData();
+  }
 });
 </script>
 
@@ -208,7 +217,8 @@ td {
 
 <style>
 .dp-custom-input {
-  width: 32rem;
+  /*width: 32rem;*/
+  font-size: 80%;
 }
 
 .dp-custom-menu {
