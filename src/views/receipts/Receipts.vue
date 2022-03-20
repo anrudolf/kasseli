@@ -49,12 +49,28 @@
       />
     </div>
 
-    {{ range }}
-
-    <app-select v-model.number="pageSize" :items="pageSizeOptions" />
+    <div class="mt-4 flex items-center">
+      <span class="mr-2">Anzahl</span
+      ><app-select v-model.number="pageSize" :items="pageSizeOptions" />
+    </div>
 
     <table class="mt-4 border-collapse border w-full">
       <thead>
+        <tr>
+          <td>
+            {{ getLocaleDateString(range[0].toISOString()) }} -
+            {{ getLocaleDateString(range[1].toISOString()) }}
+          </td>
+          <td colspan="3" class="text-right">
+            <button
+              class="btn btn-blue"
+              :disabled="receipts.length === 0"
+              @click="startDownload"
+            >
+              Download
+            </button>
+          </td>
+        </tr>
         <tr>
           <td class="text-right font-bold">Total</td>
           <td class="text-right font-bold">{{ grandTotal.toFixed(2) }}</td>
@@ -79,6 +95,11 @@
             <button class="link flex items-center">
               <eye-icon class="w-5 h-5"></eye-icon>
             </button>
+          </td>
+        </tr>
+        <tr v-if="receipts.length === 0">
+          <td colspan="3" class="text-secondary">
+            Keine Quittungen in diesem Zeitraum
           </td>
         </tr>
       </tbody>
@@ -117,7 +138,8 @@ import {
 import Datepicker from "vue3-date-time-picker";
 import "vue3-date-time-picker/dist/main.css";
 
-import { getLocaleDateTimeString } from "@/utils/date";
+import { getLocaleDateTimeString, getLocaleDateString } from "@/utils/date";
+import { download } from "@/services/downloader";
 
 const pageSizeOptions = [
   { text: "5", value: 5 },
@@ -135,7 +157,6 @@ const pageSizeOptions = [
 const pageSize = ref(pageSizeOptions[0].value);
 
 const format = (d: Date[]) => {
-  console.log(d);
   const DD0 = `${d[0].getDate()}`.padStart(2, "0");
   const MM0 = `${d[0].getMonth() + 1}`.padStart(2, "0");
   const YYYY0 = d[0].getFullYear();
@@ -151,17 +172,17 @@ const now = new Date();
 const range = ref<Date[]>([startOfMonth(now), endOfMonth(now)]);
 
 const presetRanges = ref([
-  { label: "Today", range: [now, now] },
+  { label: "Heute", range: [now, now] },
   {
-    label: "This month",
+    label: "Dieser Monat",
     range: [startOfMonth(now), endOfMonth(now)],
   },
   {
-    label: "Last month",
+    label: "Letzter Monat",
     range: [startOfMonth(subMonths(now, 1)), endOfMonth(subMonths(now, 1))],
   },
   {
-    label: "This year",
+    label: "Dieses Jahr",
     range: [startOfYear(now), endOfYear(now)],
   },
 ]);
@@ -192,12 +213,38 @@ const today = new Date();
 const yesterday = new Date(today);
 yesterday.setDate(yesterday.getDate() - 1);
 
-fetchData();
+const startDownload = () => {
+  const data: (string | number)[][] = [];
+  const header = ["date", "rid", "pid", "label", "qty", "price"];
+
+  data.push(header);
+  receipts.value.forEach((r) => {
+    r.content.forEach((c) => {
+      const row = [
+        getLocaleDateTimeString(r.created),
+        r.id,
+        c.product.id,
+        c.product.label.de,
+        c.quantity,
+        c.price * c.quantity,
+      ];
+      data.push(row);
+    });
+  });
+
+  let csvContent = "";
+  data.forEach((row) => {
+    csvContent += row.join(";") + "\n";
+  });
+
+  download(csvContent, "receipts.csv", "text/csv;encoding:utf-8");
+};
 
 watch(pageSize, (newVal, oldVal) => {
   fetchData();
 });
 
+// TODO: fix recursive trigger
 watch(range, (newVal, oldVal) => {
   if (newVal) {
     const f = startOfDay(newVal[0]);
@@ -206,6 +253,8 @@ watch(range, (newVal, oldVal) => {
     fetchData();
   }
 });
+
+fetchData();
 </script>
 
 <style scoped>

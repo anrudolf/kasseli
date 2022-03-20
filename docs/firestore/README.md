@@ -21,9 +21,8 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
-    match /trials/{trial} {
-      allow create: if true;
-      allow read: if false;
+    match /receipts/{receipt} {
+      allow read, write: if true;
     }
 
     // collection group: members
@@ -102,6 +101,11 @@ service cloud.firestore {
         allow read: if true;
         allow write: if isAllowedToEditSubcollections();
     	}
+
+      match /receipts/{receipt} {
+        allow read: if true;
+        allow write: if isAllowedToEditSubcollections();
+      }
     }
   }
 }
