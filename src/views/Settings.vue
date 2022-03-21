@@ -16,6 +16,13 @@
           >
         </div>
 
+        <h3>Belege</h3>
+        <div>
+          <router-link to="/receipts" class="link text-xl"
+            >Belege ansehen...</router-link
+          >
+        </div>
+
         <h3>Zahlungsmöglichkeiten</h3>
         <div>
           <app-switch v-model="settings.paymentOptions.card.enabled"

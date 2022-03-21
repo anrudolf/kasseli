@@ -18,12 +18,12 @@
         >Add</router-link
       >
     </div>
-    <app-workspace-list v-model="workspaces" />
+    <app-workspace-list v-model="filteredWorkspaces" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 import appWorkspaceList from "@/components/workspace/WorkspaceList.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
@@ -41,6 +41,8 @@ import {
   getDoc,
   doc,
 } from "firebase/firestore";
+
+import useSettings from "@/store/settings";
 
 import { Workspace, WorkspaceMember } from "@/types";
 
@@ -86,6 +88,12 @@ const searchPersonalWorkspaces = async (uid: string) => {
     console.error(e);
   }
 };
+
+const settings = useSettings();
+
+const filteredWorkspaces = computed(() => {
+  return workspaces.value.filter((w) => w.id !== settings.workspace);
+});
 
 searchPersonalWorkspaces(auth.uid);
 </script>

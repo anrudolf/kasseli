@@ -32,7 +32,7 @@
       </table>
     </app-modal>
 
-    <h1>Quittungen</h1>
+    <h1>Belege</h1>
 
     <div class="datepicker">
       <Datepicker
@@ -133,6 +133,8 @@ import {
   subMonths,
   startOfDay,
   endOfDay,
+  startOfYesterday,
+  endOfYesterday,
 } from "date-fns";
 
 import Datepicker from "vue3-date-time-picker";
@@ -170,9 +172,13 @@ const format = (d: Date[]) => {
 
 const now = new Date();
 const range = ref<Date[]>([startOfMonth(now), endOfMonth(now)]);
+const adjustedRange = computed(() => {
+  return [startOfDay(range.value[0]), endOfDay(range.value[1])];
+});
 
 const presetRanges = ref([
-  { label: "Heute", range: [now, now] },
+  { label: "Heute", range: [startOfDay(now), endOfDay(now)] },
+  { label: "Gestern", range: [startOfYesterday(), endOfYesterday()] },
   {
     label: "Dieser Monat",
     range: [startOfMonth(now), endOfMonth(now)],
@@ -202,16 +208,12 @@ const select = (r: Receipt) => {
 };
 
 const fetchData = async () => {
-  const from = range.value[0].toISOString();
-  const to = range.value[1].toISOString();
+  const from = adjustedRange.value[0].toISOString();
+  const to = adjustedRange.value[1].toISOString();
   const max = pageSize.value;
   const tmp = await getReceipts({ from, to, max });
   receipts.value = tmp;
 };
-
-const today = new Date();
-const yesterday = new Date(today);
-yesterday.setDate(yesterday.getDate() - 1);
 
 const startDownload = () => {
   const data: (string | number)[][] = [];
@@ -244,14 +246,8 @@ watch(pageSize, (newVal, oldVal) => {
   fetchData();
 });
 
-// TODO: fix recursive trigger
 watch(range, (newVal, oldVal) => {
-  if (newVal) {
-    const f = startOfDay(newVal[0]);
-    const t = endOfDay(newVal[1]);
-    range.value = [f, t];
-    fetchData();
-  }
+  fetchData();
 });
 
 fetchData();
