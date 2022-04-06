@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-300 pb-2 px-2 flex flex-col text-center">
-    <div class="label">Aktueller Artikel</div>
+    <div class="label flex justify-center items-center">Aktueller Artikel</div>
     <div class="relative flex-1 bg-white flex justify-center items-center">
       <div
         class="w-full px-2 absolute truncate text-xl sm:text-2xl md:text-3xl"

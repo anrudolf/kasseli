@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-gray-300 p-2 pt-0 sm:pt-2 flex flex-col text-center">
-    <div class="label">Anzahl</div>
+  <div class="bg-gray-300 pb-2 px-2 flex flex-col text-center">
+    <div class="label flex justify-center items-center">Anzahl</div>
     <div class="flex-1 px-2 bg-white flex justify-between items-center">
       <button class="btn text-red-600" @click="remove">
         <svg
@@ -64,13 +64,8 @@ const remove = () => selected.value && store.remove();
 
 .qty {
   font-size: clamp(2rem, 7vh, 3.75rem);
+  line-height: 50%;
 }
-
-/*
-.label {
-  @apply h-6 sm:h-8 text-lg sm:text-xl font-medium;
-}
-*/
 
 .label {
   @apply font-medium;
