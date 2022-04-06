@@ -138,9 +138,9 @@ const isOpen = computed(() => ui.menu);
 }
 
 .app-menu-link {
-  padding: 8px;
+  padding: clamp(2px, 1vh, 8px);
   text-decoration: none;
-  font-size: 36px;
+  font-size: clamp(1.5rem, 8vh, 2.25rem);
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
