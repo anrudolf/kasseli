@@ -55,14 +55,8 @@ tillStore.init();
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 36px 1fr;
-  height: 100%;
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .wrapper {
-    grid-template-rows: 50px 1fr;
-  }
+  grid-template-rows: clamp(36px, 10vh, 50px) 1fr;
+  height: 100vh;
+  width: 100vw;
 }
 </style>

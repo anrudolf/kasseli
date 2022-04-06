@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-300 p-2 pt-0 sm:pt-2 flex flex-col text-center">
+  <div class="bg-gray-300 pb-2 px-2 flex flex-col text-center">
     <div class="label">Aktueller Artikel</div>
     <div class="relative flex-1 bg-white flex justify-center items-center">
       <div
@@ -34,6 +34,8 @@ const label = computed(() => {
 }
 
 .label {
-  @apply h-6 sm:h-8 text-lg sm:text-xl font-medium;
+  @apply font-medium;
+  height: clamp(1rem, 5vh, 2rem);
+  font-size: clamp(1rem, 4vh, 1.25rem);
 }
 </style>

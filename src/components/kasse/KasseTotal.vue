@@ -7,8 +7,7 @@
       px-4
       py-2
       bg-gray-300
-      text-xl
-      md:text-2xl
+      app-text-responsive
     "
   >
     <div>Total: CHF</div>
@@ -24,3 +23,9 @@ import useKasseStore from "@/store/kasse";
 const store = useKasseStore();
 const price = computed(() => store.price.toFixed(2));
 </script>
+
+<style scoped>
+.app-text-responsive {
+  font-size: clamp(1.125rem, 5vh, 1.5rem);
+}
+</style>

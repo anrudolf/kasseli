@@ -58,7 +58,7 @@ const favorites = computed(() => {
   .wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 3rem 8rem;
+    grid-template-rows: 1fr clamp(1rem, 7vh, 3rem) clamp(5rem, 20vh, 8rem);
     grid-gap: 0.5rem;
     grid-template-areas:
       "liste liste others"

@@ -15,7 +15,7 @@
           />
         </svg>
       </button>
-      <span class="text-6xl">{{ quantity }}</span>
+      <span class="qty">{{ quantity }}</span>
       <button class="btn text-green-900" @click="add">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -54,10 +54,27 @@ const remove = () => selected.value && store.remove();
 
 <style scoped>
 .btn {
-  @apply w-16 h-16 p-2 rounded-md bg-gray-200 text-4xl;
+  @apply p-2 rounded-md bg-gray-200 text-4xl;
 }
 
+.btn {
+  height: clamp(2.5rem, 10vh, 4rem);
+  width: clamp(2.5rem, 10vh, 4rem);
+}
+
+.qty {
+  font-size: clamp(2rem, 7vh, 3.75rem);
+}
+
+/*
 .label {
   @apply h-6 sm:h-8 text-lg sm:text-xl font-medium;
+}
+*/
+
+.label {
+  @apply font-medium;
+  height: clamp(1rem, 5vh, 2rem);
+  font-size: clamp(1rem, 4vh, 1.25rem);
 }
 </style>

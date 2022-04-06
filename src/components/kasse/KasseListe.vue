@@ -139,7 +139,7 @@ li.odd:nth-child(even) {
 @media (min-width: 640px) {
   .kasse-liste-wrapper {
     display: grid;
-    grid-template-rows: 3.5rem 1fr 1rem;
+    grid-template-rows: clamp(2rem, 10vh, 3.5rem) 1fr 1rem;
     grid-template-columns: 1fr 5rem;
     grid-gap: 0rem;
     grid-template-areas:
