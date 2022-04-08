@@ -59,7 +59,7 @@ const favorites = computed(() => {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr clamp(1rem, 7vh, 3rem) clamp(5rem, 20vh, 8rem);
-    grid-gap: 0.5rem;
+    grid-gap: clamp(0.125rem, 1.5vh, 0.5rem);
     grid-template-areas:
       "liste liste others"
       "total total total"

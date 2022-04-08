@@ -22,7 +22,9 @@
 
 <style scoped>
 .button-confirm {
-  @apply py-2 px-4 rounded-md bg-gray-200 text-xl md:text-4xl border-solid border-8 border-gray-300;
+  @apply py-2 px-4 rounded-md bg-gray-200 border-solid border-8 border-gray-300;
+  font-size: clamp(1.125rem, 5vw, 2.25rem);
+  line-height: clamp(1.75rem, 2.5vw, 2.5rem);
 }
 .button-confirm:disabled {
   opacity: 0.6;

@@ -1,7 +1,7 @@
 <template>
   <div class="bg-gray-300 kasse-liste-wrapper">
     <div class="p-2 flex justify-center items-center" style="grid-area: header">
-      <h1 class="md:text-4xl">Ihr Einkauf</h1>
+      <h1>Ihr Einkauf</h1>
     </div>
     <ul
       style="grid-area: list"
@@ -147,6 +147,10 @@ li.odd:nth-child(even) {
       "list sidebar"
       "footer footer";
   }
+}
+
+h1 {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
 }
 
 .disabled {
