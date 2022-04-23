@@ -107,11 +107,11 @@ const hasDefaultSlot = () => hasSlot("default");
 
 @media (min-width: 640px) {
   .box-width-responsive {
-    width: max(6rem, 20vh);
+    width: clamp(6rem, 20vh, 10rem);
   }
 
   .box-height-responsive {
-    height: max(6rem, 20vh);
+    height: clamp(6rem, 20vh, 10rem);
   }
 
   .box-width {

@@ -93,25 +93,19 @@ const clicked = (fav: TillCatalog | TillProduct) => {
   grid-gap: 8px;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   grid-auto-rows: min-content;
-  /*
-
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  gap: 12px;
-  */
 }
 
 @media (min-width: 640px) {
   .my-wrapper {
     /*
-    start column width with a base minimum value of 'max(6rem, 20vh)'.
-    which means 6rem at least, but more if 20vh is greater than 6rem.
     Also see:
     https://developer.mozilla.org/en-US/docs/Web/CSS/max
     https://web.dev/patterns/layout/repeat-auto-minmax/
     */
-    grid-template-columns: repeat(auto-fit, minmax(max(6rem, 20vh), 1fr));
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(clamp(6rem, 20vh, 10rem), 1fr)
+    );
   }
 }
 </style>
