@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="app-wrapper">
     <div class="p-2 flex justify-end items-center">
       <button v-if="false" class="inline-flex items-center mr-4" tabindex="-1">
         Fullscreen
@@ -51,8 +51,10 @@ tillStore.init();
     }
   }
 }
+</style>
 
-.wrapper {
+<style scoped>
+.app-wrapper {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: clamp(36px, 10vh, 50px) 1fr;

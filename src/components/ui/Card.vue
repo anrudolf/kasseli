@@ -1,7 +1,9 @@
 <template>
   <button
-    class="inline-block"
-    :class="wrapperClasses"
+    :class="{
+      'box-width-responsive': props.responsive,
+      'box-width': !props.responsive,
+    }"
     @click="() => to && router.push(to)"
   >
     <div
@@ -12,7 +14,6 @@
         flex flex-col
         items-center
       "
-      :class="wrapperClasses"
     >
       <img
         v-if="imageAsset"
@@ -64,23 +65,14 @@ const props = defineProps({
 
 const router = useRouter();
 
-const wrapperClasses = computed(() => {
-  return {
-    "w-20": props.responsive,
-    "sm:w-40": props.responsive,
-    "w-40": !props.responsive,
-  };
-});
-
 const imageClasses = computed(() => {
   return {
     "object-contain": props.contain,
-    "sm:h-40": props.responsive,
-    "sm:w-40": props.responsive,
-    "h-20": props.responsive,
-    "w-20": props.responsive,
-    "h-40": !props.responsive,
-    "w-40": !props.responsive,
+    bounds: true,
+    "box-width-responsive": props.responsive,
+    "box-height-responsive": props.responsive,
+    "box-width": !props.responsive,
+    "box-height": !props.responsive,
   };
 });
 
@@ -101,3 +93,33 @@ const getAssetSrc = (name: string) => {
 const hasSlot = (name: string) => !!slots[name];
 const hasDefaultSlot = () => hasSlot("default");
 </script>
+
+<style scoped>
+.box-width,
+.box-width-responsive {
+  width: 5rem;
+}
+
+.box-height,
+.box-height-responsive {
+  height: 5rem;
+}
+
+@media (min-width: 640px) {
+  .box-width-responsive {
+    width: max(6rem, 20vh);
+  }
+
+  .box-height-responsive {
+    height: max(6rem, 20vh);
+  }
+
+  .box-width {
+    width: 10rem;
+  }
+
+  .box-height {
+    height: 10rem;
+  }
+}
+</style>
