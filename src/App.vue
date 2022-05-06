@@ -59,6 +59,6 @@ tillStore.init();
   grid-template-columns: 1fr;
   grid-template-rows: clamp(36px, 10vh, 50px) 1fr;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
 }
 </style>

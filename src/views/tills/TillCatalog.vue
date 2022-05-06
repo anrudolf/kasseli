@@ -1,7 +1,7 @@
 <template>
   <div v-if="catalog" class="p-4">
     <app-button-back>Zurück</app-button-back>
-    <div class="mt-6 grid gap-y-4 grid-cols-2 md:grid-cols-4">
+    <div class="wrapper mt-4">
       <app-widget
         v-for="(widget, i) in catalog.content"
         :key="i"
@@ -49,3 +49,19 @@ const add = (code: string) => {
   router.push("/");
 };
 </script>
+
+<style scoped>
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
