@@ -55,26 +55,22 @@
     </div>
 
     <table class="mt-4 border-collapse border w-full">
-      <thead>
+      <thead class="bg-gray-100">
         <tr>
-          <td>
+          <th class="text-left">
             {{ getLocaleDateString(range[0].toISOString()) }} -
             {{ getLocaleDateString(range[1].toISOString()) }}
-          </td>
-          <td colspan="3" class="text-right">
+          </th>
+          <th class="text-right font-bold">{{ grandTotal.toFixed(2) }}</th>
+          <th class="text-right">
             <button
-              class="btn btn-blue"
+              class="link flex items-center"
               :disabled="receipts.length === 0"
               @click="startDownload"
             >
-              Download
+              <download-icon class="w-5 h-5"></download-icon>
             </button>
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right font-bold">Total</td>
-          <td class="text-right font-bold">{{ grandTotal.toFixed(2) }}</td>
-          <td></td>
+          </th>
         </tr>
         <tr class="border text-left">
           <th>Datum</th>
@@ -104,8 +100,8 @@
         </tr>
       </tbody>
       <tfoot>
-        <tr class="border-t">
-          <td class="text-right font-bold">Total</td>
+        <tr class="border-t bg-gray-100">
+          <td class="text-left font-bold">Total</td>
           <td class="text-right font-bold">{{ grandTotal.toFixed(2) }}</td>
           <td></td>
         </tr>
@@ -117,7 +113,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
 
-import { EyeIcon } from "@heroicons/vue/solid";
+import { EyeIcon, DownloadIcon } from "@heroicons/vue/solid";
 
 import { Receipt } from "@/types";
 import { getReceipts } from "@/services/receipts";
