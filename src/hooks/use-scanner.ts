@@ -2,21 +2,27 @@ import { onMounted, onBeforeUnmount } from "vue";
 
 const TIMEOUT_MS = 15; // try values 10...20
 
-export default function(
+const MIN_LEN = 4;
+
+export default function (
   cb: (code: string) => any,
   codeSizes: Array<number> = []
 ) {
   let timeoutHandler = 0;
   let inputString = "";
 
-  const keyup = (e) => {
+  const keydown = (e: KeyboardEvent) => {
+    if (inputString.length >= MIN_LEN && e.code == "Enter") {
+      e.preventDefault();
+    }
+
     if (timeoutHandler) {
       clearTimeout(timeoutHandler);
       inputString += String.fromCharCode(e.keyCode);
     }
 
     timeoutHandler = setTimeout(() => {
-      if (inputString.length <= 3) {
+      if (inputString.length < MIN_LEN) {
         inputString = "";
         return;
       }
@@ -37,7 +43,7 @@ export default function(
   };
 
   const initialize = () => {
-    document.addEventListener("keypress", keyup);
+    document.addEventListener("keydown", keydown);
     if (timeoutHandler) {
       clearTimeout(timeoutHandler);
     }
@@ -47,7 +53,7 @@ export default function(
   };
 
   const close = () => {
-    document.removeEventListener("keypress", keyup);
+    document.removeEventListener("keydown", keydown);
   };
 
   onMounted(initialize);
