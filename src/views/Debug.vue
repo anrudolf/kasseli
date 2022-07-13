@@ -31,8 +31,7 @@ const searchMigros = httpsCallable(functions, "searchMigros");
 const search = (query: string) => {
   searchMigros({ query: query }).then((result) => {
     // Read result of the Cloud Function.
-    /** @type {any} */
-    const data = result.data;
+    const data: any = result.data;
     const sanitizedMessage = data.message;
     res.value = sanitizedMessage;
   });
