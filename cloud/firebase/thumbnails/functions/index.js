@@ -180,3 +180,7 @@ exports.createThumbnail = functions
       url: url,
     };
   });
+
+exports.helloWorld = (req, res) => {
+  res.send("Hello, World");
+};
