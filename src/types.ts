@@ -103,3 +103,13 @@ export interface Receipt {
   content: Array<ReceiptItem>;
   price: number;
 }
+
+export interface SearchResponse {
+  status: number;
+  hasResults: boolean;
+  query: string;
+  content: {
+    label: string;
+    price: number;
+  } | null;
+}

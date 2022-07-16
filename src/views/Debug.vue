@@ -17,12 +17,13 @@ import {
   httpsCallable,
   connectFunctionsEmulator,
 } from "firebase/functions";
+import { SearchResponse } from "@/types";
 
 const functions = getFunctions(getApp(), "europe-west1");
 const code = ref("");
 const res = ref("");
 
-if (import.meta.env.DEV) {
+if (import.meta.env.DEV && import.meta.env.VITE_FIREBASE_FUNCTIONS_EMULATOR) {
   connectFunctionsEmulator(functions, "localhost", 5001);
 }
 
@@ -31,9 +32,8 @@ const searchMigros = httpsCallable(functions, "searchMigros");
 const search = (query: string) => {
   searchMigros({ query: query }).then((result) => {
     // Read result of the Cloud Function.
-    const data: any = result.data;
-    const sanitizedMessage = data.message;
-    res.value = sanitizedMessage;
+    const response = result.data as SearchResponse;
+    res.value = JSON.stringify(response);
   });
 };
 </script>
