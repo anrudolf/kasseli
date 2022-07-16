@@ -12,8 +12,8 @@ Note that typescript needs to be compiled before it can run in the emulator. You
 
 ```
 # compile typescript
-$ cd cloud/firebase-functions/functions
-$ npm run build:watch
+$ cd cloud/firebase-functions
+$ npm --prefix functions run build:watch
 
 # start emulator
 $ cd cloud/firebase-functions

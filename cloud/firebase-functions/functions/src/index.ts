@@ -53,7 +53,7 @@ type SearchResponse = {
 
 exports.searchMigros = functions
   .region("europe-west1")
-  .https.onCall(async (data, context) => {
+  .https.onCall(async (data) => {
     const { query } = data;
 
     const { data: autocompleteResponse, status: autocompleteStatus } =
