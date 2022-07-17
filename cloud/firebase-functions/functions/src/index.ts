@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 
 import axios from "axios";
 
-import { SearchResponse } from "../../../../src/types";
+import { CloudSearchResponse } from "../../../../src/types";
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -39,18 +39,6 @@ type MigrosProductCard = {
 
 type MigrosProductCardsResponse = Array<MigrosProductCard>;
 
-/*
-type SearchResponse = {
-  status: number;
-  hasResults: boolean;
-  query: string;
-  content: {
-    label: string;
-    price: number;
-  } | null;
-};
-*/
-
 exports.searchMigros = functions
   .region("europe-west1")
   .https.onCall(async (data) => {
@@ -71,7 +59,7 @@ exports.searchMigros = functions
       autocompleteStatus != 200 ||
       autocompleteResponse.fullProducts.length == 0
     ) {
-      const rc: SearchResponse = {
+      const rc: CloudSearchResponse = {
         status: autocompleteStatus,
         hasResults: false,
         query,
@@ -92,7 +80,7 @@ exports.searchMigros = functions
       );
 
     if (productCardsStatus != 200 || productCardsResponse.length == 0) {
-      const rc: SearchResponse = {
+      const rc: CloudSearchResponse = {
         status: productCardsStatus,
         hasResults: false,
         query,
@@ -101,7 +89,7 @@ exports.searchMigros = functions
       return rc;
     }
 
-    const rc: SearchResponse = {
+    const rc: CloudSearchResponse = {
       status: productCardsStatus,
       hasResults: true,
       query,

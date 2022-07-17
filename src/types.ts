@@ -104,7 +104,7 @@ export interface Receipt {
   price: number;
 }
 
-export interface SearchResponse {
+export interface CloudSearchResponse {
   status: number;
   hasResults: boolean;
   query: string;

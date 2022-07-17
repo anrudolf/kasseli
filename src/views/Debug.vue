@@ -12,12 +12,9 @@
 import { ref } from "vue";
 
 import { getApp } from "firebase/app";
-import {
-  getFunctions,
-  httpsCallable,
-  connectFunctionsEmulator,
-} from "firebase/functions";
-import { SearchResponse } from "@/types";
+import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+
+import cloudSearch from "@/services/cloud-search";
 
 const functions = getFunctions(getApp(), "europe-west1");
 const code = ref("");
@@ -27,13 +24,8 @@ if (import.meta.env.DEV && import.meta.env.VITE_FIREBASE_FUNCTIONS_EMULATOR) {
   connectFunctionsEmulator(functions, "localhost", 5001);
 }
 
-const searchMigros = httpsCallable(functions, "searchMigros");
-
-const search = (query: string) => {
-  searchMigros({ query: query }).then((result) => {
-    // Read result of the Cloud Function.
-    const response = result.data as SearchResponse;
-    res.value = JSON.stringify(response);
-  });
+const search = async (query: string) => {
+  const r = await cloudSearch.search(query);
+  res.value = JSON.stringify(r);
 };
 </script>
