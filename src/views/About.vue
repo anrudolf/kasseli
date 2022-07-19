@@ -11,17 +11,18 @@
       firestore backend.
     </p>
     <p>
-      Source code available on
+      Source code is available on
       <a
         class="underline text-indigo-600"
         href="https://github.com/anrudolf/kasseli"
         >Github.</a
       >
     </p>
-    <p v-if="false">
-      Current commit <span class="font-bold">{{ hash.substring(0, 6) }}</span>
+    <p class="mt-2 text-secondary">
+      Built {{ localeDate }} [<a :href="commitHashLink" target="_blank"
+        >{{ commitHash.substring(0, 7) }} {{ commitMessage }}</a
+      >]
     </p>
-    <p>Built {{ localeDate }}</p>
   </div>
 </template>
 
@@ -29,9 +30,14 @@
 import { computed } from "vue";
 import { getLocaleDateTimeString } from "@/utils/date";
 
-// replaced dynanmically
+// replaced dynanmically through vite.config.ts
 const date = "__DATE__";
-const hash = "123456789";
+const commitHash = "__COMMIT_HASH__";
+const commitMessage = "__COMMIT_MESSAGE__";
+
+const commitHashLink = computed(
+  () => `https://github.com/anrudolf/kasseli/commit/${commitHash}`
+);
 
 const localeDate = computed(() => getLocaleDateTimeString(date));
 </script>

@@ -5,6 +5,11 @@ import { ViteAliases } from "vite-aliases";
 
 import replace from "@rollup/plugin-replace";
 
+import { execSync } from "child_process";
+
+const commitHash = execSync("git rev-parse HEAD").toString().trim();
+const commitMessage = execSync("git show -s --format=%s").toString().trim();
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -42,6 +47,8 @@ export default defineConfig({
     ViteAliases(),
     replace({
       __DATE__: new Date().toISOString(),
+      __COMMIT_HASH__: commitHash,
+      __COMMIT_MESSAGE__: commitMessage,
       preventAssignment: true,
     }),
   ],
