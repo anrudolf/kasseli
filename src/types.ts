@@ -104,6 +104,59 @@ export interface Receipt {
   price: number;
 }
 
+export interface OrderItem {
+  code: string;
+  product: Product;
+  quantity: number;
+  price: number;
+}
+
+export enum OrdertStatus {
+  CANCELED = -1,
+  NEW,
+  IN_PREPARATION,
+  READY_TO_SHIP,
+  OUT_FOR_DELIVERY,
+  DELIVERED,
+}
+
+export enum OrderTabStatus {
+  CANCELED = -1,
+  OPEN,
+  COMPLETED,
+}
+
+export interface Order {
+  id: string;
+  workspace: string;
+  serial: string;
+  reference: string;
+  created: string;
+  updated: string;
+  status: OrdertStatus;
+  paid: boolean;
+  price: number;
+  content: Array<OrderItem>;
+}
+
+export interface OrderTab {
+  id: string;
+  workspace: string;
+  serial: string;
+  reference: string;
+  created: string;
+  updated: string;
+  status: OrderTabStatus;
+  paid: boolean;
+  price: number;
+}
+
+export interface OrderReference {
+  id: string;
+  hidden: boolean;
+  name: string;
+}
+
 export interface CloudSearchResponse {
   status: number;
   hasResults: boolean;
