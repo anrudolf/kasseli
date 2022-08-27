@@ -15,6 +15,51 @@
             >Kasse wählen...</router-link
           >
         </div>
+        <h3>Modus</h3>
+        <div class="my-3">
+          <label class="flex py-2 items-center">
+            <input
+              v-model="settings.tillMode"
+              type="radio"
+              :value="TillMode.PAY"
+              class="mx-3"
+            />
+            <div>
+              <div>Bezahlen</div>
+              <small class="text-secondary">Bezahlen und mitnehmen.</small>
+            </div>
+          </label>
+          <label class="flex py-2 items-center">
+            <input
+              v-model="settings.tillMode"
+              type="radio"
+              :value="TillMode.ORDER_AND_PAY"
+              class="mx-3"
+            />
+            <div>
+              <div>Bestellen und zahlen</div>
+              <small class="text-secondary"
+                >Es wird eine Bestellung erstellt. Die Rechnung wird sofort
+                bezahlt.</small
+              >
+            </div></label
+          >
+          <label class="flex py-2 items-center">
+            <input
+              v-model="settings.tillMode"
+              type="radio"
+              :value="TillMode.ORDER_ONLY"
+              class="mx-3"
+            />
+            <div>
+              <div>Bestellen und später bezahlen</div>
+              <small class="text-secondary"
+                >Es wird eine Bestellung erstellt. Die Rechnung wird später
+                bezahlt.</small
+              >
+            </div></label
+          >
+        </div>
 
         <h3>Belege</h3>
         <div>
@@ -106,6 +151,8 @@ import useSettingsStore from "@/store/settings";
 import useAuthStore from "@/store/auth";
 
 import appLogoutModal from "@/components/ui/LogoutModal.vue";
+
+import { TillMode } from "@/types";
 
 const settings = useSettingsStore();
 const auth = useAuthStore();

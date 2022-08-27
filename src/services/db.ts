@@ -16,6 +16,8 @@ import {
   WorkspaceMember,
   WorkspaceInvite,
   Receipt,
+  OrderTab,
+  Order,
 } from "@/types";
 
 const converter = <T>() => ({
@@ -31,6 +33,7 @@ const db = {
   images: dataPoint<ImageRef>("images"),
   products: dataPoint<Product>("products"),
   receipts: dataPoint<Receipt>("receipts"),
+  orders: dataPoint<Order>("orders"),
   appPayments: dataPoint<AppPayment>("appPayments"),
   workspaces: dataPoint<Workspace>("workspaces"),
   workspaceMembers: (wid: string) =>
@@ -46,6 +49,7 @@ export const initWorkspace = (ws: string) => {
   db.images = dataPoint<ImageRef>(`${prefix}images`);
   db.products = dataPoint<Product>(`${prefix}products`);
   db.receipts = dataPoint<Receipt>(`${prefix}receipts`);
+  db.orders = dataPoint<Order>(`${prefix}/orders`);
 
   // also re-initialize non-workspace specific collections
   db.appPayments = dataPoint<AppPayment>("appPayments");

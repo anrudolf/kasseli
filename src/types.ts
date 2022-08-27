@@ -28,6 +28,12 @@ export interface Till {
   favorites: Array<TillCatalog | TillProduct>;
 }
 
+export enum TillMode {
+  PAY = "PAY",
+  ORDER_AND_PAY = "ORDER_AND_PAY",
+  ORDER_ONLY = "ORDER_ONLY",
+}
+
 export interface ImageRef {
   id: string;
   type: string;
@@ -104,14 +110,7 @@ export interface Receipt {
   price: number;
 }
 
-export interface OrderItem {
-  code: string;
-  product: Product;
-  quantity: number;
-  price: number;
-}
-
-export enum OrdertStatus {
+export enum OrderStatus {
   CANCELED = -1,
   NEW,
   IN_PREPARATION,
@@ -120,35 +119,24 @@ export enum OrdertStatus {
   DELIVERED,
 }
 
-export enum OrderTabStatus {
-  CANCELED = -1,
-  OPEN,
-  COMPLETED,
+export interface OrderItem {
+  code: string;
+  product: Product;
+  quantity: number;
+  price: number;
+  status: OrderStatus;
 }
 
 export interface Order {
   id: string;
-  workspace: string;
   serial: string;
   reference: string;
   created: string;
   updated: string;
-  status: OrdertStatus;
+  status: OrderStatus;
   paid: boolean;
   price: number;
   content: Array<OrderItem>;
-}
-
-export interface OrderTab {
-  id: string;
-  workspace: string;
-  serial: string;
-  reference: string;
-  created: string;
-  updated: string;
-  status: OrderTabStatus;
-  paid: boolean;
-  price: number;
 }
 
 export interface OrderReference {
