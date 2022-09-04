@@ -65,7 +65,13 @@ const store = defineStore({
     strategies: [
       {
         storage: localStorage,
-        paths: ["paymentOptions", "paymentHints", "workspace", "till"],
+        paths: [
+          "paymentOptions",
+          "paymentHints",
+          "workspace",
+          "till",
+          "tillMode",
+        ],
       },
     ],
   },

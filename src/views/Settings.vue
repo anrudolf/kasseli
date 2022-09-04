@@ -48,7 +48,7 @@
             <input
               v-model="settings.tillMode"
               type="radio"
-              :value="TillMode.ORDER_ONLY"
+              :value="TillMode.ORDER_AND_PAY_LATER"
               class="mx-3"
             />
             <div>

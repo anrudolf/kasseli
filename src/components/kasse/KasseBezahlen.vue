@@ -29,8 +29,8 @@ const disabled = computed(() => kasse.items.length === 0);
 
 const label = computed(() => {
   switch (settings.tillMode as TillMode) {
-    case TillMode.ORDER_ONLY:
     case TillMode.ORDER_AND_PAY:
+    case TillMode.ORDER_AND_PAY_LATER:
       return "Bestellen";
     default:
       return "Bezahlen";
@@ -38,6 +38,11 @@ const label = computed(() => {
 });
 
 const checkout = () => {
+  if (settings.tillMode == TillMode.ORDER_AND_PAY_LATER) {
+    router.push("/checkout/serial");
+    return;
+  }
+
   router.push("/checkout");
 };
 </script>

@@ -31,7 +31,7 @@ export interface Till {
 export enum TillMode {
   PAY = "PAY",
   ORDER_AND_PAY = "ORDER_AND_PAY",
-  ORDER_ONLY = "ORDER_ONLY",
+  ORDER_AND_PAY_LATER = "ORDER_AND_PAY_LATER",
 }
 
 export interface ImageRef {
@@ -119,14 +119,6 @@ export enum OrderStatus {
   DELIVERED,
 }
 
-export interface OrderItem {
-  code: string;
-  product: Product;
-  quantity: number;
-  price: number;
-  status: OrderStatus;
-}
-
 export interface Order {
   id: string;
   serial: string;
@@ -136,13 +128,22 @@ export interface Order {
   status: OrderStatus;
   paid: boolean;
   price: number;
-  content: Array<OrderItem>;
+  code: string;
+  product: Product;
+  note: string;
 }
 
 export interface OrderReference {
   id: string;
   hidden: boolean;
   name: string;
+}
+
+export interface Serial {
+  id: string;
+  sequence: number;
+  prefix: string;
+  suffix: string;
 }
 
 export interface CloudSearchResponse {

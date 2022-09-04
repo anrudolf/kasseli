@@ -193,7 +193,7 @@ watch(
   { immediate: true }
 );
 
-const activateHints = (enable) => {
+const activateHints = (enable: boolean) => {
   paymentHints.active = enable;
 };
 
