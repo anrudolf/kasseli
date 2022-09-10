@@ -3,6 +3,7 @@ import useProductStore from "./products";
 import useSettingsStore from "./settings";
 import useTillStore from "./till";
 import useUiStore from "./ui";
+import useOrdersStore from "./orders";
 
 export default {
   useKasseStore,
@@ -10,4 +11,5 @@ export default {
   useSettingsStore,
   useTillStore,
   useUiStore,
+  useOrdersStore,
 };

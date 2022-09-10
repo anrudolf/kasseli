@@ -24,20 +24,14 @@ import appMenu from "@/components/Menu.vue";
 import appIcon from "@/components/ui/Icon.vue";
 
 import useUiStore from "@/store/ui";
-import useProductStore from "@/store/products";
-import useTillStore from "@/store/till";
 import useSettingsStore from "@/store/settings";
 
-import { initWorkspace as initDbWorkspace } from "@/services/db";
+import { initWorkspace } from "@/services/workspaces";
 
 const uiStore = useUiStore();
-const productStore = useProductStore();
-const tillStore = useTillStore();
 const settings = useSettingsStore();
 
-initDbWorkspace(settings.workspace);
-productStore.init();
-tillStore.init();
+initWorkspace(settings.workspace);
 </script>
 
 <style lang="scss">

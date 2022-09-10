@@ -2,10 +2,8 @@ import { defineStore } from "pinia";
 
 import { TillMode } from "@/types";
 
-import useTillstore from "./till";
-import useProductStore from "./products";
 import { createWorkspacePrefix } from "@/utils/workspace";
-import { initWorkspace as initDbWorkspace } from "@/services/db";
+import { initWorkspace } from "@/services/workspaces";
 
 import { PUBLIC_WORKSPACE } from "@/utils/workspace";
 const DEFAULT_TILL = "default";
@@ -35,13 +33,8 @@ const store = defineStore({
       this.setTill(DEFAULT_TILL);
 
       this.workspace = ws;
-      initDbWorkspace(ws);
 
-      const tillStore = useTillstore();
-      tillStore.init();
-
-      const productStore = useProductStore();
-      productStore.init();
+      initWorkspace(ws);
     },
     clearWorkspace() {
       this.setWorkspace(PUBLIC_WORKSPACE);

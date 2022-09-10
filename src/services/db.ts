@@ -43,15 +43,15 @@ const db = {
     dataPoint<WorkspaceInvite>(`workspaces/${wid}/invites`),
 };
 
-export const initWorkspace = (ws: string) => {
+export const setDatabaseWorkspace = (ws: string) => {
   const prefix = createWorkspacePrefix(ws);
   // update workspace specific collections
   db.tills = dataPoint<Till>(`${prefix}tills`);
   db.images = dataPoint<ImageRef>(`${prefix}images`);
   db.products = dataPoint<Product>(`${prefix}products`);
   db.receipts = dataPoint<Receipt>(`${prefix}receipts`);
-  db.orders = dataPoint<Order>(`${prefix}/orders`);
-  db.serials = dataPoint<Serial>(`${prefix}/serials`);
+  db.orders = dataPoint<Order>(`${prefix}orders`);
+  db.serials = dataPoint<Serial>(`${prefix}serials`);
 
   // also re-initialize non-workspace specific collections
   db.appPayments = dataPoint<AppPayment>("appPayments");

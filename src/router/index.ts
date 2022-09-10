@@ -16,6 +16,8 @@ import Tills from "../views/tills/Tills.vue";
 import TillEdit from "../views/tills/TillEdit.vue";
 import TillCatalog from "../views/tills/TillCatalog.vue";
 
+import Orders from "../views/orders/Orders.vue";
+
 import Settings from "../views/Settings.vue";
 
 import Profile from "../views/Profile.vue";
@@ -63,6 +65,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/checkout/app",
     name: "checkout-app",
     component: CheckoutApp,
+  },
+  {
+    path: "/orders",
+    name: "orders",
+    component: Orders,
   },
   {
     path: "/pay",
