@@ -113,10 +113,9 @@ export interface Receipt {
 export enum OrderStatus {
   CANCELED = -1,
   NEW,
-  IN_PREPARATION,
-  READY_TO_SHIP,
-  OUT_FOR_DELIVERY,
-  DELIVERED,
+  PREPARING,
+  READY,
+  COMPLETE,
 }
 
 export interface Order {

@@ -11,6 +11,7 @@ import {
   runTransaction,
   getFirestore,
   writeBatch,
+  updateDoc,
 } from "firebase/firestore";
 
 import useKasse from "@/store/kasse";
@@ -60,20 +61,22 @@ export const createOrders = async (serial: string) => {
   const batch = writeBatch(db.orders.firestore);
 
   kasse.items.forEach((item) => {
-    const order: Order = {
-      id: doc(db.orders).id,
-      serial: serial,
-      reference: "",
-      created: now,
-      updated: now,
-      status: OrderStatus.NEW,
-      paid: false,
-      price: item.price,
-      code: item.code,
-      product: item.product,
-      note: "",
-    };
-    orders.push(order);
+    for (let i = 0; i < item.quantity; i++) {
+      const order: Order = {
+        id: doc(db.orders).id,
+        serial: serial,
+        reference: "",
+        created: now,
+        updated: now,
+        status: OrderStatus.NEW,
+        paid: false,
+        price: item.price,
+        code: item.code,
+        product: item.product,
+        note: "",
+      };
+      orders.push(order);
+    }
   });
 
   orders.forEach((order) => {
@@ -82,4 +85,9 @@ export const createOrders = async (serial: string) => {
   });
 
   await batch.commit();
+};
+
+export const setOrderStatus = (id: string, status: OrderStatus) => {
+  const orderDocRef = doc(db.orders, id);
+  updateDoc(orderDocRef, { status: status });
 };
