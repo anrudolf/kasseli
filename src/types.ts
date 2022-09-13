@@ -138,6 +138,11 @@ export interface OrderReference {
   name: string;
 }
 
+export interface OrderGroup {
+  serial: string;
+  content: Array<Order>;
+}
+
 export interface Serial {
   id: string;
   sequence: number;

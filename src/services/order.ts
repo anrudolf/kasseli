@@ -88,6 +88,21 @@ export const createOrders = async (serial: string) => {
 };
 
 export const setOrderStatus = (id: string, status: OrderStatus) => {
+  const now = new Date().toISOString();
   const orderDocRef = doc(db.orders, id);
-  updateDoc(orderDocRef, { status: status });
+  updateDoc(orderDocRef, { status: status, updated: now });
+};
+
+export const setMultiOrderStatus = async (
+  ids: string[],
+  status: OrderStatus
+) => {
+  const batch = writeBatch(db.orders.firestore);
+
+  ids.forEach((id) => {
+    const docRef = doc(db.orders, id);
+    batch.update(docRef, { status: status });
+  });
+
+  await batch.commit();
 };

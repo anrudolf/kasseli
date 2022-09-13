@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { Order } from "@/types";
+import { Order, OrderGroup } from "@/types";
 import { onSnapshot, Unsubscribe, query, where } from "firebase/firestore";
 
 import db from "@/services/db";
@@ -10,6 +10,9 @@ const store = defineStore({
   state: () => ({
     items: [] as Order[],
     unsubscribe: null as Unsubscribe | null,
+    groups: {
+      serial: [] as OrderGroup[],
+    },
   }),
   getters: {
     item: (state) => (id: string) => {
