@@ -40,69 +40,96 @@
       </button>
     </div>
 
-    <table class="border-separate border rounded w-full">
+    <table class="w-full my-2">
       <tbody
-        v-for="(group, i) in projections"
-        v-show="group.content.some((g) => g.status == filter)"
+        v-for="group in projections"
+        v-show="group.content.some((o) => o.status == filter)"
         :key="group.serial"
-        class="border rounded my-3"
-        :class="i % 2 == 0 ? 'even' : 'odd'"
+        class="border-2 border-blue-300"
       >
-        <tr>
-          <th>{{ group.serial }}</th>
-          <th class="flex gap-3 justify-end">
-            <button
-              @click="
-                selectOrderGroup(
-                  group.serial == selectedOrderGroup ? null : group.serial
-                )
-              "
-            >
-              <dots-vertical-icon class="icon"> </dots-vertical-icon>
+        <tr class="border">
+          <th class="flex items-center">
+            <button class="mr-2 text-red-400">
+              <trash-icon class="icon"></trash-icon>
             </button>
-            <button
-              @click="updateMultiStatus(group.serial, OrderStatus.PREPARING)"
-            >
-              <clock-icon class="icon"> </clock-icon>
-            </button>
-            <button @click="updateMultiStatus(group.serial, OrderStatus.READY)">
-              <paper-airplane-icon class="icon transform rotate-90">
-              </paper-airplane-icon>
-            </button>
-            <button
-              @click="updateMultiStatus(group.serial, OrderStatus.COMPLETE)"
-            >
-              <check-icon class="icon"> </check-icon>
-            </button>
+            {{ group.serial }}
+          </th>
+          <th style="width: 0px">
+            <div class="flex gap-3 justify-end">
+              <button
+                @click="
+                  selectOrderGroup(
+                    group.serial == selectedOrderGroup ? null : group.serial
+                  )
+                "
+              >
+                <dots-vertical-icon class="icon text-green-500">
+                </dots-vertical-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.NEW"
+                @click="updateMultiStatus(group.serial, OrderStatus.NEW)"
+              >
+                <sparkles-icon class="icon"> </sparkles-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.PREPARING"
+                @click="updateMultiStatus(group.serial, OrderStatus.PREPARING)"
+              >
+                <clock-icon class="icon"> </clock-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.READY"
+                @click="updateMultiStatus(group.serial, OrderStatus.READY)"
+              >
+                <check-icon class="icon"> </check-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.COMPLETE"
+                @click="updateMultiStatus(group.serial, OrderStatus.COMPLETE)"
+              >
+                <x-icon class="icon"> </x-icon>
+              </button>
+            </div>
           </th>
         </tr>
         <tr
           v-for="order in group.content"
           v-show="order.status == filter"
           :key="order.id"
-          class="rounded"
+          class="border"
         >
           <td>{{ order.product.label.de }}</td>
-          <td class="flex gap-3 justify-end items-center">
-            <button
+          <td>
+            <div
               v-if="selectedOrderGroup == group.serial"
-              @click="setOrderStatus(order.id, OrderStatus.PREPARING)"
+              class="flex gap-3 justify-end"
             >
-              <clock-icon class="icon"> </clock-icon>
-            </button>
-            <button
-              v-if="selectedOrderGroup == group.serial"
-              @click="setOrderStatus(order.id, OrderStatus.READY)"
-            >
-              <paper-airplane-icon class="icon transform rotate-90">
-              </paper-airplane-icon>
-            </button>
-            <button
-              v-if="selectedOrderGroup == group.serial"
-              @click="setOrderStatus(order.id, OrderStatus.COMPLETE)"
-            >
-              <check-icon class="icon"> </check-icon>
-            </button>
+              <button
+                :disabled="filter == OrderStatus.NEW"
+                @click="setOrderStatus(order.id, OrderStatus.NEW)"
+              >
+                <sparkles-icon class="icon"> </sparkles-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.PREPARING"
+                @click="setOrderStatus(order.id, OrderStatus.PREPARING)"
+              >
+                <clock-icon class="icon"> </clock-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.READY"
+                @click="setOrderStatus(order.id, OrderStatus.READY)"
+              >
+                <check-icon class="icon"> </check-icon>
+              </button>
+              <button
+                :disabled="filter == OrderStatus.COMPLETE"
+                @click="setOrderStatus(order.id, OrderStatus.COMPLETE)"
+              >
+                <x-icon class="icon"> </x-icon>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -118,9 +145,11 @@ import { setOrderStatus, setMultiOrderStatus } from "@/services/order";
 import { OrderStatus } from "@/types";
 import {
   ClockIcon,
-  PaperAirplaneIcon,
   CheckIcon,
   DotsVerticalIcon,
+  XIcon,
+  TrashIcon,
+  SparklesIcon,
 } from "@heroicons/vue/outline";
 
 import appModal from "@/components/ui/Modal.vue";
@@ -185,5 +214,9 @@ th {
 
 .icon {
   @apply w-6 h-6;
+}
+
+button:disabled {
+  opacity: 0.5;
 }
 </style>
