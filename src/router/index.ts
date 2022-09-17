@@ -17,6 +17,7 @@ import TillEdit from "../views/tills/TillEdit.vue";
 import TillCatalog from "../views/tills/TillCatalog.vue";
 
 import Orders from "../views/orders/Orders.vue";
+import OrdersDisplay from "../views/orders/OrdersDisplay.vue";
 
 import Settings from "../views/Settings.vue";
 
@@ -70,6 +71,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/orders",
     name: "orders",
     component: Orders,
+  },
+  {
+    path: "/orders/display",
+    name: "orders-display",
+    component: OrdersDisplay,
   },
   {
     path: "/pay",

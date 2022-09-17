@@ -1,41 +1,48 @@
 <template>
-  <div class="p-4 max-w-lg">
-    <h1>Orders</h1>
+  <div class="p-4 max-w-2xl">
+    <h1>Bestellungen</h1>
 
-    <div class="flex flex-wrap gap-1">
+    <div class="flex flex-wrap mt-2">
       <button
-        class="btn"
+        class="btn border-none"
         :class="filter == OrderStatus.NEW ? 'btn-blue' : 'btn-white'"
         @click="filter = OrderStatus.NEW"
       >
+        <sparkles-icon class="icon-small inline"> </sparkles-icon>
         Neu
       </button>
       <button
-        class="btn btn-blue"
+        class="btn border-none"
         :class="filter == OrderStatus.PREPARING ? 'btn-blue' : 'btn-white'"
         @click="filter = OrderStatus.PREPARING"
       >
+        <clock-icon class="icon-small inline"> </clock-icon>
         Zubereitung
       </button>
       <button
-        class="btn btn-blue"
+        class="btn border-none"
         :class="filter == OrderStatus.READY ? 'btn-blue' : 'btn-white'"
         @click="filter = OrderStatus.READY"
       >
+        <check-icon class="icon-small inline"> </check-icon>
         Bereit
       </button>
       <button
-        class="btn btn-blue"
+        class="btn border-none"
         :class="filter == OrderStatus.COMPLETE ? 'btn-blue' : 'btn-white'"
         @click="filter = OrderStatus.COMPLETE"
       >
-        Abgeschlossen
+        <app-icon icon="double-check" class="icon-small inline"> </app-icon>
+        Fertig
       </button>
       <button
-        class="btn btn-blue"
-        :class="filter == OrderStatus.CANCELED ? 'btn-blue' : 'btn-white'"
+        class="btn border-none"
+        :class="
+          filter == OrderStatus.CANCELED ? 'btn-gray' : 'btn-gray-secondary'
+        "
         @click="filter = OrderStatus.CANCELED"
       >
+        <trash-icon class="icon-small inline"> </trash-icon>
         Storniert
       </button>
     </div>
@@ -47,12 +54,12 @@
         :key="group.serial"
         class="border-2 border-blue-300"
       >
-        <tr class="border">
+        <tr class="border bg-blue-100">
           <th class="flex items-center">
             <button class="mr-2 text-red-400">
               <trash-icon class="icon"></trash-icon>
             </button>
-            {{ group.serial }}
+            <span class="pt-0.5">{{ group.serial }}</span>
           </th>
           <th style="width: 0px">
             <div class="flex gap-3 justify-end">
@@ -88,7 +95,7 @@
                 :disabled="filter == OrderStatus.COMPLETE"
                 @click="updateMultiStatus(group.serial, OrderStatus.COMPLETE)"
               >
-                <x-icon class="icon"> </x-icon>
+                <app-icon class="icon" icon="double-check"> </app-icon>
               </button>
             </div>
           </th>
@@ -127,7 +134,7 @@
                 :disabled="filter == OrderStatus.COMPLETE"
                 @click="setOrderStatus(order.id, OrderStatus.COMPLETE)"
               >
-                <x-icon class="icon"> </x-icon>
+                <app-icon icon="double-check" class="icon"> </app-icon>
               </button>
             </div>
           </td>
@@ -153,6 +160,7 @@ import {
 } from "@heroicons/vue/outline";
 
 import appModal from "@/components/ui/Modal.vue";
+import appIcon from "@/components/ui/Icon.vue";
 
 import { useOrdersProjection } from "@/hooks/use-orders-projections";
 
@@ -214,6 +222,10 @@ th {
 
 .icon {
   @apply w-6 h-6;
+}
+
+.icon-small {
+  @apply w-5 h-5;
 }
 
 button:disabled {

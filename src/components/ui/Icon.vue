@@ -237,6 +237,27 @@
     />
   </svg>
   <svg
+    v-else-if="props.icon === 'double-check'"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="2"
+    stroke="currentColor"
+    class="w-6 h-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M2 13l4 4L16 7"
+    ></path>
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M7 13l4 4L21 7"
+    ></path>
+  </svg>
+
+  <svg
     v-else
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
