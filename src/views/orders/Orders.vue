@@ -64,34 +64,38 @@
           <th style="width: 0px">
             <div class="flex gap-3 justify-end">
               <button
+                class="text-green-600"
                 @click="
                   selectOrderGroup(
                     group.serial == selectedOrderGroup ? null : group.serial
                   )
                 "
               >
-                <dots-vertical-icon class="icon text-green-500">
-                </dots-vertical-icon>
+                <dots-vertical-icon class="icon"> </dots-vertical-icon>
               </button>
               <button
+                class="text-blue-600"
                 :disabled="filter == OrderStatus.NEW"
                 @click="updateMultiStatus(group.serial, OrderStatus.NEW)"
               >
                 <sparkles-icon class="icon"> </sparkles-icon>
               </button>
               <button
+                class="text-blue-600"
                 :disabled="filter == OrderStatus.PREPARING"
                 @click="updateMultiStatus(group.serial, OrderStatus.PREPARING)"
               >
                 <clock-icon class="icon"> </clock-icon>
               </button>
               <button
+                class="text-blue-600"
                 :disabled="filter == OrderStatus.READY"
                 @click="updateMultiStatus(group.serial, OrderStatus.READY)"
               >
                 <check-icon class="icon"> </check-icon>
               </button>
               <button
+                class="text-blue-600"
                 :disabled="filter == OrderStatus.COMPLETE"
                 @click="updateMultiStatus(group.serial, OrderStatus.COMPLETE)"
               >
