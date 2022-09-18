@@ -21,6 +21,9 @@ const store = defineStore({
       enabled: true,
       active: false,
     },
+    cashCalculator: {
+      active: false,
+    },
     till: DEFAULT_TILL,
     tillMode: DEFAULT_TILL_MODE as TillMode,
     workspace: PUBLIC_WORKSPACE,

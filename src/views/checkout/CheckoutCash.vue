@@ -27,20 +27,29 @@
     </div>
   </app-modal>
 
-  <div class="flex justify-between items-center max-w-md">
+  <div class="flex items-center max-w-lg">
     <app-button-back class="ml-2">Zurück</app-button-back>
     <light-bulb-icon
       v-if="paymentHints.enabled"
-      class="cursor-pointer w-12 h-12 mr-2"
-      :class="{
-        'text-green-500': paymentHints.active,
-        'text-gray-300': !paymentHints.active,
-      }"
-      @click="activateHints(!paymentHints.active)"
+      class="cursor-pointer w-12 h-12 ml-auto"
+      :class="paymentHints.active ? 'text-green-500' : 'text-gray-300'"
+      @click="toggleHints"
     />
+    <calculator-icon
+      class="w-12 h-12 cursor-pointer"
+      :class="cashCalculator.active ? 'text-green-500' : 'text-gray-300'"
+      @click="toggleCalculator"
+    ></calculator-icon>
+    <x-icon
+      class="w-12 h-12 mr-1 text-gray-300 cursor-pointer"
+      @click="paid = 0"
+    ></x-icon>
   </div>
 
-  <div class="p-2 max-w-md">
+  <div v-if="cashCalculator.active" class="p-2 max-w-lg">
+    <app-calculator></app-calculator>
+  </div>
+  <div v-else class="p-2 max-w-lg">
     <div class="row bg-gray-300 mt-4">
       <span>Total</span>
       <span>{{ total.toFixed(2) }} CHF</span>
@@ -95,7 +104,7 @@
 import { ref, computed, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
-import { LightBulbIcon } from "@heroicons/vue/outline";
+import { LightBulbIcon, CalculatorIcon, XIcon } from "@heroicons/vue/outline";
 
 import appMoneyCoin from "@/components/money/MoneyCoin.vue";
 import appMoneyNote from "@/components/money/MoneyNote.vue";
@@ -104,6 +113,7 @@ import appButtonBack from "@/components/ui/ButtonBack.vue";
 
 import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
+import appCalculator from "@/components/Calculator.vue";
 
 import useKasseStore from "@/store/kasse";
 import useSettingsStore from "@/store/settings";
@@ -113,7 +123,7 @@ import { createReceipt } from "@/services/receipts";
 const router = useRouter();
 const kasse = useKasseStore();
 const settings = useSettingsStore();
-const { paymentHints } = settings;
+const { paymentHints, cashCalculator } = settings;
 
 const notes = [
   { type: "note", name: "10 CHF", id: 10 },
@@ -193,8 +203,12 @@ watch(
   { immediate: true }
 );
 
-const activateHints = (enable: boolean) => {
-  paymentHints.active = enable;
+const toggleHints = () => {
+  paymentHints.active = !paymentHints.active;
+};
+
+const toggleCalculator = () => {
+  cashCalculator.active = !cashCalculator.active;
 };
 
 const hint = computed(() => {

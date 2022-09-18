@@ -1,8 +1,5 @@
 <template>
-  <button
-    class="button-confirm inline-flex items-center"
-    @click="router.go(-1)"
-  >
+  <button class="button-confirm inline-flex items-center" @click="onClick">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -24,8 +21,34 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
+import { defineProps, PropType } from "vue";
+import { useRouter, RouteLocationRaw } from "vue-router";
+
+const props = defineProps({
+  to: {
+    type: Object as PropType<RouteLocationRaw | null>,
+    default: null,
+  },
+  replace: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const router = useRouter();
+
+const onClick = () => {
+  if (props.to) {
+    if (props.replace) {
+      router.replace(props.to);
+    } else {
+      router.push(props.to);
+    }
+    return;
+  }
+
+  router.go(-1);
+};
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <app-button-back>Zurück</app-button-back>
+    <app-button-back to="/" replace>Zurück</app-button-back>
 
     <div v-if="settings.tillMode == TillMode.ORDER_AND_PAY_LATER">
       <div>Bestellung: {{ serial }}</div>
