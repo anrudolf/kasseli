@@ -28,10 +28,10 @@
   </app-modal>
 
   <div class="flex items-center max-w-lg">
-    <app-button-back class="ml-2">Zurück</app-button-back>
+    <app-button-back class="ml-2 mr-auto">Zurück</app-button-back>
     <light-bulb-icon
-      v-if="paymentHints.enabled"
-      class="cursor-pointer w-12 h-12 ml-auto"
+      v-if="paymentHints.enabled && !cashCalculator.active"
+      class="cursor-pointer w-12 h-12"
       :class="paymentHints.active ? 'text-green-500' : 'text-gray-300'"
       @click="toggleHints"
     />
@@ -46,10 +46,7 @@
     ></x-icon>
   </div>
 
-  <div v-if="cashCalculator.active" class="p-2 max-w-lg">
-    <app-calculator v-model:paid="paid" :price="price"></app-calculator>
-  </div>
-  <div v-else class="p-2 max-w-lg">
+  <div class="p-2 max-w-lg">
     <div class="row bg-gray-300 mt-4">
       <span>Total</span>
       <span>{{ price.toFixed(2) }} CHF</span>
@@ -64,7 +61,16 @@
       <span>Restbetrag</span>
       <span>{{ remainder.toFixed(2) }} CHF</span>
     </div>
+  </div>
 
+  <div v-if="cashCalculator.active" class="p-2 max-w-lg">
+    <app-calculator
+      v-model:paid="paid"
+      :price="price"
+      :remainder="remainder"
+    ></app-calculator>
+  </div>
+  <div v-else class="p-2 max-w-lg">
     <div class="small-coin-grid mt-2">
       <div v-for="element in smallCoins" :key="element.id">
         <app-money-coin

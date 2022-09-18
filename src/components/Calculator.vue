@@ -1,9 +1,6 @@
 <template>
-  <div class="w-32">
-    <input v-model="line" class="input" />
-    Total {{ props.price.toFixed(2) }}<br />
-    Bezahlt {{ paid.toFixed(2) }}<br />
-    Remaining {{ remainder.toFixed(2) }}
+  <div>
+    <input v-model="line" class="input my-1" />
   </div>
   <div class="wrapper">
     <button class="btn btn-gray" style="grid-area: seven" @click="append('7')">
@@ -43,20 +40,36 @@
       .
     </button>
 
-    <button class="btn btn-blue" style="grid-area: minus" @click="append('-')">
-      -
+    <button
+      class="btn btn-blue text-3xl"
+      style="grid-area: minus"
+      @click="append('-')"
+    >
+      −
     </button>
-    <button class="btn btn-blue" style="grid-area: plus" @click="append('+')">
+    <button
+      class="btn btn-blue text-3xl"
+      style="grid-area: plus"
+      @click="append('+')"
+    >
       +
     </button>
-    <button class="btn btn-blue" style="grid-area: mul" @click="append('*')">
-      *
+    <button
+      class="btn btn-blue text-3xl"
+      style="grid-area: mul"
+      @click="append('*')"
+    >
+      ×
     </button>
-    <button class="btn btn-blue" style="grid-area: div" @click="append('/')">
-      /
+    <button
+      class="btn btn-blue text-2xl"
+      style="grid-area: div"
+      @click="append('/')"
+    >
+      ÷
     </button>
-    <button class="btn btn-red" style="grid-area: del" @click="del">
-      <arrow-left-icon class="btn-icon"></arrow-left-icon>
+    <button class="btn btn-blue text-xl" style="grid-area: del" @click="del">
+      ⌫
     </button>
 
     <button
@@ -67,9 +80,7 @@
       ↵
     </button>
 
-    <button class="btn btn-blue" style="grid-area: clear" @click="clear">
-      CLEAR
-    </button>
+    <button class="btn btn-red" style="grid-area: ac" @click="clear">AC</button>
     <button
       class="btn btn-green"
       style="grid-area: pay"
@@ -107,14 +118,6 @@ const emits = defineEmits<{
 
 const line = ref("0");
 const payable = ref(false);
-
-const remainder = computed(() => {
-  const ret = props.price - props.paid;
-  if (ret < 0.05 / 10) {
-    return 0;
-  }
-  return ret;
-});
 
 const append = (c: string) => {
   payable.value = false;
@@ -170,7 +173,7 @@ const pay = () => {
     "four five six plus"
     "one two three equal"
     "zero zero dot equal"
-    "clear pay pay pay";
+    "ac pay pay pay";
 }
 
 .btn-icon {
