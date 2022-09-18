@@ -13,7 +13,7 @@
 
     <div class="row bg-gray-300 mt-4">
       <span>Total</span>
-      <span>{{ total.toFixed(2) }} CHF</span>
+      <span>{{ price.toFixed(2) }} CHF</span>
     </div>
 
     <div class="row bg-gray-100">
@@ -47,12 +47,12 @@
   </div>
 
   <div v-if="cashCalculator.active" class="p-2 max-w-lg">
-    <app-calculator></app-calculator>
+    <app-calculator v-model:paid="paid" :price="price"></app-calculator>
   </div>
   <div v-else class="p-2 max-w-lg">
     <div class="row bg-gray-300 mt-4">
       <span>Total</span>
-      <span>{{ total.toFixed(2) }} CHF</span>
+      <span>{{ price.toFixed(2) }} CHF</span>
     </div>
 
     <div class="row bg-gray-100">
@@ -155,7 +155,7 @@ const bigCoins = [
   { type: "coin", name: "5.00 CHF", id: 5.0 },
 ];
 
-const total = kasse.price;
+const price = kasse.price;
 const paid = ref(0);
 
 // max to min
@@ -163,7 +163,7 @@ const sortedMoney = [...notes, ...coins].sort((a, b) => (a.id > b.id ? -1 : 1));
 const leastMoney = computed(() => sortedMoney[sortedMoney.length - 1].id);
 
 const remainder = computed(() => {
-  const ret = total - paid.value;
+  const ret = price - paid.value;
   if (ret < leastMoney.value / 10) {
     return 0;
   }
@@ -171,7 +171,7 @@ const remainder = computed(() => {
 });
 
 const change = computed(() => {
-  const ret = Math.abs(total - paid.value);
+  const ret = Math.abs(price - paid.value);
   return ret;
 });
 

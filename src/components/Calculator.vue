@@ -1,7 +1,9 @@
 <template>
   <div class="w-32">
     <input v-model="line" class="input" />
-    {{ total }}
+    Total {{ props.price.toFixed(2) }}<br />
+    Bezahlt {{ paid.toFixed(2) }}<br />
+    Remaining {{ remainder.toFixed(2) }}
   </div>
   <div class="wrapper">
     <button class="btn btn-gray" style="grid-area: seven" @click="append('7')">
@@ -53,55 +55,113 @@
     <button class="btn btn-blue" style="grid-area: div" @click="append('/')">
       /
     </button>
-    <button class="btn btn-blue" style="grid-area: del" @click="del">
-      DEL
+    <button class="btn btn-red" style="grid-area: del" @click="del">
+      <arrow-left-icon class="btn-icon"></arrow-left-icon>
     </button>
 
-    <button class="btn btn-blue" style="grid-area: equal" @click="equal">
-      =
+    <button
+      class="btn btn-blue text-3xl"
+      style="grid-area: equal"
+      @click="equal"
+    >
+      ↵
     </button>
 
     <button class="btn btn-blue" style="grid-area: clear" @click="clear">
       CLEAR
     </button>
-    <button class="btn btn-blue" style="grid-area: pay">BEZAHLEN</button>
+    <button
+      class="btn btn-green"
+      style="grid-area: pay"
+      :disabled="!payable"
+      @click="pay"
+    >
+      BEZAHLEN
+    </button>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed, defineProps, defineEmits } from "vue";
 import mexp from "math-expression-evaluator";
+import { ArrowLeftIcon } from "@heroicons/vue/solid";
 
-const total = ref(0);
-const line = ref("");
+const props = defineProps({
+  price: {
+    type: Number,
+    default: 0,
+  },
+  paid: {
+    type: Number,
+    default: 0,
+  },
+  remainder: {
+    type: Number,
+    default: 0,
+  },
+});
+
+const emits = defineEmits<{
+  (e: "update:paid", v: number): void;
+}>();
+
+const line = ref("0");
+const payable = ref(false);
+
+const remainder = computed(() => {
+  const ret = props.price - props.paid;
+  if (ret < 0.05 / 10) {
+    return 0;
+  }
+  return ret;
+});
 
 const append = (c: string) => {
+  payable.value = false;
+  if (line.value == "0") {
+    line.value = c;
+    return;
+  }
   line.value += c;
 };
 
 const clear = () => {
-  total.value = 0;
+  emits("update:paid", 0);
   line.value = "";
+  payable.value = false;
 };
 
 const del = () => {
-  line.value = line.value.substring(0, line.value.length - 1);
+  const oldVal = line.value;
+  const newVal = oldVal.substring(0, oldVal.length - 1);
+  line.value = newVal;
+  payable.value = false;
 };
 
 const equal = () => {
+  const val = line.value.toString();
+
   try {
-    const result = mexp.eval(line.value);
-    line.value = result;
+    const result = mexp.eval(val);
+    line.value = Number(result).toFixed(2).toString();
+    payable.value = true;
   } catch (error) {
     console.log(error);
   }
+};
+
+const pay = () => {
+  //paid.value += Number(line.value);
+  emits("update:paid", props.paid + Number(line.value));
+  line.value = "";
+  payable.value = false;
 };
 </script>
 
 <style scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(4, 4.5rem);
+  grid-template-columns: repeat(3, 4.5rem) 5.5rem;
   grid-template-rows: repeat(6, 4.5rem);
   grid-gap: 0.25rem;
   grid-template-areas:
@@ -111,5 +171,9 @@ const equal = () => {
     "one two three equal"
     "zero zero dot equal"
     "clear pay pay pay";
+}
+
+.btn-icon {
+  @apply w-6 h-6 m-auto;
 }
 </style>
