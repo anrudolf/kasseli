@@ -1,8 +1,12 @@
 <template>
-  <div>
-    <input v-model="line" class="input my-1" />
-  </div>
   <div class="wrapper">
+    <input
+      v-model="reg"
+      class="input font-bold text-2xl text-right font-mono"
+      style="grid-area: reg; border-width: 4px"
+      @keyup.enter="enterKeyboard"
+    />
+
     <button class="btn btn-gray" style="grid-area: seven" @click="append('7')">
       7
     </button>
@@ -74,8 +78,8 @@
 
     <button
       class="btn btn-blue text-3xl"
-      style="grid-area: equal"
-      @click="equal"
+      style="grid-area: enter"
+      @click="enter"
     >
       ↵
     </button>
@@ -116,47 +120,50 @@ const emits = defineEmits<{
   (e: "update:paid", v: number): void;
 }>();
 
-const line = ref("0");
+const reg = ref("");
 const payable = ref(false);
 
 const append = (c: string) => {
   payable.value = false;
-  if (line.value == "0") {
-    line.value = c;
-    return;
-  }
-  line.value += c;
+  reg.value += c;
 };
 
 const clear = () => {
   emits("update:paid", 0);
-  line.value = "";
+  reg.value = "";
   payable.value = false;
 };
 
 const del = () => {
-  const oldVal = line.value;
+  const oldVal = reg.value;
   const newVal = oldVal.substring(0, oldVal.length - 1);
-  line.value = newVal;
+  reg.value = newVal;
   payable.value = false;
 };
 
-const equal = () => {
-  const val = line.value.toString();
+const enter = () => {
+  const val = reg.value.toString();
 
   try {
     const result = mexp.eval(val);
-    line.value = Number(result).toFixed(2).toString();
+    reg.value = Number(result).toFixed(2).toString();
     payable.value = true;
   } catch (error) {
     console.log(error);
   }
 };
 
+const enterKeyboard = () => {
+  if (payable.value) {
+    pay();
+    return;
+  }
+  enter();
+};
+
 const pay = () => {
-  //paid.value += Number(line.value);
-  emits("update:paid", props.paid + Number(line.value));
-  line.value = "";
+  emits("update:paid", props.paid + Number(reg.value));
+  reg.value = "";
   payable.value = false;
 };
 </script>
@@ -165,14 +172,15 @@ const pay = () => {
 .wrapper {
   display: grid;
   grid-template-columns: repeat(3, 4.5rem) 5.5rem;
-  grid-template-rows: repeat(6, 4.5rem);
+  grid-template-rows: 3.5rem repeat(6, 4.5rem);
   grid-gap: 0.25rem;
   grid-template-areas:
+    "reg reg reg reg"
     "del div mul minus"
     "seven eight nine plus"
     "four five six plus"
-    "one two three equal"
-    "zero zero dot equal"
+    "one two three enter"
+    "zero zero dot enter"
     "ac pay pay pay";
 }
 

@@ -85,6 +85,8 @@ export const createOrders = async (serial: string) => {
   });
 
   await batch.commit();
+
+  return orders;
 };
 
 export const setOrderStatus = (id: string, status: OrderStatus) => {

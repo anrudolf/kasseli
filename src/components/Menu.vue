@@ -54,6 +54,13 @@
               <div class="mt-8">
                 <div class="flex flex-col uppercase" @click="ui.closeMenu">
                   <router-link class="app-menu-link" to="/">Home</router-link>
+                  <router-link
+                    v-if="settings.tillMode != TillMode.PAY"
+                    class="app-menu-link"
+                    to="/orders"
+                    >Orders</router-link
+                  >
+
                   <router-link class="app-menu-link" to="/products"
                     >Products</router-link
                   >
@@ -115,9 +122,13 @@ import {
   CameraIcon,
 } from "@heroicons/vue/outline";
 
+import { TillMode } from "@/types";
+
 import useUiStore from "@/store/ui";
+import useSettingsStore from "@/store/settings";
 
 const ui = useUiStore();
+const settings = useSettingsStore();
 
 const refresh = () => {
   window.location.reload();

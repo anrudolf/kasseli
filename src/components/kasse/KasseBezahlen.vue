@@ -38,7 +38,10 @@ const label = computed(() => {
 });
 
 const checkout = () => {
-  if (settings.tillMode == TillMode.ORDER_AND_PAY_LATER) {
+  if (
+    settings.tillMode == TillMode.ORDER_AND_PAY_LATER ||
+    settings.tillMode == TillMode.ORDER_AND_PAY
+  ) {
     router.push("/checkout/serial");
     return;
   }
