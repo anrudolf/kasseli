@@ -49,9 +49,9 @@
 
     <table class="w-full my-2">
       <tbody
-        v-for="group in projections"
-        v-show="group.content.some((o) => o.status == filter)"
-        :key="group.serial"
+        v-for="order in store.items"
+        v-show="Object.values(order.content).some((o) => o.status == filter)"
+        :key="order.id"
         class="border-2 border-blue-300"
       >
         <tr class="border bg-blue-100">
@@ -59,15 +59,15 @@
             <button class="mr-2 text-red-400">
               <trash-icon class="icon"></trash-icon>
             </button>
-            <span class="pt-0.5">{{ group.serial }}</span>
+            <span class="pt-0.5">{{ order.serial }}</span>
           </th>
           <th style="width: 0px">
             <div class="flex gap-3 justify-end">
               <button
                 class="text-green-600"
                 @click="
-                  selectOrderGroup(
-                    group.serial == selectedOrderGroup ? null : group.serial
+                  selectOrder(
+                    order.serial == selectedOrder ? null : order.serial
                   )
                 "
               >
@@ -76,28 +76,28 @@
               <button
                 class="text-blue-600"
                 :disabled="filter == OrderStatus.NEW"
-                @click="updateMultiStatus(group.serial, OrderStatus.NEW)"
+                @click="updateMultiStatus(order.id, OrderStatus.NEW)"
               >
                 <sparkles-icon class="icon"> </sparkles-icon>
               </button>
               <button
                 class="text-blue-600"
                 :disabled="filter == OrderStatus.PREPARING"
-                @click="updateMultiStatus(group.serial, OrderStatus.PREPARING)"
+                @click="updateMultiStatus(order.id, OrderStatus.PREPARING)"
               >
                 <clock-icon class="icon"> </clock-icon>
               </button>
               <button
                 class="text-blue-600"
                 :disabled="filter == OrderStatus.READY"
-                @click="updateMultiStatus(group.serial, OrderStatus.READY)"
+                @click="updateMultiStatus(order.id, OrderStatus.READY)"
               >
                 <check-icon class="icon"> </check-icon>
               </button>
               <button
                 class="text-blue-600"
                 :disabled="filter == OrderStatus.COMPLETE"
-                @click="updateMultiStatus(group.serial, OrderStatus.COMPLETE)"
+                @click="updateMultiStatus(order.id, OrderStatus.COMPLETE)"
               >
                 <app-icon class="icon" icon="double-check"> </app-icon>
               </button>
@@ -105,38 +105,44 @@
           </th>
         </tr>
         <tr
-          v-for="order in group.content"
-          v-show="order.status == filter"
-          :key="order.id"
+          v-for="item in order.content"
+          v-show="item.status == filter"
+          :key="item.id"
           class="border"
         >
-          <td>{{ order.product.label.de }}</td>
+          <td>{{ item.product.label.de }}</td>
           <td>
             <div
-              v-if="selectedOrderGroup == group.serial"
+              v-if="selectedOrder == order.serial"
               class="flex gap-3 justify-end"
             >
               <button
                 :disabled="filter == OrderStatus.NEW"
-                @click="setOrderStatus(order.id, OrderStatus.NEW)"
+                @click="setOrderItemStatus(order.id, item.id, OrderStatus.NEW)"
               >
                 <sparkles-icon class="icon"> </sparkles-icon>
               </button>
               <button
                 :disabled="filter == OrderStatus.PREPARING"
-                @click="setOrderStatus(order.id, OrderStatus.PREPARING)"
+                @click="
+                  setOrderItemStatus(order.id, item.id, OrderStatus.PREPARING)
+                "
               >
                 <clock-icon class="icon"> </clock-icon>
               </button>
               <button
                 :disabled="filter == OrderStatus.READY"
-                @click="setOrderStatus(order.id, OrderStatus.READY)"
+                @click="
+                  setOrderItemStatus(order.id, item.id, OrderStatus.READY)
+                "
               >
                 <check-icon class="icon"> </check-icon>
               </button>
               <button
                 :disabled="filter == OrderStatus.COMPLETE"
-                @click="setOrderStatus(order.id, OrderStatus.COMPLETE)"
+                @click="
+                  setOrderItemStatus(order.id, item.id, OrderStatus.COMPLETE)
+                "
               >
                 <app-icon icon="double-check" class="icon"> </app-icon>
               </button>
@@ -152,7 +158,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import useOrdersStore from "@/store/orders";
-import { setOrderStatus, setMultiOrderStatus } from "@/services/order";
+import { setOrderItemStatus, setMultiOrderItemStatus } from "@/services/order";
 import { OrderStatus } from "@/types";
 import {
   ClockIcon,
@@ -174,37 +180,28 @@ const store = useOrdersStore();
 
 const filter = ref(OrderStatus.NEW);
 const orderModal = ref(false);
-const selectedOrderGroup = ref<string | null>(null);
+const selectedOrder = ref<string | null>(null);
 
-const selectOrderGroup = (id: string | null) => {
-  selectedOrderGroup.value = id;
+const selectOrder = (id: string | null) => {
+  selectedOrder.value = id;
 };
 
-const updateMultiStatus = (serial: string, status: OrderStatus) => {
-  const ids: string[] = [];
-  const group = projections.value.find((g) => g.serial == serial);
-  if (!group) {
+const updateMultiStatus = (id: string, status: OrderStatus) => {
+  const ids: number[] = [];
+
+  const order = store.items.find((order) => order.id == id);
+  if (!order) {
     return;
   }
 
-  group.content.forEach((order) => {
+  Object.values(order.content).forEach((order) => {
     if (order.status == filter.value) {
       ids.push(order.id);
     }
   });
 
-  setMultiOrderStatus(ids, status);
+  setMultiOrderItemStatus(id, ids, status);
 };
-
-const sorted = computed(() => {
-  return store.items
-    .filter((i) => i.status == filter.value)
-    .sort((a, b) =>
-      a.created > b.created ? 1 : b.created > a.created ? -1 : 0
-    );
-});
-
-const projections = useOrdersProjection();
 </script>
 
 <style scoped>

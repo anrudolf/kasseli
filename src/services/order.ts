@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 
 import useKasse from "@/store/kasse";
-import { Order, OrderStatus } from "@/types";
+import { Order, OrderStatus, OrderItem } from "@/types";
 
 export const createSerial = async () => {
   try {
@@ -51,23 +51,30 @@ export const createSerial = async () => {
   }
 };
 
-export const createOrders = async (serial: string) => {
+export const createOrder = async (serial: string) => {
   const kasse = useKasse();
 
-  const orders: Order[] = [];
+  const docRef = doc(db.orders);
 
   const now = new Date().toISOString();
 
-  const batch = writeBatch(db.orders.firestore);
+  const order: Order = {
+    id: docRef.id,
+    status: OrderStatus.NEW,
+    serial: serial,
+    reference: "",
+    created: now,
+    updated: now,
+    note: "",
+    content: {},
+  };
+
+  let n = 0;
 
   kasse.items.forEach((item) => {
     for (let i = 0; i < item.quantity; i++) {
-      const order: Order = {
-        id: doc(db.orders).id,
-        serial: serial,
-        reference: "",
-        created: now,
-        updated: now,
+      const orderItem: OrderItem = {
+        id: n,
         status: OrderStatus.NEW,
         paid: false,
         price: item.price,
@@ -75,36 +82,38 @@ export const createOrders = async (serial: string) => {
         product: item.product,
         note: "",
       };
-      orders.push(order);
+      order.content[n] = orderItem;
+      n = n + 1;
     }
   });
 
-  orders.forEach((order) => {
-    const orderDocRef = doc(db.orders, order.id);
-    batch.set(orderDocRef, order);
-  });
+  setDoc(docRef, order);
 
-  await batch.commit();
-
-  return orders;
+  return order;
 };
 
-export const setOrderStatus = (id: string, status: OrderStatus) => {
-  const now = new Date().toISOString();
-  const orderDocRef = doc(db.orders, id);
-  updateDoc(orderDocRef, { status: status, updated: now });
-};
-
-export const setMultiOrderStatus = async (
-  ids: string[],
+export const setOrderItemStatus = (
+  id: string,
+  item: number,
   status: OrderStatus
 ) => {
-  const batch = writeBatch(db.orders.firestore);
+  const now = new Date().toISOString();
+  const orderDocRef = doc(db.orders, id);
+  const update = { updated: now };
+  update[`content.${item}.status`] = status;
+  updateDoc(orderDocRef, update);
+};
 
-  ids.forEach((id) => {
-    const docRef = doc(db.orders, id);
-    batch.update(docRef, { status: status });
+export const setMultiOrderItemStatus = async (
+  id: string,
+  items: number[],
+  status: OrderStatus
+) => {
+  const now = new Date().toISOString();
+  const orderDocRef = doc(db.orders, id);
+  const update = { updated: now };
+  items.forEach((item) => {
+    update[`content.${item}.status`] = status;
   });
-
-  await batch.commit();
+  updateDoc(orderDocRef, update);
 };

@@ -5,19 +5,13 @@
     <div>Bestellung: {{ serial }}</div>
 
     <div class="my-2">
-      <button
-        class="btn btn-red"
-        :disabled="orders.length == 0"
-        @click="cancelOrders"
-      >
+      <button class="btn btn-red" :disabled="!order" @click="cancelOrders">
         Stornieren
       </button>
     </div>
 
     <div v-if="settings.tillMode == TillMode.ORDER_AND_PAY" class="my-2">
-      <button class="btn btn-blue" :disabled="orders.length == 0">
-        Bezahlen
-      </button>
+      <button class="btn btn-blue" :disabled="!order">Bezahlen</button>
     </div>
     <div></div>
   </div>
@@ -31,8 +25,8 @@ import { useOnline } from "@vueuse/core";
 
 import {
   createSerial,
-  createOrders,
-  setMultiOrderStatus,
+  createOrder,
+  setMultiOrderItemStatus,
 } from "@/services/order";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
@@ -46,13 +40,16 @@ const settings = useSettingsStore();
 const isOnline = useOnline();
 
 const serial = ref("");
-const orders = ref<Order[]>([]);
+const order = ref<Order | null>(null);
 
 const router = useRouter();
 
 const cancelOrders = async () => {
-  const ids = orders.value.map((order) => order.id);
-  await setMultiOrderStatus(ids, OrderStatus.CANCELED);
+  if (!order.value) {
+    return;
+  }
+  const ids = Object.keys(order.value.content).map((k) => Number(k));
+  await setMultiOrderItemStatus(order.value.id, ids, OrderStatus.CANCELED);
   router.replace("/");
 };
 
@@ -63,7 +60,7 @@ if (
   const issueSerial = async () => {
     const nextSerial = await createSerial();
     serial.value = nextSerial;
-    orders.value = await createOrders(nextSerial);
+    order.value = await createOrder(nextSerial);
   };
   issueSerial();
 }

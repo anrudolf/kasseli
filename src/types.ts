@@ -118,18 +118,25 @@ export enum OrderStatus {
   COMPLETE,
 }
 
-export interface Order {
-  id: string;
-  serial: string;
-  reference: string;
-  created: string;
-  updated: string;
+export interface OrderItem {
+  id: number;
   status: OrderStatus;
   paid: boolean;
   price: number;
   code: string;
   product: Product;
   note: string;
+}
+
+export interface Order {
+  id: string;
+  status: OrderStatus;
+  serial: string;
+  reference: string;
+  created: string;
+  updated: string;
+  note: string;
+  content: { [key: number]: OrderItem };
 }
 
 export interface OrderReference {
