@@ -172,10 +172,6 @@ import {
 import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
 
-import { useOrdersProjection } from "@/hooks/use-orders-projections";
-
-import { OrderGroup } from "@/types";
-
 const store = useOrdersStore();
 
 const filter = ref(OrderStatus.NEW);

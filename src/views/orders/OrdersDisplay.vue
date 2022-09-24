@@ -8,24 +8,28 @@
     <div class="grid grid-cols-2">
       <div class="grid grid-cols-2">
         <div
-          v-for="group in projections.filter((g) =>
-            g.content.some((o) => o.status == OrderStatus.PREPARING)
+          v-for="order in store.items.filter((order) =>
+            Object.values(order.content).some(
+              (item) => item.status == OrderStatus.PREPARING
+            )
           )"
-          :key="group.serial"
+          :key="order.id"
           class="card preparation"
         >
-          {{ group.serial }}
+          {{ order.serial }}
         </div>
       </div>
       <div class="grid grid-cols-2">
         <div
-          v-for="group in projections.filter((g) =>
-            g.content.every((o) => o.status == OrderStatus.READY)
+          v-for="order in store.items.filter((order) =>
+            Object.values(order.content).every(
+              (o) => o.status == OrderStatus.READY
+            )
           )"
-          :key="group.serial"
+          :key="order.id"
           class="card ready"
         >
-          {{ group.serial }}
+          {{ order.serial }}
         </div>
       </div>
     </div>
@@ -34,9 +38,10 @@
 
 <script lang="ts" setup>
 import { OrderStatus } from "@/types";
-import { useOrdersProjection } from "@/hooks/use-orders-projections";
 
-const projections = useOrdersProjection();
+import useStore from "@/store/orders";
+
+const store = useStore();
 </script>
 
 <style scoped>

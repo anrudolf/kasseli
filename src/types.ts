@@ -145,6 +145,7 @@ export interface OrderReference {
   name: string;
 }
 
+/* OrderGroup is deprecated */
 export interface OrderGroup {
   serial: string;
   content: Array<Order>;
