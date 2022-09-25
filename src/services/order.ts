@@ -94,26 +94,20 @@ export const createOrder = async (serial: string) => {
 
 export const setOrderItemStatus = (
   id: string,
-  item: number,
+  items: number | number[],
   status: OrderStatus
 ) => {
   const now = new Date().toISOString();
   const orderDocRef = doc(db.orders, id);
   const update = { updated: now };
-  update[`content.${item}.status`] = status;
-  updateDoc(orderDocRef, update);
-};
 
-export const setMultiOrderItemStatus = async (
-  id: string,
-  items: number[],
-  status: OrderStatus
-) => {
-  const now = new Date().toISOString();
-  const orderDocRef = doc(db.orders, id);
-  const update = { updated: now };
-  items.forEach((item) => {
-    update[`content.${item}.status`] = status;
-  });
+  if (Array.isArray(items)) {
+    items.forEach((item) => {
+      update[`content.${item}.status`] = status;
+    });
+  } else {
+    update[`content.${items}.status`] = status;
+  }
+
   updateDoc(orderDocRef, update);
 };

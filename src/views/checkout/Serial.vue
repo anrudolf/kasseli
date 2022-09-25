@@ -26,7 +26,7 @@ import { useOnline } from "@vueuse/core";
 import {
   createSerial,
   createOrder,
-  setMultiOrderItemStatus,
+  setOrderItemStatus,
 } from "@/services/order";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
@@ -49,7 +49,7 @@ const cancelOrders = async () => {
     return;
   }
   const ids = Object.keys(order.value.content).map((k) => Number(k));
-  await setMultiOrderItemStatus(order.value.id, ids, OrderStatus.CANCELED);
+  await setOrderItemStatus(order.value.id, ids, OrderStatus.CANCELED);
   router.replace("/");
 };
 
