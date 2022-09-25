@@ -74,7 +74,7 @@ export const createOrder = async (serial: string) => {
   kasse.items.forEach((item) => {
     for (let i = 0; i < item.quantity; i++) {
       const orderItem: OrderItem = {
-        id: n,
+        idx: n,
         status: OrderStatus.NEW,
         paid: false,
         price: item.price,

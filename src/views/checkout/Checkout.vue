@@ -38,7 +38,7 @@ import { ref } from "vue";
 import { useOnline } from "@vueuse/core";
 import { DeviceMobileIcon } from "@heroicons/vue/outline";
 
-import { createSerial } from "@/services/order";
+import { createSerial } from "@/services/orders";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/ui/Card.vue";

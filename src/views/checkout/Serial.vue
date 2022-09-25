@@ -27,7 +27,7 @@ import {
   createSerial,
   createOrder,
   setOrderItemStatus,
-} from "@/services/order";
+} from "@/services/orders";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/ui/Card.vue";

@@ -65,7 +65,7 @@ import {
   TrashIcon,
   SparklesIcon,
 } from "@heroicons/vue/outline";
-import { setOrderItemStatus } from "@/services/order";
+import { setOrderItemStatus } from "@/services/orders";
 
 import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";

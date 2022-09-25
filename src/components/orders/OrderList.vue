@@ -59,7 +59,7 @@
       <tr
         v-for="item in order.content"
         v-show="item.status == props.filter"
-        :key="item.id"
+        :key="item.idx"
         class="border"
       >
         <td>{{ item.product.label.de }}</td>
@@ -70,28 +70,28 @@
           >
             <button
               :disabled="props.filter == OrderStatus.NEW"
-              @click="updateSingleStatus(order.id, item.id, OrderStatus.NEW)"
+              @click="updateSingleStatus(order.id, item.idx, OrderStatus.NEW)"
             >
               <sparkles-icon class="icon"> </sparkles-icon>
             </button>
             <button
               :disabled="props.filter == OrderStatus.PREPARING"
               @click="
-                updateSingleStatus(order.id, item.id, OrderStatus.PREPARING)
+                updateSingleStatus(order.id, item.idx, OrderStatus.PREPARING)
               "
             >
               <clock-icon class="icon"> </clock-icon>
             </button>
             <button
               :disabled="props.filter == OrderStatus.READY"
-              @click="updateSingleStatus(order.id, item.id, OrderStatus.READY)"
+              @click="updateSingleStatus(order.id, item.idx, OrderStatus.READY)"
             >
               <check-icon class="icon"> </check-icon>
             </button>
             <button
               :disabled="props.filter == OrderStatus.COMPLETE"
               @click="
-                updateSingleStatus(order.id, item.id, OrderStatus.COMPLETE)
+                updateSingleStatus(order.id, item.idx, OrderStatus.COMPLETE)
               "
             >
               <app-icon icon="double-check" class="icon"> </app-icon>
@@ -151,9 +151,9 @@ const updateMultiStatus = (id: string, status: OrderStatus) => {
     return;
   }
 
-  Object.values(order.content).forEach((order) => {
-    if (order.status == props.filter) {
-      items.push(order.id);
+  Object.values(order.content).forEach((item) => {
+    if (item.status == props.filter) {
+      items.push(item.idx);
     }
   });
 

@@ -119,7 +119,7 @@ export enum OrderStatus {
 }
 
 export interface OrderItem {
-  id: number;
+  idx: number;
   status: OrderStatus;
   paid: boolean;
   price: number;
