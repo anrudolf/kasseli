@@ -162,7 +162,7 @@ const props = defineProps({
   editing: Boolean,
   removable: Boolean,
   clipboard: {
-    type: Object as PropType<TillClipboard>,
+    type: Object as PropType<TillClipboard | null>,
     default: null,
   },
 });
