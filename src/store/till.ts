@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { Till } from "@/types";
+import { Till, TillClipboard } from "@/types";
 import { onSnapshot, Unsubscribe } from "firebase/firestore";
 
 import useSettingsStore from "./settings";
@@ -12,6 +12,7 @@ const store = defineStore({
   state: () => ({
     items: [] as Till[],
     unsubscribe: null as Unsubscribe | null,
+    clipboard: null as TillClipboard | null,
   }),
   getters: {
     getDefault: (state) => {

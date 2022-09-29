@@ -4,11 +4,15 @@ import { doc, getDoc, deleteDoc, setDoc } from "firebase/firestore";
 
 import { useDebounce } from "../hooks/use-debounce";
 
-import { Till, TillCatalog, TillProduct } from "@/types";
+import { Till, TillCatalog, TillClipboard, TillProduct } from "@/types";
 
 import db from "@/services/db";
 
-export default function ({ editing = false, id = "" }) {
+export default function ({
+  editing = false,
+  id = "",
+  clipboard = null as TillClipboard | null,
+}) {
   const router = useRouter();
 
   const entity: Till = reactive({
@@ -22,7 +26,9 @@ export default function ({ editing = false, id = "" }) {
     favorites: [],
   });
 
-  if (id) {
+  if (clipboard) {
+    Object.assign(entity, { ...clipboard.till });
+  } else if (id) {
     entity.id = id;
     getDoc(doc(db.tills, id)).then((doc) => {
       if (doc.exists()) {

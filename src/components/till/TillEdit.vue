@@ -124,6 +124,7 @@
           class="my-4 border-4"
           @remove="till.favorites.splice(idx, 1)"
           @move="(pos: string) => moveFavorite(idx, pos)"
+          @create-product="initiateProductCreation"
         />
       </div>
     </section>
@@ -135,7 +136,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, defineEmits, PropType } from "vue";
+import { useRouter } from "vue-router";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@/components/ui/ButtonConfirm.vue";
@@ -151,16 +153,34 @@ import useTillEdit from "@/hooks/use-till-edit";
 
 import arrayUtil from "@/utils/array";
 
+import useTillStore from "@/store/till";
+
+import { Till, TillClipboard } from "@/types";
+
 const props = defineProps({
   id: { type: String, default: "" },
   editing: Boolean,
   removable: Boolean,
+  clipboard: {
+    type: Object as PropType<TillClipboard>,
+    default: null,
+  },
 });
+
+const emit = defineEmits<{
+  (e: "initiate-product-creation", v: { till: Till; path: string }): void;
+}>();
+
+const router = useRouter();
 
 const deleteModal = ref(false);
 const deleteModalConfirmation = ref("");
 
-const options = { editing: props.editing, id: props.id };
+const options = {
+  editing: props.editing,
+  id: props.id,
+  clipboard: props.clipboard,
+};
 
 const {
   entity: till,
@@ -172,6 +192,12 @@ const {
   addCatalog,
   addProduct,
 } = useTillEdit(options);
+
+const store = useTillStore();
+if (store.clipboard) {
+  Object.assign(till, { ...till, ...store.clipboard.till });
+  store.clipboard = null;
+}
 
 const getComponent = (kind: string) => {
   if (kind === "catalog") {
@@ -202,6 +228,10 @@ const moveFavorite = (idx: number, pos: string) => {
     default:
       break;
   }
+};
+
+const initiateProductCreation = () => {
+  emit("initiate-product-creation", { till, path: "" });
 };
 </script>
 

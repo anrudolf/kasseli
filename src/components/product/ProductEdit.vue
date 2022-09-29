@@ -92,6 +92,7 @@
       <router-link
         :to="`/products/edit?id=${product.id}`"
         class="ml-auto underline text-blue-500"
+        replace
         >Editieren</router-link
       >
     </div>
@@ -141,7 +142,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, withDefaults } from "vue";
 
 import { CameraIcon } from "@heroicons/vue/outline";
 
@@ -157,20 +158,22 @@ import useProductEdit from "@/hooks/use-product-edit";
 import utils from "@/utils";
 import { readerTypes } from "@/utils/camerascanner";
 
-const props = defineProps({
-  id: {
-    type: String,
-    default: "",
-  },
-  editing: {
-    type: Boolean,
-  },
+interface Props {
+  id: string;
+  editing: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  id: "",
 });
 
 const deleteModal = ref(false);
 const deleteModalConfirmation = ref("");
 
-const options = { editing: props.editing, id: props.id };
+const options = {
+  editing: props.editing,
+  id: props.id,
+};
 
 const {
   entity: product,

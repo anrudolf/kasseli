@@ -61,7 +61,7 @@ export default function ({ editing = false, id = "" }) {
     }
 
     setDoc(doc(db.products, entity.id), entity);
-    router.push("/products");
+    router.go(-1);
   };
 
   const remove = () => {

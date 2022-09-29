@@ -1,7 +1,14 @@
 <template>
   <div class="p-3 max-w-lg">
     <app-modal v-model="addModal">
-      <template #title>Produkt auswählen</template>
+      <template #title
+        >Produkt auswählen<button
+          class="btn btn-blue"
+          @click="emit('create-product')"
+        >
+          NEW
+        </button></template
+      >
       <app-product-selector @selected="setProduct" />
     </app-modal>
 
@@ -134,6 +141,7 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: "remove", v: void);
   (e: "move", v: string);
+  (e: "create-product", v: void);
 }>();
 
 const addModal = ref(false);

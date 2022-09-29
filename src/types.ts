@@ -28,6 +28,11 @@ export interface Till {
   favorites: Array<TillCatalog | TillProduct>;
 }
 
+export interface TillClipboard {
+  till: Till;
+  path: string;
+}
+
 export enum TillMode {
   PAY = "PAY",
   ORDER_AND_PAY = "ORDER_AND_PAY",
