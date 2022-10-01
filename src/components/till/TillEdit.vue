@@ -168,10 +168,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits<{
-  (e: "initiate-product-creation", v: { till: Till; path: string }): void;
+  (e: "initiate-product-creation", v: TillClipboard): void;
 }>();
-
-const router = useRouter();
 
 const deleteModal = ref(false);
 const deleteModalConfirmation = ref("");
@@ -230,8 +228,11 @@ const moveFavorite = (idx: number, pos: string) => {
   }
 };
 
-const initiateProductCreation = () => {
-  emit("initiate-product-creation", { till, path: "" });
+const initiateProductCreation = (v: { idx: number; kind: string }) => {
+  emit("initiate-product-creation", {
+    till,
+    favorite: { idx: v.idx, kind: v.kind },
+  });
 };
 </script>
 

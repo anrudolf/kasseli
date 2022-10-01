@@ -27,7 +27,22 @@ export default function ({
   });
 
   if (clipboard) {
+    const {
+      product,
+      favorite: { idx, kind },
+    } = clipboard;
+
     Object.assign(entity, { ...clipboard.till });
+
+    if (product) {
+      if (kind == "catalog") {
+        const c = entity.favorites[idx] as TillCatalog;
+        c.content.push({ id: product.id, kind: "product" });
+      } else if (kind == "product") {
+        const c = entity.favorites[idx] as TillProduct;
+        c.id = product.id;
+      }
+    }
   } else if (id) {
     entity.id = id;
     getDoc(doc(db.tills, id)).then((doc) => {

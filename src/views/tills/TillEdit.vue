@@ -16,6 +16,7 @@ import { useRoute, useRouter } from "vue-router";
 import appTillEdit from "../../components/till/TillEdit.vue";
 
 import useTillStore from "@/store/till";
+import useProductStore from "@/store/products";
 import { Till, TillClipboard } from "@/types";
 
 const props = defineProps({
@@ -27,7 +28,7 @@ const props = defineProps({
 
 const route = useRoute();
 const router = useRouter();
-const store = useTillStore();
+const tillStore = useTillStore();
 
 const editing = computed(
   () => !route.matched.some(({ name }) => name === "tills-new")
@@ -37,19 +38,25 @@ const { id: reactiveId } = toRefs(props);
 
 const removable = computed(() => reactiveId.value !== "default");
 
-const clipboard: TillClipboard | null = store.clipboard;
+const clipboard: TillClipboard | null = tillStore.clipboard;
+
+/* consume clipboard if available */
 if (clipboard) {
-  store.clipboard = null;
+  const productStore = useProductStore();
+  const productClipboard = productStore.clipboard;
+  if (productClipboard) {
+    clipboard.product = productClipboard;
+    productStore.clipboard = null;
+  }
+  tillStore.clipboard = null;
 }
 
-const initiateProductCreation = ({
-  till,
-  path,
-}: {
-  till: Till;
-  path: string;
-}) => {
-  store.clipboard = { till, path };
+const initiateProductCreation = (v: TillClipboard) => {
+  /* clear any possible products in clipboard */
+  const productStore = useProductStore();
+  productStore.clipboard = null;
+
+  tillStore.clipboard = v;
 
   router.push("/products/new");
 };

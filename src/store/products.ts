@@ -12,6 +12,7 @@ const store = defineStore({
   state: () => ({
     items: [] as Product[],
     unsubscribe: null as Unsubscribe | null,
+    clipboard: null as Product | null,
   }),
   getters: {
     item: (state) => (code: string) => {

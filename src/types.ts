@@ -30,7 +30,8 @@ export interface Till {
 
 export interface TillClipboard {
   till: Till;
-  path: string;
+  favorite: { idx: number; kind: string };
+  product?: Product;
 }
 
 export enum TillMode {

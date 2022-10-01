@@ -6,11 +6,13 @@ import utils from "../utils";
 import { useDebounce } from "../hooks/use-debounce";
 
 import db from "@/services/db";
+import useProductStore from "@/store/products";
 
 import { Product } from "@/types";
 
 export default function ({ editing = false, id = "" }) {
   const router = useRouter();
+  const productStore = useProductStore();
 
   const entity: Product = reactive({
     id: "",
@@ -59,6 +61,18 @@ export default function ({ editing = false, id = "" }) {
     if (entity.template) {
       entity.price = null;
     }
+
+    productStore.clipboard = { ...entity };
+
+    // add to store immediately
+    const idx = productStore.items.findIndex((i) => i.id === entity.id);
+    if (idx >= 0) {
+      productStore.items[idx] = { ...entity };
+    } else {
+      productStore.items.push({ ...entity });
+    }
+
+    productStore.items.push({ ...entity });
 
     setDoc(doc(db.products, entity.id), entity);
     router.go(-1);

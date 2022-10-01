@@ -4,7 +4,7 @@
       <template #title
         >Produkt auswählen<button
           class="btn btn-blue"
-          @click="emit('create-product')"
+          @click="emit('create-product', { idx: props.idx, kind: 'catalog' })"
         >
           NEW
         </button></template
@@ -200,7 +200,7 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: "remove", v: void);
   (e: "move", v: string);
-  (e: "create-product", v: void);
+  (e: "create-product", v: { idx: number; kind: string });
 }>();
 
 const addModal = ref(false);
