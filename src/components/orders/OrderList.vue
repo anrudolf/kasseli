@@ -2,9 +2,7 @@
   <table class="w-full my-2">
     <tbody
       v-for="order in items"
-      v-show="
-        Object.values(order.content).some((o) => o.status == props.filter)
-      "
+      v-show="order.status == filter"
       :key="order.id"
       class="border-2 border-blue-300"
     >
@@ -28,74 +26,43 @@
             <button
               class="text-blue-600"
               :disabled="props.filter == OrderStatus.NEW"
-              @click="updateMultiStatus(order.id, OrderStatus.NEW)"
+              @click="setOrderStatus(order.id, OrderStatus.NEW)"
             >
               <sparkles-icon class="icon"> </sparkles-icon>
             </button>
             <button
               class="text-blue-600"
               :disabled="props.filter == OrderStatus.PREPARING"
-              @click="updateMultiStatus(order.id, OrderStatus.PREPARING)"
+              @click="setOrderStatus(order.id, OrderStatus.PREPARING)"
             >
               <clock-icon class="icon"> </clock-icon>
             </button>
             <button
               class="text-blue-600"
               :disabled="props.filter == OrderStatus.READY"
-              @click="updateMultiStatus(order.id, OrderStatus.READY)"
+              @click="setOrderStatus(order.id, OrderStatus.READY)"
             >
               <check-icon class="icon"> </check-icon>
             </button>
             <button
               class="text-blue-600"
               :disabled="props.filter == OrderStatus.COMPLETE"
-              @click="updateMultiStatus(order.id, OrderStatus.COMPLETE)"
+              @click="setOrderStatus(order.id, OrderStatus.COMPLETE)"
             >
               <app-icon class="icon" icon="double-check"> </app-icon>
             </button>
           </div>
         </th>
       </tr>
-      <tr
-        v-for="item in order.content"
-        v-show="item.status == props.filter"
-        :key="item.idx"
-        class="border"
-      >
+      <tr v-for="item in order.content" :key="item.idx" class="border">
         <td>{{ item.product.label.de }}</td>
         <td>
-          <div
-            v-if="selectedOrder == order.serial"
-            class="flex gap-3 justify-end"
-          >
-            <button
-              :disabled="props.filter == OrderStatus.NEW"
-              @click="updateSingleStatus(order.id, item.idx, OrderStatus.NEW)"
-            >
-              <sparkles-icon class="icon"> </sparkles-icon>
-            </button>
-            <button
-              :disabled="props.filter == OrderStatus.PREPARING"
-              @click="
-                updateSingleStatus(order.id, item.idx, OrderStatus.PREPARING)
-              "
-            >
-              <clock-icon class="icon"> </clock-icon>
-            </button>
-            <button
-              :disabled="props.filter == OrderStatus.READY"
-              @click="updateSingleStatus(order.id, item.idx, OrderStatus.READY)"
-            >
-              <check-icon class="icon"> </check-icon>
-            </button>
-            <button
-              :disabled="props.filter == OrderStatus.COMPLETE"
-              @click="
-                updateSingleStatus(order.id, item.idx, OrderStatus.COMPLETE)
-              "
-            >
-              <app-icon icon="double-check" class="icon"> </app-icon>
-            </button>
+          <div class="flex gap-3 justify-end">
+            <app-order-progress-bar
+              :id="order.id"
+              :item="item"
+              @set-order-item-status="(v) => emit('set-order-item-status', v)"
+            ></app-order-progress-bar>
           </div>
         </td>
       </tr>
@@ -118,6 +85,7 @@ import {
 import { Order, OrderStatus } from "@/types";
 
 import appIcon from "@/components/ui/Icon.vue";
+import appOrderProgressBar from "./OrderProgressBar.vue";
 
 const props = defineProps({
   filter: {
@@ -132,7 +100,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (
-    e: "updateOrderItemStatus",
+    e: "set-order-item-status",
     v: { id: string; items: number | number[]; status: OrderStatus }
   );
 }>();
@@ -143,6 +111,11 @@ const selectOrder = (id: string | null) => {
   selectedOrder.value = id;
 };
 
+const setOrderStatus = (id: string, status: OrderStatus) => {
+  // TODO: setOrderStatus
+};
+
+/*
 const updateMultiStatus = (id: string, status: OrderStatus) => {
   const items: number[] = [];
 
@@ -163,6 +136,7 @@ const updateMultiStatus = (id: string, status: OrderStatus) => {
 const updateSingleStatus = (id: string, items: number, status: OrderStatus) => {
   emit("updateOrderItemStatus", { id, items, status });
 };
+*/
 </script>
 
 <style scoped>

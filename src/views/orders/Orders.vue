@@ -50,7 +50,7 @@
     <app-order-list
       :filter="filter"
       :items="store.items"
-      @update-order-item-status="updateOrderItemsStatus"
+      @set-order-item-status="updateOrderItemsStatus"
     ></app-order-list>
   </div>
 </template>
