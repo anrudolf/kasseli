@@ -1,24 +1,38 @@
 <template>
-  <button
-    class="bg-red-400"
-    :class="props.item.status == OrderStatus.NEW ? 'active' : 'inactive'"
-    @click="setStatus(OrderStatus.NEW)"
-  ></button>
-  <button
-    class="bg-orange-400"
-    :class="props.item.status == OrderStatus.PREPARING ? 'active' : 'inactive'"
-    @click="setStatus(OrderStatus.PREPARING)"
-  ></button>
-  <button
-    class="bg-yellow-400"
-    :class="props.item.status == OrderStatus.READY ? 'active' : 'inactive'"
-    @click="setStatus(OrderStatus.READY)"
-  ></button>
-  <button
-    class="bg-green-400"
-    :class="props.item.status == OrderStatus.COMPLETE ? 'active' : 'inactive'"
-    @click="setStatus(OrderStatus.COMPLETE)"
-  ></button>
+  <div class="wrapper flex gap-3">
+    <div>
+      <button
+        class="bg-orange-400"
+        :class="props.item.status == OrderStatus.NEW ? 'active' : 'inactive'"
+        @click="setStatus(OrderStatus.NEW)"
+      ></button>
+    </div>
+    <div>
+      <button
+        class="bg-yellow-400"
+        :class="
+          props.item.status == OrderStatus.PREPARING ? 'active' : 'inactive'
+        "
+        @click="setStatus(OrderStatus.PREPARING)"
+      ></button>
+    </div>
+    <div>
+      <button
+        class="bg-green-400"
+        :class="props.item.status == OrderStatus.READY ? 'active' : 'inactive'"
+        @click="setStatus(OrderStatus.READY)"
+      ></button>
+    </div>
+    <div>
+      <button
+        class="bg-blue-400"
+        :class="
+          props.item.status == OrderStatus.COMPLETE ? 'active' : 'inactive'
+        "
+        @click="setStatus(OrderStatus.COMPLETE)"
+      ></button>
+    </div>
+  </div>
 </template>
 status
 <script lang="ts" setup>
@@ -54,6 +68,10 @@ const setStatus = (status: OrderStatus) => {
 </script>
 
 <style scoped>
+.wrapper > div {
+  @apply w-6 h-6 flex items-start;
+}
+
 button {
   @apply w-6 h-6 rounded-full;
 }
