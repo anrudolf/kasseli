@@ -5,7 +5,7 @@
     <div>Bestellung: {{ serial }}</div>
 
     <div class="my-2">
-      <button class="btn btn-red" :disabled="!order" @click="cancelOrders">
+      <button class="btn btn-red" :disabled="!order" @click="archive">
         Stornieren
       </button>
     </div>
@@ -23,7 +23,7 @@ import { useRouter } from "vue-router";
 
 import { useOnline } from "@vueuse/core";
 
-import { createSerial, createOrder, cancelOrder } from "@/services/orders";
+import { createSerial, createOrder, archiveOrder } from "@/services/orders";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/ui/Card.vue";
@@ -40,12 +40,12 @@ const order = ref<Order | null>(null);
 
 const router = useRouter();
 
-const cancelOrders = async () => {
+const archive = async () => {
   if (!order.value) {
     return;
   }
 
-  cancelOrder(order.value.id);
+  archiveOrder(order.value.id);
   router.replace("/");
 };
 

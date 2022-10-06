@@ -63,7 +63,7 @@ export const createOrder = async (serial: string) => {
   const order: Order = {
     id: docRef.id,
     status: OrderStatus.NEW,
-    canceled: false,
+    archived: false,
     serial: serial,
     reference: "",
     created: now,
@@ -122,10 +122,10 @@ export const setOrderItemStatus = (
   updateDoc(orderDocRef, update);
 };
 
-export const cancelOrder = (id: string) => {
+export const archiveOrder = (id: string) => {
   const now = new Date().toISOString();
   const orderDocRef = doc(db.orders, id);
-  const update = { updated: now, canceled: true };
+  const update = { updated: now, archived: true };
   updateDoc(orderDocRef, update);
 };
 

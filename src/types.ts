@@ -136,7 +136,7 @@ export interface OrderItem {
 export interface Order {
   id: string;
   status: OrderStatus;
-  canceled: boolean;
+  archived: boolean;
   serial: string;
   reference: string;
   created: string;

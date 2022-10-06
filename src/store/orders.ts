@@ -11,6 +11,7 @@ const store = defineStore({
     items: [] as Order[],
     processing: [] as Order[],
     finished: [] as Order[],
+    archived: [] as Order[],
     unsubscribe: null as Unsubscribe | null,
   }),
   getters: {
@@ -39,9 +40,15 @@ const store = defineStore({
         const items = [] as Order[];
         const processing = [] as Order[];
         const finished = [] as Order[];
+        const archived = [] as Order[];
         snapshot.forEach(function (doc) {
           const data = doc.data();
           items.push({ ...data, id: doc.id });
+
+          if (data.archived) {
+            archived.push({ ...data, id: doc.id });
+            return;
+          }
           if (data.status == OrderStatus.COMPLETE) {
             finished.push({ ...data, id: doc.id });
           }
@@ -52,6 +59,7 @@ const store = defineStore({
         tmp.items = items;
         tmp.processing = processing;
         tmp.finished = finished;
+        tmp.archived = archived;
       });
     },
   },

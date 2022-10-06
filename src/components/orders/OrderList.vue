@@ -7,7 +7,7 @@
     >
       <tr class="border bg-blue-100">
         <th class="flex items-center">
-          <button class="mr-2 text-red-400">
+          <button class="mr-2 text-red-400" @click="archiveOrder(order.id)">
             <trash-icon class="icon"></trash-icon>
           </button>
           <span class="pt-0.5">{{ order.serial }}</span>
@@ -101,7 +101,7 @@ import {
 
 import { Order, OrderStatus } from "@/types";
 
-import { setOrderStatus } from "@/services/orders";
+import { setOrderStatus, archiveOrder } from "@/services/orders";
 
 import appIcon from "@/components/ui/Icon.vue";
 import appOrderProgressBar from "./OrderProgressBar.vue";

@@ -3,56 +3,48 @@
     <h1>Bestellungen</h1>
 
     <div class="flex flex-wrap mt-2">
-      <button
-        class="btn border-none"
-        :class="filter == OrderStatus.NEW ? 'btn-blue' : 'btn-white'"
-        @click="filter = OrderStatus.NEW"
-      >
+      <button class="btn border-none" @click="display = 'processing'">
         <sparkles-icon class="icon-small inline"> </sparkles-icon>
         Neu
       </button>
-      <button
-        class="btn border-none"
-        :class="filter == OrderStatus.PREPARING ? 'btn-blue' : 'btn-white'"
-        @click="filter = OrderStatus.PREPARING"
-      >
+      <button class="btn border-none" @click="display = 'processing'">
         <clock-icon class="icon-small inline"> </clock-icon>
         Zubereitung
       </button>
-      <button
-        class="btn border-none"
-        :class="filter == OrderStatus.READY ? 'btn-blue' : 'btn-white'"
-        @click="filter = OrderStatus.READY"
-      >
+      <button class="btn border-none" @click="display = 'processing'">
         <check-icon class="icon-small inline"> </check-icon>
         Bereit
       </button>
       <button
         class="btn border-none"
-        :class="filter == OrderStatus.COMPLETE ? 'btn-blue' : 'btn-white'"
-        @click="filter = OrderStatus.COMPLETE"
+        :class="display == 'finished' ? 'btn-blue' : 'btn-white'"
+        @click="display = 'finished'"
       >
         <app-icon icon="double-check" class="icon-small inline"> </app-icon>
         Fertig
       </button>
-      <button class="btn border-none">
+      <button
+        class="btn border-none"
+        :class="display == 'archived' ? 'btn-gray' : 'btn-gray-secondary'"
+        @click="display = 'archived'"
+      >
         <trash-icon class="icon-small inline"> </trash-icon>
-        Storniert
+        Archiv
       </button>
     </div>
 
     <app-order-list
       :filter="filter"
-      :items="store.processing"
+      :items="items"
       @set-order-item-status="updateOrderItemsStatus"
     ></app-order-list>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import useOrdersStore from "@/store/orders";
-import { OrderStatus } from "@/types";
+import { OrderStatus, Order } from "@/types";
 import {
   ClockIcon,
   CheckIcon,
@@ -69,7 +61,24 @@ import appOrderList from "@/components/orders/OrderList.vue";
 const store = useOrdersStore();
 
 const filter = ref(OrderStatus.NEW);
+const display = ref("processing");
 const orderModal = ref(false);
+
+const items = computed(() => {
+  if (display.value == "processing") {
+    return store.processing;
+  }
+
+  if (display.value == "finished") {
+    return store.finished;
+  }
+
+  if (display.value == "archived") {
+    return store.archived;
+  }
+
+  return [] as Order[];
+});
 
 const updateOrderItemsStatus = ({
   id,
