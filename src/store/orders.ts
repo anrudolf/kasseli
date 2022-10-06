@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { Order } from "@/types";
+import { Order, OrderStatus } from "@/types";
 import { onSnapshot, Unsubscribe, query, where } from "firebase/firestore";
 
 import db from "@/services/db";
@@ -9,6 +9,8 @@ const store = defineStore({
   id: "orders",
   state: () => ({
     items: [] as Order[],
+    processing: [] as Order[],
+    finished: [] as Order[],
     unsubscribe: null as Unsubscribe | null,
   }),
   getters: {
@@ -35,10 +37,21 @@ const store = defineStore({
       const q = query(db.orders, where("created", ">", date.toISOString()));
       this.unsubscribe = onSnapshot(q, function (snapshot) {
         const items = [] as Order[];
+        const processing = [] as Order[];
+        const finished = [] as Order[];
         snapshot.forEach(function (doc) {
-          items.push({ ...doc.data(), id: doc.id });
+          const data = doc.data();
+          items.push({ ...data, id: doc.id });
+          if (data.status == OrderStatus.COMPLETE) {
+            finished.push({ ...data, id: doc.id });
+          }
+          if (data.status < OrderStatus.COMPLETE) {
+            processing.push({ ...data, id: doc.id });
+          }
         });
         tmp.items = items;
+        tmp.processing = processing;
+        tmp.finished = finished;
       });
     },
   },

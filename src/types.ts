@@ -117,8 +117,7 @@ export interface Receipt {
 }
 
 export enum OrderStatus {
-  CANCELED = -1,
-  NEW,
+  NEW = 0,
   PREPARING,
   READY,
   COMPLETE,
@@ -137,6 +136,7 @@ export interface OrderItem {
 export interface Order {
   id: string;
   status: OrderStatus;
+  canceled: boolean;
   serial: string;
   reference: string;
   created: string;

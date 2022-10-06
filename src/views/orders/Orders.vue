@@ -35,13 +35,7 @@
         <app-icon icon="double-check" class="icon-small inline"> </app-icon>
         Fertig
       </button>
-      <button
-        class="btn border-none"
-        :class="
-          filter == OrderStatus.CANCELED ? 'btn-gray' : 'btn-gray-secondary'
-        "
-        @click="filter = OrderStatus.CANCELED"
-      >
+      <button class="btn border-none">
         <trash-icon class="icon-small inline"> </trash-icon>
         Storniert
       </button>
@@ -49,7 +43,7 @@
 
     <app-order-list
       :filter="filter"
-      :items="store.items"
+      :items="store.processing"
       @set-order-item-status="updateOrderItemsStatus"
     ></app-order-list>
   </div>

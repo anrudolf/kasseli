@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper flex gap-3">
+  <div class="wrapper flex gap-3 items-stretch">
     <div>
       <button
         class="bg-orange-400"
@@ -73,7 +73,7 @@ const setStatus = (status: OrderStatus) => {
 }
 
 button {
-  @apply w-6 h-6 rounded-full;
+  @apply w-6 h-6 rounded-full opacity-80;
 }
 
 .inactive {

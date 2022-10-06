@@ -2,7 +2,6 @@
   <table class="w-full my-2">
     <tbody
       v-for="order in items"
-      v-show="order.status == filter"
       :key="order.id"
       class="border-2 border-blue-300"
     >
@@ -24,29 +23,45 @@
               <dots-vertical-icon class="icon"> </dots-vertical-icon>
             </button>
             <button
-              class="text-blue-600"
-              :disabled="props.filter == OrderStatus.NEW"
+              class="rounded-full"
+              :class="
+                order.status == OrderStatus.NEW
+                  ? 'text-white bg-orange-400'
+                  : 'text-orange-400'
+              "
               @click="setOrderStatus(order.id, OrderStatus.NEW)"
             >
               <sparkles-icon class="icon"> </sparkles-icon>
             </button>
             <button
-              class="text-blue-600"
-              :disabled="props.filter == OrderStatus.PREPARING"
+              class="rounded-full"
+              :class="
+                order.status == OrderStatus.PREPARING
+                  ? 'text-white bg-yellow-400'
+                  : 'text-yellow-400'
+              "
               @click="setOrderStatus(order.id, OrderStatus.PREPARING)"
             >
               <clock-icon class="icon"> </clock-icon>
             </button>
             <button
-              class="text-blue-600"
-              :disabled="props.filter == OrderStatus.READY"
+              class="rounded-full"
+              :class="
+                order.status == OrderStatus.READY
+                  ? 'text-white bg-green-400'
+                  : 'text-green-400'
+              "
               @click="setOrderStatus(order.id, OrderStatus.READY)"
             >
               <check-icon class="icon"> </check-icon>
             </button>
             <button
-              class="text-blue-600"
-              :disabled="props.filter == OrderStatus.COMPLETE"
+              class="rounded-full"
+              :class="
+                order.status == OrderStatus.COMPLETE
+                  ? 'text-white bg-blue-400'
+                  : 'text-blue-400'
+              "
               @click="setOrderStatus(order.id, OrderStatus.COMPLETE)"
             >
               <app-icon class="icon" icon="double-check"> </app-icon>
@@ -55,7 +70,9 @@
         </th>
       </tr>
       <tr v-for="item in order.content" :key="item.idx" class="border">
-        <td>{{ item.product.label.de }}</td>
+        <td>
+          {{ item.product.label.de }}
+        </td>
         <td>
           <div class="flex gap-3 justify-end">
             <app-order-progress-bar
@@ -84,6 +101,8 @@ import {
 
 import { Order, OrderStatus } from "@/types";
 
+import { setOrderStatus } from "@/services/orders";
+
 import appIcon from "@/components/ui/Icon.vue";
 import appOrderProgressBar from "./OrderProgressBar.vue";
 
@@ -109,10 +128,6 @@ const selectedOrder = ref<string | null>(null);
 
 const selectOrder = (id: string | null) => {
   selectedOrder.value = id;
-};
-
-const setOrderStatus = (id: string, status: OrderStatus) => {
-  // TODO: setOrderStatus
 };
 
 /*

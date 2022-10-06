@@ -23,11 +23,7 @@ import { useRouter } from "vue-router";
 
 import { useOnline } from "@vueuse/core";
 
-import {
-  createSerial,
-  createOrder,
-  setOrderItemStatus,
-} from "@/services/orders";
+import { createSerial, createOrder, cancelOrder } from "@/services/orders";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/ui/Card.vue";
@@ -48,8 +44,8 @@ const cancelOrders = async () => {
   if (!order.value) {
     return;
   }
-  const ids = Object.keys(order.value.content).map((k) => Number(k));
-  await setOrderItemStatus(order.value.id, ids, OrderStatus.CANCELED);
+
+  cancelOrder(order.value.id);
   router.replace("/");
 };
 

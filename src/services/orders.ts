@@ -15,6 +15,8 @@ import {
 } from "firebase/firestore";
 
 import useKasse from "@/store/kasse";
+import useOrders from "@/store/orders";
+
 import { Order, OrderStatus, OrderItem } from "@/types";
 
 export const createSerial = async () => {
@@ -61,6 +63,7 @@ export const createOrder = async (serial: string) => {
   const order: Order = {
     id: docRef.id,
     status: OrderStatus.NEW,
+    canceled: false,
     serial: serial,
     reference: "",
     created: now,
@@ -107,6 +110,38 @@ export const setOrderItemStatus = (
     });
   } else {
     update[`content.${items}.status`] = status;
+  }
+
+  // set order status to PREPARING if current status is NEW
+  const store = useOrders();
+  const order = store.item(id);
+  if (order && order.status == OrderStatus.NEW) {
+    update["status"] = OrderStatus.PREPARING;
+  }
+
+  updateDoc(orderDocRef, update);
+};
+
+export const cancelOrder = (id: string) => {
+  const now = new Date().toISOString();
+  const orderDocRef = doc(db.orders, id);
+  const update = { updated: now, canceled: true };
+  updateDoc(orderDocRef, update);
+};
+
+export const setOrderStatus = (id: string, status: OrderStatus) => {
+  const now = new Date().toISOString();
+  const orderDocRef = doc(db.orders, id);
+  const update = { updated: now, status: status };
+
+  const store = useOrders();
+  const order = store.item(id);
+  if (order) {
+    Object.values(order.content).forEach((item) => {
+      if (item.status < status) {
+        update[`content.${item.idx}.status`] = status;
+      }
+    });
   }
 
   updateDoc(orderDocRef, update);
