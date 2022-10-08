@@ -15,6 +15,7 @@
         <clock-icon class="icon-small inline text-yellow-400"> </clock-icon>
         <check-icon class="icon-small inline text-green-400"> </check-icon>
         Aktuell
+        <app-order-chip :num="store.processing.length"></app-order-chip>
       </button>
       <div class="border-b grow"></div>
       <button
@@ -27,6 +28,7 @@
         <app-icon icon="double-check" class="icon-small inline text-blue-400">
         </app-icon>
         Fertig
+        <app-order-chip :num="store.finished.length"></app-order-chip>
       </button>
       <div class="border-b grow"></div>
 
@@ -40,6 +42,7 @@
       >
         <trash-icon class="icon-small inline"> </trash-icon>
         Archiv
+        <app-order-chip :num="store.archived.length"></app-order-chip>
       </button>
     </div>
 
@@ -55,6 +58,9 @@
         <sparkles-icon class="icon-small inline text-orange-400">
         </sparkles-icon>
         Neu
+        <app-order-chip
+          :num="items.filter((i) => i.status == OrderStatus.NEW).length"
+        ></app-order-chip>
       </button>
       <div class="border-b grow"></div>
       <button
@@ -67,6 +73,9 @@
       >
         <clock-icon class="icon-small inline text-yellow-400"> </clock-icon>
         Zubereitung
+        <app-order-chip
+          :num="items.filter((i) => i.status == OrderStatus.PREPARING).length"
+        ></app-order-chip>
       </button>
       <div class="border-b grow"></div>
 
@@ -80,6 +89,9 @@
       >
         <check-icon class="icon-small inline text-green-400"> </check-icon>
         Bereit
+        <app-order-chip
+          :num="items.filter((i) => i.status == OrderStatus.READY).length"
+        ></app-order-chip>
       </button>
     </div>
 
@@ -105,6 +117,7 @@ import { setOrderItemStatus } from "@/services/orders";
 
 import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
+import appOrderChip from "@/components/orders/OrderChip.vue";
 
 import appOrderList from "@/components/orders/OrderList.vue";
 

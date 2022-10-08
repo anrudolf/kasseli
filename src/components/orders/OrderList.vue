@@ -16,6 +16,7 @@
         <th style="width: 0px">
           <div class="flex gap-3 justify-end">
             <button
+              v-if="false"
               class="text-green-600"
               @click="
                 selectOrder(order.serial == selectedOrder ? null : order.serial)
