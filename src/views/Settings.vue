@@ -29,7 +29,7 @@
               <small class="text-secondary">Bezahlen und mitnehmen.</small>
             </div>
           </label>
-          <label class="flex py-2 items-center">
+          <label v-if="false" class="flex py-2 items-center">
             <input
               v-model="settings.tillMode"
               type="radio"

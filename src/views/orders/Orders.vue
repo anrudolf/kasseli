@@ -179,10 +179,10 @@ const updateOrderItemsStatus = ({
 }
 
 .t-btn-inactive {
-  @apply font-bold py-2 px-4 border-b;
+  @apply py-2 px-4 border-b;
 }
 
 .t-btn-active {
-  @apply font-bold py-2 px-4 border-x border-t rounded-t;
+  @apply py-2 px-4 border-x border-t rounded-t;
 }
 </style>
