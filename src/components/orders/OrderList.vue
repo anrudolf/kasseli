@@ -2,6 +2,7 @@
   <table class="w-full my-2">
     <tbody
       v-for="order in items"
+      v-show="filter.length == 0 || filter.includes(order.status)"
       :key="order.id"
       class="border-2 border-blue-300"
     >
@@ -108,8 +109,8 @@ import appOrderProgressBar from "./OrderProgressBar.vue";
 
 const props = defineProps({
   filter: {
-    type: Number as PropType<OrderStatus>,
-    required: true,
+    type: Array as PropType<Array<OrderStatus>>,
+    default: () => [],
   },
   items: {
     type: Object as PropType<Order[]>,

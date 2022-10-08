@@ -3,33 +3,83 @@
     <h1>Bestellungen</h1>
 
     <div class="flex flex-wrap mt-2">
-      <button class="btn border-none" @click="display = 'processing'">
-        <sparkles-icon class="icon-small inline"> </sparkles-icon>
-        Neu
-      </button>
-      <button class="btn border-none" @click="display = 'processing'">
-        <clock-icon class="icon-small inline"> </clock-icon>
-        Zubereitung
-      </button>
-      <button class="btn border-none" @click="display = 'processing'">
-        <check-icon class="icon-small inline"> </check-icon>
-        Bereit
-      </button>
       <button
-        class="btn border-none"
-        :class="display == 'finished' ? 'btn-blue' : 'btn-white'"
-        @click="display = 'finished'"
+        :class="display == 'processing' ? 't-btn-active' : 't-btn-inactive'"
+        @click="
+          clearFilter();
+          display = 'processing';
+        "
       >
-        <app-icon icon="double-check" class="icon-small inline"> </app-icon>
+        <sparkles-icon class="icon-small inline text-orange-400">
+        </sparkles-icon>
+        <clock-icon class="icon-small inline text-yellow-400"> </clock-icon>
+        <check-icon class="icon-small inline text-green-400"> </check-icon>
+        Aktuell
+      </button>
+      <div class="border-b grow"></div>
+      <button
+        :class="display == 'finished' ? 't-btn-active' : 't-btn-inactive'"
+        @click="
+          clearFilter();
+          display = 'finished';
+        "
+      >
+        <app-icon icon="double-check" class="icon-small inline text-blue-400">
+        </app-icon>
         Fertig
       </button>
+      <div class="border-b grow"></div>
+
       <button
-        class="btn border-none"
-        :class="display == 'archived' ? 'btn-gray' : 'btn-gray-secondary'"
-        @click="display = 'archived'"
+        class="t-btn"
+        :class="display == 'archived' ? 't-btn-active' : 't-btn-inactive'"
+        @click="
+          clearFilter();
+          display = 'archived';
+        "
       >
         <trash-icon class="icon-small inline"> </trash-icon>
         Archiv
+      </button>
+    </div>
+
+    <div v-if="display == 'processing'" class="flex mt-2">
+      <button
+        :class="
+          filter.length == 0 || filter.includes(OrderStatus.NEW)
+            ? 't-btn-active'
+            : 't-btn-inactive'
+        "
+        @click="toggleFilter(OrderStatus.NEW)"
+      >
+        <sparkles-icon class="icon-small inline text-orange-400">
+        </sparkles-icon>
+        Neu
+      </button>
+      <div class="border-b grow"></div>
+      <button
+        :class="
+          filter.length == 0 || filter.includes(OrderStatus.PREPARING)
+            ? 't-btn-active'
+            : 't-btn-inactive'
+        "
+        @click="toggleFilter(OrderStatus.PREPARING)"
+      >
+        <clock-icon class="icon-small inline text-yellow-400"> </clock-icon>
+        Zubereitung
+      </button>
+      <div class="border-b grow"></div>
+
+      <button
+        :class="
+          filter.length == 0 || filter.includes(OrderStatus.READY)
+            ? 't-btn-active'
+            : 't-btn-inactive'
+        "
+        @click="toggleFilter(OrderStatus.READY)"
+      >
+        <check-icon class="icon-small inline text-green-400"> </check-icon>
+        Bereit
       </button>
     </div>
 
@@ -60,9 +110,22 @@ import appOrderList from "@/components/orders/OrderList.vue";
 
 const store = useOrdersStore();
 
-const filter = ref(OrderStatus.NEW);
+const filter = ref<Array<OrderStatus>>([]);
 const display = ref("processing");
 const orderModal = ref(false);
+
+const clearFilter = () => {
+  filter.value = [];
+};
+
+const toggleFilter = (status: OrderStatus) => {
+  const idx = filter.value.indexOf(status);
+  if (idx >= 0) {
+    filter.value.splice(idx, 1);
+  } else {
+    filter.value.push(status);
+  }
+};
 
 const items = computed(() => {
   if (display.value == "processing") {
@@ -100,5 +163,13 @@ const updateOrderItemsStatus = ({
 
 .icon-small {
   @apply w-5 h-5;
+}
+
+.t-btn-inactive {
+  @apply font-bold py-2 px-4 border-b;
+}
+
+.t-btn-active {
+  @apply font-bold py-2 px-4 border-x border-t rounded-t;
 }
 </style>
