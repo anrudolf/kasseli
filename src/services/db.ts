@@ -3,6 +3,7 @@ import {
   QueryDocumentSnapshot,
   collection,
   WithFieldValue,
+  DocumentData,
 } from "firebase/firestore";
 
 import { createWorkspacePrefix } from "@/utils/workspace";
@@ -25,7 +26,7 @@ const converter = <T>() => ({
   fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as T,
 });
 
-const dataPoint = <T>(collectionPath: string) =>
+const dataPoint = <T extends DocumentData>(collectionPath: string) =>
   collection(getFirestore(), collectionPath).withConverter(converter<T>());
 
 const db = {

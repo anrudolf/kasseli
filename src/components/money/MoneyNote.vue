@@ -23,10 +23,13 @@ const props = defineProps({
 // https://vitejs.dev/guide/features.html#glob-import
 const getAssetSrc = () => {
   const path = `/src/assets/currencies/${props.currency}/${props.currency}_note_${props.amount}_${props.side}.jpg`;
-  const modules = import.meta.globEager(`/src/assets/currencies/*/*`);
+  const modules = import.meta.glob(`/src/assets/currencies/*/*`, {
+    eager: true,
+  });
   if (!modules[path]) {
-    return null;
+    return undefined;
   }
-  return modules[path].default;
+  const mod = modules[path] as { default: string };
+  return mod.default;
 };
 </script>

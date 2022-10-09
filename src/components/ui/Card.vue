@@ -86,8 +86,9 @@ const labelClasses = computed(() => {
 // https://vitejs.dev/guide/features.html#glob-import
 const getAssetSrc = (name: string) => {
   const path = `/src/assets/${name}`;
-  const modules = import.meta.globEager("/src/assets/*");
-  return modules[path].default;
+  const modules = import.meta.glob("/src/assets/*", { eager: true });
+  const mod = modules[path] as { default: string };
+  return mod.default;
 };
 
 const hasSlot = (name: string) => !!slots[name];

@@ -25,11 +25,13 @@ const getAssetSrc = () => {
   const path = `/src/assets/currencies/${props.currency}/${
     props.currency
   }_coin_${props.amount.toFixed(2)}_${props.side}.png`;
-  const modules = import.meta.globEager(`/src/assets/currencies/*/*`);
+  const modules = import.meta.glob(`/src/assets/currencies/*/*`, {
+    eager: true,
+  });
   if (!modules[path]) {
-    console.log("not found", path);
-    return null;
+    return undefined;
   }
-  return modules[path].default;
+  const mod = modules[path] as { default: string };
+  return mod.default;
 };
 </script>

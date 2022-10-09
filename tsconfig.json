@@ -15,23 +15,11 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "types": [
-      "jest",
-      "@types/jest",
-      "vite/client",
-      "vite-plugin-pwa/client",
-    ],
+    "types": ["jest", "@types/jest", "vite/client", "vite-plugin-pwa/client"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
     "src/**/*.ts",
@@ -41,7 +29,5 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": [
-    "dist", "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }
