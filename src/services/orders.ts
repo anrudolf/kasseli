@@ -115,7 +115,11 @@ export const setOrderItemStatus = (
   // set order status to PREPARING if current status is NEW
   const store = useOrders();
   const order = store.item(id);
-  if (order && order.status == OrderStatus.NEW) {
+  if (
+    order &&
+    order.status == OrderStatus.NEW &&
+    status >= OrderStatus.PREPARING
+  ) {
     update["status"] = OrderStatus.PREPARING;
   }
 

@@ -1,9 +1,26 @@
 <template>
-  <div class="p-4 max-w-2xl">
-    <h1>Bestellungen</h1>
+  <div class="p-1 md:p-4 max-w-2xl">
+    <h1 class="flex">
+      Bestellungen
+      <button
+        class="ml-auto"
+        @click="
+          query = '';
+          search = !search;
+        "
+      >
+        <x-icon v-if="search" class="w-6 h-6"></x-icon>
+        <search-icon v-else class="w-6 h-6"></search-icon>
+      </button>
+    </h1>
+
+    <div v-if="search">
+      <input v-model="query" class="input" placeholder="Suche..." />
+    </div>
 
     <div class="flex flex-wrap mt-2">
       <button
+        class="t-btn"
         :class="display == 'processing' ? 't-btn-active' : 't-btn-inactive'"
         @click="
           clearFilter();
@@ -19,6 +36,7 @@
       </button>
       <div class="border-b grow"></div>
       <button
+        class="t-btn"
         :class="display == 'finished' ? 't-btn-active' : 't-btn-inactive'"
         @click="
           clearFilter();
@@ -48,6 +66,7 @@
 
     <div v-if="display == 'processing'" class="flex mt-2">
       <button
+        class="t-btn"
         :class="
           filter.length == 0 || filter.includes(OrderStatus.NEW)
             ? 't-btn-active'
@@ -64,6 +83,7 @@
       </button>
       <div class="border-b grow"></div>
       <button
+        class="t-btn"
         :class="
           filter.length == 0 || filter.includes(OrderStatus.PREPARING)
             ? 't-btn-active'
@@ -80,6 +100,7 @@
       <div class="border-b grow"></div>
 
       <button
+        class="t-btn"
         :class="
           filter.length == 0 || filter.includes(OrderStatus.READY)
             ? 't-btn-active'
@@ -112,6 +133,8 @@ import {
   CheckIcon,
   TrashIcon,
   SparklesIcon,
+  SearchIcon,
+  XIcon,
 } from "@heroicons/vue/outline";
 import { setOrderItemStatus } from "@/services/orders";
 
@@ -127,6 +150,9 @@ const filter = ref<Array<OrderStatus>>([]);
 const display = ref("processing");
 const orderModal = ref(false);
 
+const search = ref(false);
+const query = ref("");
+
 const clearFilter = () => {
   filter.value = [];
 };
@@ -141,19 +167,45 @@ const toggleFilter = (status: OrderStatus) => {
 };
 
 const items = computed(() => {
-  if (display.value == "processing") {
-    return store.processing;
+  let items: Order[];
+
+  switch (display.value) {
+    case "processing":
+      items = store.processing;
+      break;
+    case "finished":
+      items = store.finished;
+      break;
+    case "archived":
+      items = store.archived;
+      break;
+    default:
+      items = [];
   }
 
-  if (display.value == "finished") {
-    return store.finished;
+  if (query.value) {
+    const filtered = items.filter((order) => {
+      const q = query.value.toLowerCase();
+
+      if (order.serial.toLocaleLowerCase().startsWith(q)) {
+        return true;
+      }
+
+      if (
+        Object.values(order.content)
+          .map((oi) => oi.product.label.de.toLowerCase())
+          .some((label) => label.includes(q))
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+    return filtered;
   }
 
-  if (display.value == "archived") {
-    return store.archived;
-  }
-
-  return [] as Order[];
+  return items;
 });
 
 const updateOrderItemsStatus = ({
@@ -178,11 +230,19 @@ const updateOrderItemsStatus = ({
   @apply w-5 h-5;
 }
 
+.t-btn {
+  @apply py-2 px-2;
+}
+
 .t-btn-inactive {
-  @apply py-2 px-4 border-b;
+  @apply border-b;
 }
 
 .t-btn-active {
-  @apply py-2 px-4 border-x border-t rounded-t;
+  @apply border-x border-t rounded-t;
+}
+
+button {
+  @apply text-sm;
 }
 </style>

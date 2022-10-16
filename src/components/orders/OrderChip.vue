@@ -1,9 +1,9 @@
 <template>
-  <span class="ml-0.5 font-normal text-sm text-secondary">{{ num }}</span>
+  <span class="ml-0.5 font-normal text-sm text-secondary">{{ formatted }}</span>
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from "vue";
+import { defineProps, computed } from "vue";
 
 const props = defineProps({
   num: {
@@ -11,4 +11,6 @@ const props = defineProps({
     default: 0,
   },
 });
+
+const formatted = computed(() => String(props.num).padStart(0, "0"));
 </script>
