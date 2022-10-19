@@ -10,8 +10,8 @@
       </button>
     </div>
 
-    <div v-if="settings.tillMode == TillMode.ORDER_AND_PAY" class="my-2">
-      <button class="btn btn-blue" :disabled="!order">Bezahlen</button>
+    <div v-if="settings.tillMode == TillMode.ORDER_AND_PAY_LATER" class="my-2">
+      <button class="btn btn-blue" :disabled="!order">TODO: Bezahlen</button>
     </div>
     <div></div>
   </div>
@@ -29,9 +29,11 @@ import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/ui/Card.vue";
 
 import useSettingsStore from "@/store/settings";
+import useKasseStore from "@/store/kasse";
 import { TillMode, Order, OrderStatus } from "@/types";
 
 const settings = useSettingsStore();
+const kasse = useKasseStore();
 
 const isOnline = useOnline();
 
@@ -49,14 +51,12 @@ const archive = async () => {
   router.replace("/");
 };
 
-if (
-  settings.tillMode == TillMode.ORDER_AND_PAY_LATER ||
-  settings.tillMode == TillMode.ORDER_AND_PAY
-) {
+if (kasse.items.length > 0) {
   const issueSerial = async () => {
     const nextSerial = await createSerial();
     serial.value = nextSerial;
     order.value = await createOrder(nextSerial);
+    kasse.$reset();
   };
   issueSerial();
 }

@@ -29,7 +29,7 @@
               <small class="text-secondary">Bezahlen und mitnehmen.</small>
             </div>
           </label>
-          <label v-if="false" class="flex py-2 items-center">
+          <label class="flex py-2 items-center">
             <input
               v-model="settings.tillMode"
               type="radio"
@@ -37,14 +37,14 @@
               class="mx-3"
             />
             <div>
-              <div>Bestellen und zahlen</div>
+              <div>Bestellen und bezahlen</div>
               <small class="text-secondary"
                 >Es wird eine Bestellung erstellt. Die Rechnung wird sofort
                 bezahlt.</small
               >
             </div></label
           >
-          <label class="flex py-2 items-center">
+          <label v-if="false" class="flex py-2 items-center">
             <input
               v-model="settings.tillMode"
               type="radio"

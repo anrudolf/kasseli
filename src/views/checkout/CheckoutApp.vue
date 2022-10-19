@@ -44,7 +44,6 @@
 
 <script lang="ts" setup>
 import { watch, ref } from "vue";
-import { useRouter } from "vue-router";
 
 import { ExclamationIcon, CheckCircleIcon } from "@heroicons/vue/solid";
 
@@ -57,9 +56,9 @@ import useAppPayment from "@/hooks/use-app-payment";
 
 import useKasse from "@/store/kasse";
 
-import { createReceipt } from "@/services/receipts";
+import useCheckout from "@/hooks/use-checkout";
+const checkout = useCheckout();
 
-const router = useRouter();
 const link = ref("");
 const rejectedModal = ref(false);
 const successModal = ref(false);
@@ -96,15 +95,9 @@ watch(entity, (vnew) => {
   }
 });
 
-const restart = () => {
-  createReceipt();
-  kasse.$reset();
-  router.push("/");
-};
-
 watch(successModal, (newVal, oldVal) => {
   if (!newVal) {
-    restart();
+    checkout();
   }
 });
 

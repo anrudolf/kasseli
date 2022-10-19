@@ -5,7 +5,7 @@
     show-confirm
     label-confirm="Beenden"
   >
-    <div class="cursor-pointer" @click="restart">
+    <div class="cursor-pointer" @click="checkout">
       <div class="flex justify-center">
         <app-icon icon="check-circle" class="w-48 h-48 text-green-500" />
       </div>
@@ -107,8 +107,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, watchEffect } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed, watch } from "vue";
 
 import { LightBulbIcon, CalculatorIcon, XIcon } from "@heroicons/vue/outline";
 
@@ -124,9 +123,9 @@ import appCalculator from "@/components/Calculator.vue";
 import useKasseStore from "@/store/kasse";
 import useSettingsStore from "@/store/settings";
 
-import { createReceipt } from "@/services/receipts";
+import useCheckout from "@/hooks/use-checkout";
+const checkout = useCheckout();
 
-const router = useRouter();
 const kasse = useKasseStore();
 const settings = useSettingsStore();
 const { paymentHints, cashCalculator } = settings;
@@ -187,15 +186,9 @@ const add = (i: number) => {
   paid.value += i;
 };
 
-const restart = () => {
-  createReceipt();
-  kasse.$reset();
-  router.push("/");
-};
-
 watch(showModal, (newVal, oldVal) => {
   if (!newVal) {
-    restart();
+    checkout();
   }
 });
 
