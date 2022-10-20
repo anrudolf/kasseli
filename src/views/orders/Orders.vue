@@ -119,7 +119,9 @@
     <app-order-list
       :filter="filter"
       :items="items"
-      @set-order-item-status="updateOrderItemsStatus"
+      @set-order-item-status="setOrderItemStatus"
+      @set-order-status="setOrderStatus"
+      @archive-order="archiveOrder"
     ></app-order-list>
   </div>
 </template>
@@ -136,7 +138,12 @@ import {
   SearchIcon,
   XIcon,
 } from "@heroicons/vue/outline";
-import { setOrderItemStatus } from "@/services/orders";
+
+import {
+  setOrderItemStatus,
+  setOrderStatus,
+  archiveOrder,
+} from "@/services/orders";
 
 import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
@@ -207,18 +214,6 @@ const items = computed(() => {
 
   return items;
 });
-
-const updateOrderItemsStatus = ({
-  id,
-  items,
-  status,
-}: {
-  id: string;
-  items: number | number[];
-  status: OrderStatus;
-}) => {
-  setOrderItemStatus(id, items, status);
-};
 </script>
 
 <style scoped>

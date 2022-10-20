@@ -95,11 +95,15 @@ export const createOrder = async (serial: string) => {
   return order;
 };
 
-export const setOrderItemStatus = (
-  id: string,
-  items: number | number[],
-  status: OrderStatus
-) => {
+export const setOrderItemStatus = ({
+  id,
+  items,
+  status,
+}: {
+  id: string;
+  items: number | number[];
+  status: OrderStatus;
+}) => {
   const now = new Date().toISOString();
   const orderDocRef = doc(db.orders, id);
   const update = { updated: now };
@@ -133,7 +137,13 @@ export const archiveOrder = (id: string) => {
   updateDoc(orderDocRef, update);
 };
 
-export const setOrderStatus = (id: string, status: OrderStatus) => {
+export const setOrderStatus = ({
+  id,
+  status,
+}: {
+  id: string;
+  status: OrderStatus;
+}) => {
   const now = new Date().toISOString();
   const orderDocRef = doc(db.orders, id);
   const update = { updated: now, status: status };

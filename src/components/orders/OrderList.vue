@@ -103,8 +103,6 @@ import {
 
 import { Order, OrderStatus } from "@/types";
 
-import { setOrderStatus, archiveOrder } from "@/services/orders";
-
 import appIcon from "@/components/ui/Icon.vue";
 import appOrderProgressBar from "./OrderProgressBar.vue";
 
@@ -124,6 +122,8 @@ const emit = defineEmits<{
     e: "set-order-item-status",
     v: { id: string; items: number | number[]; status: OrderStatus }
   );
+  (e: "set-order-status", v: { id: string; status: OrderStatus });
+  (e: "archive-order", v: string);
 }>();
 
 const selectedOrder = ref<string | null>(null);
@@ -132,28 +132,13 @@ const selectOrder = (id: string | null) => {
   selectedOrder.value = id;
 };
 
-/*
-const updateMultiStatus = (id: string, status: OrderStatus) => {
-  const items: number[] = [];
-
-  const order = props.items.find((order) => order.id == id);
-  if (!order) {
-    return;
-  }
-
-  Object.values(order.content).forEach((item) => {
-    if (item.status == props.filter) {
-      items.push(item.idx);
-    }
-  });
-
-  emit("updateOrderItemStatus", { id, items, status });
+const setOrderStatus = (id: string, status: OrderStatus) => {
+  emit("set-order-status", { id, status });
 };
 
-const updateSingleStatus = (id: string, items: number, status: OrderStatus) => {
-  emit("updateOrderItemStatus", { id, items, status });
+const archiveOrder = (id: string) => {
+  emit("archive-order", id);
 };
-*/
 </script>
 
 <style scoped>
