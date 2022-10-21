@@ -1,6 +1,8 @@
 <template>
   <div class="p-1 md:p-4 max-w-2xl">
-    <h1 class="flex">
+    <app-button-back to="/" replace>Zurück</app-button-back>
+
+    <h1 class="flex mt-2">
       Bestellungen
       <button
         class="ml-auto"
@@ -14,7 +16,7 @@
       </button>
     </h1>
 
-    <div v-if="search">
+    <div v-if="search" class="mt-1">
       <input v-model="query" class="input" placeholder="Suche..." />
     </div>
 
@@ -147,6 +149,8 @@ import {
 
 import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
+import appButtonBack from "@/components/ui/ButtonBack.vue";
+
 import appOrderChip from "@/components/orders/OrderChip.vue";
 
 import appOrderList from "@/components/orders/OrderList.vue";
@@ -226,7 +230,7 @@ const items = computed(() => {
 }
 
 .t-btn {
-  @apply py-2 px-2;
+  @apply py-2 px-2 text-sm;
 }
 
 .t-btn-inactive {
@@ -235,9 +239,5 @@ const items = computed(() => {
 
 .t-btn-active {
   @apply border-x border-t rounded-t;
-}
-
-button {
-  @apply text-sm;
 }
 </style>
