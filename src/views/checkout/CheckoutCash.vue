@@ -1,32 +1,4 @@
 <template>
-  <app-modal
-    v-model="showModal"
-    title="Zahlung erfolgreich"
-    show-confirm
-    label-confirm="Beenden"
-  >
-    <div class="cursor-pointer" @click="checkout">
-      <div class="flex justify-center">
-        <app-icon icon="check-circle" class="w-48 h-48 text-green-500" />
-      </div>
-    </div>
-
-    <div class="row bg-gray-300 mt-4">
-      <span>Total</span>
-      <span>{{ price.toFixed(2) }} CHF</span>
-    </div>
-
-    <div class="row bg-gray-100">
-      <span>Bezahlt</span>
-      <span>{{ paid.toFixed(2) }} CHF</span>
-    </div>
-
-    <div class="row bg-gray-100">
-      <span>Rückgeld</span>
-      <span>{{ change.toFixed(2) }} CHF</span>
-    </div>
-  </app-modal>
-
   <div class="flex items-center max-w-lg">
     <app-button-back class="ml-2 mr-auto">Zurück</app-button-back>
     <light-bulb-icon
@@ -116,8 +88,6 @@ import appMoneyNote from "@/components/money/MoneyNote.vue";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
-import appModal from "@/components/ui/Modal.vue";
-import appIcon from "@/components/ui/Icon.vue";
 import appCalculator from "@/components/Calculator.vue";
 
 import useKasseStore from "@/store/kasse";
@@ -180,23 +150,19 @@ const change = computed(() => {
   return ret;
 });
 
-const showModal = ref(false);
-
 const add = (i: number) => {
   paid.value += i;
 };
 
-watch(showModal, (newVal, oldVal) => {
-  if (!newVal) {
-    checkout();
-  }
-});
+const proceedToCheckout = () => {
+  checkout({ price: kasse.price, paid: paid.value, change: change.value });
+};
 
 watch(
   remainder,
   (newVal, oldVal) => {
     if (newVal === 0) {
-      showModal.value = true;
+      proceedToCheckout();
     }
   },
   { immediate: true }

@@ -1,23 +1,4 @@
 <template>
-  <app-modal v-model="rejectedModal" title="Zahlung abgelehnt" show-confirm>
-    <div class="flex justify-center">
-      <exclamation-icon class="h-48 w-48 text-red-500"></exclamation-icon>
-    </div>
-  </app-modal>
-
-  <app-modal
-    v-model="successModal"
-    title="Zahlung erfolgreich"
-    show-confirm
-    label-confirm="Beenden"
-  >
-    <div @click="successModal = false">
-      <div class="flex justify-center">
-        <check-circle-icon class="w-48 h-48 text-green-500"></check-circle-icon>
-      </div>
-    </div>
-  </app-modal>
-
   <app-button-back class="ml-2">Zurück</app-button-back>
 
   <div class="mx-4" style="width: 300px">
@@ -45,23 +26,16 @@
 <script lang="ts" setup>
 import { watch, ref } from "vue";
 
-import { ExclamationIcon, CheckCircleIcon } from "@heroicons/vue/solid";
-
 import qrcodeVue from "qrcode.vue";
-
 import appButtonBack from "@/components/ui/ButtonBack.vue";
-import appModal from "@/components/ui/Modal.vue";
-
-import useAppPayment from "@/hooks/use-app-payment";
 
 import useKasse from "@/store/kasse";
-
+import useAppPayment from "@/hooks/use-app-payment";
 import useCheckout from "@/hooks/use-checkout";
+
 const checkout = useCheckout();
 
 const link = ref("");
-const rejectedModal = ref(false);
-const successModal = ref(false);
 const code = ref("");
 
 const kasse = useKasse();
@@ -70,6 +44,28 @@ const { entity, createPayment, setStatus, listenForChanges } = useAppPayment();
 
 const paymentId = createPayment(kasse.price);
 listenForChanges(paymentId);
+
+const proceedToCheckout = (success: boolean) => {
+  const paymentMethod = "app";
+  if (!success) {
+    checkout({
+      success,
+      paymentMethod,
+      price: kasse.price,
+      paid: 0,
+      change: 0,
+    });
+    return;
+  }
+
+  checkout({
+    success,
+    paymentMethod,
+    price: kasse.price,
+    paid: kasse.price,
+    change: 0,
+  });
+};
 
 watch(entity, (vnew) => {
   if (vnew) {
@@ -83,21 +79,15 @@ watch(entity, (vnew) => {
         break;
       case "reject":
         setStatus(vnew.id, "rejected");
-        rejectedModal.value = true;
+        proceedToCheckout(false);
         break;
       case "pay":
         setStatus(vnew.id, "paid");
-        successModal.value = true;
+        proceedToCheckout(true);
         break;
       default:
         console.log("status:", status);
     }
-  }
-});
-
-watch(successModal, (newVal, oldVal) => {
-  if (!newVal) {
-    checkout();
   }
 });
 
