@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 import Kasse from "../views/Kasse.vue";
 import Checkout from "../views/checkout/Checkout.vue";
-import CheckoutOrder from "../views/checkout/CheckoutOrder.vue";
 import CheckoutCash from "../views/checkout/CheckoutCash.vue";
 import CheckoutCard from "../views/checkout/CheckoutCard.vue";
 import CheckoutApp from "../views/checkout/CheckoutApp.vue";
@@ -47,11 +46,6 @@ const routes: Array<RouteRecordRaw> = [
     path: "/checkout",
     name: "checkout",
     component: Checkout,
-  },
-  {
-    path: "/checkout/order",
-    name: "checkout-order",
-    component: CheckoutOrder,
   },
   {
     path: "/checkout/cash",

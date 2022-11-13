@@ -38,11 +38,6 @@ const label = computed(() => {
 });
 
 const checkout = () => {
-  if (settings.tillMode == TillMode.ORDER_AND_PAY_LATER) {
-    router.push("/checkout/order");
-    return;
-  }
-
   router.push("/checkout");
 };
 </script>

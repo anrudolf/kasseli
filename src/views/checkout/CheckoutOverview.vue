@@ -15,17 +15,20 @@
         <router-link to="/">
           <div class="cursor-pointer">
             <div class="flex justify-center">
-              <app-icon icon="check-circle" class="w-16 h-16 text-green-500" />
+              <app-icon
+                icon="check-circle"
+                class="splash w-16 h-16 text-green-500"
+              />
             </div>
           </div>
         </router-link>
       </div>
       <div v-else>
-        <button @click="goBack">
+        <button class="splash" @click="goBack">
           <div class="cursor-pointer">
             <div class="flex justify-center">
               <exclamation-icon
-                class="h-16 w-16 text-red-500"
+                class="splash h-16 w-16 text-red-500"
               ></exclamation-icon>
             </div>
           </div>
@@ -174,5 +177,27 @@ process();
 <style scoped>
 .row {
   @apply flex justify-between text-xl p-1 px-2;
+}
+
+@keyframes splash {
+  from {
+    opacity: 0;
+    transform: scale(0, 0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2, 1.2);
+  }
+  to {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+}
+
+.splash {
+  position: relative;
+  animation-name: splash;
+  animation-duration: 0.6s;
+  animation-iteration-count: 1;
 }
 </style>
