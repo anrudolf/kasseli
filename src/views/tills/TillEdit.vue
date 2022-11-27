@@ -6,6 +6,7 @@
     :removable="removable"
     :clipboard="clipboard"
     @initiate-product-creation="initiateProductCreation"
+    @loaded="onLoaded"
   />
 </template>
 
@@ -39,6 +40,16 @@ const { id: reactiveId } = toRefs(props);
 const removable = computed(() => reactiveId.value !== "default");
 
 const clipboard: TillClipboard | null = tillStore.clipboard;
+
+const onLoaded = async () => {
+  if (route.hash) {
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    await sleep(300);
+    const elementId = route.hash.substring(1);
+    const el = document.getElementById(elementId);
+    el?.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
 /* consume clipboard if available */
 if (clipboard) {

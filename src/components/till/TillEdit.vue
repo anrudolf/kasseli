@@ -115,7 +115,11 @@
         </div>
       </h2>
 
-      <div v-for="(favorite, idx) in till.favorites" :key="idx">
+      <div
+        v-for="(favorite, idx) in till.favorites"
+        :id="`${favorite.kind}-${favorite.id}`"
+        :key="idx"
+      >
         <component
           :is="getComponent(favorite.kind)"
           :entity="favorite"
@@ -136,8 +140,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits, PropType } from "vue";
-import { useRouter } from "vue-router";
+import { ref, defineProps, defineEmits, PropType, watch } from "vue";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@/components/ui/ButtonConfirm.vue";
@@ -155,7 +158,7 @@ import arrayUtil from "@/utils/array";
 
 import useTillStore from "@/store/till";
 
-import { Till, TillClipboard } from "@/types";
+import { TillClipboard } from "@/types";
 
 const props = defineProps({
   id: { type: String, default: "" },
@@ -169,6 +172,7 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: "initiate-product-creation", v: TillClipboard): void;
+  (e: "loaded"): void;
 }>();
 
 const deleteModal = ref(false);
@@ -190,6 +194,19 @@ const {
   addCatalog,
   addProduct,
 } = useTillEdit(options);
+
+const isLoaded = ref(false);
+
+watch(
+  till,
+  (val, oldVal) => {
+    if (!isLoaded.value) {
+      isLoaded.value = true;
+      emit("loaded");
+    }
+  },
+  { immediate: true }
+);
 
 const store = useTillStore();
 if (store.clipboard) {

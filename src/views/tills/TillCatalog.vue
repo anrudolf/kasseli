@@ -1,4 +1,12 @@
 <template>
+  <teleport to="#context-menu">
+    <router-link
+      class="inline-flex items-center"
+      :to="`/tills/edit?id=${settings.till}#catalog-${id}`"
+    >
+      Edit <pencil-icon icon="menu" class="ml-1 w-5 h-5 inline" />
+    </router-link>
+  </teleport>
   <div v-if="catalog" class="p-4">
     <app-button-back>Zurück</app-button-back>
     <div class="wrapper mt-4">
@@ -21,6 +29,9 @@ import { useRouter } from "vue-router";
 import appWidget from "@/components/ui/Widget.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
+import { PencilIcon } from "@heroicons/vue/solid";
+
+import useSettingsStore from "@/store/settings";
 import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
 import { TillCatalog } from "@/types";
@@ -34,6 +45,7 @@ const props = defineProps({
 
 const kasseStore = useKasseStore();
 const tillStore = useTillStore();
+const settings = useSettingsStore();
 
 const router = useRouter();
 

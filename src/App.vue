@@ -1,10 +1,12 @@
 <template>
   <div class="app-wrapper">
-    <div class="p-2 flex justify-end items-center">
+    <div class="p-2 flex justify-end items-center gap-x-2">
       <button v-if="false" class="inline-flex items-center mr-4" tabindex="-1">
         Fullscreen
         <app-icon icon="solid:arrows-expand" class="ml-1" />
       </button>
+
+      <div id="context-menu"></div>
 
       <button class="inline-flex items-center" @click="uiStore.openMenu">
         Menu <app-icon icon="menu" class="ml-1" />

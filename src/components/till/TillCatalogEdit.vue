@@ -1,14 +1,17 @@
 <template>
   <div class="p-3 max-w-lg">
     <app-modal v-model="addModal">
-      <template #title
-        >Produkt auswählen<button
-          class="btn btn-blue"
-          @click="emit('create-product', { idx: props.idx, kind: 'catalog' })"
-        >
-          NEW
-        </button></template
-      >
+      <template #title>
+        <div class="flex justify-between items-center">
+          <div>Produkt auswählen</div>
+          <button
+            class="btn btn-blue"
+            @click="emit('create-product', { idx: props.idx, kind: 'catalog' })"
+          >
+            NEW
+          </button>
+        </div>
+      </template>
       <app-product-selector @selected="addProduct" />
     </app-modal>
 
