@@ -15,16 +15,15 @@
         <router-link to="/">
           <div class="cursor-pointer">
             <div class="flex justify-center">
-              <app-icon
-                icon="check-circle"
-                class="splash w-16 h-16 text-green-500"
-              />
+              <check-circle-icon
+                class="splash h-16 w-16 text-green-500"
+              ></check-circle-icon>
             </div>
           </div>
         </router-link>
       </div>
       <div v-else>
-        <button class="splash" @click="goBack">
+        <button @click="goBack">
           <div class="cursor-pointer">
             <div class="flex justify-center">
               <exclamation-icon
@@ -87,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineProps } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 
 import { createReceipt } from "@/services/receipts";
@@ -107,11 +106,15 @@ import {
   setOrderItemStatus,
 } from "@/services/orders";
 
-import { ViewListIcon, PlusIcon, ExclamationIcon } from "@heroicons/vue/solid";
+import {
+  ViewListIcon,
+  PlusIcon,
+  ExclamationIcon,
+  CheckCircleIcon,
+} from "@heroicons/vue/solid";
 
 import appOrderList from "@/components/orders/OrderList.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
-import appIcon from "@/components/ui/Icon.vue";
 
 const router = useRouter();
 
@@ -119,8 +122,6 @@ const store = useCheckoutStore();
 const kasse = useKasseStore();
 const settings = useSettingsStore();
 const orders = useOrderStore();
-
-const paymentMethod = { cash: "Bargeld", card: "Karte", app: "App" };
 
 const serial = ref("");
 const orderId = ref("");
