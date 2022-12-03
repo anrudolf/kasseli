@@ -1,4 +1,12 @@
 <template>
+  <teleport v-if="settings.tillEdit" to="#context-menu">
+    <router-link
+      class="inline-flex items-center"
+      :to="`/tills/edit?id=${settings.till}`"
+    >
+      Edit <pencil-icon icon="menu" class="ml-1 w-5 h-5 inline" />
+    </router-link>
+  </teleport>
   <div class="wrapper h-full">
     <app-kasse-liste style="grid-area: liste" />
     <app-kasse-favorites style="grid-area: others" :entities="favorites" />
@@ -11,6 +19,9 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
+
+import { PencilIcon } from "@heroicons/vue/solid";
+
 import appKasseListe from "@/components/kasse/KasseListe.vue";
 import appKasseFavorites from "@/components/kasse/KasseFavorites.vue";
 
@@ -23,9 +34,11 @@ import useScanner from "../hooks/use-scanner";
 
 import useKasseStore from "@/store/kasse";
 import useTillStore from "@/store/till";
+import useSettingsStore from "@/store/settings";
 
 const kasseStore = useKasseStore();
 const tillStore = useTillStore();
+const settings = useSettingsStore();
 
 useScanner((code) => {
   kasseStore.add(code);

@@ -1,5 +1,5 @@
 <template>
-  <teleport to="#context-menu">
+  <teleport v-if="settings.tillEdit" to="#context-menu">
     <router-link
       class="inline-flex items-center"
       :to="`/tills/edit?id=${settings.till}#catalog-${id}`"

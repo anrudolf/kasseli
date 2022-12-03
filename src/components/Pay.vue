@@ -4,13 +4,13 @@
       <h1>Bezahlen</h1>
       <h2 v-if="!scanning">Code eingeben</h2>
       <div v-if="!scanning" class="flex items-center my-2">
-        <input v-model="code" class="input" type="number" />
-        <button
-          class="btn btn-blue ml-2"
-          @click="router.push(`/pay?id=${code}`)"
-        >
-          OK
-        </button>
+        <input
+          v-model="code"
+          class="input"
+          type="number"
+          @keyup.prevent.enter="gotoPay"
+        />
+        <button class="btn btn-blue ml-2" @click="gotoPay">OK</button>
       </div>
 
       <div v-if="scanning" class="mt-8 h-64 w-full">
@@ -36,20 +36,24 @@
     <div v-else>
       <h1 class="my-2">Zahlung #{{ id }}</h1>
       <div v-if="error">
-        <h2>Keine Zahlung gefunden</h2>
+        <h2 class="flex items-center">
+          Keine Zahlung gefunden<question-mark-circle-icon
+            class="w-6 h-6 inline"
+          />
+        </h2>
         <button class="my-2 w-full btn btn-blue" @click="router.push('/pay')">
           Neue Zahlung
         </button>
       </div>
       <div v-if="entity">
         <div v-if="entity.status == 'paid'">
-          <h2>Zahlung erhalten</h2>
+          <h2>Erfolgreich</h2>
           <button class="my-2 w-full btn btn-blue" @click="router.push('/pay')">
             Neue Zahlung
           </button>
         </div>
         <div v-else-if="entity.status == 'rejected'">
-          <h2>Zahlung abgelehnt</h2>
+          <h2>Abgelehnt</h2>
           <button class="my-2 w-full btn btn-blue" @click="router.push('/pay')">
             Neue Zahlung
           </button>
@@ -79,7 +83,16 @@
             <span>Ablehnen</span>
           </button>
           <button
-            class="w-full btn btn-blue text-xl flex justify-center items-center"
+            class="
+              w-full
+              mt-4
+              h-24
+              btn btn-green
+              text-xl
+              flex
+              justify-center
+              items-center
+            "
             :disabled="entity.status !== 'open'"
             @click="() => setStatus(id, 'pay')"
           >
@@ -104,6 +117,8 @@ import {
   CheckCircleIcon,
   QrcodeIcon,
 } from "@heroicons/vue/outline";
+
+import { QuestionMarkCircleIcon } from "@heroicons/vue/solid";
 
 import { QrcodeStream } from "vue3-qrcode-reader";
 
@@ -130,6 +145,10 @@ const onScan = (decodedString: string) => {
     code.value = splits[1];
     router.push(`/pay?id=${code.value}`);
   }
+};
+
+const gotoPay = () => {
+  router.push(`/pay?id=${code.value}`);
 };
 
 const { entity, setStatus, error, listenForChanges } = useAppPayment(props.id);

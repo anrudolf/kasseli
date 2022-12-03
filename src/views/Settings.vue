@@ -84,7 +84,10 @@
         <h3>Diverses</h3>
         <div>
           <app-switch v-model="settings.paymentHints.enabled"
-            >Zahlungstipps</app-switch
+            >Zahlungstipps anzeigen</app-switch
+          >
+          <app-switch v-model="settings.tillEdit"
+            >Kasse live editieren</app-switch
           >
         </div>
       </section>
@@ -114,13 +117,15 @@
       <section v-else>
         <h2>Account</h2>
 
-        <router-link
-          class="btn border link inline-block flex items-center"
-          :to="{ name: 'login' }"
-        >
-          <login-icon class="w-5 h-5 mr-1.5"></login-icon>
-          Login
-        </router-link>
+        <div class="pt-1 flex">
+          <router-link
+            class="btn border link inline-block flex items-center"
+            :to="{ name: 'login' }"
+          >
+            <login-icon class="w-5 h-5 mr-1.5"></login-icon>
+            Login
+          </router-link>
+        </div>
       </section>
 
       <section v-if="auth.isLoggedIn">

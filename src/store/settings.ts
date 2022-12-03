@@ -26,6 +26,7 @@ const store = defineStore({
     },
     till: DEFAULT_TILL,
     tillMode: DEFAULT_TILL_MODE as TillMode,
+    tillEdit: false,
     workspace: PUBLIC_WORKSPACE,
   }),
   actions: {
@@ -67,6 +68,7 @@ const store = defineStore({
           "workspace",
           "till",
           "tillMode",
+          "tillEdit",
         ],
       },
     ],
