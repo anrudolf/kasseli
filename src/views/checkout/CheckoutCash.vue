@@ -12,10 +12,10 @@
       :class="cashCalculator.active ? 'text-green-500' : 'text-gray-300'"
       @click="toggleCalculator"
     ></calculator-icon>
-    <x-icon
+    <x-mark-icon
       class="w-12 h-12 mr-1 text-gray-300 cursor-pointer"
       @click="paid = 0"
-    ></x-icon>
+    ></x-mark-icon>
   </div>
 
   <div class="p-2 max-w-lg">
@@ -81,7 +81,11 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
 
-import { LightBulbIcon, CalculatorIcon, XIcon } from "@heroicons/vue/outline";
+import {
+  LightBulbIcon,
+  CalculatorIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 import appMoneyCoin from "@/components/money/MoneyCoin.vue";
 import appMoneyNote from "@/components/money/MoneyNote.vue";

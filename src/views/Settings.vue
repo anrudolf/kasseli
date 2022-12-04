@@ -109,7 +109,7 @@
             class="btn btn-white link flex items-center"
             @click="showLogoutModal = true"
           >
-            <logout-icon class="w-5 h-5 mr-1.5"></logout-icon>
+            <arrow-left-on-rectangle-icon class="w-5 h-5 mr-1.5" />
             Logout
           </button>
         </div>
@@ -122,7 +122,7 @@
             class="btn border link inline-block flex items-center"
             :to="{ name: 'login' }"
           >
-            <login-icon class="w-5 h-5 mr-1.5"></login-icon>
+            <arrow-right-on-rectangle-icon class="w-5 h-5 mr-1.5" />
             Login
           </router-link>
         </div>
@@ -147,7 +147,11 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 
-import { LogoutIcon, LoginIcon, CogIcon } from "@heroicons/vue/solid";
+import {
+  ArrowLeftOnRectangleIcon,
+  ArrowRightOnRectangleIcon,
+  CogIcon,
+} from "@heroicons/vue/24/solid";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appSwitch from "@/components/ui/Switch.vue";

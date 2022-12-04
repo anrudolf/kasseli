@@ -26,7 +26,7 @@
 
 <script>
 import Quagga from "@ericblade/quagga2";
-import { LightBulbIcon, XCircleIcon } from "@heroicons/vue/outline";
+import { LightBulbIcon, XCircleIcon } from "@heroicons/vue/24/outline";
 
 export default {
   name: "QuaggaScanner",

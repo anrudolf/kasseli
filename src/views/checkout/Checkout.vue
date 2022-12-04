@@ -22,7 +22,8 @@
         label="App"
         to="/checkout/app"
       >
-        <div class="p-5"><device-mobile-icon class="text-green-500" /></div
+        <div class="p-5">
+          <device-phone-mobile-icon class="text-green-500" /></div
       ></app-card>
     </div>
   </div>
@@ -30,7 +31,7 @@
 
 <script lang="ts" setup>
 import { useOnline } from "@vueuse/core";
-import { DeviceMobileIcon } from "@heroicons/vue/outline";
+import { DevicePhoneMobileIcon } from "@heroicons/vue/24/outline";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 import appCard from "@/components/ui/Card.vue";

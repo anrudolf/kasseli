@@ -60,10 +60,10 @@
             class="border rounded"
             @click="copyLink(invite)"
           >
-            <duplicate-icon
+            <document-duplicate-icon
               v-if="!copied"
               class="w-5 h-5 mx-3"
-            ></duplicate-icon>
+            ></document-duplicate-icon>
             <check-icon v-else class="w-5 h-5 mx-3"></check-icon>
           </button>
         </div>
@@ -81,11 +81,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, ref, watch, computed } from "vue";
+import { ref, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getDoc, doc } from "firebase/firestore";
 
-import { DuplicateIcon, CheckIcon } from "@heroicons/vue/outline";
+import { DocumentDuplicateIcon, CheckIcon } from "@heroicons/vue/24/outline";
 import { useClipboard } from "@vueuse/core";
 
 import appSelect from "@/components/ui/Select.vue";

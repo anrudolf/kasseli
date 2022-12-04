@@ -97,9 +97,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineProps, defineEmits } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
 import mexp from "math-expression-evaluator";
-import { ArrowLeftIcon } from "@heroicons/vue/solid";
 
 const props = defineProps({
   price: {

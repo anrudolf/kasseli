@@ -84,7 +84,7 @@ import { getDoc, doc } from "firebase/firestore";
 import {
   ExclamationCircleIcon,
   InformationCircleIcon,
-} from "@heroicons/vue/outline";
+} from "@heroicons/vue/24/outline";
 
 import db from "@/services/db";
 import { Workspace, WorkspaceMember } from "@/types";

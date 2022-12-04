@@ -144,7 +144,7 @@
 <script lang="ts" setup>
 import { ref, defineProps, withDefaults } from "vue";
 
-import { CameraIcon } from "@heroicons/vue/outline";
+import { CameraIcon } from "@heroicons/vue/24/outline";
 
 import appButtonDelete from "@/components/ui/ButtonDelete.vue";
 import appButtonConfirm from "@components/ui/ButtonConfirm.vue";

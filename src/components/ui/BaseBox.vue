@@ -10,14 +10,14 @@
     </div>
     <div class="mx-2">{{ props.modelValue }}</div>
     <button @click="emit('update:modelValue', '')">
-      <x-icon class="w-6 h-6 inline"></x-icon>
+      <x-mark-icon class="w-6 h-6 inline"></x-mark-icon>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
-import { QuestionMarkCircleIcon, XIcon } from "@heroicons/vue/outline";
+import { QuestionMarkCircleIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
   modelValue: {

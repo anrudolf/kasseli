@@ -29,7 +29,7 @@ import { useRouter } from "vue-router";
 import appWidget from "@/components/ui/Widget.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 
-import { PencilIcon } from "@heroicons/vue/solid";
+import { PencilIcon } from "@heroicons/vue/24/solid";
 
 import useSettingsStore from "@/store/settings";
 import useKasseStore from "@/store/kasse";

@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 import appBaseBox from "./BaseBox.vue";
-import { ExclamationCircleIcon } from "@heroicons/vue/solid";
+import { ExclamationCircleIcon } from "@heroicons/vue/24/solid";
 
 const props = defineProps({
   modelValue: {

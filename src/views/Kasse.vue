@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-import { PencilIcon } from "@heroicons/vue/solid";
+import { PencilIcon } from "@heroicons/vue/24/solid";
 
 import appKasseListe from "@/components/kasse/KasseListe.vue";
 import appKasseFavorites from "@/components/kasse/KasseFavorites.vue";

@@ -51,7 +51,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { PencilIcon } from "@heroicons/vue/outline";
+import { PencilIcon } from "@heroicons/vue/24/outline";
 
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/services/db";

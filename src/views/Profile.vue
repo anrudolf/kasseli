@@ -160,7 +160,7 @@ import {
 } from "firebase/auth";
 
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import { ChevronUpIcon } from "@heroicons/vue/solid";
+import { ChevronUpIcon } from "@heroicons/vue/24/solid";
 
 import appSuccessBox from "@/components/ui/SuccessBox.vue";
 import appErrorBox from "@/components/ui/ErrorBox.vue";

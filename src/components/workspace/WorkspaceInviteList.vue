@@ -40,7 +40,7 @@
           class="mx-1 btn btn-white border-none"
           @click="copyLink(invite)"
         >
-          <duplicate-icon class="w-5 h-5"></duplicate-icon>
+          <document-duplicate-icon class="w-5 h-5"></document-duplicate-icon>
         </button>
       </li>
     </ul>
@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { defineProps, ref } from "vue";
 import { useClipboard } from "@vueuse/core";
-import { DuplicateIcon } from "@heroicons/vue/outline";
+import { DocumentDuplicateIcon } from "@heroicons/vue/24/outline";
 
 import { getRole, getUsage, getLink } from "@/utils/workspace";
 

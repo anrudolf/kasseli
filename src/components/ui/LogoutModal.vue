@@ -69,7 +69,7 @@
 import { ref, defineProps, defineEmits, watch, computed } from "vue";
 import { getFirestore, waitForPendingWrites } from "firebase/firestore";
 
-import { ExclamationCircleIcon } from "@heroicons/vue/outline";
+import { ExclamationCircleIcon } from "@heroicons/vue/24/outline";
 
 import appModal from "@/components/ui/Modal.vue";
 import useAuthStore from "@/store/auth";

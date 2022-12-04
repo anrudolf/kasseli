@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 import appBaseBox from "./BaseBox.vue";
-import { CheckIcon } from "@heroicons/vue/solid";
+import { CheckIcon } from "@heroicons/vue/20/solid";
 
 const props = defineProps({
   modelValue: {

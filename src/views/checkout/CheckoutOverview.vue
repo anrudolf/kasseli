@@ -26,9 +26,9 @@
         <button @click="goBack">
           <div class="cursor-pointer">
             <div class="flex justify-center">
-              <exclamation-icon
+              <exclamation-triangle-icon
                 class="splash h-16 w-16 text-red-500"
-              ></exclamation-icon>
+              ></exclamation-triangle-icon>
             </div>
           </div>
         </button>
@@ -56,7 +56,7 @@
       <div class="mt-4 flex justify-between">
         <router-link class="btn btn-blue inline-block" :to="{ name: 'orders' }">
           <div class="flex items-center">
-            <view-list-icon class="inline w-5 h-5 mr-1.5"></view-list-icon>
+            <bars4-icon class="inline w-5 h-5 mr-1.5"></bars4-icon>
             Alle anzeigen
           </div>
         </router-link>
@@ -107,11 +107,11 @@ import {
 } from "@/services/orders";
 
 import {
-  ViewListIcon,
+  Bars4Icon,
   PlusIcon,
-  ExclamationIcon,
+  ExclamationTriangleIcon,
   CheckCircleIcon,
-} from "@heroicons/vue/solid";
+} from "@heroicons/vue/24/solid";
 
 import appOrderList from "@/components/orders/OrderList.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";

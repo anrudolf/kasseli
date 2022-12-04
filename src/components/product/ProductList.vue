@@ -57,7 +57,7 @@ import {
   onBeforeUnmount,
 } from "vue";
 
-import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/vue/solid";
+import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/vue/24/solid";
 
 import { useArrayPagination } from "@/hooks/use-arraypagination";
 

@@ -29,7 +29,7 @@
         "
         @click="scanning = !scanning"
       >
-        <qrcode-icon class="w-8 h-8 mr-2" />
+        <qr-code-icon class="w-8 h-8 mr-2" />
         SCAN
       </button>
     </div>
@@ -115,10 +115,10 @@ import { useRouter } from "vue-router";
 import {
   XCircleIcon,
   CheckCircleIcon,
-  QrcodeIcon,
-} from "@heroicons/vue/outline";
+  QrCodeIcon,
+} from "@heroicons/vue/24/outline";
 
-import { QuestionMarkCircleIcon } from "@heroicons/vue/solid";
+import { QuestionMarkCircleIcon } from "@heroicons/vue/24/solid";
 
 import { QrcodeStream } from "vue3-qrcode-reader";
 

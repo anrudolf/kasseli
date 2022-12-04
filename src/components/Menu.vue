@@ -48,7 +48,7 @@
                 class="app-menu-button absolute top-6 right-6"
                 @click="ui.closeMenu"
               >
-                <x-icon class="w-8 h-8"></x-icon>
+                <x-mark-icon class="w-8 h-8"></x-mark-icon>
               </button>
 
               <div class="mt-8">
@@ -79,7 +79,9 @@
                   to="/pay"
                   class="app-menu-button flex items-center text-green-500"
                   @click="ui.closeMenu"
-                  ><device-mobile-icon class="w-8 h-8"></device-mobile-icon
+                  ><device-phone-mobile-icon
+                    class="w-8 h-8"
+                  ></device-phone-mobile-icon
                   >Pay</router-link
                 >
                 <router-link
@@ -93,7 +95,7 @@
                   class="app-menu-button text-green-500 flex items-center"
                   @click="refresh"
                 >
-                  <refresh-icon class="w-8 h-8 mr-1" />
+                  <arrow-path-icon class="w-8 h-8 mr-1" />
                   Refresh
                 </button>
               </div>
@@ -115,12 +117,12 @@ import {
   DialogOverlay,
 } from "@headlessui/vue";
 
-import { XIcon } from "@heroicons/vue/solid";
 import {
-  DeviceMobileIcon,
-  RefreshIcon,
+  DevicePhoneMobileIcon,
+  ArrowPathIcon,
   CameraIcon,
-} from "@heroicons/vue/outline";
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 import { TillMode } from "@/types";
 

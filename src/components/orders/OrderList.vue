@@ -22,7 +22,7 @@
                 selectOrder(order.serial == selectedOrder ? null : order.serial)
               "
             >
-              <dots-vertical-icon class="icon"> </dots-vertical-icon>
+              <ellipsis-vertical-icon class="icon"> </ellipsis-vertical-icon>
             </button>
             <button
               class="rounded-full"
@@ -96,10 +96,10 @@ import { defineProps, ref, PropType, defineEmits } from "vue";
 import {
   ClockIcon,
   CheckIcon,
-  DotsVerticalIcon,
+  EllipsisVerticalIcon,
   TrashIcon,
   SparklesIcon,
-} from "@heroicons/vue/outline";
+} from "@heroicons/vue/24/outline";
 
 import { Order, OrderStatus } from "@/types";
 

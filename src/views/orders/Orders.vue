@@ -11,8 +11,8 @@
           search = !search;
         "
       >
-        <x-icon v-if="search" class="w-6 h-6"></x-icon>
-        <search-icon v-else class="w-6 h-6"></search-icon>
+        <x-mark-icon v-if="search" class="w-6 h-6"></x-mark-icon>
+        <magnifying-glass-icon v-else class="w-6 h-6"></magnifying-glass-icon>
       </button>
     </h1>
 
@@ -137,9 +137,9 @@ import {
   CheckIcon,
   TrashIcon,
   SparklesIcon,
-  SearchIcon,
-  XIcon,
-} from "@heroicons/vue/outline";
+  MagnifyingGlassIcon,
+  XMarkIcon,
+} from "@heroicons/vue/24/outline";
 
 import {
   setOrderItemStatus,
@@ -147,7 +147,6 @@ import {
   archiveOrder,
 } from "@/services/orders";
 
-import appModal from "@/components/ui/Modal.vue";
 import appIcon from "@/components/ui/Icon.vue";
 import appButtonBack from "@/components/ui/ButtonBack.vue";
 

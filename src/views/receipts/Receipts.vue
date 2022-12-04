@@ -68,7 +68,7 @@
               :disabled="receipts.length === 0"
               @click="startDownload"
             >
-              <download-icon class="w-5 h-5"></download-icon>
+              <arrow-down-tray-icon class="w-5 h-5" />
             </button>
           </th>
         </tr>
@@ -113,7 +113,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from "vue";
 
-import { EyeIcon, DownloadIcon } from "@heroicons/vue/solid";
+import { EyeIcon, ArrowDownTrayIcon } from "@heroicons/vue/24/solid";
 
 import { Receipt } from "@/types";
 import { getReceipts } from "@/services/receipts";
