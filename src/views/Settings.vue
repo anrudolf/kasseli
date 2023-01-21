@@ -102,7 +102,7 @@
             class="btn btn-white inline-block flex items-center"
             :to="{ name: 'profile' }"
           >
-            <cog-icon class="inline w-5 h-5 mr-1.5"></cog-icon>
+            <cog-6-tooth-icon class="inline w-5 h-5 mr-1.5"></cog-6-tooth-icon>
             Profile
           </router-link>
           <button
@@ -150,7 +150,7 @@ import { computed, ref } from "vue";
 import {
   ArrowLeftOnRectangleIcon,
   ArrowRightOnRectangleIcon,
-  CogIcon,
+  Cog6ToothIcon,
 } from "@heroicons/vue/24/solid";
 
 import appButtonBack from "@/components/ui/ButtonBack.vue";
