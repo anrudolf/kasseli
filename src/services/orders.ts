@@ -12,6 +12,7 @@ import {
   getFirestore,
   writeBatch,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 import useKasse from "@/store/kasse";
@@ -130,11 +131,23 @@ export const setOrderItemStatus = ({
   updateDoc(orderDocRef, update);
 };
 
-export const archiveOrder = (id: string) => {
+export const archiveOrderToggle = (id: string) => {
   const now = new Date().toISOString();
   const orderDocRef = doc(db.orders, id);
   const update = { updated: now, archived: true };
+
+  const store = useOrders();
+  const order = store.item(id);
+  if (order) {
+    update.archived = !order.archived;
+  }
+
   updateDoc(orderDocRef, update);
+};
+
+export const deleteOrder = (id: string) => {
+  const orderDocRef = doc(db.orders, id);
+  deleteDoc(orderDocRef);
 };
 
 export const setOrderStatus = ({

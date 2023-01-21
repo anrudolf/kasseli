@@ -73,7 +73,7 @@
           :items="[order]"
           @set-order-item-status="setOrderItemStatus"
           @set-order-status="setOrderStatus"
-          @archive-order="archive"
+          @archive-order-toggle="archive"
         ></app-order-list>
       </div>
 
@@ -101,7 +101,7 @@ import { TillMode } from "@/types";
 import {
   createSerial,
   createOrder,
-  archiveOrder,
+  archiveOrderToggle,
   setOrderStatus,
   setOrderItemStatus,
 } from "@/services/orders";
@@ -131,7 +131,7 @@ const goBack = () => {
 };
 
 const archive = async (id: string) => {
-  archiveOrder(id);
+  archiveOrderToggle(id);
   router.replace("/");
 };
 

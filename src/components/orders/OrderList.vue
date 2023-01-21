@@ -1,5 +1,17 @@
 <template>
   <table class="w-full my-2">
+    <app-modal
+      v-model="showArchiveModal"
+      :title="`Bestellung ${selectedOrder?.serial}`"
+      show-confirm
+      show-cancel
+      @confirm="archiveToggleSelectedOrder()"
+    >
+      <div v-if="selectedOrder?.archived">
+        Diese Bestellung wiederherstellen?
+      </div>
+      <div v-else>Diese Bestellung archivieren?</div>
+    </app-modal>
     <tbody
       v-for="order in items"
       v-show="filter.length == 0 || filter.includes(order.status)"
@@ -8,22 +20,23 @@
     >
       <tr class="border bg-blue-100">
         <th class="flex items-center">
-          <button class="mr-2 text-red-400" @click="archiveOrder(order.id)">
-            <trash-icon class="icon"></trash-icon>
+          <button
+            class="mr-2 text-gray-400"
+            @click="
+              selectedOrder = order;
+              showArchiveModal = true;
+            "
+          >
+            <trash-icon v-if="!order.archived" class="icon"></trash-icon>
+            <archive-box-x-mark-icon
+              v-else
+              class="icon"
+            ></archive-box-x-mark-icon>
           </button>
           <span class="pt-0.5">{{ order.serial }}</span>
         </th>
         <th style="width: 0px">
           <div class="flex gap-3 justify-end">
-            <button
-              v-if="false"
-              class="text-green-600"
-              @click="
-                selectOrder(order.serial == selectedOrder ? null : order.serial)
-              "
-            >
-              <ellipsis-vertical-icon class="icon"> </ellipsis-vertical-icon>
-            </button>
             <button
               class="rounded-full"
               :class="
@@ -96,14 +109,15 @@ import { defineProps, ref, PropType, defineEmits } from "vue";
 import {
   ClockIcon,
   CheckIcon,
-  EllipsisVerticalIcon,
   TrashIcon,
+  ArchiveBoxXMarkIcon,
   SparklesIcon,
 } from "@heroicons/vue/24/outline";
 
 import { Order, OrderStatus } from "@/types";
 
 import appIcon from "@/components/ui/Icon.vue";
+import appModal from "@/components/ui/Modal.vue";
 import appOrderProgressBar from "./OrderProgressBar.vue";
 
 const props = defineProps({
@@ -123,21 +137,25 @@ const emit = defineEmits<{
     v: { id: string; items: number | number[]; status: OrderStatus }
   );
   (e: "set-order-status", v: { id: string; status: OrderStatus });
-  (e: "archive-order", v: string);
+  (e: "archive-order-toggle", v: string);
 }>();
 
-const selectedOrder = ref<string | null>(null);
-
-const selectOrder = (id: string | null) => {
-  selectedOrder.value = id;
-};
+const selectedOrder = ref<Order | null>(null);
 
 const setOrderStatus = (id: string, status: OrderStatus) => {
   emit("set-order-status", { id, status });
 };
 
-const archiveOrder = (id: string) => {
-  emit("archive-order", id);
+const showArchiveModal = ref(false);
+
+const archiveToggleSelectedOrder = () => {
+  showArchiveModal.value = false;
+
+  const order = selectedOrder.value;
+  if (!order) {
+    return;
+  }
+  emit("archive-order-toggle", order.id);
 };
 </script>
 

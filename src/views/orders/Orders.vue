@@ -123,7 +123,7 @@
       :items="items"
       @set-order-item-status="setOrderItemStatus"
       @set-order-status="setOrderStatus"
-      @archive-order="archiveOrder"
+      @archive-order-toggle="archiveOrderToggle"
     ></app-order-list>
   </div>
 </template>
@@ -144,7 +144,7 @@ import {
 import {
   setOrderItemStatus,
   setOrderStatus,
-  archiveOrder,
+  archiveOrderToggle,
 } from "@/services/orders";
 
 import appIcon from "@/components/ui/Icon.vue";

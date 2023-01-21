@@ -8,10 +8,8 @@
     <div class="grid grid-cols-2">
       <div class="grid grid-cols-2">
         <div
-          v-for="order in store.items.filter((order) =>
-            Object.values(order.content).some(
-              (item) => item.status == OrderStatus.PREPARING
-            )
+          v-for="order in store.items.filter(
+            (i) => !i.archived && i.status == OrderStatus.PREPARING
           )"
           :key="order.id"
           class="card preparation"
@@ -21,10 +19,8 @@
       </div>
       <div class="grid grid-cols-2">
         <div
-          v-for="order in store.items.filter((order) =>
-            Object.values(order.content).every(
-              (o) => o.status == OrderStatus.READY
-            )
+          v-for="order in store.items.filter(
+            (i) => !i.archived && i.status == OrderStatus.READY
           )"
           :key="order.id"
           class="card ready"
