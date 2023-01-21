@@ -5,8 +5,10 @@
         <thead>
           <tr>
             <th colspan="3">
-              <span>Datum </span>
-              <span>{{ getLocaleDateTimeString(receipt.created) }}</span>
+              <span
+                >Datum: {{ getLocaleDateString(receipt.created) }},
+                {{ getLocaleTimeString(receipt.created) }}</span
+              >
             </th>
           </tr>
           <tr class="border-b border-black">
@@ -85,7 +87,12 @@
           class="cursor-pointer"
           @click="select(r)"
         >
-          <td>{{ getLocaleDateTimeString(r.created) }}</td>
+          <td>
+            {{ getLocaleDateString(r.created) }}
+            <span class="text-secondary">{{
+              getLocaleTimeString(r.created)
+            }}</span>
+          </td>
           <td class="text-right">{{ r.price.toFixed(2) }}</td>
           <td>
             <button class="link flex items-center">
@@ -136,7 +143,11 @@ import {
 import Datepicker from "vue3-date-time-picker";
 import "vue3-date-time-picker/dist/main.css";
 
-import { getLocaleDateTimeString, getLocaleDateString } from "@/utils/date";
+import {
+  getLocaleDateTimeString,
+  getLocaleDateString,
+  getLocaleTimeString,
+} from "@/utils/date";
 import { download } from "@/services/downloader";
 
 const pageSizeOptions = [
