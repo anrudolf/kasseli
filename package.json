@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@ericblade/quagga2": "^1.4.2",
+    "@ericblade/quagga2": "^1.8.2",
     "@headlessui/vue": "^1.4.2",
     "@heroicons/vue": "^2.0.13",
     "@vueuse/core": "^7.3.0",
